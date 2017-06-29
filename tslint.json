@@ -21,7 +21,7 @@
         ]
       }
     ],
-    "variable-name": [true, "allow-leading-underscore"],
+    "variable-name": [true, "allow-leading-underscore", "allow-snake-case"],
     "object-literal-key-quotes": false,
     "comment-format": false,
     "only-arrow-functions": false,
@@ -38,6 +38,7 @@
     "no-unused-variable": [true, {"ignore-pattern": "^_"}],
     "indent": [true, "spaces", 2],
     "no-var-keyword": false,
-    "one-variable-per-declaration": false
+    "one-variable-per-declaration": false,
+    "switch-default": false
   }
 }

@@ -1,40 +1,39 @@
-
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
 import {IAnnotators, Partial} from '../interfaces';
-import {ICustomer, INarrative, IScene, NEvent} from '../models';
+import {createInstance, ICustomer, INarrative, IScene, NEvent} from '../models';
 
 export interface IModelSvc {
-  episodes: { [episodeId:string]: any };
+  episodes: { [episodeId: string]: any };
   assets: { [assetId: string]: any };
   events: { [eventId: string]: NEvent };
-  containers: { [containerId:string]: any };
+  containers: { [containerId: string]: any };
   narratives: { [narrativeId: string]: any };
-  customers: { [customerId:string]: any };
+  customers: { [customerId: string]: any };
   getNarrativeByPathOrId(pathOrId: string): any;
   assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer;
-  cachedNarrativesByCustomer(customer:any): any;
+  cachedNarrativesByCustomer(customer: any): any;
   getCustomersAsArray(): any[];
   getNarrativesAsArray(): any[];
-  cache(cacheType:string, item: any): void;
-  deriveEpisode(episode:any): void;
+  cache(cacheType: string, item: any): void;
+  deriveEpisode(episode: any): void;
   deriveAsset(asset: any): any;
   deriveContainer(container: any): any;
   deriveEvent(event: Partial<NEvent>): NEvent;
   setLanguageStrings(): void;
-  resolveEpisodeEvents(epId:string): void;
+  resolveEpisodeEvents(epId: string): void;
   resolveEpisodeContainers(epId: string): void;
   episode(epId: string): any;
   episodeEvents(epId: string): NEvent[];
-  isOnExistingSceneStart(t:number): boolean;
+  isOnExistingSceneStart(t: number): boolean;
   getEpisodeScenes(): IScene[];
   sceneAtEpisodeTime(epId: string, t: number): IScene;
   scene(sceneId: string): IScene;
   assocEventWithAsset(eventId: string, assetId: string): void;
   resolveEpisodeAssets(episodeId: string): void;
   addLandingScreen(episodeId: string): void;
-  addEndingScreen(episodeId:string): void;
+  addEndingScreen(episodeId: string): void;
   isTranscoded(video: any): boolean;
 }
 
@@ -109,7 +108,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
   svc.cachedNarrativesByCustomer = cachedNarrativesByCustomer;
   function cachedNarrativesByCustomer(customer: ICustomer): INarrative[] {
-    return Object.keys(svc.narratives).reduce(function(narratives, key) {
+    return Object.keys(svc.narratives).reduce(function (narratives, key) {
       if (svc.narratives[key].customer_id === customer._id) {
         narratives.push(svc.narratives[key]);
       }
@@ -185,62 +184,62 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   // update template paths from v1.  This is temporary until I have the set of new templates nailed down
   // and have figured out which can be merged or etc; then we can update the values in the database
   var updateTemplates = {
-    "templates/episode-default.html": "templates/episode/episode.html",
-    "templates/episode-eliterate.html": "templates/episode/eliterate.html",
-    "templates/episode-ewb.html": "templates/episode/ewb.html",
-    "templates/episode-gw.html": "templates/episode/gw.html",
-    "templates/episode-purdue.html": "templates/episode/purdue.html",
-    "templates/episode-tellingstory.html": "templates/episode/story.html",
+    'templates/episode-default.html': 'templates/episode/episode.html',
+    'templates/episode-eliterate.html': 'templates/episode/eliterate.html',
+    'templates/episode-ewb.html': 'templates/episode/ewb.html',
+    'templates/episode-gw.html': 'templates/episode/gw.html',
+    'templates/episode-purdue.html': 'templates/episode/purdue.html',
+    'templates/episode-tellingstory.html': 'templates/episode/story.html',
 
-    "templates/scene-1col.html": "templates/scene/1col.html",
-    "templates/scene-2colL.html": "templates/scene/2colL.html",
-    "templates/scene-2colR.html": "templates/scene/2colR.html",
-    "templates/scene-centered.html": "templates/scene/centered.html",
-    "templates/scene-cornerH.html": "templates/scene/cornerH.html",
-    "templates/scene-cornerV.html": "templates/scene/cornerV.html",
+    'templates/scene-1col.html': 'templates/scene/1col.html',
+    'templates/scene-2colL.html': 'templates/scene/2colL.html',
+    'templates/scene-2colR.html': 'templates/scene/2colR.html',
+    'templates/scene-centered.html': 'templates/scene/centered.html',
+    'templates/scene-cornerH.html': 'templates/scene/cornerH.html',
+    'templates/scene-cornerV.html': 'templates/scene/cornerV.html',
 
     //annotation:
-    "templates/transcript-default.html": "templates/item/transcript.html",
-    "templates/transcript-withthumbnail.html": "templates/item/transcript-withthumbnail.html",
-    "templates/transcript-withthumbnail-alt.html": "templates/item/transcript-withthumbnail-alt.html",
-    "templates/text-h1.html": "templates/item/text-h1.html",
-    "templates/text-h2.html": "templates/item/text-h2.html",
-    "templates/text-pullquote-noattrib.html": "templates/item/pullquote-noattrib.html",
-    "templates/text-pullquote.html": "templates/item/pullquote.html",
+    'templates/transcript-default.html': 'templates/item/transcript.html',
+    'templates/transcript-withthumbnail.html': 'templates/item/transcript-withthumbnail.html',
+    'templates/transcript-withthumbnail-alt.html': 'templates/item/transcript-withthumbnail-alt.html',
+    'templates/text-h1.html': 'templates/item/text-h1.html',
+    'templates/text-h2.html': 'templates/item/text-h2.html',
+    'templates/text-pullquote-noattrib.html': 'templates/item/pullquote-noattrib.html',
+    'templates/text-pullquote.html': 'templates/item/pullquote.html',
 
     // upload
-    "templates/transmedia-caption.html": "templates/item/image-caption.html",
-    "templates/transmedia-image-default.html": "templates/item/image.html",
-    "templates/transmedia-slidingcaption.html": "templates/item/image-caption-sliding.html",
-    "templates/transmedia-image-fill.html": "templates/item/image-fill.html",
-    "templates/transmedia-image-plain.html": "templates/item/image-plain.html",
-    "templates/transmedia-linkonly.html": "templates/item/image-linkonly.html",
-    "templates/transmedia-thumbnail.html": "templates/item/image-thumbnail.html",
+    'templates/transmedia-caption.html': 'templates/item/image-caption.html',
+    'templates/transmedia-image-default.html': 'templates/item/image.html',
+    'templates/transmedia-slidingcaption.html': 'templates/item/image-caption-sliding.html',
+    'templates/transmedia-image-fill.html': 'templates/item/image-fill.html',
+    'templates/transmedia-image-plain.html': 'templates/item/image-plain.html',
+    'templates/transmedia-linkonly.html': 'templates/item/image-linkonly.html',
+    'templates/transmedia-thumbnail.html': 'templates/item/image-thumbnail.html',
 
     //link
-    "templates/transmedia-link-default.html": "templates/item/link.html",
-    "templates/transmedia-link-frameicide.html": "templates/item/link.html",
-    "templates/transmedia-link-noembed.html": "templates/item/link.html",
-    "templates/transmedia-link-embed.html": "templates/item/link-embed.html",
-    "templates/transmedia-link-youtube.html": "templates/item/link.html",
-    "templates/transmedia-embed-youtube.html": "templates/item/link-embed.html",
+    'templates/transmedia-link-default.html': 'templates/item/link.html',
+    'templates/transmedia-link-frameicide.html': 'templates/item/link.html',
+    'templates/transmedia-link-noembed.html': 'templates/item/link.html',
+    'templates/transmedia-link-embed.html': 'templates/item/link-embed.html',
+    'templates/transmedia-link-youtube.html': 'templates/item/link.html',
+    'templates/transmedia-embed-youtube.html': 'templates/item/link-embed.html',
 
     // was used internally in v3 player, never exposed to authors so shouldn't appear BUT YOU NEVER KNOW:
-    "templates/transmedia-link-icon.html": "templates/item/link.html",
+    'templates/transmedia-link-icon.html': 'templates/item/link.html',
 
     // (from old sxs demo; can delete later)
     // "templates/upload-demo-inline.html": "templates/item/debug.html",
     // "templates/upload-demo.html": "templates/item/debug.html",
 
     //questions
-    "templates/question-mc-formative.html": "templates/item/question-mc-formative.html",
-    "templates/question-mc-poll.html": "templates/item/question-mc-poll.html",
+    'templates/question-mc-formative.html': 'templates/item/question-mc-formative.html',
+    'templates/question-mc-poll.html': 'templates/item/question-mc-poll.html',
 
-    "templates/question-mc.html": "templates/item/question-mc.html",
-    "templates/question-mc-image-left.html": "templates/item/question-mc-image-left.html",
-    "templates/question-mc-image-right.html": "templates/item/question-mc-image-right.html",
+    'templates/question-mc.html': 'templates/item/question-mc.html',
+    'templates/question-mc-image-left.html': 'templates/item/question-mc-image-left.html',
+    'templates/question-mc-image-right.html': 'templates/item/question-mc-image-right.html',
 
-    "templates/sxs-question.html": "templates/item/sxs-question.html"
+    'templates/sxs-question.html': 'templates/item/sxs-question.html'
   };
 
   // svc.deriveFoo() are for efficiency precalculations.
@@ -268,7 +267,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       }
     });
     if (episode.defaultLanguage === false) {
-      episode.defaultLanguage = "en"; // last resort
+      episode.defaultLanguage = 'en'; // last resort
     }
     svc.setLanguageStrings();
 
@@ -277,9 +276,9 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     if (!episode.styles) {
       episode.styles = [];
     }
-    angular.forEach(["eliterate", "gw", "gwsb", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
-      if (episode.templateUrl === "templates/episode/" + customer + ".html") {
-        angular.forEach(["color", "typography"], function (styleType) {
+    angular.forEach(['eliterate', 'gw', 'gwsb', 'purdue', 'usc', 'columbia', 'columbiabusiness'], function (customer) {
+      if (episode.templateUrl === 'templates/episode/' + customer + '.html') {
+        angular.forEach(['color', 'typography'], function (styleType) {
           // if the episode doesn't already have styletypeFoo, add styletypeCustomer
           var found = false;
           angular.forEach(episode.styles, function (style) {
@@ -294,9 +293,9 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       }
     });
 
-    if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
-      svc.events["internal:landingscreen:" + episode._id].title = episode.title;
-      svc.events["internal:landingscreen:" + episode._id] = setLang(svc.events["internal:landingscreen:" + episode._id]);
+    if (episode.title && svc.events['internal:landingscreen:' + episode._id]) {
+      svc.events['internal:landingscreen:' + episode._id].title = episode.title;
+      svc.events['internal:landingscreen:' + episode._id] = setLang(svc.events['internal:landingscreen:' + episode._id]);
     }
 
     episode = setLang(episode);
@@ -305,7 +304,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
   svc.deriveAsset = function (asset) {
     // console.log("deriveAsset:", asset);
-    if (asset._type === "Asset::Video") {
+    if (asset._type === 'Asset::Video') {
       asset = urlService.resolveVideo(asset);
     }
     asset = setLang(asset);
@@ -386,7 +385,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     event = setLang(event);
     if (event._type !== 'Scene') {
 
-      event.searchableText = (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator);
+      event.searchableText = (event.display_annotation || event.display_description) + ' ' + (event.display_title || event.display_annotator);
       if (!event.cosmetic) {
         event.cosmetic = false; // search needs this to be explicit
       }
@@ -414,7 +413,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           event.templateUrl = 'templates/item/usc-badges.html';
         }
 
-        if (event._type === "Link") {
+        if (event._type === 'Link') {
           if (event.templateUrl === 'templates/transmedia-link-default.html') {
             // they don't want any embedded links (shrug)
             event.templateUrl = 'templates/transmedia-link-noembed.html';
@@ -426,14 +425,14 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           if (event.display_title.match(/Haven't Registered/)) {
             // hide this event for non-guest users
             event.styles = event.styles ? event.styles : [];
-            event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-            event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
+            event.styles.push('uscHackOnlyGuests'); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
+            event.uscReviewModeHack = 'uscHackOnlyGuests'; // ...except the review mode template, because item styles don't show up there
           }
           if (event.display_title.match(/Connect with/)) {
             // hide this event unless episode badge is achieved
             event.styles = event.styles ? event.styles : [];
-            event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-            event.uscReviewModeHack = "uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
+            event.styles.push('uscHackOnlyBadge'); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
+            event.uscReviewModeHack = 'uscHackOnlyBadge'; // ...except the review mode template, because item styles don't show up there
           }
         }
         // END of USC hacks
@@ -468,7 +467,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       }
 
       var isHttps = $location.protocol() === 'https';
-      if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && isHttps) {
+      if (event._type === 'Link' && event.url && event.url.match(/^http:\/\//) && isHttps) {
         event.mixedContent = true;
         event.showInlineDetail = false;
       }
@@ -479,7 +478,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         }
       }
 
-      if (event._type === "Link" && event.url && /mailto/.test(event.url)) {
+      if (event._type === 'Link' && event.url && /mailto/.test(event.url)) {
         // event.noEmbed = true;
         event.target = '_blank';
       }
@@ -499,8 +498,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       event.templateUrl = updateTemplates[event.templateUrl];
 
       // coerce old image-plain background images into image-fill:
-      if (!event.isContent && event.templateUrl === "templates/item/image-plain.html") {
-        event.templateUrl = "templates/item/image-fill.html";
+      if (!event.isContent && event.templateUrl === 'templates/item/image-plain.html') {
+        event.templateUrl = 'templates/item/image-fill.html';
       }
       // hack for old authoring tool quirk:
       // if (event.templateUrl === "templates/item/image-plain.html") {
@@ -546,7 +545,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         event.producerItemType = 'chapter';
       }
       if (!event.producerItemType) {
-        console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
+        console.warn('Couldn\'t determine a producerItemType for ', event.templateUrl);
       }
     }
 
@@ -566,7 +565,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           event.isPq = true;
         }
         if (/text-h1|text-h2/.test(event.templateUrl)) {
-          console.log("setting header!!");
+          console.log('setting header!!');
           event.isHeader = true;
         }
 
@@ -580,24 +579,24 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         break;
     }
 
-    event.displayStartTime = $filter("asTime")(event.start_time);
+    event.displayStartTime = $filter('asTime')(event.start_time);
     return event;
   };
 
   var setLang = function (obj) {
     // TODO: keywords, customers/oauth2_message
     // TODO use episode default language instead of 'en'
-    var langToSet = (appState.lang) ? appState.lang : "en";
-    angular.forEach(["title", "annotator", "annotation", "description", "name"], function (field) {
+    var langToSet = (appState.lang) ? appState.lang : 'en';
+    angular.forEach(['title', 'annotator', 'annotation', 'description', 'name'], function (field) {
       if (obj[field]) {
         if (typeof (obj[field]) === 'string') {
           // TODO can delete this after all data has been migrated to object form
-          obj["display_" + field] = obj[field];
+          obj['display_' + field] = obj[field];
         } else {
           if (obj[field][langToSet]) {
-            obj["display_" + field] = obj[field][langToSet];
+            obj['display_' + field] = obj[field][langToSet];
           } else {
-            obj["display_" + field] = obj[field].en; // TODO use episode default language instead of 'en'
+            obj['display_' + field] = obj[field].en; // TODO use episode default language instead of 'en'
           }
         }
       }
@@ -740,8 +739,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           }
         } else {
           annotators[key] = {
-            "name": event.annotator,
-            "annotation_image_id": event.annotation_image_id
+            'name': event.annotator,
+            'annotation_image_id': event.annotation_image_id
           };
         }
 
@@ -751,7 +750,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         var longKey = annotators[key].name[defaultLanguage] || '(untranslated)';
         for (var i = 0; i < langs.length; i++) {
           if (langs[i] !== defaultLanguage) {
-            longKey = longKey + " / " + annotators[key].name[langs[i]];
+            longKey = longKey + ' / ' + annotators[key].name[langs[i]];
           }
         }
         annotators[key].key = longKey;
@@ -956,7 +955,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       }
 
       if (event.layouts) {
-        event.styleCss = event.styleCss + " " + event.layouts.join(' ');
+        event.styleCss = event.styleCss + ' ' + event.layouts.join(' ');
       }
 
       event.styleCss = event.styleCss.replace(/timestampInline/, '');
@@ -1029,7 +1028,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
   svc.episode = function (epId) {
     if (!svc.episodes[epId]) {
-      console.warn("called modelSvc.episode for a nonexistent ID", epId);
+      console.warn('called modelSvc.episode for a nonexistent ID', epId);
     }
     return svc.episodes[epId];
   };
@@ -1047,16 +1046,16 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     return ret;
   };
 
-  svc.isOnExistingSceneStart  = isOnExistingSceneStart;
+  svc.isOnExistingSceneStart = isOnExistingSceneStart;
   function isOnExistingSceneStart(t) {
-    return getEpisodeScenes().some(function(scene) {
+    return getEpisodeScenes().some(function (scene) {
       return scene.start_time === ittUtils.parseTime(t);
     });
   }
 
   svc.getEpisodeScenes = getEpisodeScenes;
   function getEpisodeScenes() {
-    return Object.keys(svc.events).reduce(function(scenes, key) {
+    return Object.keys(svc.events).reduce(function (scenes, key) {
       if (svc.events[key]._type === 'Scene' && svc.events[key].episode_id === appState.episodeId) {
         scenes.push(svc.events[key]);
       }
@@ -1078,7 +1077,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   svc.scene = function (sceneId) {
     // console.log("modelsvc.scene: ", sceneId);
     if (!svc.events[sceneId]) {
-      console.warn("called modelSvc.scene for a nonexistent ID", sceneId);
+      console.warn('called modelSvc.scene for a nonexistent ID', sceneId);
     }
     return svc.events[sceneId];
   };
@@ -1089,11 +1088,11 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   // typography, color, highlight, timestamp, transition
   var cascadeStyles = function (thing) {
     var styleCategories = { // used to keep track of what categories the thing is already using:
-      "typography": false,
-      "color": false,
-      "highlight": false,
-      "timestamp": false,
-      "transition": false
+      'typography': false,
+      'color': false,
+      'highlight': false,
+      'timestamp': false,
+      'transition': false
     };
     var cssArr = [];
 
@@ -1137,7 +1136,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     if ((thing._type !== 'Scene') && !thing.isContent && thing.layouts && thing.layouts[0].match(/Bg/)) {
       for (var i = 0; i < cssArr.length; i++) {
         if (cssArr[i].match(/transition/) && cssArr[i] !== 'transitionNone') {
-          cssArr[i] = "transitionFade";
+          cssArr[i] = 'transitionFade';
         }
       }
     }
@@ -1187,17 +1186,18 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   // TODO: Future episodes should have this as an available scene template instead
   svc.addLandingScreen = function (episodeId) {
     // console.log("add landing screen", episodeId);
-    // create a new scene event for this episode
-    svc.events["internal:landingscreen:" + episodeId] = {
-      "_id": "internal:landingscreen:" + episodeId,
-      "_type": "Scene",
-      "_internal": true,
-      "templateUrl": "templates/scene/landingscreen.html",
-      "cur_episode_id": episodeId,
-      "episode_id": episodeId,
-      "start_time": -0.01, // enforce its firstness; a start time of zero might sort after the first scene which also starts at zero
-      "end_time": 0.01
-    };
+    // create a new scene event for this episod
+    svc.events['internal:landingscreen:' + episodeId] = createInstance('Scene', {
+      '_id': 'internal:landingscreen:' + episodeId,
+      '_type': 'Scene',
+      '_internal': true,
+      'templateUrl': 'templates/scene/landingscreen.html',
+      'cur_episode_id': episodeId,
+      'episode_id': episodeId,
+      'start_time': -0.01,
+      // enforce its firstness; a start time of zero might sort after the first scene which also starts at zero
+      'end_time': 0.01
+    });
   };
 
   // Don't call this until the master asset exists and episode events have loaded!
@@ -1206,12 +1206,12 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     var episode = svc.episodes[episodeId];
 
     if (!episode || !episode.scenes) {
-      console.warn("addEndingScreen called on an episode without scenes");
+      console.warn('addEndingScreen called on an episode without scenes');
       return;
     }
 
     if (!episode.masterAsset) {
-      console.warn("No master asset in episode...");
+      console.warn('No master asset in episode...');
       return;
     }
 
@@ -1221,7 +1221,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     });
     var lastScene = episode.scenes[episode.scenes.length - 1];
     if (lastScene._id.match(/internal:endingscreen/)) {
-      console.error("Attempted to add an ending screen twice");
+      console.error('Attempted to add an ending screen twice');
       return;
     }
 
@@ -1235,16 +1235,16 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       }
     });
     // create a new scene event for this episode
-    svc.events["internal:endingscreen:" + episodeId] = {
-      "_id": "internal:endingscreen:" + episodeId,
-      "_type": "Scene",
-      "_internal": true,
-      "templateUrl": "templates/scene/endingscreen.html",
-      "cur_episode_id": episodeId,
-      "start_time": duration - 0.1,
-      "end_time": duration
-    };
-    svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
+    svc.events['internal:endingscreen:' + episodeId] = createInstance('Scene',{
+      '_id': 'internal:endingscreen:' + episodeId,
+      '_type': 'Scene',
+      '_internal': true,
+      'templateUrl': 'templates/scene/endingscreen.html',
+      'cur_episode_id': episodeId,
+      'start_time': duration - 0.1,
+      'end_time': duration
+    });
+    svc.events['internal:endingscreen:' + episodeId] = setLang(svc.events['internal:endingscreen:' + episodeId]);
     svc.resolveEpisodeEvents(episodeId);
   };
 
@@ -1258,12 +1258,12 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   };
 
   if (config.debugInBrowser) {
-    console.log("Event cache:", svc.events);
-    console.log("Asset cache:", svc.assets);
-    console.log("Container cache:", svc.containers);
-    console.log("Episode cache:", svc.episodes);
-    console.log("Narrative cache:", svc.narratives);
-    console.log("Customer cache:", svc.customers);
+    console.log('Event cache:', svc.events);
+    console.log('Asset cache:', svc.assets);
+    console.log('Container cache:', svc.containers);
+    console.log('Episode cache:', svc.episodes);
+    console.log('Narrative cache:', svc.narratives);
+    console.log('Customer cache:', svc.customers);
   }
   return svc;
 

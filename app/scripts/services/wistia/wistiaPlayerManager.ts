@@ -1,7 +1,7 @@
-import { IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice} from '../../interfaces';
-import { PLAYERSTATES } from '../playbackService/index';
 import { BasePlayerManager } from '../basePlayerManager/basePlayerManager';
 import {existy} from '../ittUtils';
+import { IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice} from '../../interfaces';
+import { PLAYERSTATES } from '../playbackService/index';
 /**
  * Created by githop on 4/12/17.
  */
@@ -210,7 +210,7 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
     const wistiaEvents = {
       'play': (e) => boundPid(this.onPlay),
       'pause': (e) => boundPid(this.onPause),
-      // 'seek': (currentTime, lastTime) => boundPid(this.onSeek, currentTime, lastTime),
+      'seek': (currentTime, lastTime) => boundPid(this.onSeek, currentTime, lastTime),
       'end': () => boundPid(this.onEnd),
       'timechange': (e) => boundPid(this.onTimechange, e)
     };
@@ -228,16 +228,19 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   private onTimechange(pid, timechange) {
     // check for drift and correct if necessary
     const curTime = this.getMetaProp(pid, 'time');
+    console.log('time change');
     if (curTime > timechange) {
       this.setMetaProp(pid, 'time', timechange);
     }
   }
 
-  // private onSeek(pid: string, currentTime: number, lastTime: number): void {
-  //   // this.setMetaProp(pid, 'playerState', 3);
-  //   // this.emitStateChange(pid);
-  //   console.log('on seek!', this.getPlayerState(pid));
-  // }
+  private onSeek(pid: string, currentTime: number, lastTime: number): void {
+    // this.setMetaProp(pid, 'playerState', 3);
+    // this.emitStateChange(pid);
+    // console.log('on seek!', this.getPlayerState(pid));
+    console.log('seek');
+    this.setMetaProp(pid, 'time', currentTime);
+  }
 
   private onPlay(pid: string): void {
     this.setMetaProp(pid, 'playerState', 1);

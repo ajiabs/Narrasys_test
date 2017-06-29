@@ -13,13 +13,13 @@ export interface IPlayerManager {
   resetPlayerManager(): void;
   renamePid(oldName: string, newName: string): void;
   seedPlayerManager(id: string, mainPlayer: boolean, mediaSrcArr: string[]): any;
-  create(id:string): void;
+  create(id: string): void;
   pause(pid: string): void;
   play(pid: string): void;
   seekTo(pid: string, t: number): void;
-  getCurrentTime(pid:string): number | string | void;
+  getCurrentTime(pid: string): number | string | void;
   getPlayerState(pid: string): string;
-  getBufferedPercent(pid:string): number;
+  getBufferedPercent(pid: string): number;
   toggleMute(pid: string): void;
   setVolume(pid: string, v: number): void;
   setSpeed(pid: string, speed: number): void;
@@ -30,7 +30,6 @@ export interface IPlayerManager {
 }
 
 export interface IMetaProps {
-  timelineState: string;
   mainPlayer: boolean;
   playerState: string | number;
   div: string;
@@ -55,7 +54,6 @@ export interface IMetaObj {
 
 export const commonMetaProps: IMetaProps = {
   mainPlayer: false,
-  timelineState: '',
   playerState: '-1',
   div: '',
   ready: false,

@@ -77,6 +77,7 @@ export class IAsset {
 
 export class IEvent {
   //props
+  _id: string;
   start_time: number;
   type: 'Annotation' | 'Bookmark' | 'File' | 'Image' | 'Link' | 'Plugin' | 'Scene' | 'Chapter' | 'Text' | 'Upload';
   end_time: number;
@@ -85,6 +86,8 @@ export class IEvent {
   cosmetic: boolean;
   stop: boolean;
 //props not in any schema but added dynamically either on the backend somewhere client-side;
+  state?: 'isCurrent' | 'isPast';
+  isCurrent?: boolean;
   avatar_id: string;
   templateOpts?: any[];
   //relations
@@ -152,7 +155,7 @@ export class IImage extends IEvent {
 
 class IPluginData {
   correctFeedback: ILangForm;
-  distractors: { index: number, text: string }[];
+  distractors: Array<{ index: number, text: string }>;
   incorrectFeedback: ILangForm;
   questionText: ILangForm;
   questionType: string;
@@ -172,6 +175,8 @@ export class IPlugin extends IEvent {
 export class IScene extends IEvent {
   type: 'Scene';
   _type: 'Scene';
+  _internal?: boolean; //client only
+  cur_episode_id: string;
 }
 
 export class IText extends IEvent {
