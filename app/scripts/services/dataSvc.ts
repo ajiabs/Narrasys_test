@@ -48,7 +48,7 @@ export interface IDataSvc {
   createEpisodeSegment(narrativeId, segmentData): ng.IPromise<{}>;
   storeTimeline(narrativeId, origTimeline): ng.IPromise<{}>;
   deleteTimeline(tlId): ng.IPromise<{}>;
-  getSingleAsset(assetId): IAsset;
+  getSingleAsset(assetId): ng.IPromise<IAsset>;
   getCommon(): ng.IPromise<{}>;
   cache(cacheType, dataList): void;
   createTemplate(templateData): ng.IPromise<{}>;
@@ -340,7 +340,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     });
   };
 
-  svc.getSingleAsset = function (assetId: string): IAsset {
+  svc.getSingleAsset = function (assetId: string): ng.IPromise<IAsset> {
     if (assetId) {
       return GET('/v1/assets/' + assetId);
     } else {

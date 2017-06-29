@@ -39,7 +39,6 @@
  either from the timeline or the next scene arrow
  */
 /* tslint:enable */
-
 import {NEvent} from '../models';
 interface ITimelineEvent {
   t: number;
@@ -87,6 +86,7 @@ timelineSvc.$inject = ['$window', '$timeout', '$interval', '$filter', 'config', 
 
 export default function timelineSvc($window, $timeout, $interval, $filter, config, modelSvc, appState, analyticsSvc, playbackService, ittUtils) {
   /* tslint:enable */
+  /* tslint:disable:prefer-const */
   var svc: ITimelineSvc = Object.create(null);
 
   svc.timelineEvents = [];

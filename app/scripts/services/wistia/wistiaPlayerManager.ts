@@ -1,6 +1,7 @@
 import { BasePlayerManager } from '../basePlayerManager/basePlayerManager';
 import {existy} from '../ittUtils';
-import { IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice} from '../../interfaces';
+
+import {IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice, Partial} from '../../interfaces';
 import { PLAYERSTATES } from '../playbackService/index';
 /**
  * Created by githop on 4/12/17.
@@ -15,6 +16,8 @@ declare global {
 export interface IWistiaMetaProps extends IMetaProps {
   videoType: 'wistia';
   lastVol: number;
+  bufferingInterval: any;
+  lastVideoTime: number;
 }
 
 const WISTIA_PLAYERSTATES = {
@@ -24,8 +27,11 @@ const WISTIA_PLAYERSTATES = {
   'ended': 'ended'
 };
 
-const wistiaMetaProps = {
-  lastVol: 100
+const wistiaMetaProps: Partial<IWistiaMetaProps> = {
+  videoType: 'wistia',
+  lastVol: 100,
+  bufferingInterval: null,
+  lastVideoTime: 0
 };
 
 export interface IWistiaPlayerManager extends IPlayerManager {
@@ -37,8 +43,10 @@ export interface IWistiaPlayerManager extends IPlayerManager {
  */
 export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPlayerManager {
   public type = 'wistia';
-  static $inject = ['wistiaScriptLoader', 'wistiaUrlService'];
+  private _bufferCheckIntervalLength = 100;
+  static $inject = ['$interval', 'wistiaScriptLoader', 'wistiaUrlService'];
   constructor(
+    private $interval: ng.IIntervalService,
     private wistiaScriptLoader: IScriptLoader,
     private wistiaUrlService: IWistiaUrlservice) {
     super();
@@ -81,7 +89,27 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
 
   create(pid: string): void {
     this.createWpInstance(pid)
-      .then(_ => {/* noop */});
+      .then(_ => {
+        const threshold = 1.0;
+        const seekThreshold = 2.0;
+        // amount of seconds to allow the wistia time and the timeline to differ before emitting a buffering event.
+        const interval = this.$interval(() => {
+
+          const lastReportedTime = this.getMetaProp(pid, 'lastVideoTime');
+          const timelineTime = this.getMetaProp(pid, 'time');
+          const diff = timelineTime - lastReportedTime;
+          // only buffer if we are off by values between 1 and 2 to avoid accidentally triggering a buffering state
+          // when this interval fires in between seek starting and completing.
+          if (diff >= threshold && diff <= seekThreshold) {
+            this.setMetaProp(pid, 'playerState', 3);
+            this.setMetaProp(pid, 'time', lastReportedTime);
+            this.emitStateChange(pid);
+          }
+
+        }, this._bufferCheckIntervalLength);
+
+        this.setMetaProp(pid, 'bufferingInterval', interval);
+      });
   }
 
   getPlayerState(pid: string): string {
@@ -139,6 +167,7 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
 
   destroySideEffects(pid: string) {
     //noop;
+    this.$interval.cancel(this.getMetaProp(pid, 'bufferingInterval'));
   }
 
   private invokeMethod(pid: string, method: string, val?: any): any {
@@ -211,7 +240,6 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
       'play': (e) => boundPid(this.onPlay),
       'pause': (e) => boundPid(this.onPause),
       'seek': (currentTime, lastTime) => boundPid(this.onSeek, currentTime, lastTime),
-      'end': () => boundPid(this.onEnd),
       'timechange': (e) => boundPid(this.onTimechange, e)
     };
 
@@ -220,26 +248,29 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
     });
   }
 
-  private onEnd(pid) {
-    this.setMetaProp(pid, 'playerState', 0);
-    this.emitStateChange(pid);
-  }
-
   private onTimechange(pid, timechange) {
     // check for drift and correct if necessary
     const curTime = this.getMetaProp(pid, 'time');
-    console.log('time change');
+    this.setMetaProp(pid, 'lastVideoTime', timechange);
+
     if (curTime > timechange) {
       this.setMetaProp(pid, 'time', timechange);
     }
   }
 
   private onSeek(pid: string, currentTime: number, lastTime: number): void {
-    // this.setMetaProp(pid, 'playerState', 3);
-    // this.emitStateChange(pid);
-    // console.log('on seek!', this.getPlayerState(pid));
-    console.log('seek');
+    const duration = this.getMetaProp(pid, 'duration');
+    const padding = 0.3;
     this.setMetaProp(pid, 'time', currentTime);
+    this.setMetaProp(pid, 'lastVideoTime', currentTime);
+
+    // handle nextScene near end of episode
+    if (Math.floor(duration - currentTime) < padding) {
+      this.setMetaProp(pid, 'playerState', 0);
+      this.emitStateChange(pid);
+      return;
+    }
+
   }
 
   private onPlay(pid: string): void {

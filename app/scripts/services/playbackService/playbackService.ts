@@ -2,7 +2,7 @@
  * Created by githop on 10/24/16.
  */
 
-import {IUrlService, IWistiaPlayerManager, IPlayerManager} from '../../interfaces';
+import {IPlayerManager, IUrlService, IWistiaPlayerManager} from '../../interfaces';
 
 /**
  * @ngdoc service
@@ -34,14 +34,35 @@ import {IUrlService, IWistiaPlayerManager, IPlayerManager} from '../../interface
  * @requires PLAYERSTATES
  */
 
-playbackService.$inject = ['$interval', 'youTubePlayerManager', 'html5PlayerManager', 'kalturaPlayerManager', 'wistiaPlayerManager', 'ittUtils', 'urlService', 'PLAYERSTATES_WORD', 'PLAYERSTATES'];
+playbackService.$inject = [
+  '$interval',
+  'youTubePlayerManager',
+  'html5PlayerManager',
+  'kalturaPlayerManager',
+  'wistiaPlayerManager',
+  'ittUtils',
+  'urlService',
+  'PLAYERSTATES_WORD',
+  'PLAYERSTATES'
+];
 
-export default function playbackService($interval, youTubePlayerManager, html5PlayerManager, kalturaPlayerManager, wistiaPlayerManager: IWistiaPlayerManager, ittUtils, urlService: IUrlService, PLAYERSTATES_WORD, PLAYERSTATES) {
-
+export default function playbackService(
+  $interval,
+  youTubePlayerManager,
+  html5PlayerManager,
+  kalturaPlayerManager,
+  wistiaPlayerManager: IWistiaPlayerManager,
+  ittUtils,
+  urlService: IUrlService,
+  PLAYERSTATES_WORD,
+  PLAYERSTATES) {
+  /* tslint:disable:prefer-const object-literal-shorthand */
   var _playerInterfaces: { [id: string]: IPlayerManager } = {};
   var _mainPlayerId;
   var _stateChangeCallbacks = [];
-  var _playerManagers: IPlayerManager[] = [html5PlayerManager, youTubePlayerManager, kalturaPlayerManager, wistiaPlayerManager];
+  var _playerManagers: IPlayerManager[] = [
+    html5PlayerManager, youTubePlayerManager, kalturaPlayerManager, wistiaPlayerManager
+  ];
   var _timelineState = '';
   var _mainPlayerBufferingPoll;
   var _playbackServiceHasBeenReset;
@@ -127,7 +148,10 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
     _playbackServiceHasBeenReset = false;
     if (mainPlayer) {
       _mainPlayerId = id;
-      _pollBufferedPercent();
+
+      if (pm.type !== 'wistia') { // wistia doesn't provide any buffering info currently.
+        _pollBufferedPercent();
+      }
 
     }
 
@@ -649,8 +673,6 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
       }
     }
   }
-
-
   //respond to events emitted from playerManager
   //playerManager -> playbackSvc -> timelineSvc (if main)
   /**
@@ -723,7 +745,7 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
    * @returns {Object} returns the playerManager that can handle the input media
    * @private
    */
-  function _getPlayerManagerFromMediaSrc(parsedMediaSrc) {
+  function _getPlayerManagerFromMediaSrc(parsedMediaSrc): IPlayerManager {
     var len = _playerManagers.length, pm = null;
     while (len--) {
       if (parsedMediaSrc.length > 0 && _playerManagers[len].type === parsedMediaSrc[0].type) {
@@ -734,5 +756,3 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
     return pm;
   }
 }
-
-
