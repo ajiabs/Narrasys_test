@@ -1,11 +1,43 @@
 {
+  "extends": "tslint:recommended",
   "rules": {
+    "member-access": false,
+    "trailing-comma": [true, {
+      "multiline": "never"
+    }],
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-instance-field",
+          "private-instance-field",
+          "public-static-field",
+          "private-static-field",
+          "public-constructor",
+          "public-static-method",
+          "public-instance-method",
+          "private-static-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "variable-name": [true, "allow-leading-underscore"],
+    "object-literal-key-quotes": false,
+    "comment-format": false,
+    "only-arrow-functions": false,
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": [false],
+    "arrow-parens": false,
+    "no-console": false,
     "semicolon": true,
     "no-conditional-assignment": true,
     "no-empty": true,
     "triple-equals": [true, "allow-null-check", "allow-undefined-check"],
     "quotemark": [true, "single", "avoid-escape"],
     "no-unused-expression": true,
-    "no-unused-variable": [true, {"ignore-pattern": "^_"}]
+    "no-unused-variable": [true, {"ignore-pattern": "^_"}],
+    "indent": [true, "spaces", 2],
+    "no-var-keyword": false,
+    "one-variable-per-declaration": false
   }
 }
