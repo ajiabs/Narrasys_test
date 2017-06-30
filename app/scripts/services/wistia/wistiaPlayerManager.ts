@@ -80,7 +80,6 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
       mainPlayer,
       div: WistiaPlayerManager.setPlayerDiv(id, wistiaId),
       wistiaId,
-      videoType: this.type,
       ...wistiaMetaProps
     };
 
