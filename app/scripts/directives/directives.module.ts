@@ -86,6 +86,7 @@ import sxsInputTime from './sxsInputTime';
 import {EnableSocialshare, IttSocialShare} from './socialshare/index';
 import {Filedrop} from './ittFiledrop';
 import {UploadProgress} from './ittUploadProgress';
+import {ittPlayerContainer} from './ittPlayerContainer';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -173,6 +174,7 @@ let directivesModule = angular.module('itt.directives', [])
   .component(IttSocialShare.Name, new IttSocialShare())
   .component(EnableSocialshare.Name, new EnableSocialshare())
   .component(Filedrop.Name, new Filedrop())
-  .component(UploadProgress.Name, new UploadProgress());
+  .component(UploadProgress.Name, new UploadProgress())
+  .directive('ittPlayerContainer', ittPlayerContainer);
 
 export default directivesModule;

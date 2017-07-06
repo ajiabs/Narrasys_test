@@ -1,3 +1,4 @@
+export {IAnalyticsSvc} from './services/analyticsSvc';
 import {IDataSvc} from './services/dataSvc';
 import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
 import {IModelSvc} from './services/modelSvc';

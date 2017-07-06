@@ -2,9 +2,7 @@
  * Created by githop on 3/30/17.
  */
 
-import 'angular';
-
-import analyticsSvc from './analyticsSvc';
+// import analyticsSvc from './analyticsSvc';
 import {AppState} from './appState';
 import authSvc from './authSvc';
 import awsSvc from './awsSvc';
@@ -27,13 +25,14 @@ import html5UrlService from './html5/html5UrlService';
 import kalturaPlayerManager from './kaltura/kalturaPlayerManager';
 import kalturaScriptLoader from './kaltura/kalturaScriptLoader';
 import kalturaUrlService from './kaltura/kalturaUrlService';
-import youTubePlayerManager from './youtube/YouTubePlayerManager.svc'
+import youTubePlayerManager from './youtube/YouTubePlayerManager.svc';
 import YTScriptLoader from './youtube/youtubeScriptLoader';
 import youtubeUrlService from './youtube/youtubeUrlService';
 import {ValidationService} from './validation.svc';
 import {UploadsService} from './uploadsService';
+import {AnalyticsSvc} from './analyticsSvc';
 
-let servicesModule = angular.module('itt.services', [])
+const servicesModule = angular.module('itt.services', [])
   .service('appState', AppState)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
@@ -59,7 +58,7 @@ let servicesModule = angular.module('itt.services', [])
   .factory('youTubePlayerManager', youTubePlayerManager)
   .factory('YTScriptLoader', YTScriptLoader)
   .factory('youtubeUrlService', youtubeUrlService)
-  .factory('analyticsSvc', analyticsSvc)
+  .service('analyticsSvc', AnalyticsSvc)
   .service('validationSvc', ValidationService)
   .service('uploadsService', UploadsService);
 
