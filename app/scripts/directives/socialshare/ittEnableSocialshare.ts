@@ -194,7 +194,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
         //set a reference to the uploaded file
         this.model[tag] = {file: data};
       })
-      .catch(({errorType, currentTag, tag}) => this.handleTagmismatchError(errorType, currentTag, tag));
+      .catch(e => this.handleTagmismatchError(e.errorType, e.currTag, e.tag));
   }
 
   private handleTagmismatchError(errorType: string, currentTag: string, newTag: string) {
