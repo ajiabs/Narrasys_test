@@ -1,10 +1,11 @@
 /**
  * Created by githop on 5/26/17.
  */
-import {IimageResize, Partial} from '../../interfaces';
-import {IDataSvc} from '../../services/dataSvc';
-import {IModelSvc} from '../../services/modelSvc';
 import { IAsset } from '../../models';
+
+import { IDataSvc, IimageResize, Partial } from '../../interfaces';
+import {IModelSvc} from '../../services/modelSvc';
+
 /**
  * Created by githop on 5/22/17.
  */
@@ -19,7 +20,7 @@ const TEMPLATE = `
       
       <itt-filedrop-target>
         <div class="itt-filedrop__wrapper" ng-if="imgObj.path == null">
-          <span class="itt-filedrop__placeholder"></span>
+          <span class="itt-filedrop__placeholder" ng-class="tag + '--default'"></span>
         </div>
       </itt-filedrop-target>
 
@@ -62,15 +63,15 @@ const TEMPLATE = `
 </div>
 `;
 
-interface EnableSocialShareBindings {
+interface IEnableSocialShareBindings {
   narrative: any;
-  containerId: string
+  containerId: string;
   timeline?: any;
 }
 
 interface ITagPayload {
   assetId?: string;
-  name:string;
+  name: string;
   path: string;
   file: FileList | null;
 }
@@ -95,7 +96,7 @@ const DEFAULT_DISPLAY_TEXT = {
   social_image_wide: 'Recommend 1200 x 630'
 };
 
-class EnableSocialshareController implements ng.IComponentController, EnableSocialShareBindings {
+class EnableSocialshareController implements ng.IComponentController, IEnableSocialShareBindings {
   narrative;
   timeline;
   containerId;
@@ -103,7 +104,7 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   browseUploaded: boolean = false;
   images: Partial<IImages> = {
     social_image_square: null,
-    social_image_wide: null,
+    social_image_wide: null
   };
   display: ITagDisplay = {
     social_image_square: {
@@ -181,20 +182,19 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     }
   }
 
-  handleImage(data, currentTag): void {
+  handleImage(data, currTag): void {
     this.checkAspectRatio(data[0])
       .then(({images, tag}) => {
 
-      if (currentTag !== tag) {
-        return this.$q.reject({errorType: 'TAG_MISMATCH', currentTag, tag});
-      }
-
+        if (currTag !== tag) {
+          return this.$q.reject({errorType: 'TAG_MISMATCH', currTag, tag});
+        }
         this.files[tag].file = data;
         this.images = Object.assign({}, this.images, images);
         //set a reference to the uploaded file
         this.model[tag] = {file: data};
       })
-      .catch(({errorType, currentTag, tag}) => this.handleTagmismatchError(errorType, currentTag, tag));
+      .catch(e => this.handleTagmismatchError(e.errorType, e.currTag, e.tag));
   }
 
   private handleTagmismatchError(errorType: string, currentTag: string, newTag: string) {
@@ -219,7 +219,7 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     const tagType = asset.tags[0];
     const currentImage = this.images[tagType];
     if (currentImage && currentImage.assetId) {
-      this.removeImageId(currentImage.assetId)
+      this.removeImageId(currentImage.assetId);
     }
     this.images[tagType] = { assetId: asset._id, path: asset.url };
     this.addImageId(asset._id);
@@ -238,7 +238,6 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
 }
 
 export class EnableSocialshare implements ng.IComponentOptions {
-  static Name: string = 'ittEnableSocialshare';
   bindings: any = {
     containerId: '@?',
     narrative: '=',
@@ -246,5 +245,6 @@ export class EnableSocialshare implements ng.IComponentOptions {
   };
   template: string = TEMPLATE;
   controller = EnableSocialshareController;
+  static Name: string = 'ittEnableSocialshare'; // tslint:disable-line
 }
 
