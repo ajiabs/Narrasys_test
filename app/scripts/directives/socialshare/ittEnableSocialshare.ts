@@ -5,7 +5,7 @@ import { IAsset } from '../../models';
 
 import { IDataSvc, IimageResize, Partial } from '../../interfaces';
 import {IModelSvc} from '../../services/modelSvc';
-
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE, TSocialTagTypes} from '../../constants';
 /**
  * Created by githop on 5/22/17.
  */
@@ -20,13 +20,13 @@ const TEMPLATE = `
       
       <itt-filedrop-target>
         <div class="itt-filedrop__wrapper" ng-if="imgObj.path == null">
-          <span class="itt-filedrop__placeholder"></span>
+          <span class="itt-filedrop__placeholder" ng-class="tag + '--default'"></span>
         </div>
       </itt-filedrop-target>
 
       <itt-filedrop-preview>
         <div ng-if="imgObj.path">
-          <span class="socialshare__img--cancel" ng-click="$ctrl.resetImg(imgObj, tag)"></span>
+          <span class="socialshare__img--cancel" ng-hide="imgObj.defaultFromNarrative" ng-click="$ctrl.resetImg(imgObj, tag)"></span>
           <div class="socialshare__img">
             <itt-upload-progress upload="$ctrl.uploadsService.uploadsDisplay[tag]"></itt-upload-progress>
             <img ng-src="{{imgObj.path}}" ng-class="{'--drop-error': $ctrl.display[tag].error}"/>
@@ -71,9 +71,10 @@ interface IEnableSocialShareBindings {
 
 interface ITagPayload {
   assetId?: string;
-  name: string;
+  name?: string;
+  file?: FileList | null;
+  defaultFromNarrative?: boolean;
   path: string;
-  file: FileList | null;
 }
 
 interface IDisplay {
@@ -90,7 +91,6 @@ interface IImages {
   social_image_square: ITagPayload;
   social_image_wide: ITagPayload;
 }
-
 const DEFAULT_DISPLAY_TEXT = {
   social_image_square: 'Recommend 576 x 576',
   social_image_wide: 'Recommend 1200 x 630'
@@ -108,11 +108,11 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   };
   display: ITagDisplay = {
     social_image_square: {
-      text: DEFAULT_DISPLAY_TEXT.social_image_square,
+      text: DEFAULT_DISPLAY_TEXT[SOCIAL_IMAGE_SQUARE],
       error: false
     },
     social_image_wide: {
-      text: DEFAULT_DISPLAY_TEXT.social_image_wide,
+      text: DEFAULT_DISPLAY_TEXT[SOCIAL_IMAGE_WIDE],
       error: false
     }
   };
@@ -139,15 +139,24 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
       this.type = 'timeline';
     }
     this.model = this[this.type];
-    if (this.model[this.type + '_image_ids'] && this.model[this.type + '_image_ids'].length > 0) {
-      this.getImageAssets();
-    } else {
-      //narratives / timelines depend on the client for adding the <type>_image_ids array to new records...
-      this.model[this.type + '_image_ids'] = [];
-    }
+    this.fetchAssetsOnInit();
   }
 
-  resetImg(img, type: string): void {
+  resetImg(img, type: TSocialTagTypes): void {
+    if (this.type === 'timeline' && this.narrative.narrative_image_ids.length > 0) {
+      for (const assetId of this.narrative.narrative_image_ids) {
+        const asset = this.modelSvc.assets[assetId];
+        if (asset.tags.includes(type)) {
+          this.images[type] = <ITagPayload> { assetId, path: asset.url, defaultFromNarrative: true };
+          if (img.assetId) {
+            this.removeImageId(img.assetId);
+          }
+          return;
+        }
+
+      }
+    }
+
     this.images[type] = null;
     if (img.assetId) {
       this.removeImageId(img.assetId);
@@ -164,25 +173,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
     this.browseUploaded = false;
   }
 
-  getImageAssets() {
-    const assetsToFetch = [];
-    this.model[this.type + '_image_ids'].forEach(assetId => {
-      if (assetId && this.modelSvc.assets[assetId]) {
-        this.setImageFromAsset(this.modelSvc.assets[assetId]);
-      } else {
-        assetsToFetch.push(assetId);
-      }
-    });
-
-    if (assetsToFetch.length > 0) {
-      this.dataSvc.fetchAndCacheAssetsByIds(assetsToFetch)
-        .then((assets: IAsset[]) => {
-          assets.forEach((asset) => this.setImageFromAsset(asset));
-        });
-    }
-  }
-
-  handleImage(data, currTag): void {
+  handleImage(data, currTag: TSocialTagTypes): void {
     this.checkAspectRatio(data[0])
       .then(({images, tag}) => {
 
@@ -197,7 +188,51 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
       .catch(e => this.handleTagmismatchError(e.errorType, e.currTag, e.tag));
   }
 
-  private handleTagmismatchError(errorType: string, currentTag: string, newTag: string) {
+  private fetchAssetsOnInit() {
+    if (this.model[this.type + '_image_ids'] && this.model[this.type + '_image_ids'].length > 0) {
+
+      if (this.type === 'timeline') {
+        if (this.narrative.narrative_image_ids.length > 0) {
+          this.getImageAssets('narrative', true).then(() => void 0);
+        }
+      }
+
+      this.getImageAssets(this.type).then(() => void 0);
+    } else {
+      //narratives / timelines depend on the client for adding the <type>_image_ids array to new records...
+      this.model[this.type + '_image_ids'] = [];
+      if (this.type === 'timeline') {
+        if (this.narrative.narrative_image_ids.length > 0) {
+          this.getImageAssets('narrative', true).then(() => void 0);
+        }
+      }
+    }
+  }
+
+  private getImageAssets(type: 'narrative' | 'timeline', skipImgIdArray: boolean = false) {
+    return this.$q((resolve) => {
+      const assetsToFetch = [];
+      this[type][type + '_image_ids'].forEach(assetId => {
+        if (assetId && this.modelSvc.assets[assetId]) {
+          this.setImageFromAsset(this.modelSvc.assets[assetId], skipImgIdArray);
+        } else {
+          assetsToFetch.push(assetId);
+        }
+      });
+
+      if (assetsToFetch.length > 0) {
+        this.dataSvc.fetchAndCacheAssetsByIds(assetsToFetch)
+          .then((assets: IAsset[]) => {
+            assets.forEach((asset) => this.setImageFromAsset(asset, skipImgIdArray));
+            return resolve();
+          });
+      }
+
+      return resolve();
+    });
+  }
+
+  private handleTagmismatchError(errorType: string, currentTag: TSocialTagTypes, newTag: TSocialTagTypes) {
     this.display[currentTag].error = true;
     this.display[currentTag].text = 'The aspect ratio is not correct.';
     this.$timeout(() => {
@@ -209,19 +244,27 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   private checkAspectRatio(file: File) {
     return this.imageResize.readFileToImg(file)
       .then((img: HTMLImageElement) => {
-        const tag = this.imageResize.getImageTagType(img.width, img.height);
+        const tag: TSocialTagTypes = this.imageResize.getImageTagType(img.width, img.height);
         const images = { [tag]: {name: file.name, path: img.src } };
         return {images, tag};
       });
   }
 
-  private setImageFromAsset(asset: IAsset): void {
-    const tagType = asset.tags[0];
+  private setImageFromAsset(asset: IAsset, skipImgIdArray: boolean = false): void {
+    const tagType: TSocialTagTypes = asset.tags[0];
     const currentImage = this.images[tagType];
+
+    this.images[tagType] = { assetId: asset._id, path: asset.url };
+
+    if (skipImgIdArray) {
+      this.images[tagType].defaultFromNarrative = true;
+      return;
+    }
+
     if (currentImage && currentImage.assetId) {
       this.removeImageId(currentImage.assetId);
     }
-    this.images[tagType] = { assetId: asset._id, path: asset.url };
+
     this.addImageId(asset._id);
   }
 
@@ -230,7 +273,6 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   }
 
   private addImageId(targetId: string): void {
-
     if (!this.model[this.type + '_image_ids'].includes(targetId)) {
       this.model[this.type + '_image_ids'].push(targetId);
     }
