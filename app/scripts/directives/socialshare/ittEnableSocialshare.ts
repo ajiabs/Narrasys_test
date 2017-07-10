@@ -199,7 +199,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
     if (this.model[this.type + '_image_ids'] && this.model[this.type + '_image_ids'].length > 0) {
 
       if (this.type === 'timeline') {
-        if (this.narrative.narrative_image_ids.length > 0) {
+        if (this.narrative.narrative_image_ids && this.narrative.narrative_image_ids.length > 0) {
           this.getImageAssets('narrative', true).then(() => void 0);
         }
       }
@@ -209,7 +209,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
       //narratives / timelines depend on the client for adding the <type>_image_ids array to new records...
       this.model[this.type + '_image_ids'] = [];
       if (this.type === 'timeline') {
-        if (this.narrative.narrative_image_ids.length > 0) {
+        if (this.narrative.narrative_image_ids && this.narrative.narrative_image_ids.length > 0) {
           this.getImageAssets('narrative', true).then(() => void 0);
         }
       }

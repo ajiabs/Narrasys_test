@@ -11,6 +11,7 @@ export class ITimeline {
   sort_order: number;
   path_slug: ILangForm;
   episode_segments: any[];
+  timeline_image_ids: string[] = [];
 }
 
 export class ICustomer {
@@ -45,8 +46,7 @@ export class INarrative {
   support_url: string;
   narrative_subdomain?: string;
   timelines?: ITimeline[];
-  timeline_image_ids: string[];
-  narrative_image_ids: string[];
+  narrative_image_ids: string[] = [];
 }
 
 export class IAsset {
