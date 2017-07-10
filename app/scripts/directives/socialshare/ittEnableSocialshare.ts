@@ -5,11 +5,13 @@ import { IAsset } from '../../models';
 
 import { IDataSvc, IimageResize, Partial } from '../../interfaces';
 import {IModelSvc} from '../../services/modelSvc';
+
 import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE, TSocialTagTypes} from '../../constants';
 /**
  * Created by githop on 5/22/17.
  */
 
+/* tslint:disable: no-trailing-whitespace */
 const TEMPLATE = `
 <div ng-if="$ctrl.narrative.enable_social_sharing" class="socialshare-filedrop">
 
@@ -26,7 +28,11 @@ const TEMPLATE = `
 
       <itt-filedrop-preview>
         <div ng-if="imgObj.path">
-          <span class="socialshare__img--cancel" ng-hide="imgObj.defaultFromNarrative" ng-click="$ctrl.resetImg(imgObj, tag)"></span>
+          <span
+            class="socialshare__img--cancel"
+            ng-hide="imgObj.defaultFromNarrative"
+            ng-click="$ctrl.resetImg(imgObj, tag)">
+          </span>
           <div class="socialshare__img">
             <itt-upload-progress upload="$ctrl.uploadsService.uploadsDisplay[tag]"></itt-upload-progress>
             <img ng-src="{{imgObj.path}}" ng-class="{'--drop-error': $ctrl.display[tag].error}"/>
@@ -62,6 +68,7 @@ const TEMPLATE = `
   <!--end browse uploaded-->
 </div>
 `;
+/* tslint:enable */
 
 interface IEnableSocialShareBindings {
   narrative: any;
@@ -147,7 +154,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
       for (const assetId of this.narrative.narrative_image_ids) {
         const asset = this.modelSvc.assets[assetId];
         if (asset.tags.includes(type)) {
-          this.images[type] = <ITagPayload> { assetId, path: asset.url, defaultFromNarrative: true };
+          this.images[type] = { assetId, path: asset.url, defaultFromNarrative: true } as ITagPayload;
           if (img.assetId) {
             this.removeImageId(img.assetId);
           }
@@ -168,7 +175,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   }
 
   uploadedAssetSelected(assetId) {
-    let imgAsset = this.modelSvc.assets[assetId];
+    const imgAsset = this.modelSvc.assets[assetId];
     this.setImageFromAsset(imgAsset);
     this.browseUploaded = false;
   }
