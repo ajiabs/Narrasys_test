@@ -1,4 +1,5 @@
 import {pick} from '../services/ittUtils';
+
 import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
 /**
  * Created by githop on 6/16/16.
@@ -24,6 +25,7 @@ export default function ittTimelineEditor() {
       ng-if="$ctrl.trueAdmin"
       narrative="$ctrl.narrative"
       container-id="{{$ctrl.containerId}}"
+      editor-form="tlEditForm"
       timeline="$ctrl._timeline">
     </itt-enable-socialshare>
     <div class="ancillaryNav">
@@ -71,7 +73,6 @@ export default function ittTimelineEditor() {
 
       function handleUpdate(t) {
 
-
         const tlFileds = [
           '_id',
           'name',
@@ -85,7 +86,7 @@ export default function ittTimelineEditor() {
 
         const tlToSave = pick(t, tlFileds);
 
-        let socialImagesToUpload: {file: FileList, tag: string}[] = [];
+        const socialImagesToUpload: Array<{file: FileList, tag: string}> = [];
         if (t.social_image_square) {
           socialImagesToUpload.push({file: t.social_image_square.file, tag: SOCIAL_IMAGE_SQUARE });
         }
