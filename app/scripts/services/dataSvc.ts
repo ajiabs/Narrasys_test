@@ -123,7 +123,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   svc.getNarrative = function (narrativeId) {
     // Special case here, since it needs to call getNonce differently:
     var defer = $q.defer();
-
     var cachedNarrative = modelSvc.narratives[narrativeId];
     var subdomain = ittUtils.getSubdomain($location.host());
     var urlParams = '';
@@ -139,8 +138,10 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           response.data.timelines.sort(function (a, b) {
             return a.sort_order - b.sort_order;
           });
-
           modelSvc.cache('narrative', createInstance('Narrative', svc.resolveIDs(response.data)));
+          modelSvc.narratives[response.data._id].timelines =
+            modelSvc.narratives[response.data._id].timelines.map(tl => createInstance('Timeline', tl));
+
           defer.resolve(modelSvc.narratives[response.data._id]);
         });
     });
