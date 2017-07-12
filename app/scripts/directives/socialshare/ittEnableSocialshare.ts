@@ -49,7 +49,7 @@ const TEMPLATE = `
     <button
       ng-disabled="$ctrl.isUsingDefaultImages()"
       ng-click="$ctrl.resetImgs()">
-      {{$ctrl.isUsingDefaultImages() ? 'default images in use' : 'use default images'}}
+      {{$ctrl.isUsingDefaultImages() ? 'Default images in use' : 'Use default images'}}
     </button>
     <button ng-click="$ctrl.toggleBrowseUploaded()">Browse Uploaded</button>
     <label class="button" for="fileBtn">Upload New</label>
