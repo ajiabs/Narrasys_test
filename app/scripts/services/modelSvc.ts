@@ -80,10 +80,10 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   svc.assocNarrativesWithCustomer = assocNarrativesWithCustomer;
   function assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer {
     narratives.forEach(function (narrative) {
-      svc.cache('narrative', narrative);
+      svc.cache('narrative', createInstance('Narrative', narrative));
     });
     customer.narratives = cachedNarrativesByCustomer(customer);
-    svc.cache('customer', customer);
+    svc.cache('customer', createInstance('Customer', customer));
     // //remove any old customer references if narrative was changed to a different customer
     // Object.keys(svc.customers)
     //   .filter(function(key) {
