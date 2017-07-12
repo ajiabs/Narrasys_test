@@ -572,7 +572,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   svc.getAssetsByAssetIds = getAssetsByAssetIds;
   function getAssetsByAssetIds(assetIds: string[]): ng.IPromise<IAsset[]> {
-    var assetIdsObj = Object.create(null);
+    const assetIdsObj = Object.create(null);
     assetIdsObj.asset_ids = assetIds;
     return SANE_POST('/v1/assets', assetIdsObj)
       .then(resp => resp.data.files);
@@ -583,12 +583,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return getAssetsByAssetIds(assetIds)
       .then((assets: IAsset[]) => {
         assets.forEach((asset) => {
-          modelSvc.cache('asset', createInstance('Asset', asset))
+          modelSvc.cache('asset', createInstance('Asset', asset));
         });
         //return cached assets
         return assetIds.reduce((asx, id) => {
             asx.push(modelSvc.assets[id]);
-            return asx
+            return asx;
         }, []);
 
       });

@@ -2,11 +2,11 @@
  and derives secondary data where necessary for performance/convenience/fun */
 
 import {IAnnotators, Partial} from '../interfaces';
-import {createInstance, ICustomer, INarrative, IScene, NEvent} from '../models';
+import {createInstance, IAsset, ICustomer, INarrative, IScene, NEvent} from '../models';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
-  assets: { [assetId: string]: any };
+  assets: { [assetId: string]: IAsset };
   events: { [eventId: string]: NEvent };
   containers: { [containerId: string]: any };
   narratives: { [narrativeId: string]: any };

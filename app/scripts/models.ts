@@ -1,4 +1,6 @@
 import {ILangForm} from './interfaces';
+
+import {TSocialTagTypes} from './constants';
 /**
  * Created by githop on 5/1/17.
  */
@@ -62,7 +64,7 @@ export class IAsset {
   size: number;
   name: ILangForm;
   description: ILangForm;
-  tags: string[];
+  tags: TSocialTagTypes[];
   episodes_count: number;
   episode_poster_frames_count: number;
   links_count: number;

@@ -1,9 +1,9 @@
 /**
  * Created by githop on 5/26/17.
  */
-import { IAsset } from '../../models';
+import {IAsset, INarrative, ITimeline} from '../../models';
 
-import { IDataSvc, IimageResize, Partial } from '../../interfaces';
+import {IDataSvc, IimageResize} from '../../interfaces';
 import {IModelSvc} from '../../services/modelSvc';
 
 import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE, TSocialTagTypes} from '../../constants';
@@ -22,20 +22,20 @@ const TEMPLATE = `
       
       <itt-filedrop-target>
         <div class="itt-filedrop__wrapper" ng-if="imgObj.path == null">
-          <span class="itt-filedrop__placeholder" ng-class="tag + '--default'"></span>
+          <span class="itt-filedrop__placeholder --default-image-opacity" ng-class="tag + '--default'"></span>
         </div>
       </itt-filedrop-target>
 
       <itt-filedrop-preview>
         <div ng-if="imgObj.path">
-          <span
-            class="socialshare__img--cancel"
-            ng-hide="imgObj.defaultFromNarrative"
-            ng-click="$ctrl.resetImg(imgObj, tag)">
-          </span>
           <div class="socialshare__img">
             <itt-upload-progress upload="$ctrl.uploadsService.uploadsDisplay[tag]"></itt-upload-progress>
-            <img ng-src="{{imgObj.path}}" ng-class="{'--drop-error': $ctrl.display[tag].error}"/>
+            <img
+              ng-class="{
+                '--drop-error': $ctrl.display[tag].error,
+                '--default-image-opacity': $ctrl.display[tag].defaultFromNarrative
+              }"
+              ng-src="{{imgObj.path}}"/>
           </div>
         </div>
       </itt-filedrop-preview> 
@@ -46,6 +46,11 @@ const TEMPLATE = `
 
   <!--begin social controls-->
   <div class="socialshare__controls">
+    <button
+      ng-disabled="$ctrl.isUsingDefaultImages()"
+      ng-click="$ctrl.resetImgs()">
+      {{$ctrl.isUsingDefaultImages() ? 'default images in use' : 'use default images'}}
+    </button>
     <button ng-click="$ctrl.toggleBrowseUploaded()">Browse Uploaded</button>
     <label class="button" for="fileBtn">Upload New</label>
     <input id="fileBtn" type="file" accept="image/*" itt-files-handler on-selected="$ctrl.handleImage(files)"/>
@@ -74,19 +79,20 @@ interface IEnableSocialShareBindings {
   narrative: any;
   containerId: string;
   timeline?: any;
+  editorForm: ng.IFormController;
 }
 
 interface ITagPayload {
   assetId?: string;
   name?: string;
   file?: FileList | null;
-  defaultFromNarrative?: boolean;
-  path: string;
+  path: string | null;
 }
 
 interface IDisplay {
   text: string;
   error: boolean;
+  defaultFromNarrative: boolean;
 }
 
 interface ITagDisplay {
@@ -103,41 +109,49 @@ const DEFAULT_DISPLAY_TEXT = {
   social_image_wide: 'Recommend 1200 x 630'
 };
 
+const initialImages = {
+  social_image_square: {file: null, path: null},
+  social_image_wide: {file: null, path: null}
+};
+
+const initialDisplay = {
+  social_image_square: {
+    text: DEFAULT_DISPLAY_TEXT[SOCIAL_IMAGE_SQUARE],
+    error: false,
+    defaultFromNarrative: false
+  },
+  social_image_wide: {
+    text: DEFAULT_DISPLAY_TEXT[SOCIAL_IMAGE_WIDE],
+    error: false,
+    defaultFromNarrative: false
+  }
+};
+
 class EnableSocialshareController implements ng.IComponentController, IEnableSocialShareBindings {
-  narrative;
-  timeline;
-  containerId;
+  narrative: INarrative;
+  timeline: ITimeline;
+  containerId: string;
+  editorForm: ng.IFormController;
   //
   browseUploaded: boolean = false;
-  images: Partial<IImages> = {
-    social_image_square: null,
-    social_image_wide: null
-  };
-  display: ITagDisplay = {
-    social_image_square: {
-      text: DEFAULT_DISPLAY_TEXT[SOCIAL_IMAGE_SQUARE],
-      error: false
-    },
-    social_image_wide: {
-      text: DEFAULT_DISPLAY_TEXT[SOCIAL_IMAGE_WIDE],
-      error: false
-    }
-  };
+  images: IImages;
+  display: ITagDisplay;
   model: any;
   private files = {
-    social_image_square: { file: null },
-    social_image_wide: { file: null }
+    social_image_square: {file: null},
+    social_image_wide: {file: null}
   };
   private type: 'narrative' | 'timeline';
 
   static $inject = ['$q', '$timeout', 'uploadsService', 'imageResize', 'dataSvc', 'modelSvc'];
-  constructor(
-    private $q: ng.IQService,
-    private $timeout: ng.ITimeoutService,
-    public uploadsService,
-    private imageResize: IimageResize,
-    private dataSvc: IDataSvc,
-    private modelSvc: IModelSvc) {}
+
+  constructor(private $q: ng.IQService,
+              private $timeout: ng.ITimeoutService,
+              public uploadsService,
+              private imageResize: IimageResize,
+              private dataSvc: IDataSvc,
+              private modelSvc: IModelSvc) {
+  }
 
   $onInit() {
     if (this.timeline == null) {
@@ -146,28 +160,40 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
       this.type = 'timeline';
     }
     this.model = this[this.type];
+    this.setInitialDisplay();
     this.fetchAssetsOnInit();
   }
 
-  resetImg(img, type: TSocialTagTypes): void {
-    if (this.type === 'timeline' && this.narrative.narrative_image_ids.length > 0) {
-      for (const assetId of this.narrative.narrative_image_ids) {
-        const asset = this.modelSvc.assets[assetId];
-        if (asset.tags.includes(type)) {
-          this.images[type] = { assetId, path: asset.url, defaultFromNarrative: true } as ITagPayload;
-          if (img.assetId) {
-            this.removeImageId(img.assetId);
-          }
-          return;
-        }
+  resetImgs(): void {
 
+    if (this.type === 'timeline') {
+      if (this.narrative.narrative_image_ids && this.narrative.narrative_image_ids.length === 2) {
+        this.narrative.narrative_image_ids.forEach((nAssedId: string) => {
+          const asset = this.modelSvc.assets[nAssedId];
+          const tagType = asset.tags[0];
+          this.images[tagType] = {assetId: asset._id, path: asset.url} as ITagPayload;
+          this.display[tagType].defaultFromNarrative = true;
+        });
+      } else {
+        this.setInitialDisplay();
       }
+
+      this.timeline.timeline_image_ids = [];
+      return;
     }
 
-    this.images[type] = null;
-    if (img.assetId) {
-      this.removeImageId(img.assetId);
-    }
+    this.narrative.narrative_image_ids = [];
+    this.images = Object.assign({}, initialImages);
+  }
+
+  isUsingDefaultImages(): boolean {
+    const fromNarrative = this.display[SOCIAL_IMAGE_SQUARE].defaultFromNarrative === true &&
+      this.display[SOCIAL_IMAGE_WIDE].defaultFromNarrative === true;
+
+    const narrasysBranded = this.images[SOCIAL_IMAGE_SQUARE].path == null &&
+      this.images[SOCIAL_IMAGE_WIDE].path == null;
+
+    return fromNarrative || narrasysBranded;
   }
 
   toggleBrowseUploaded() {
@@ -176,7 +202,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
 
   uploadedAssetSelected(assetId) {
     const imgAsset = this.modelSvc.assets[assetId];
-    this.setImageFromAsset(imgAsset);
+    this.setImageFromAsset(imgAsset, false);
     this.browseUploaded = false;
   }
 
@@ -191,28 +217,82 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
         this.images = Object.assign({}, this.images, images);
         //set a reference to the uploaded file
         this.model[tag] = {file: data};
+        this.setValidity();
       })
       .catch(e => this.handleTagmismatchError(e.errorType, e.currTag, e.tag));
   }
 
+  private setInitialDisplay(): void {
+    this.display = angular.copy(initialDisplay);
+    this.images = angular.copy(initialImages);
+  }
+
   private fetchAssetsOnInit() {
-    if (this.model[this.type + '_image_ids'] && this.model[this.type + '_image_ids'].length > 0) {
+    if (this.type === 'narrative') {
+      this.fetchNarrativeImageAssets();
+    }
 
-      if (this.type === 'timeline') {
-        if (this.narrative.narrative_image_ids && this.narrative.narrative_image_ids.length > 0) {
-          this.getImageAssets('narrative', true).then(() => void 0);
-        }
-      }
+    if (this.type === 'timeline') {
+      this.fetchImageAssetsTimeline();
+    }
+  }
 
-      this.getImageAssets(this.type).then(() => void 0);
+  private fetchNarrativeImageAssets() {
+    if (this.narrative && this.narrative.narrative_image_ids && this.narrative.narrative_image_ids.length > 0) {
+      this.getImageAssets('narrative').then(() => void 0);
+    }
+  }
+
+  private fetchImageAssetsTimeline() {
+
+    interface ILoadStatus {
+      narrative: string[];
+      timeline: string[];
+      use?: 'timeline' | 'narrative';
+    }
+
+    const loadStatus: ILoadStatus = {
+      narrative: [],
+      timeline: []
+    };
+
+    if (this.timeline.timeline_image_ids && this.timeline.timeline_image_ids.length > 0) {
+      // queue timeline ids for loading
+      loadStatus.timeline = [...this.timeline.timeline_image_ids];
+      // set narrative to only be loaded
+      loadStatus.use = 'timeline';
     } else {
-      //narratives / timelines depend on the client for adding the <type>_image_ids array to new records...
-      this.model[this.type + '_image_ids'] = [];
-      if (this.type === 'timeline') {
-        if (this.narrative.narrative_image_ids && this.narrative.narrative_image_ids.length > 0) {
-          this.getImageAssets('narrative', true).then(() => void 0);
-        }
+      loadStatus.use = 'narrative';
+    }
+
+    if (this.narrative.narrative_image_ids && this.narrative.narrative_image_ids.length > 0) {
+      // queue narrative ids for loading
+      loadStatus.narrative = [...this.narrative.narrative_image_ids];
+    }
+
+    const allIds = [...loadStatus.narrative, ...loadStatus.timeline];
+    // the above assets need to be retrieved either from teh API or the cache
+    // only fetch the necessary ids that aren't already cached
+    const idsToFetch = allIds.reduce((toFetch: string[], id: string) => {
+      if (!this.modelSvc.assets[id]) {
+        toFetch.push(id);
       }
+      return toFetch;
+    }, []);
+
+    const setCorrectImagesFromAssets = () => {
+      loadStatus[loadStatus.use].forEach((id: string) => {
+        // the second parameter when true will set the $ctrl.images (for display) with assets from the
+        // narrative but avoid putting the ID's from these assets into the timeline.timeline_image_ids array
+        this.setImageFromAsset(this.modelSvc.assets[id], loadStatus.use === 'narrative');
+      });
+    };
+
+    // get assets and set them for use in display
+    if (idsToFetch.length > 0) {
+      this.dataSvc.fetchAndCacheAssetsByIds(idsToFetch).then(setCorrectImagesFromAssets);
+    } else {
+      setCorrectImagesFromAssets();
     }
   }
 
@@ -258,13 +338,14 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   }
 
   private setImageFromAsset(asset: IAsset, skipImgIdArray: boolean = false): void {
-    const tagType: TSocialTagTypes = asset.tags[0];
+    const tagType = asset.tags[0];
     const currentImage = this.images[tagType];
 
-    this.images[tagType] = { assetId: asset._id, path: asset.url };
-
+    this.images[tagType] = {assetId: asset._id, path: asset.url} as ITagPayload;
+    this.display[tagType].defaultFromNarrative = false;
     if (skipImgIdArray) {
-      this.images[tagType].defaultFromNarrative = true;
+      this.display[tagType].defaultFromNarrative = true;
+      this.setValidity();
       return;
     }
 
@@ -273,9 +354,23 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
     }
 
     this.addImageId(asset._id);
+    this.setValidity();
   }
 
-  private removeImageId(targetId: string): void {
+  private setValidity() {
+    const {social_image_square, social_image_wide} = this.images;
+    const isMixedDefault = this.display[SOCIAL_IMAGE_SQUARE].defaultFromNarrative !==
+      this.display[SOCIAL_IMAGE_WIDE].defaultFromNarrative;
+
+    const bothPathsSet = typeof social_image_square.path === 'string' && typeof social_image_wide.path === 'string';
+    const bothPathsNull = social_image_square.path == null && social_image_wide.path == null;
+    // if either path is null consider invalid or we have mixed default images
+    const isValid = !isMixedDefault && (bothPathsSet || bothPathsNull);
+
+    this.editorForm.$setValidity(this.editorForm.$name, isValid, this.editorForm);
+  }
+
+   private removeImageId(targetId: string): void {
     this.model[this.type + '_image_ids'] = this.model[this.type + '_image_ids'].filter(id => targetId !== id);
   }
 
@@ -290,10 +385,10 @@ export class EnableSocialshare implements ng.IComponentOptions {
   bindings: any = {
     containerId: '@?',
     narrative: '=',
-    timeline: '=?'
+    timeline: '=?',
+    editorForm: '='
   };
   template: string = TEMPLATE;
   controller = EnableSocialshareController;
   static Name: string = 'ittEnableSocialshare'; // tslint:disable-line
 }
-
