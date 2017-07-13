@@ -1,3 +1,4 @@
+export {IAnnotator, IAnnotators} from './directives/sxsAnnotatorAutocomplete';
 export {ITimelineSvc} from './services/timelineSvc';
 export {IMetaObj, IMetaProps} from './services/basePlayerManager/index';
 export {IPlayerManager} from './services/basePlayerManager/index';
@@ -10,7 +11,6 @@ export {IWistiaMetaProps, IWistiaPlayerManager} from './services/wistia/wistiaPl
 export {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
 export {IUploadData} from './services/uploadsService';
 export {IEmailFields} from './directives/socialshare/ittSocialShare';
-export {IAnnotators} from './directives/sxsAnnotatorAutocomplete';
 export {IimageResize} from './services/imageResizeSvc';
 /*
  it's nice to have the interface close to the method / object it is annotating. It's also nice to have a common
@@ -21,8 +21,7 @@ export {IimageResize} from './services/imageResizeSvc';
  it was defined.
  */
 
-type ILangformKeys = 'en' | 'es' | 'zh' | 'pt' | 'fr' | 'de' | 'it';
-
+export type ILangformKeys = 'en' | 'es' | 'zh' | 'pt' | 'fr' | 'de' | 'it';
 export type ILangForm = {
   [K in ILangformKeys]: string
 };

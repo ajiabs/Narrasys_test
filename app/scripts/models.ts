@@ -1,9 +1,50 @@
-import {ILangForm} from './interfaces';
+import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
 
 import {TSocialTagTypes} from './constants';
 /**
  * Created by githop on 5/1/17.
  */
+
+export class IEpisode {
+  _id: string;
+  annotators: IAnnotators;
+  chapters: IChapter[];
+  children: any[];
+  container_id: string;
+  created_at: Date;
+  defaultLanguage: ILangformKeys;
+  description: ILangForm;
+  display_description: string;
+  display_title: string;
+  items: NEvent[];
+  languages: Array<{code: string, default: boolean}>;
+  masterAsset: IAsset;
+  master_asset_id: string;
+  parent_id: string;
+  scenes: IScene[];
+  status: string;
+  styleCss: string;
+  style_id: string[];
+  styles: string[];
+  templateUrl: string;
+  title: ILangForm;
+  updated_at: Date;
+}
+
+export class IContainer {
+  _id: string;
+  children: IContainer[];
+  customer_id: string;
+  display_name: string;
+  episodes: IEpisode[];
+  evenOdd?: boolean;
+  haveNotLoadedChildData?: boolean;
+  keywords: ILangForm;
+  loadedChildData?: boolean;
+  name: ILangForm;
+  parent_id: string;
+  sort_order: number;
+}
 
 export class ITimeline {
   _id: string;
@@ -191,8 +232,23 @@ export class IUpload extends IEvent {
   _type: 'Upload';
   asset_id: string;
 }
-
-export function createInstance(type: string, data: any) {
+type TInstance =
+  'Link'
+  | 'Annotation'
+  | 'Bookmark'
+  | 'Chapter'
+  | 'Image'
+  | 'Plugin'
+  | 'Scene'
+  | 'Text'
+  | 'Upload'
+  | 'Narrative'
+  | 'Asset'
+  | 'Customer'
+  | 'Timeline'
+  | 'Episode'
+  | 'Container';
+export function createInstance(type: TInstance, data: any) {
   let model;
   switch (type) {
     case 'Link':
@@ -233,6 +289,12 @@ export function createInstance(type: string, data: any) {
       break;
     case 'Timeline':
       model = new ITimeline();
+      break;
+    case 'Episode':
+      model = new IEpisode();
+      break;
+    case 'Container':
+      model = new IContainer();
       break;
   }
   Object.assign(model, data);

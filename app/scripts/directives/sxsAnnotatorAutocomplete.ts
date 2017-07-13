@@ -3,8 +3,10 @@
  TODO: disentangle annotator_image_id from this, move it into parent template
  */
 
+import {ILangForm} from '../interfaces';
+
 export interface IAnnotator {
-  name: { en: string };
+  name: ILangForm;
   annotation_image_id: string;
   key?: string;
   imageUrl?: string;

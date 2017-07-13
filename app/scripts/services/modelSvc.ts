@@ -80,10 +80,10 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   svc.assocNarrativesWithCustomer = assocNarrativesWithCustomer;
   function assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer {
     narratives.forEach(function (narrative) {
-      svc.cache('narrative', createInstance('Narrative', narrative));
+      svc.cache('narrative', narrative);
     });
     customer.narratives = cachedNarrativesByCustomer(customer);
-    svc.cache('customer', createInstance('Customer', customer));
+    svc.cache('customer', customer);
     // //remove any old customer references if narrative was changed to a different customer
     // Object.keys(svc.customers)
     //   .filter(function(key) {
@@ -130,52 +130,63 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     });
   }
 
-
   svc.cache = function (cacheType, item) {
     if (cacheType === 'narrative') {
       // NOTE no deriveNarrative used here, not needed so far
+      const instance = createInstance('Narrative', item);
+
+      if (instance.timelines && instance.timelines.length > 0) {
+        console.log('aha timelines!');
+        instance.timelines = instance.timelines.map(tl => createInstance('Timeline', tl));
+      }
+      console.log("cache nar?", instance);
 
       if (svc.narratives[item._id]) {
-        angular.extend(svc.narratives[item._id], item);
+        angular.extend(svc.narratives[item._id], instance);
       } else {
-        svc.narratives[item._id] = angular.copy(item);
+        svc.narratives[item._id] = angular.copy(instance);
       }
     }
     if (cacheType === 'customer') {
+      const instance = createInstance('Customer', item);
       // NOTE no deriveCustomer used here, not needed so far
       if (svc.customers[item._id]) {
-        angular.extend(svc.customers[item._id], item);
+        angular.extend(svc.customers[item._id], instance);
       } else {
-        svc.customers[item._id] = angular.copy(item);
+        svc.customers[item._id] = angular.copy(instance);
       }
     }
     if (cacheType === 'episode') {
+      const instance = createInstance('Episode', item);
       if (svc.episodes[item._id]) {
-        angular.extend(svc.episodes[item._id], svc.deriveEpisode(angular.copy(item)));
+        angular.extend(svc.episodes[item._id], svc.deriveEpisode(angular.copy(instance)));
       } else {
-        svc.episodes[item._id] = svc.deriveEpisode(angular.copy(item));
+        svc.episodes[item._id] = svc.deriveEpisode(angular.copy(instance));
       }
     } else if (cacheType === 'event') {
+      const instance = createInstance(item._type, item);
       // TEMP fix for events without titles:
       if (!item.title) {
         item.title = {};
       }
       if (svc.events[item._id]) {
-        angular.extend(svc.events[item._id], svc.deriveEvent(angular.copy(item)));
+        angular.extend(svc.events[item._id], svc.deriveEvent(angular.copy(instance)));
       } else {
-        svc.events[item._id] = svc.deriveEvent(angular.copy(item));
+        svc.events[item._id] = svc.deriveEvent(angular.copy(instance));
       }
     } else if (cacheType === 'asset') {
+      const instance = createInstance('Asset', item);
       if (svc.assets[item._id]) {
-        angular.extend(svc.assets[item._id], svc.deriveAsset(angular.copy(item)));
+        angular.extend(svc.assets[item._id], svc.deriveAsset(angular.copy(instance)));
       } else {
-        svc.assets[item._id] = svc.deriveAsset(angular.copy(item));
+        svc.assets[item._id] = svc.deriveAsset(angular.copy(instance));
       }
     } else if (cacheType === 'container') {
+      const instance = createInstance('Container', item);
       if (svc.containers[item._id]) {
-        angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
+        angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(instance)));
       } else {
-        svc.containers[item._id] = svc.deriveContainer(angular.copy(item));
+        svc.containers[item._id] = svc.deriveContainer(angular.copy(instance));
       }
 
     }
@@ -355,11 +366,12 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
       var childRefs = [];
       angular.forEach(container.children, function (child) {
+        const instance = createInstance('Container', child);
         if (svc.containers[child._id]) {
           childRefs.push(svc.containers[child._id]);
         } else {
-          child.haveNotLoadedChildData = true; // not sure yet if this is necessary
-          svc.containers[child._id] = angular.copy(setLang(child));
+          instance.haveNotLoadedChildData = true; // not sure yet if this is necessary
+          svc.containers[child._id] = angular.copy(setLang(instance));
         }
 
       });
