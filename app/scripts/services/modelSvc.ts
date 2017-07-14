@@ -136,7 +136,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       const instance = createInstance('Narrative', item);
 
       if (instance.timelines && instance.timelines.length > 0) {
-        console.log('aha timelines!');
         instance.timelines = instance.timelines.map(tl => createInstance('Timeline', tl));
       }
       console.log("cache nar?", instance);

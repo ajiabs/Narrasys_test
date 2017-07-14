@@ -207,6 +207,8 @@ export default function ittNarrative() {
             }
 
           }
+          // ok to use createInstance outside of modelSvc#cache here
+          // because we do not have a case for 'timelines' in modelSvc#cache
           var newTimeline = createInstance('Timeline', {
             name: {en: ''},
             description: {en: ''},

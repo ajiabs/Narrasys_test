@@ -1,5 +1,5 @@
 /* For admin screen episode list */
-import {createInstance, INarrative} from '../models';
+import {INarrative} from '../models';
 ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils'];
 
 export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils) {
@@ -34,7 +34,7 @@ export default function ittContainer($timeout, $location, appState, modelSvc, re
       function postNewNarrative(narrativeData) {
         $scope.resolvingNarrative = true;
         dataSvc.generateNewNarrative(narrativeData.c, narrativeData.n).then(function (narrative) {
-          modelSvc.cache('narrative', createInstance('Narrative', narrative));
+          modelSvc.cache('narrative', narrative);
           $location.path('/story/' + narrative._id);
           $scope.resolvingNarrative = false;
         });
