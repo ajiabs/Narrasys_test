@@ -53,6 +53,7 @@ const TEMPLATE = `
     </button>
     <button ng-click="$ctrl.toggleBrowseUploaded()">Browse uploaded</button>
     <label class="button" for="fileBtn">Upload new</label>
+
     <input id="fileBtn" type="file" accept="image/*" itt-files-handler on-selected="$ctrl.handleImage(files)"/>
   </div>
   <!--end social controls-->
