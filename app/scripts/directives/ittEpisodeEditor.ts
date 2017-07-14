@@ -246,8 +246,8 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
             $timeout(function () {
               onDone({
                 duration: playbackService.getMetaProp('duration', 'replaceMe'),
-                url: url,
-                type: type
+                url,
+                type
               });
               //remove temp
               scope.episode.swap = {};

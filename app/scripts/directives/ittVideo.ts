@@ -1,15 +1,42 @@
+import {IDataSvc} from '../services/dataSvc';
+import {IModelSvc} from '../services/modelSvc';
+import {ITimelineSvc} from '../services/timelineSvc';
+/* tslint:disable:prefer-const */
 export default function ittVideo() {
   return {
     replace: false,
     templateUrl: 'templates/video.html',
     scope: {
-      poster: "=?",
+      poster: '=?',
       mainPlayer: '=',
       mediaSrcArr: '=',
       playerId: '='
     },
-    controller: ['$scope', '$timeout', '$interval', '$sce', '$rootScope', '$routeParams', 'playbackService', 'ittUtils', 'timelineSvc', 'modelSvc', 'dataSvc', 'appState',
-      function ($scope, $timeout, $interval, $sce, $rootScope, $routeParams, playbackService, ittUtils, timelineSvc, modelSvc, dataSvc, appState) {
+    controller: [
+      '$scope',
+      '$timeout',
+      '$interval',
+      '$sce',
+      '$rootScope',
+      '$routeParams',
+      'playbackService',
+      'ittUtils', 'timelineSvc',
+      'modelSvc',
+      'dataSvc',
+      'appState',
+      function (
+        $scope,
+        $timeout,
+        $interval,
+        $sce,
+        $rootScope,
+        $routeParams,
+        playbackService,
+        ittUtils,
+        timelineSvc: ITimelineSvc,
+        modelSvc: IModelSvc,
+        dataSvc: IDataSvc,
+        appState) {
         var ctrl = this; //jshint ignore:line
 
         //controller public properties
@@ -79,7 +106,8 @@ export default function ittVideo() {
         //if our video is youtube
         //hide the unstarted mask
         function showMask() {
-          if (_existy(appState.iOSVersion) && appState.iOSVersion.length && playbackService.getMetaProp('videoType', ctrl.playerId) === 'youtube') {
+          if (_existy(appState.iOSVersion) && appState.iOSVersion.length
+            && playbackService.getMetaProp('videoType', ctrl.playerId) === 'youtube') {
             if (showUnstartedOverlay()) {
               return (appState.iOSVersion[0] > 9);
             }
@@ -133,5 +161,3 @@ export default function ittVideo() {
     controllerAs: '$ctrl'
   };
 }
-
-

@@ -1,18 +1,20 @@
+import {IParsedMediaSrcObj, IUrlService, IWistiaUrlservice} from '../interfaces';
 /**
  * Created by githop on 11/3/16.
  */
 
-urlService.$inject = ['youtubeUrlService', 'html5UrlService', 'kalturaUrlService', 'config'];
+urlService.$inject = ['youtubeUrlService', 'html5UrlService', 'kalturaUrlService', 'wistiaUrlService', 'config'];
 
-export default function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, config) {
+export default function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, wistiaUrlService: IWistiaUrlservice, config) {
 
   var _urlSubServices = {
     youtube: youtubeUrlService,
     html5: html5UrlService,
-    kaltura: kalturaUrlService
+    kaltura: kalturaUrlService,
+    wistia: wistiaUrlService
   };
 
-  return {
+  return <IUrlService> {
     parseMediaSrcArr: parseMediaSrcArr,
     checkUrl: checkUrl,
     getOutgoingUrl: getOutgoingUrl,
@@ -33,7 +35,7 @@ export default function urlService(youtubeUrlService, html5UrlService, kalturaUr
    * @param mediaSrcArr
    * @return parsedMediaSrcArr Array<{type: string, mediaSrcArr: Array<String>}>
    */
-  function parseMediaSrcArr(mediaSrcArr) {
+  function parseMediaSrcArr(mediaSrcArr: string[]): IParsedMediaSrcObj[] {
     return Object.keys(_urlSubServices).reduce(function (parsedMediaSrcArr, urlSrv) {
       var parsedMediaSrcObj = _urlSubServices[urlSrv].parseMediaSrc(mediaSrcArr);
       if (parsedMediaSrcObj.mediaSrcArr.length > 0) {
@@ -70,7 +72,8 @@ export default function urlService(youtubeUrlService, html5UrlService, kalturaUr
       mp4: [],
       webm: [],
       m3u8: [],
-      kaltura: []
+      kaltura: [],
+      wistia: []
     };
 
     var extensionMatch = /\.(\w+)$/;
@@ -161,6 +164,10 @@ export default function urlService(youtubeUrlService, html5UrlService, kalturaUr
 
     if (kalturaUrlService.canPlay(videoAsset.url)) {
       videoObject.kaltura.push(videoAsset.url);
+    }
+
+    if (wistiaUrlService.canPlay(videoAsset.url)) {
+      videoObject.wistia.push(videoAsset.url);
     }
 
     videoAsset.urls = videoObject;
