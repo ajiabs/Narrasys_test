@@ -24,7 +24,7 @@
 
 
  */
-import {INarrative} from '../models';
+import {createInstance, INarrative} from '../models';
 export default function ittNarrative() {
   return {
     templateUrl: 'templates/narrative/default.html',
@@ -207,14 +207,16 @@ export default function ittNarrative() {
             }
 
           }
-          var newTimeline = {
+          // ok to use createInstance outside of modelSvc#cache here
+          // because we do not have a case for 'timelines' in modelSvc#cache
+          var newTimeline = createInstance('Timeline', {
             name: {en: ''},
             description: {en: ''},
             hidden: false,
             sort_order: currSortOrder,
             isTemp: true,
             index: newIndex
-          };
+          });
           //favor slice over splice as splice mutates array in place.
           var head = timelines.slice(0, newIndex);
           var tail = timelines.slice(newIndex, timelines.length);

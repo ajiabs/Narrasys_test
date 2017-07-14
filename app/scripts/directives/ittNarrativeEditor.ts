@@ -3,8 +3,9 @@
  */
 
 import {IAsset} from '../models';
-import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants'
 
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
+/* tslint:disable */
 /**
  * @ngdoc directive
  * @name iTT.directive:ittNarrativeEditor
@@ -36,6 +37,7 @@ import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants'
  </itt-narrative-editor>
  * </pre>
  */
+/* tslint:enable */
 export default function ittNarrativeEditor() {
   return {
     restrict: 'EA',
@@ -105,6 +107,7 @@ export default function ittNarrativeEditor() {
     <itt-enable-socialshare
       ng-if="$ctrl.trueAdmin && $ctrl._narrative._id"
       container-id="{{$ctrl.selectedCustomer.root_container_id}}"
+      editor-form="nEditForm"
       narrative="$ctrl._narrative">
     </itt-enable-socialshare>
     <div class="ancillaryNav">
@@ -189,8 +192,8 @@ export default function ittNarrativeEditor() {
           '_id'
         ];
 
-        let narrative = ittUtils.pick(n, fields);
-        let socialImagesToUpload: {file: FileList, tag: string}[] = [];
+        const narrative = ittUtils.pick(n, fields);
+        const socialImagesToUpload: Array<{file: FileList, tag: string}> = [];
         if (n.social_image_square) {
           socialImagesToUpload.push({file: n.social_image_square.file, tag: SOCIAL_IMAGE_SQUARE});
         }
@@ -235,7 +238,7 @@ export default function ittNarrativeEditor() {
           ctrl.selectedCustomer = ctrl._customers[0];
         } else {
           if (existy(ctrl._narrative) || existy(ctrl._containerInfo)) {
-            var cId = existy(ctrl._containerInfo) && ctrl._containerInfo.customerId || ctrl._narrative.customer_id;
+            const cId = existy(ctrl._containerInfo) && ctrl._containerInfo.customerId || ctrl._narrative.customer_id;
             ctrl.selectedCustomer = ctrl._customers.filter(function (c) {
               return c._id === cId;
             })[0];

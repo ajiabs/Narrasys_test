@@ -8,14 +8,15 @@ export default function ittContainer($timeout, $location, appState, modelSvc, re
     replace: false,
     scope: {
       container: '=ittContainer',
-      depth: "=depth",
+      depth: '=depth',
       onContainerClick: '&',
       onContainerAdd: '&',
       clickRootContext: '=',
       addRootContext: '='
     },
-    templateUrl: "templates/container.html",
-    controller: ['$scope', '$location', 'modelSvc', 'authSvc', 'dataSvc', function ($scope, $location, modelSvc, authSvc, dataSvc) {
+    templateUrl: 'templates/container.html',
+    controller: ['$scope', '$location', 'modelSvc', 'authSvc', 'dataSvc',
+      function ($scope, $location, modelSvc, authSvc, dataSvc) {
       $scope.toggleNarrativeModal = toggleNarrativeModal;
       $scope.postNewNarrative = postNewNarrative;
       $scope.showNarrativeModal = false;
@@ -56,18 +57,18 @@ export default function ittContainer($timeout, $location, appState, modelSvc, re
           event.target.select(); // convenience for selecting the episode url
         };
 
-        scope.containerTypes = ["customer", "project", "module", "episode"];
+        scope.containerTypes = ['customer', 'project', 'module', 'episode'];
 
         scope.onToggleChildren = function (bool) {
           scope.onContainerClick({$container: {container: scope.container, bool: bool}});
         };
 
         scope.renameContainer = function () {
-          console.log("CHanging container name from ", scope.container.name.en, " to ", scope.container.newContainerName);
+          console.log('CHanging container name from ', scope.container.name.en, ' to ', scope.container.newContainerName);
           console.log(scope.container);
 
           var newContainer = {};
-          angular.forEach(["_id", "customer_id", "episodes", "keywords", "parent_id", "sort_order"], function (field) {
+          angular.forEach(['_id', 'customer_id', 'episodes', 'keywords', 'parent_id', 'sort_order'], function (field) {
             newContainer[field] = angular.copy(scope.container[field]);
           });
           newContainer.name = {
@@ -80,30 +81,30 @@ export default function ittContainer($timeout, $location, appState, modelSvc, re
 
         scope.addContainer = function (container) {
           var newContainer = {
-            "customer_id": scope.container.customer_id,
-            "parent_id": scope.container._id,
-            "name": {
+            'customer_id': scope.container.customer_id,
+            'parent_id': scope.container._id,
+            'name': {
               en: angular.copy(scope.container.newContainerTitle)
             }
           };
           dataSvc.createContainer(newContainer).then(function (newContainer) {
-            console.log("Created container:", newContainer);
+            console.log('Created container:', newContainer);
             if (scope.depth === 2) {
               var newEpisode = {
-                "container_id": newContainer._id,
-                "title": angular.copy(newContainer.name)
+                'container_id': newContainer._id,
+                'title': angular.copy(newContainer.name)
               };
               dataSvc.getCommon().then(function () {
                 dataSvc.createEpisode(newEpisode).then(function (episode) {
-                  console.log("Created episode: ", episode);
+                  console.log('Created episode: ', episode);
                   var newScene = {
-                    "_type": "Scene",
-                    "title": {},
-                    "description": {},
-                    "templateUrl": "templates/scene/1col.html",
-                    "start_time": 0,
-                    "end_time": 0,
-                    "episode_id": episode._id
+                    '_type': 'Scene',
+                    'title': {},
+                    'description': {},
+                    'templateUrl': 'templates/scene/1col.html',
+                    'start_time': 0,
+                    'end_time': 0,
+                    'episode_id': episode._id
                   };
 
                   dataSvc.storeItem(newScene);

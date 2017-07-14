@@ -1,53 +1,53 @@
 <!--temp debug code-->
 
 <!--<h6 style="background-color: white; color:black;">-->
-  <!--autoplay: {{$ctrl.playbackService.getMetaProp('autoplay', $ctrl.playerId)}} |-->
-	<!--timeline State: {{$ctrl.playbackService.getTimelineState()}} |-->
-	<!--time: {{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} |-->
-	<!--first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} |-->
-	<!--has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |-->
-	<!--player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} |-->
-	<!--start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} |-->
-	<!--ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} |-->
-	<!--playerId: {{$ctrl.playerId}}-->
-  <!--duration:  {{$ctrl.playbackService.getMetaProp('duration', $ctrl.playerId)}}|-->
-  <!--time: {{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} |-->
-  <!--player time: {{$ctrl.playbackService.getCurrentTime()}} |-->
-	<!--ios stuff: {{$ctrl.showMask()}} iosVersion: {{$ctrl.appState.iOSVersion[0]}} unstarted: {{$ctrl.showUnstartedOverlay()}} | mainplayer {{$ctrl.mainPlayer}}-->
-	<!--poster: {{$ctrl.poster}}-->
-	<!--<button ng-click="$ctrl.resetKaltura()">reset kaltura</button>-->
+<!--autoplay: {{$ctrl.playbackService.getMetaProp('autoplay', $ctrl.playerId)}} |-->
+<!--timeline State: {{$ctrl.playbackService.getTimelineState()}} |-->
+<!--time: {{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} |-->
+<!--first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} |-->
+<!--has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |-->
+<!--player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} |-->
+<!--start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} |-->
+<!--ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} |-->
+<!--playerId: {{$ctrl.playerId}}-->
+<!--duration:  {{$ctrl.playbackService.getMetaProp('duration', $ctrl.playerId)}}|-->
+<!--time: {{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} |-->
+<!--player time: {{$ctrl.playbackService.getCurrentTime()}} |-->
+<!--ios stuff: {{$ctrl.showMask()}} iosVersion: {{$ctrl.appState.iOSVersion[0]}} unstarted: {{$ctrl.showUnstartedOverlay()}} | mainplayer {{$ctrl.mainPlayer}}-->
+<!--poster: {{$ctrl.poster}}-->
+<!--<button ng-click="$ctrl.resetKaltura()">reset kaltura</button>-->
 <!--</h6>-->
 
 <!--end temp debug code-->
 <div class="np-video"
-	 ng-if="$ctrl.mediaSrcArr.length > 0"
-	 ng-class="{'np--embed': $ctrl.mainPlayer === false}">
+     ng-if="$ctrl.mediaSrcArr.length > 0"
+     ng-class="{'np--embed': $ctrl.mainPlayer === false}">
 
-	<div class="np-video__overlay-ui"
-		 ng-if="$ctrl.showMask()"
-		 ng-class="$ctrl.setCssClass()"
-		 ng-click="$ctrl.videoClick()">
-	</div>
+  <div class="np-video__overlay-ui"
+       ng-if="$ctrl.showMask()"
+       ng-class="$ctrl.setCssClass()"
+       ng-click="$ctrl.videoClick()">
+  </div>
 
-	<div class="np-video__wrapper">
-		<div class="np-video__element" ng-bind-html="::$ctrl.playerElement"></div>
-	</div>
+  <div class="np-video__wrapper">
+    <div class="np-video__element" ng-bind-html="::$ctrl.playerElement"></div>
+  </div>
 
-	<div class="poster overlay fill"
-		 ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('time') === 0"
-		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}">
-	</div>
+  <div class="poster overlay fill"
+       ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('time') === 0"
+       ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}">
+  </div>
 </div>
 
 <div ng-if="$ctrl.mediaSrcArr.length < 1" class="np-video__empty">
 
-	<div ng-if="$ctrl.isTranscoded === false">
-		<h3>Video is currently transcoding.</h3>
-		<p>The page will refresh when the transcode is complete!</p>
-	</div>
+  <div ng-if="$ctrl.isTranscoded === false">
+    <h3>Video is currently transcoding.</h3>
+    <p>The page will refresh when the transcode is complete!</p>
+  </div>
 
-	<h1 ng-if="$ctrl.isTranscoded === true">
-		No video source available...
-	</h1>
+  <h1 ng-if="$ctrl.isTranscoded === true">
+    No video source available...
+  </h1>
 
 </div>

@@ -1,3 +1,4 @@
+/* tslint:disable */
 /*
  Son of cuePointScheduler, with a smattering of video controls.
 
@@ -36,16 +37,62 @@
 
  note: ending screen can be entered naturally as the video progresses or from seeking,
  either from the timeline or the next scene arrow
-
  */
+/* tslint:enable */
+import {NEvent} from '../models';
+interface ITimelineEvent {
+  t: number;
+  id: string;
+  eventId?: string;
+  action: 'enter' | 'exit' | 'pause' | 'play' | 'preload';
+}
+
+interface IDisplayMarkedEvent {
+  events: ITimelineEvent[];
+  layoutChange: boolean;
+  multiStop: boolean;
+  start_time: string;
+  stop: boolean;
+  toolTipText: string;
+}
+
+export interface ITimelineSvc {
+  timelineEvents: ITimelineEvent[];
+  markedEvents: NEvent[];
+  displayMarkedEvents: IDisplayMarkedEvent[];
+  enforceSingletonPauseListener: boolean;
+  setSpeed(speed: number): void;
+  restartEpisode(): void;
+  play(): void;
+  pause(nocapture?: boolean): void;
+  startAtSpecificTime(t: number): void;
+  seek(t: number, method?: string, eventId?: string): void;
+  nextScene(): void;
+  handleScene(index: number, action: string): void;
+  prevScene(): void;
+  toggleMute(): void;
+  setVolume(vol: number): void;
+  init(episodeId: string): void;
+  injectEvents(events: any[], injectionTime?: number): void;
+  removeEvent(removeId: string): void;
+  updateEventTimes(event: any): void;
+  updateSceneTimes(episodeId: string): void;
+  sortTimeline(): void;
+  updateEventStates(): void;
+}
+
+/* tslint:disable */
 timelineSvc.$inject = ['$window', '$timeout', '$interval', '$filter', 'config', 'modelSvc', 'appState', 'analyticsSvc', 'playbackService', 'ittUtils'];
 
 export default function timelineSvc($window, $timeout, $interval, $filter, config, modelSvc, appState, analyticsSvc, playbackService, ittUtils) {
+  /* tslint:enable */
+  /* tslint:disable:prefer-const */
+  var svc: ITimelineSvc = Object.create(null);
 
-  var svc = {};
-
-  svc.timelineEvents = []; // each entry consists of {t:n, id:eventID|timeline, action:enter|exit|pause|play}. Keep sorted by t.
-  svc.markedEvents = []; // time, title of marked events (scenes, currently)
+  svc.timelineEvents = [];
+  // each entry consists of {t:n, id:eventID|timeline, action:enter|exit|pause|play}. Keep sorted by t.
+  svc.markedEvents = [];
+  // time, title of marked events (scenes, currently)
   if (!svc.enforceSingletonPauseListener) {
     $window.addEventListener('message', function (e) {
       if (e.data === 'pauseEpisodePlayback') {
@@ -59,7 +106,6 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
   var eventTimeout;
   var timeMultiplier;
   var parseTime = ittUtils.parseTime;
-
 
   //player states
   // '-1': 'unstarted',
@@ -108,7 +154,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         if ($window.parent !== $window) {
           $window.parent.postMessage('pauseEpisodePlayback', '*'); // negligible risk in using a global here
         }
-        analyticsSvc.captureEpisodeActivity("play");
+        analyticsSvc.captureEpisodeActivity('play');
         break;
       case 'paused':
         _resetClocks();
@@ -148,7 +194,8 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
   svc.setSpeed = function (speed) {
     // console.log("timelineSvc.setSpeed", speed);
     timeMultiplier = speed;
-    //here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
+    //here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier
+    // variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
     playbackService.setMetaProp('timeMultiplier', timeMultiplier);
     playbackService.setSpeed(timeMultiplier);
     stepEvent();
@@ -156,6 +203,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
 
   svc.restartEpisode = restartEpisode;
   function restartEpisode() {
+    console.log('restarting!');
     svc.seek(0.01);
     svc.play();
   }
@@ -168,7 +216,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     var duration = playbackService.getMetaProp('duration');
 
     if (!duration || duration < 0.1) {
-      console.error("This episode has no duration");
+      console.error('This episode has no duration');
       return;
     }
 
@@ -180,15 +228,16 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     playbackService.pause();
 
     if (!nocapture) {
-      analyticsSvc.captureEpisodeActivity("pause");
+      analyticsSvc.captureEpisodeActivity('pause');
     }
   };
 
-
   svc.startAtSpecificTime = function (t) {
 
-    // Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
-    if (appState.isTouchDevice && playbackService.getMetaProp('hasBeenPlayed') === false && playbackService.getMetaProp('videoType') === 'youtube') {
+    // Youtube on touchscreens can't auto-seek to the correct time,
+    // we have to wait for the user to init youtube manually.
+    if (appState.isTouchDevice && playbackService.getMetaProp('hasBeenPlayed') === false &&
+      playbackService.getMetaProp('videoType') === 'youtube') {
       //TODO in future it might be possible to trick YT into starting at the correct time even
       return;
     }
@@ -205,8 +254,8 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     playbackService.setMetaProp('hasResumedFromStartAt', true);
     svc.updateEventStates();
 
-    analyticsSvc.captureEpisodeActivity("seek", {
-      method: "URLParameter"
+    analyticsSvc.captureEpisodeActivity('seek', {
+      method: 'URLParameter'
     });
 
   };
@@ -236,7 +285,13 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
       return;
     }
 
-    var captureData = {method: '', seekStart: playbackService.getMetaProp('time')};
+    interface ICaptureData {
+      method: string;
+      seekStart: number;
+      event_id?: string;
+    }
+
+    var captureData: ICaptureData = {method: '', seekStart: playbackService.getMetaProp('time')};
 
     t = parseTime(t);
     if (t < 0) {
@@ -248,10 +303,9 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
 
     stopEventClock();
 
-
     playbackService.setMetaProp('time', t);
-    // youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
-
+    // youtube depends on an accurate appState.timelineState here,
+    // so don't modify that by calling svc.stall() before the seek:
 
     playbackService.seek(t);
     svc.updateEventStates();
@@ -279,7 +333,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     var i = 0;
     for (; i < len; i++) {
       if (svc.markedEvents[i].start_time > currentTime) {
-        // console.log("Seeking to ", svc.markedEvents[i].start_time);
+        console.log('Seeking to ', svc.markedEvents[i].start_time);
         //scope.enableAutoscroll(); // TODO in playerController
         handleScene(i, 'nextScene');
         found = true;
@@ -288,7 +342,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     }
     if (!found) {
       svc.pause();
-      svc.seek(currentDuration - 0.01, "nextScene");
+      svc.seek(currentDuration - 0.01, 'nextScene');
       //scope.enableAutoscroll(); // in playerController
     }
   }
@@ -298,7 +352,8 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     var s = svc.markedEvents[index];
     var t = s.start_time;
 
-    if (t === 0.01 && action !== 'prevScene') { //to allow seekPauseListener to pause if using nextScene arrow on unstarted episode
+    if (t === 0.01 && action !== 'prevScene') {
+      // to allow seekPauseListener to pause if using nextScene arrow on unstarted episode
       t += 0.1;
     }
 
@@ -319,7 +374,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     var i = len;
     for (; i >= 0; i--) {
       if (svc.markedEvents[i].start_time < now) {
-        svc.seek(svc.markedEvents[i].start_time, "prevScene");
+        svc.seek(svc.markedEvents[i].start_time, 'prevScene');
 
         if (i === len) { //allow user to seek to event just prior to ending screen.
           --i;
@@ -349,7 +404,8 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
 
   /*
    If timeline is playing,
-   (TODO 1. find out how long since last checked, compare videotime delta to timeline delta, adjust timeline if necessary)
+   TODO
+   1. find out how long since last checked, compare videotime delta to timeline delta, adjust timeline if necessary)
    2. check for timeline events since the last time stepEvent ran, handle them in order
    3. if any were stop events,
    rewind the timeline and the video to that time (and stop handling events)
@@ -377,7 +433,8 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     }
     eventClockData.running = true;
     eventClockData.lastTimelineTime = playbackService.getMetaProp('time');
-    eventClockData.lastVideoTime = playbackService.getMetaProp('time'); // TODO this should be relative to episode, not timeline
+    eventClockData.lastVideoTime = playbackService.getMetaProp('time');
+    // TODO this should be relative to episode, not timeline ^
     stepEvent();
   };
 
@@ -388,13 +445,13 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     resetEventClock();
   };
 
-  var stepEvent = function (ignoreStopEvents) {
+  var stepEvent = function (ignoreStopEvents?) {
     $timeout.cancel(eventTimeout);
     var vidTime = playbackService.getCurrentTime();
     var ourTime = playbackService.getMetaProp('time');
 
     // TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
-    // and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
+    // and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.
     // find timeline events since last time stepEvent ran, handle them in order until one is a stop or a seek
     for (var i = 0; i < svc.timelineEvents.length; i++) {
       var evt = svc.timelineEvents[i];
@@ -405,11 +462,11 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         }
         // Don't let stop events stop us before we even start.
         // (if the stop event and lastTimelineTime match, that stop event is what stopped us in the first place)
-        if (evt.action === "pause" && (ignoreStopEvents || evt.t === eventClockData.lastTimelineTime)) {
+        if (evt.action === 'pause' && (ignoreStopEvents || evt.t === eventClockData.lastTimelineTime)) {
           // console.log("Skipping pause event");
         } else {
           handleEvent(evt);
-          if (evt.action === "pause") {
+          if (evt.action === 'pause') {
             // TODO: check for multiple simultaneous pause actions, skip to the last one
             i++;
             break; //NOTE! next event should be the one AFTER the stop event, so let i++ fall through
@@ -428,7 +485,8 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     eventClockData.lastVideoTime = vidTime;
     eventClockData.lastTimelineTime = ourTime;
 
-    if (nextEvent && playbackService.getTimelineState() === "playing") { // need to check timelineState in case there were stop events above
+    if (nextEvent && playbackService.getTimelineState() === 'playing') {
+      // need to check timelineState in case there were stop events above
       // Find out how long until the next event, and aim for just a bit after it.
       var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000 / timeMultiplier;
       // console.log("next event in ", timeToNextEvent);
@@ -448,22 +506,22 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         svc.play();
       }
     } else {
-      if (event.action === "enter") {
-        modelSvc.events[event.id].state = "isCurrent";
+      if (event.action === 'enter') {
+        modelSvc.events[event.id].state = 'isCurrent';
         modelSvc.events[event.id].isCurrent = true;
-      } else if (event.action === "exit") {
-        modelSvc.events[event.id].state = "isPast";
+      } else if (event.action === 'exit') {
+        modelSvc.events[event.id].state = 'isPast';
         modelSvc.events[event.id].isCurrent = false;
-      } else if (event.action === "preload") {
+      } else if (event.action === 'preload') {
         preloadImageAsset(modelSvc.events[event.id]);
       } else {
-        console.warn("Unknown event action: ", event, event.action);
+        console.warn('Unknown event action: ', event, event.action);
       }
     }
   };
 
   // This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
-  var lastTick;
+  var lastTick: number | undefined;
   var startTimelineClock = function () {
     // console.log('START TIMELINE CLOCK');
     lastTick = undefined;
@@ -472,8 +530,8 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
   };
 
   var _tick = function () {
-    var thisTick = new Date();
-    var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
+    var thisTick: any = new Date();
+    var delta = (Number.isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
 
     //in the event that the timelineClock is running but the eventClock is not, start the eventClock.
     if (!eventClockData.running) {
@@ -493,7 +551,6 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
       // svc.pause();
       // _resetClocks();
     }
-
 
     playbackService.setMetaProp('time', newTime);
     lastTick = thisTick;
@@ -536,7 +593,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
       event.start_time = Number(event.start_time);
       event.end_time = Number(event.end_time);
       // add scenes to markedEvents[]:
-      if (event._type === "Scene") {
+      if (event._type === 'Scene') {
         if (appState.product === 'producer') {
           // producer gets all scenes, even 'hidden' ones (which are now not 'hidden' but they indicate
           //change in layout).
@@ -560,28 +617,29 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
 
         svc.timelineEvents.push({
           t: event.start_time + injectionTime,
-          id: "timeline",
+          id: 'timeline',
           eventId: event._id, //Need to store the event id in case this event needs to get removed from the timeline
-          action: "pause"
+          action: 'pause'
         });
         svc.timelineEvents.push({
           t: event.start_time + injectionTime,
           id: event._id,
-          action: "enter"
+          action: 'enter'
         });
         // For now, ignore end_time on stop events; they always end immediately after user hits play again.
-        // TODO: In future we may allow durations on stop events so the video will start automatically after that elapses.
+        // In future we may allow durations on stop events so the
+        // video will start automatically after that elapses.
         svc.timelineEvents.push({
           t: (event.start_time + injectionTime + 0.01),
           id: event._id,
-          action: "exit"
+          action: 'exit'
         });
       } else {
         // not a stop event.
         svc.timelineEvents.push({
           t: event.start_time + injectionTime,
           id: event._id,
-          action: "enter"
+          action: 'enter'
         });
 
         if (event.end_time || event.end_time === 0) {
@@ -592,14 +650,16 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
           svc.timelineEvents.push({
             t: event.end_time + injectionTime,
             id: event._id,
-            action: "exit"
+            action: 'exit'
           });
         } else {
-          // TODO: handle missing end times.  For transcript items, create an end time matching the start of the next transcript or the end of the scene or the duration (whichever comes first)
+          // TODO: handle missing end times.
+          // For transcript items, create an end time matching the start of the next transcript or the end of the scene
+          // or the duration (whichever comes first)
           // For other items, create an end time matching the next scene start or the duration, whichever comes first
           // For scenes, create an end time matching the start of the next scene or the duration, whichever comes first.
           // That's complex logic, may be better handled in a second pass.... or, duh,  during authoring
-          console.warn("Missing end_time on event ", event);
+          console.warn('Missing end_time on event ', event);
         }
       }
 
@@ -608,7 +668,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         svc.timelineEvents.push({
           t: (event.start_time < 3) ? 0 : event.start_time - 3, // 3 seconds early
           id: event._id,
-          action: "preload"
+          action: 'preload'
         });
       }
 
@@ -702,7 +762,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     return displayArr;
   }
 
-  var addMarkedEvent = function (newEvent) {
+  var addMarkedEvent = function (newEvent: NEvent) {
     // scan through existing markedEvents; if the new event is already there, replace it; otherwise add it
     var wasFound = false;
     for (var i = 0; i < svc.markedEvents.length; i++) {
@@ -755,7 +815,8 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
   };
 
   svc.updateSceneTimes = function (episodeId) {
-    // HACK(ish): since editing a scene's timing has side effects on other scenes, need to updateEventTimes for each scene in the episode when one changes
+    // HACK(ish): since editing a scene's timing has side effects on other scenes,
+    // need to updateEventTimes for each scene in the episode when one changes
     angular.forEach(modelSvc.episodes[episodeId].scenes, function (scene) {
       svc.updateEventTimes(scene);
     });
@@ -815,14 +876,16 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     // TODO performance check (though this isn't done often, only on seek and inject.)
 
     // DO NOT check event start and end times directly; they're relative to the episode, not the timeline!
-    // instead preset everything to the future, then scan the timeline events up to now and set state based on enter/exit events per the timeline
+    // instead preset everything to the future, then scan the timeline events up to now
+    // and set state based on enter/exit events per the timeline
     var now = playbackService.getMetaProp('time');
     // put everything in the future state:
     angular.forEach(svc.timelineEvents, function (tE) {
-      if (tE.id !== "timeline") {
+      if (tE.id !== 'timeline') {
         var event = modelSvc.events[tE.id];
-        if (event) { // cancelling adding an event can leave "internal:editing" in the event list; TODO keep that from happening but for now just ignore it if it doesn't exist
-          event.state = "isFuture";
+        if (event) { // cancelling adding an event can leave "internal:editing" in the event list;
+          // TODO keep that from happening but for now just ignore it if it doesn't exist
+          event.state = 'isFuture';
           event.isCurrent = false;
         }
       }
@@ -834,10 +897,10 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         var event = modelSvc.events[tE.id];
         if (event) {
           if (tE.action === 'enter') {
-            event.state = "isCurrent";
+            event.state = 'isCurrent';
             event.isCurrent = true;
           } else if (tE.action === 'exit') {
-            event.state = "isPast";
+            event.state = 'isPast';
             event.isCurrent = false;
           }
         }
@@ -858,7 +921,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
   };
 
   if (config.debugInBrowser) {
-    console.log("timelineSvc: ", svc);
+    console.log('timelineSvc: ', svc);
   }
 
   return svc;

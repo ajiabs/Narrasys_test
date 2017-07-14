@@ -14,7 +14,7 @@ export interface IEmailFields {
   from_name: string;
   subject: string;
   message: string;
-  sender_copy: boolean
+  sender_copy: boolean;
 }
 
 type SupportedProviders = 'facebook' | 'twitter' | 'google' | 'linkedin' | 'email' | 'reddit';
@@ -38,19 +38,21 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
   textCopied: boolean = false;
   email: Partial<IEmailFields> = {};
   static $inject = ['Socialshare', 'dataSvc'];
-  constructor(public Socialshare, private dataSvc: IDataSvc) {}
+  constructor(public Socialshare, private dataSvc: IDataSvc) {} // tslint:disable-line
 
   $onInit() {
     //MVP only works in player, so require full timeline path
     if (this.subdomain && this.paths && this.paths.narrative && this.paths.timeline) {
-      this.stubUrl = SocialShareController.formatShareUrl(this.subdomain, this.paths.narrative, this.paths.timeline.url);
+      this.stubUrl = SocialShareController.formatShareUrl(
+        this.subdomain, this.paths.narrative, this.paths.timeline.url
+      );
     }
   }
 
   onShare(provider: SupportedProviders) {
     // available providers, params: https://github.com/720kb/angular-socialshare
     const shareConfig = {
-      provider: provider,
+      provider,
       attrs: {}
     };
 
@@ -95,6 +97,12 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
 
   }
 
+  private static formatShareUrl(subDomain: string, narrativePath: string, timelinePath: string): string {
+    let protocol = 'https://';
+    let rootDomain = '.narrasys.com/narratives/';
+    return `${protocol}${subDomain}${rootDomain}${narrativePath}/${timelinePath}`;
+  };
+
   private closeAll() {
     this.expanded = false;
     this.textCopied = false;
@@ -105,18 +113,9 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
     this.emailshareExpanded = !this.emailshareExpanded;
   }
 
-  private static formatShareUrl(subDomain: string, narrativePath: string, timelinePath:string): string {
-    let protocol = 'https://';
-    let rootDomain = '.narrasys.com/narratives/';
-    return `${protocol}${subDomain}${rootDomain}${narrativePath}/${timelinePath}`;
-  };
-
-
-
 }
 
 export class IttSocialShare implements ng.IComponentOptions {
-  static Name: string = 'ittSocialShare';
   bindings: any = {
     providers: '<',
     subdomain: '@',
@@ -125,4 +124,5 @@ export class IttSocialShare implements ng.IComponentOptions {
   };
   templateUrl: string = 'scripts/directives/socialshare/social-share.html';
   controller = SocialShareController;
+  static Name: string = 'ittSocialShare'; // tslint:disable-line
 }
