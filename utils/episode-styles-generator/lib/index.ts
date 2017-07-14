@@ -1,7 +1,7 @@
 const fs = require('fs');
 const {resolve} = require('path');
 import {genCss} from './cssGen';
-import {genHtml} from './htmlGen'
+import {genHtml} from './htmlGen';
 
 const pathToClientStyles = resolve('../../app/styles/');
 const pathToEpisodeScss = resolve('../../app/styles/episode.scss');
