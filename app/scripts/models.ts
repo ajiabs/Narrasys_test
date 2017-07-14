@@ -140,6 +140,7 @@ export class IEvent {
   layout_id: string;
   style_id: string;
   templateUrl?: string;
+  producerItemType?: string;
   //group ??
   //event_category ??
 }
@@ -167,7 +168,8 @@ export class ILink extends IEvent {
   //relations
   link_image_id: string;
   url_status?: ILinkStatus;
-
+  isVideoUrl: boolean;
+  mixedContent?: boolean;
 }
 
 export class IAnnotation extends IEvent {
@@ -248,7 +250,7 @@ type TInstance =
   | 'Timeline'
   | 'Episode'
   | 'Container';
-export function createInstance(type: TInstance, data: any) {
+export function createInstance<T>(type: TInstance, data: any): T {
   let model;
   switch (type) {
     case 'Link':
@@ -318,5 +320,6 @@ export type NRecord =
   INarrative |
   IAsset |
   ICustomer |
-  ITimeline;
-
+  ITimeline |
+  IEpisode |
+  IContainer;
