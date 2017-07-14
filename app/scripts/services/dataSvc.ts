@@ -138,10 +138,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           response.data.timelines.sort(function (a, b) {
             return a.sort_order - b.sort_order;
           });
-          modelSvc.cache('narrative', createInstance('Narrative', svc.resolveIDs(response.data)));
-          modelSvc.narratives[response.data._id].timelines =
-            modelSvc.narratives[response.data._id].timelines.map(tl => createInstance('Timeline', tl));
-
+          modelSvc.cache('narrative', svc.resolveIDs(response.data));
           defer.resolve(modelSvc.narratives[response.data._id]);
         });
     });
@@ -181,7 +178,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   svc.getCustomerList = function () {
     return GET('/v3/customers/', function (customers) {
       angular.forEach(customers, function (customer) {
-        modelSvc.cache('customer', createInstance('Customer', customer));
+        modelSvc.cache('customer', customer);
       });
       return customers;
     });
@@ -205,7 +202,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     } else {
       return SANE_GET('/v3/customers/' + customerId)
         .then(customer => {
-          modelSvc.cache('customer', createInstance('Customer', customer)); // the real thing
+          modelSvc.cache('customer', customer); // the real thing
           return modelSvc.customers[customer._id];
         })
         .catch(e => console.log('wtf mate?', e));
@@ -584,7 +581,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return getAssetsByAssetIds(assetIds)
       .then((assets: IAsset[]) => {
         assets.forEach((asset) => {
-          modelSvc.cache('asset', createInstance('Asset', asset));
+          modelSvc.cache('asset', asset);
         });
         //return cached assets
         return assetIds.reduce((asx, id) => {
@@ -614,9 +611,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               getEventActivityDataForUser(events, 'Plugin', epId);
               angular.forEach(events, function (eventData) {
                 eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-                let evData = svc.resolveIDs(eventData);
-                let evModel = createInstance(eventData.type, evData);
-                modelSvc.cache('event', evModel);
+                modelSvc.cache('event', svc.resolveIDs(eventData));
               });
               modelSvc.resolveEpisodeEvents(epId);
               var assetIds = getAssetIdsFromEvents(events);
@@ -631,7 +626,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               getAssetsByAssetIds(assetIds)
                 .then((assets: IAsset[]) => {
                   assets.forEach((asset) => {
-                    modelSvc.cache('asset', createInstance('Asset', asset))
+                    modelSvc.cache('asset', asset);
                   });
                   modelSvc.resolveEpisodeAssets(epId);
                   $rootScope.$emit('dataSvc.getEpisode.done');
@@ -892,7 +887,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       .success(function (containerAssets) {
         modelSvc.containers[containerId].assetsHaveLoaded = true;
         angular.forEach(containerAssets.files, function (asset) {
-          modelSvc.cache('asset', createInstance('Asset', asset));
+          modelSvc.cache('asset', asset);
         });
         modelSvc.resolveEpisodeAssets(episodeId);
       });

@@ -2,7 +2,19 @@
  TODO: make sure newly added annotators wind up in hte episode.annotators list
  TODO: disentangle annotator_image_id from this, move it into parent template
  */
-import { IAnnotators } from "../interfaces";
+
+import {ILangForm} from '../interfaces';
+
+export interface IAnnotator {
+  name: ILangForm;
+  annotation_image_id: string;
+  key?: string;
+  imageUrl?: string;
+}
+
+export interface IAnnotators {
+  [key: string]: IAnnotator;
+}
 
 sxsAnnotatorAutocomplete.$inject = ['$timeout', 'modelSvc', 'appState'];
 

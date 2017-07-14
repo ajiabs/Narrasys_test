@@ -2,6 +2,8 @@
  * Created by githop on 1/16/17.
  */
 
+import {IMetaProps} from '../../interfaces';
+import {commonMetaProps} from './index';
 /**
  * @ngdoc service
  * @name iTT.service:playerManagerCommons
@@ -13,6 +15,26 @@
  */
 
 
+export interface IBasePlayerManager {
+  commonMetaProps: IMetaProps;
+  getPlayer(pid: string): any;
+  setPlayer(pid: string, val: any): void;
+  getMetaProp(pid: string, prop: string): any;
+  setMetaProp(validKeys: () => {}): (pid: string, prop: string, val: any) => void;
+  setInstance(pid: string, instance: object): void;
+  createMetaObj(props: object, base: object): object;
+  getMetaObj(pid: string): object;
+  getPlayerDiv(pid: string): string;
+  getInstance(predicate: () => boolean): (pid: string) => object;
+  registerStateChangeListener(stateChangeListener: (stateChangeEvent: object) => void): void;
+  unregisterStateChangeListener(cb: () => {}): void;
+  getStateChangeListeners(): any[];
+  pauseOtherPlayers(pauseFn: () => void, getPlayerState: () => number): (pid: string) => void;
+  resetPlayerManager(destroyFn: () => void): () => void;
+  renamePid(oldName: string, newName: string): void;
+  handleTimelineEnd(fn: () => void): (pid: string) => void;
+}
+
 playerManagerCommons.$inject = ['ittUtils'];
 
 export default function playerManagerCommons(ittUtils) {
@@ -23,56 +45,42 @@ export default function playerManagerCommons(ittUtils) {
     var _stateChangeCallbacks = [];
     var _type = locals.type;
 
-    var commonMetaProps = {
-      mainPlayer: false,
-      playerState: '-1',
-      div: '',
-      ready: false,
-      startAtTime: 0,
-      hasResumedFromStartAt: false,
-      duration: 0,
-      time: 0,
-      hasBeenPlayed: false,
-      bufferedPercent: 0,
-      timeMultiplier: 1,
-      resetInProgress: false,
-      autoplay: false,
-      volume: 100,
-      muted: false
+
+    const pm: IBasePlayerManager = {
+      commonMetaProps,
+      getPlayer,
+      setPlayer,
+      getMetaProp,
+      setInstance,
+      setMetaProp,
+      createMetaObj,
+      getMetaObj,
+      getPlayerDiv,
+      getInstance,
+      registerStateChangeListener,
+      unregisterStateChangeListener,
+      getStateChangeListeners,
+      pauseOtherPlayers,
+      resetPlayerManager,
+      renamePid,
+      handleTimelineEnd
     };
 
-    return {
-      commonMetaProps: commonMetaProps,
-      getPlayers: getPlayers,
-      getPlayer: getPlayer,
-      setPlayer: setPlayer,
-      getMetaProp: getMetaProp,
-      setMetaProp: setMetaProp,
-      createMetaObj: createMetaObj,
-      getMetaObj: getMetaObj,
-      getPlayerDiv: getPlayerDiv,
-      getInstance: getInstance,
-      registerStateChangeListener: registerStateChangeListener,
-      unregisterStateChangeListener: unregisterStateChangeListener,
-      getStateChangeListeners: getStateChangeListeners,
-      pauseOtherPlayers: pauseOtherPlayers,
-      resetPlayerManager: resetPlayerManager,
-      renamePid: renamePid,
-      handleTimelineEnd: handleTimelineEnd
-    };
+    return pm;
 
     function getStateChangeListeners() {
       return _stateChangeCallbacks;
-    }
-
-    function getPlayers() {
-      return _players;
     }
 
     function getPlayer(pid) {
       if (_existy(_players[pid])) {
         return _players[pid];
       }
+    }
+
+    function setInstance(pid, instance): void {
+      let playerObj = getPlayer(pid);
+      playerObj.instance = instance;
     }
 
     function setPlayer(pid, val) {
@@ -99,7 +107,7 @@ export default function playerManagerCommons(ittUtils) {
             console.log('catch read only error:', e, 'prop', prop, 'val', val);
           }
         }
-      }
+      };
     }
 
     /**
@@ -157,7 +165,7 @@ export default function playerManagerCommons(ittUtils) {
             }
           }
         });
-      }
+      };
     }
 
     /**
@@ -173,7 +181,7 @@ export default function playerManagerCommons(ittUtils) {
         if (predicate(pid) === true) {
           return getPlayer(pid).instance;
         }
-      }
+      };
     }
 
     /**
@@ -218,11 +226,11 @@ export default function playerManagerCommons(ittUtils) {
      */
     function resetPlayerManager(destroyFn) {
       return function () {
-        angular.forEach(getPlayers(), function (pm, id) {
+        angular.forEach(_getPlayers(), function (pm, id) {
           _destroyInstance(id, true, destroyFn);
         });
         _players = {};
-      }
+      };
     }
 
     function renamePid(oldName, newName) {
@@ -232,7 +240,7 @@ export default function playerManagerCommons(ittUtils) {
     function handleTimelineEnd(fn) {
       return function (pid) {
         return fn(pid);
-      }
+      };
     }
 
     /**
@@ -257,7 +265,11 @@ export default function playerManagerCommons(ittUtils) {
         setPlayer(pid, {});
       }
     }
-  }
+
+    function _getPlayers() {
+      return _players;
+    }
+  };
 }
 
 
