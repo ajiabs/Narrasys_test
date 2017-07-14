@@ -278,6 +278,11 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
         var contentType;
         var pmTypeAndMimeType = urlService.checkUrl(urlOrEmbedCode);
         var type = pmTypeAndMimeType.type;
+
+        if (type === 'wistia' && !authSvc.userHasRole('admin')) {
+          return;
+        }
+
         if (type.length > 0) {
           contentType = pmTypeAndMimeType.mimeType;
           scope.episode.replacingMasterAsset = true;

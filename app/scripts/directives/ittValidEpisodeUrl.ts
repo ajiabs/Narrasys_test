@@ -2,9 +2,9 @@
  * Created by githop on 2/21/17.
  */
 
-ittValidEpisodeUrl.$inject = ['urlService', 'ittUtils'];
+ittValidEpisodeUrl.$inject = ['urlService', 'ittUtils', 'authSvc'];
 
-export default function ittValidEpisodeUrl(urlService, ittUtils) {
+export default function ittValidEpisodeUrl(urlService, ittUtils, authSvc) {
   return {
     require: '?ngModel',
     scope: {
@@ -47,7 +47,7 @@ export default function ittValidEpisodeUrl(urlService, ittUtils) {
         } else if (urlService.isVideoUrl(viewVal)) {
           var type = urlService.checkUrl(viewVal).type;
 
-          if (type === 'html5') {
+          if (type === 'html5' || type === 'wistia' && !authSvc.userHasRole('admin')) {
             validatedFields[type] = {showInfo: true, message: _capitalize(type) + ' video currently not supported'};
             return false;
           }
