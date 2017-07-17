@@ -31,7 +31,7 @@ export abstract class BasePlayerManager {
   static createMetaObj(newProps: any): { instance: any, meta: any } {
     const metaObj = {
       instance: null,
-      meta: commonMetaProps
+      meta: Object.assign({}, commonMetaProps)
     };
 
     Object.assign(commonMetaProps, newProps);
@@ -46,7 +46,7 @@ export abstract class BasePlayerManager {
   }
 
   protected setInstance(pid: string, instance: any): void {
-    let player = this.getPlayer(pid);
+    const player = this.getPlayer(pid);
     if (existy(player)) {
       player.instance = instance;
     }
@@ -60,7 +60,7 @@ export abstract class BasePlayerManager {
   //overload
   getMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K): IWistiaMetaProps[K];
   getMetaProp(pid: string, prop: any) {
-    let player = this.getPlayer(pid);
+    const player = this.getPlayer(pid);
     if (existy(player) && existy(player.meta)) {
       return player.meta[prop];
     }
@@ -101,7 +101,7 @@ export abstract class BasePlayerManager {
   pauseOtherPlayers(pid: string): void {
     Object.keys(this.players).forEach((playerId: string) => {
       if (playerId !== pid) {
-        let otherPlayerState = this.getPlayerState(playerId);
+        const otherPlayerState = this.getPlayerState(playerId);
         if (existy(otherPlayerState)) {
           if (otherPlayerState === 'playing') {
             this.pause(playerId);
@@ -112,7 +112,7 @@ export abstract class BasePlayerManager {
   }
 
   registerStateChangeListener(cb: (statechangeEvent: object) => void): void {
-    let found = this.statechangeCallbacks.find(listener => {
+    const found = this.statechangeCallbacks.find(listener => {
       return cb.toString() === listener.toString();
     });
 
