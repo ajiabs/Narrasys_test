@@ -22,12 +22,12 @@ export class WistiaScriptLoader implements IScriptLoader {
   }
 
   private _appendScript(id, resolve): void {
-    let tag = <HTMLScriptElement> document.createElement('script');
+    const tag = <HTMLScriptElement> document.createElement('script');
     tag.setAttribute('src', this.WISTIA_HREF);
     tag.setAttribute('type', 'text/javascript');
     tag.setAttribute('async', '');
     tag.id = id;
-    let firstScriptTag: HTMLScriptElement = document.getElementsByTagName('script')[0];
+    const firstScriptTag: HTMLScriptElement = document.getElementsByTagName('script')[0];
     firstScriptTag.parentElement.insertBefore(tag, firstScriptTag);
     tag.onload = resolve;
   }
