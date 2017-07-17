@@ -53,8 +53,15 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   }
 
   static setPlayerDiv(pid: string, wistiaId: string): string {
-    //videoFoam is set on init to make video responsive.
-    return `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
+    // use just CSS and no videoFoam to attempt to fix NP-1373
+    // https://wistia.com/doc/embedding#responsive_design_with_inline_embeds
+    return `
+<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+  <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+    <div id="${pid}" class="wistia_embed wistia_async_${wistiaId}" style="height:100%;width:100%">&nbsp;</div>
+  </div>
+</div>
+`;
   }
 
   static formatStateChangeEvent(state: string, emitterId: string): {emitterId: string, state: string} {
@@ -196,7 +203,7 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
 
     const wistiaEmbedOptions = {
       playbar: isEmbed,
-      videoFoam: true,
+      videoFoam: false,
       fullscreenButton: isEmbed,
       controlsVisibleOnLoad: isEmbed,
       playbackRateControl: isEmbed,
@@ -275,6 +282,9 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   private onPlay(pid: string): void {
     this.setMetaProp(pid, 'playerState', 1);
     this.emitStateChange(pid);
+    if (pid !== this.mainPlayerId) {
+      this.pauseOtherPlayers(pid);
+    }
   }
 
   private onPause(pid: string): void {
