@@ -10,10 +10,9 @@ export default function ittMagnet($rootScope, appState, playbackService) {
     replace: true,
     scope: true,
     link: function (scope, element) {
-
+      console.log('magnet init!');
       scope.changeMagnet = function (element) {
         $rootScope.$emit('magnet.changeMagnet', element);
-
         // skip the animation on first load, and when on mobile
         if (appState.isTouchDevice || playbackService.getMetaProp('time') === 0) {
           $rootScope.$emit('magnet.jumpToMagnet');

@@ -8,9 +8,9 @@ export default function ittMagnetized($rootScope, appState) {
     replace: true,
     scope: true,
     link: function (scope, element) {
-      var aspectRatio = 16 / 9;
+      const aspectRatio = 16 / 9;
 
-      var watchMagnet = function (magnet) {
+      const watchMagnet = function (magnet) {
         // console.log("Changing magnet to ", magnet);
         if (scope.unwatch) {
           scope.unwatch();
@@ -30,7 +30,11 @@ export default function ittMagnetized($rootScope, appState) {
         }, moveToMagnet, true);
       };
 
-      var moveToMagnet = function () {
+      const moveWithTransform = (x: number, y: number, element: any): void => {
+        element.css(`transform:translate(${x}, ${y})`);
+      };
+
+      const moveToMagnet = function () {
         window.requestAnimationFrame(function () { // needs the timeout, otherwise endless digest loop
           element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute");
 
@@ -38,12 +42,20 @@ export default function ittMagnetized($rootScope, appState) {
           var diffL = scope.magnet.offset().left - element.offset().left;
           var diffW = scope.magnet.width() - element.width();
 
+
           if (Math.abs(diffT) > 1 || Math.abs(diffL) > 1) {
-            element.offset({
-              top: element.offset().top + (diffT / 4),
-              left: element.offset().left + (diffL / 4)
-            });
+            console.log('setting offset, tl');
+            const y = element.offset().top + (diffT / 4);
+            const x = element.offset().left + (diffL / 4);
+            // element.offset({
+            //   top: element.offset().top + (diffT / 4),
+            //   left: element.offset().left + (diffL / 4)
+            // });
+
+            moveWithTransform(x, y, element);
+
           } else {
+            console.log('setting offset from offset');
             element.offset(scope.magnet.offset());
           }
 
@@ -59,7 +71,7 @@ export default function ittMagnetized($rootScope, appState) {
         watchMagnet(magnet);
       });
 
-      var jumpToMagnet = function () {
+      const jumpToMagnet = function () {
         element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute");
         element.offset(scope.magnet.offset());
         element.width(Math.ceil(scope.magnet.width()));
