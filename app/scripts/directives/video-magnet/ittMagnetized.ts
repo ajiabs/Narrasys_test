@@ -8,9 +8,9 @@ export default function ittMagnetized($rootScope, appState) {
     replace: true,
     scope: true,
     link: function (scope, element) {
-      const aspectRatio = 16 / 9;
+      var aspectRatio = 16 / 9;
 
-      const watchMagnet = function (magnet) {
+      var watchMagnet = function (magnet) {
         // console.log("Changing magnet to ", magnet);
         if (scope.unwatch) {
           scope.unwatch();
@@ -30,11 +30,12 @@ export default function ittMagnetized($rootScope, appState) {
         }, moveToMagnet, true);
       };
 
-      const moveWithTransform = (x: number, y: number, element: any): void => {
-        element.css(`transform:translate(${x}, ${y})`);
+      const cssTransform = (x: number, y: number, elm: any) => {
+        // elm.css('trasnform-origin: -100%, -100%')
+        elm.css(`transform: translate(${x}, ${y})`);
       };
 
-      const moveToMagnet = function () {
+      var moveToMagnet = function () {
         window.requestAnimationFrame(function () { // needs the timeout, otherwise endless digest loop
           element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute");
 
@@ -42,21 +43,19 @@ export default function ittMagnetized($rootScope, appState) {
           var diffL = scope.magnet.offset().left - element.offset().left;
           var diffW = scope.magnet.width() - element.width();
 
+          const elmBcr = element[0].getBoundingClientRect();
 
           if (Math.abs(diffT) > 1 || Math.abs(diffL) > 1) {
-            console.log('setting offset, tl');
-            const y = element.offset().top + (diffT / 4);
-            const x = element.offset().left + (diffL / 4);
             // element.offset({
             //   top: element.offset().top + (diffT / 4),
             //   left: element.offset().left + (diffL / 4)
             // });
 
-            moveWithTransform(x, y, element);
+            cssTransform(elmBcr.left + (diffL / 4), elmBcr.top + (diffT / 4), element);
 
           } else {
-            console.log('setting offset from offset');
-            element.offset(scope.magnet.offset());
+            cssTransform(elmBcr.left, elmBcr.top, element);
+            // element.offset(scope.magnet.offset());
           }
 
           if (Math.abs(diffW) > 4) {
@@ -71,7 +70,7 @@ export default function ittMagnetized($rootScope, appState) {
         watchMagnet(magnet);
       });
 
-      const jumpToMagnet = function () {
+      var jumpToMagnet = function () {
         element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute");
         element.offset(scope.magnet.offset());
         element.width(Math.ceil(scope.magnet.width()));
