@@ -14,7 +14,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
 
 @mixin chef-ann-foundation-body {
   font-family: 'Muli',  sans-serif;
-  font-weight:  400;
+  font-weight:  300;
   color: $chef-ann-foundationPrimary;
 }
 @mixin chef-ann-foundation-pq {
@@ -26,29 +26,29 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
 
 .chef-ann-foundation {
   background-image: url('/images/customer/CAF_Player_Background.svg');
-           
-  
+
+
  .landingscreen {
    h1 {
      @include banner-pq('Muli', $chef-ann-foundationAccent, 2.5vw);
    }
-  
+
    .introtext {
      padding-bottom: 2em;
    }
-  
+
    #episode--description {
      display: none;
 	 }
  }
-      
+
   //custom altPane BG, landingscreen
-  
-  
+
+
   .endingscreen {
     p {
       @include banner-pq('Muli', $chef-ann-foundationAccent, 2.5vw);
-    }   
+    }
   }
   //search view
   .searchPanel__wrapper {
@@ -59,7 +59,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
       color: $chef-ann-foundationLink;
     }
   }
-  
+
   .searchResults {
     @include chef-ann-foundation-header;
     .item__title--link, .item__link--fake-link, .item__link--escape-link {
@@ -70,37 +70,37 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
       }
     }
   }
-  
+
   //item overrides
   .item__title {
     @include chef-ann-foundation-header;
   }
-  
+
   .item__title--link, .item__title--file {
     a {
       color: $chef-ann-foundationLink;
     }
   }
-  
+
   .item__link--fake-link {
     @include chef-ann-foundation-body;
     color: $chef-ann-foundationLink;
   }
-  
+
   .item__text {
     @include chef-ann-foundation-body;
   }
-  
+
   .item__text--h2 {
     @include chef-ann-foundation-header;
   }
-  
+
   .item__text--transmedia, .item__text--definition {
     h1, h2, h3 {
       @include chef-ann-foundation-header;
     }
   }
-  
+
   .item .item__text--pullquote {
     @include chef-ann-foundation-pq;
     &:before {
@@ -109,12 +109,12 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
       color: $chef-ann-foundationAccent;
     }
   }
-  
+
   .item__title--image-caption, .item__title--image-caption-sliding,
   .item__text--image-caption, .item__text--image-caption-sliding {
     color: $chef-ann-foundationSecondary;
   }
-  
+
   .item__link--escape-link {
     @include chef-ann-foundation-body;
     color: $chef-ann-foundationLink;
@@ -122,7 +122,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
     color: $chef-ann-foundationPrimary;
     }
   }
-  
+
   //timestamp
   .item {
     .displayTime, .startTime {
@@ -133,7 +133,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
       }
     }
   }
-  //invert 
+  //invert
   .item {
     &.colorInvert {
       background-color: $chef-ann-foundationPrimary !important;
@@ -143,7 +143,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
           color: $chef-ann-foundationSecondary !important;
         }
       }
-      
+
       h1, h2, h3 {
         color: $chef-ann-foundationSecondary !important;
       }
@@ -154,11 +154,11 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
     .highlightSolid.item.isCurrent {
       background-color: $chef-ann-foundationHighlight;
     }
-  
+
     .highlightSide.item.isCurrent {
       border-left: 10px solid $chef-ann-foundationHighlight;
     }
-  
+
     .highlightBorder.item.isCurrent {
       border: 2px solid $chef-ann-foundationHighlight;
     }
@@ -169,7 +169,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
       box-shadow: 0 0 8px rgba(102,46,107, 0.3);
     }
   }
-  
+
   //layout specific overrides
   .centered-pro {
     .banner-pull-quote {
@@ -178,45 +178,45 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
       }
     }
   }
-  
+
   //pro two col: centerVV
   //non-pro two col: pip, cornerH, cornerV, twocol
   //non-pro one col: centered, onecol
   .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
     .static-bg__main {
-      
+
     }
     .static-bg__alt {
-      
+
     }
-    
+
     .item__title--link, .item__title--file {
       @include chef-ann-foundation-body;
     }
-    
+
     .item__title--link.title--link-embed {
       @include chef-ann-foundation-body;
     }
   }
-  
+
   .centerVV-mondrian {
     .static-bg__main {
       border: 4px solid $chef-ann-foundationPrimary;
       background-color: $chef-ann-foundationAccent;
     }
-    
+
     .static-bg__alt {
-      
+
     }
     .altPane {
       background-color: transparent;
     }
-    
+
     .mainPane {
       .item {
         background-color:  $chef-ann-foundationPrimary;
       }
-      
+
       .item__text, .item__title, .item__title a {
         color: $chef-ann-foundationSecondary;
       }
@@ -228,7 +228,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
           color: $chef-ann-foundationSecondary;
         }
       }
-      
+
       .item {
         &.colorInvert {
           background-color: $chef-ann-foundationSecondary !important;
@@ -238,7 +238,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
               color: $chef-ann-foundationPrimary !important;
             }
           }
-          
+
           h1, h2, h3 {
             color: $chef-ann-foundationPrimary !important;
           }
@@ -255,11 +255,11 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
     .item__title--image-thumbnail a {
       @include chef-ann-foundation-header;
     }
-    
+
     .item__link--fake-link {
       color: $chef-ann-foundationSecondary;
     }
-    
+
     .item__link--escape-link {
       @include chef-ann-foundation-header;
       color: $chef-ann-foundationSecondary;
@@ -267,7 +267,7 @@ $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
         color: $chef-ann-foundationAccent;
       }
     }
-    
+
     .item {
       .displayTime, .startTime {
         @include chef-ann-foundation-header;
