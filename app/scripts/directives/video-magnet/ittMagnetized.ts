@@ -1,8 +1,8 @@
 'use strict';
 
 // TODO: remove dependence on jQuery? (lots of it here)
-ittMagnetized.$inject = ['$rootScope', 'appState'];
-export default function ittMagnetized($rootScope, appState) {
+ittMagnetized.$inject = ['$rootScope', '$timeout', 'appState'];
+export default function ittMagnetized($rootScope, $timeout, appState) {
   return {
     restrict: 'A',
     replace: true,
@@ -13,30 +13,41 @@ export default function ittMagnetized($rootScope, appState) {
       const HEIGHT = 480;
       element.css('top', 0);
       element.css('left', 0);
-      element.css('position', 'absolute');
+      element.css('position', 'fixed');
       element.css('will-change', 'transform');
+      // element.css('transform-origin', 'top left');
       element.width(WIDTH);
       element.height(HEIGHT);
-
 
       $rootScope.$on('magnet.changeMagnet', (evt, magnet) => jumpToMagnet(magnet, false));
       $rootScope.$on('magnet.jumpToMagnet', (evt, magnet) => jumpToMagnet(magnet, true));
 
       function jumpToMagnet (magnet, jump: boolean) {
-        const {top, left, width, height} = magnet[0].getBoundingClientRect();
-
-        if (jump === true) {
-          element.css('transition-duration', '0.25s');
+        if (magnet == null) {
+          return;
         }
+        $timeout(() => {
+          const {top, left, width} = magnet[0].getBoundingClientRect();
 
-        const heightFactor = (width / WIDTH) / aspectRatio;
-        const scaleFactor = Math.min(width / WIDTH, heightFactor);
-        console.log('scaling?', scaleFactor);
+          if (jump === true) {
+            element.css('transition-duration', '0.25s');
+          }
 
-        element.css('transform', `translate(${left}px, ${top}px)`);
+          // const scaleX = width / WIDTH;
+          // const scaleY = height / HEIGHT;
+          // console.log('magnet w', width, 'el width', WIDTH);
+          // console.log('magnet H', height, 'el H', HEIGHT);
+          // console.log('aspect W', width / aspectRatio);
+          // console.log('scales', scaleX, scaleY);
+          // console.log('bcr', left, top);
 
-        // element.width(Math.ceil(width));
-        // element.height(Math.ceil(width / aspectRatio));
+          element.css('transform', `translate(${left}px, ${top}px)`);
+          // element.css('transform', `scale(${scaleX}) translate(${left}px, ${top}px)`);
+
+          element.width(Math.ceil(width));
+          element.height(Math.ceil(width / aspectRatio));
+        }, 20);
+
       }
 
       // cleanup watchers on destroy
