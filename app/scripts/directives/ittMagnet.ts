@@ -2,18 +2,23 @@
 // In watch mode (only), also watches the window size and tries to keep the video from overflowing the window height
 
 // TODO: remove dependence on jQuery?  (.is(:visible))
-ittMagnet.$inject = ['$rootScope', 'appState', 'playbackService'];
+ittMagnet.$inject = ['$rootScope', '$timeout', 'appState', 'playbackService'];
 
-export default function ittMagnet($rootScope, appState, playbackService) {
+export default function ittMagnet($rootScope, $timeout, appState, playbackService) {
   return {
     restrict: 'A',
     replace: true,
     scope: true,
     link: function (scope, element) {
 
-      // window.addEventListener('resize', () => {
-      //   $rootScope.$emit('magnet.changeMagnet', element);
-      // });
+      let resizeTimer;
+
+      window.addEventListener('resize', () => {
+        console.log('resize event!');
+
+        $timeout.cancel(resizeTimer);
+        resizeTimer = $timeout(() => $rootScope.$emit('magnet.changeMagnet', element), 250);
+      });
 
       scope.changeMagnet = function (element) {
         $rootScope.$emit('magnet.changeMagnet', element);
@@ -39,17 +44,17 @@ export default function ittMagnet($rootScope, appState, playbackService) {
             v: element.is(':visible')
           };
         }, function () {
-          console.log('watch mode guy');
+          // console.log('watch mode guy');
           // we want the video to be as wide as possible without overflowing the window.
           // And dont' want to set the height directly, just the width. So math:
-          // var win = angular.element(window);
-          // var maxAllowableHeight = win.height() - 46; // TOOLBAR HEIGHT (plus some slop)
-          // if (win.width() / maxAllowableHeight > (16 / 9)) {
-          //   element.width(16 / 9 * maxAllowableHeight);
-          // } else {
-          //   element.width(win.width());
-          // }
-          // scope.changeMagnet(element);
+          var win = angular.element(window);
+          var maxAllowableHeight = win.height() - 46; // TOOLBAR HEIGHT (plus some slop)
+          if (win.width() / maxAllowableHeight > (16 / 9)) {
+            element.width(16 / 9 * maxAllowableHeight);
+          } else {
+            element.width(win.width());
+          }
+          scope.changeMagnet(element);
         }, true);
       }
 
