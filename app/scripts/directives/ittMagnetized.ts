@@ -13,20 +13,29 @@ export default function ittMagnetized($rootScope, $timeout) {
       const TRANSITION_DURATION = '0.25s';
       element.css('top', 0);
       element.css('left', 0);
-      element.css('position', 'fixed');
+      element.css('position', 'absolute');
       element.css('will-change', 'transform');
       element.css('transform-origin', 'top left');
       element.width(WIDTH);
       element.height(HEIGHT);
 
+
       $rootScope.$on('magnet.changeMagnet', (evt, magnet) => jumpToMagnet(magnet, false));
       $rootScope.$on('magnet.jumpToMagnet', (evt, magnet) => jumpToMagnet(magnet, true));
 
       function jumpToMagnet (magnet, animateTransition: boolean) {
+
         if (magnet == null) {
           return;
         }
         $timeout(() => {
+
+          if (magnet[0].id === 'searchVideoMagnet') {
+            element.css('position', 'fixed');
+          } else {
+            element.css('position', 'absolute');
+          }
+
           const {top, left, width} = magnet[0].getBoundingClientRect();
 
           if (animateTransition === true) {
