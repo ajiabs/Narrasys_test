@@ -33,9 +33,9 @@ export default function ittMagnetized($rootScope, $timeout) {
             element.css('transition-duration', TRANSITION_DURATION);
           }
 
-          const scaleX = width / WIDTH;
+          const scaleFactor = width / WIDTH;
 
-          element.css('transform', `translate(${left}px, ${top}px) scale(${scaleX})`);
+          element.css('transform', `translate(${left}px, ${top}px) scale(${scaleFactor})`);
 
           // element.width(Math.ceil(width));
           // element.height(Math.ceil(width / aspectRatio));
