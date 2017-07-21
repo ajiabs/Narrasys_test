@@ -11,14 +11,11 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
     scope: true,
     link: function (scope, element) {
 
-      let resizeTimer;
 
-      window.addEventListener('resize', () => {
-        console.log('resize event!');
-
-        $timeout.cancel(resizeTimer);
-        resizeTimer = $timeout(() => $rootScope.$emit('magnet.changeMagnet', element), 250);
-      });
+      window.addEventListener('resize', debounce(() => {
+        $rootScope.$emit('magnet.changeMagnet', element);
+        scope.$digest();
+      }, 250));
 
       scope.changeMagnet = function (element) {
         $rootScope.$emit('magnet.changeMagnet', element);
@@ -47,8 +44,8 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
           // console.log('watch mode guy');
           // we want the video to be as wide as possible without overflowing the window.
           // And dont' want to set the height directly, just the width. So math:
-          var win = angular.element(window);
-          var maxAllowableHeight = win.height() - 46; // TOOLBAR HEIGHT (plus some slop)
+          const win = angular.element(window);
+          const maxAllowableHeight = win.height() - 46; // TOOLBAR HEIGHT (plus some slop)
           if (win.width() / maxAllowableHeight > (16 / 9)) {
             element.width(16 / 9 * maxAllowableHeight);
           } else {
@@ -65,6 +62,25 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
           scope.unwatchSize();
         }
       });
+
+      function debounce(func, wait, immediate?) {
+        let timeout;
+        return function () {
+          const context = this, args = arguments;
+          const later = function () {
+            timeout = null;
+            if (!immediate) {
+              func.apply(context, args);
+            }
+          };
+          const callNow = immediate && !timeout;
+          $timeout.cancel(timeout);
+          timeout = $timeout(later, wait);
+          if (callNow) {
+            func.apply(context, args);
+          }
+        };
+      }
     }
   };
 }

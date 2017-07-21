@@ -2,7 +2,8 @@
 
 // TODO: remove dependence on jQuery? (lots of it here)
 ittMagnetized.$inject = ['$rootScope', '$timeout'];
-export default function ittMagnetized($rootScope, $timeout) {
+export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService) {
+
   return {
     restrict: 'A',
     replace: true,
@@ -22,14 +23,12 @@ export default function ittMagnetized($rootScope, $timeout) {
 
       $rootScope.$on('magnet.changeMagnet', (evt, magnet) => jumpToMagnet(magnet, false));
       $rootScope.$on('magnet.jumpToMagnet', (evt, magnet) => jumpToMagnet(magnet, true));
-
       function jumpToMagnet (magnet, animateTransition: boolean) {
 
         if (magnet == null) {
           return;
         }
         $timeout(() => {
-
           if (magnet[0].id === 'searchVideoMagnet') {
             element.css('position', 'fixed');
           } else {
@@ -39,12 +38,15 @@ export default function ittMagnetized($rootScope, $timeout) {
           const {top, left, width} = magnet[0].getBoundingClientRect();
 
           if (animateTransition === true) {
+            element.css('transition-timing-function', 'cubic-bezier(0.4, 0, 1, 1)');
             element.css('transition-duration', TRANSITION_DURATION);
           }
 
           const scaleFactor = width / WIDTH;
-
-          element.css('transform', `translate(${left}px, ${top}px) scale(${scaleFactor})`);
+          if (scaleFactor === 0) {
+            return;
+          }
+          element.css('transform', `translate(${Math.abs(left)}px, ${Math.abs(top)}px) scale(${scaleFactor})`);
 
           // element.width(Math.ceil(width));
           // element.height(Math.ceil(width / aspectRatio));
