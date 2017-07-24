@@ -1,20 +1,21 @@
 <div class="episode episode-gwsb" ng-class="episode.styleCss">
 
-	<div class="fill gwsb-seal">
-		<div class="fill"></div>
-	</div>
-	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
-	<span ng-include="'templates/episode/components/watchmode.html'"></span>
-	<span ng-repeat="scene in episode.scenes | isCurrent" ng-include="'templates/episode/components/discovermode.html'"></span>
-	<span ng-include="'templates/episode/components/video.html'"></span>
-	<span ng-include="'templates/episode/components/windowfg.html'"></span>
+  <div class="fill gwsb-seal">
+    <div class="fill"></div>
+  </div>
+  <span ng-include="'templates/episode/components/reviewmode.html'"></span>
+  <span ng-include="'templates/episode/components/watchmode.html'"></span>
+  <span ng-repeat="scene in currScene = (episode.scenes | isCurrent)"
+        ng-include="'templates/episode/components/discovermode.html'"></span>
+  <itt-video-container episode="episode" hide-video="currScene[0].hide_video"></itt-video-container>
+  <span ng-include="'templates/episode/components/windowfg.html'"></span>
 
-	<div ng-if="appState.viewMode != 'watch'" class="branding footer">
-		<span class="copyright" ng-include="'templates/copyright.html'"></span>
-	</div>
+  <div ng-if="appState.viewMode != 'watch'" class="branding footer">
+    <span class="copyright" ng-include="'templates/copyright.html'"></span>
+  </div>
 
-	<div class="banner-logo">
-		<img src="/images/customer/gw-logo.svg" alt="The George Washington University">
-	</div>
+  <div class="banner-logo">
+    <img src="/images/customer/gw-logo.svg" alt="The George Washington University">
+  </div>
 
 </div>

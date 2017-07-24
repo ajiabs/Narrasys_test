@@ -1085,7 +1085,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'asset_id',
       'link_image_id',
       'annotation_image_id',
-      'avatar_id'
+      'avatar_id',
+      'hide_video'
     ];
 
     prepped.type = evt._type;

@@ -38,8 +38,9 @@ export const genHtml = (nameSpace:string, brandLogo:string = 'Narrasys_brand_log
 
   <span ng-include="'templates/episode/components/reviewmode.html'"></span>
   <span ng-include="'templates/episode/components/watchmode.html'"></span>
-  <span ng-repeat="scene in episode.scenes | isCurrent" ng-include="'templates/episode/components/discovermode.html'"></span>
-  <span ng-include="'templates/episode/components/video.html'"></span>
+  <span ng-repeat="scene in currScene = (episode.scenes | isCurrent)"
+        ng-include="'templates/episode/components/discovermode.html'"></span>
+  <itt-video-container episode="episode" hide-video="currScene[0].hide_video"></itt-video-container>
   <span ng-include="'templates/episode/components/windowfg.html'"></span>
 	
 	<div ng-if="appState.viewMode != 'watch'" class="${handleFooterClass(nameSpace)}">

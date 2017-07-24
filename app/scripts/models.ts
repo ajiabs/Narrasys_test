@@ -117,6 +117,7 @@ export class IAsset {
   plugins_count: number;
   container_id: string;
   user_id: string;
+  mediaSrcArr?: string;
 }
 
 export class IEvent {
@@ -221,8 +222,9 @@ export class IPlugin extends IEvent {
 export class IScene extends IEvent {
   type: 'Scene';
   _type: 'Scene';
-  _internal?: boolean; //client only
   cur_episode_id: string;
+  hide_video: boolean = false;
+  _internal?: boolean; //client only
 }
 
 export class IText extends IEvent {

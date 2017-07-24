@@ -2,6 +2,8 @@
  * Created by githop on 3/30/17.
  */
 
+/* tslint:disable */
+
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
 import {AssetUploader} from './ittAssetUploader';
@@ -73,7 +75,7 @@ import ittValidationTip from './ittValidationTip';
 import ittValidEpisodeUrl from './ittValidEpisodeUrl';
 import ittValidPathslug from './ittValidPathslug';
 import ittValidUrl from './ittValidUrl';
-import ittVideo from './ittVideo';
+import ittVideo from './video/ittVideo';
 import ittVideoPositionSelect from './ittVideoPositionSelect';
 import ittVolumeSlider from './ittVolumeSlider';
 import ittWidthWatch from './ittWidthWatch';
@@ -86,6 +88,8 @@ import sxsInputTime from './sxsInputTime';
 import {EnableSocialshare, IttSocialShare} from './socialshare/index';
 import {Filedrop} from './ittFiledrop';
 import {UploadProgress} from './ittUploadProgress';
+import {VideoContainer} from './video/ittVideoContainer';
+import {ittHideVideoField} from './ittHideVideoField';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -173,6 +177,8 @@ let directivesModule = angular.module('itt.directives', [])
   .component(IttSocialShare.Name, new IttSocialShare())
   .component(EnableSocialshare.Name, new EnableSocialshare())
   .component(Filedrop.Name, new Filedrop())
-  .component(UploadProgress.Name, new UploadProgress());
+  .component(UploadProgress.Name, new UploadProgress())
+  .component(VideoContainer.Name, new VideoContainer())
+  .directive('ittHideVideoField', ittHideVideoField);
 
 export default directivesModule;

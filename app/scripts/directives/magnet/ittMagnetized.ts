@@ -10,7 +10,7 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, 
     scope: true,
     link: function (scope, element) {
       const WIDTH = 854;
-      const HEIGHT = 480;
+      const HEIGHT = 478;
       const TRANSITION_DURATION = '0.25s';
       element.css('top', 0);
       element.css('left', 0);
@@ -21,8 +21,8 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, 
       element.height(HEIGHT);
 
 
-      $rootScope.$on('magnet.changeMagnet', (evt, magnet) => jumpToMagnet(magnet, false));
-      $rootScope.$on('magnet.jumpToMagnet', (evt, magnet) => jumpToMagnet(magnet, true));
+      $rootScope.$on('magnet.changeMagnet', (evt, magnet) => jumpToMagnet(magnet, true));
+      $rootScope.$on('magnet.jumpToMagnet', (evt, magnet) => jumpToMagnet(magnet, false));
       function jumpToMagnet (magnet, animateTransition: boolean) {
 
         if (magnet == null) {
@@ -40,6 +40,9 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, 
           if (animateTransition === true) {
             element.css('transition-timing-function', 'cubic-bezier(0.4, 0, 1, 1)');
             element.css('transition-duration', TRANSITION_DURATION);
+          } else {
+            element.css('transition-duration', 'unset');
+            element.css('transition-timing-function', 'unset');
           }
 
           const scaleFactor = width / WIDTH;

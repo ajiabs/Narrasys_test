@@ -1,25 +1,25 @@
-<div itt-magnetized class="pane videoContainer">
-
-	<span ng-if="episode.swap && episode.replacingMasterAsset" style="visibility: hidden;">
+<div ng-hide="$ctrl.hideVideo" itt-magnetized class="pane videoContainer">
+	<span ng-if="$ctrl.episode.swap && $ctrl.episode.replacingMasterAsset" style="visibility: hidden;">
 		<itt-video class="video contentLayer"
-				   media-src-arr="episode.swap.mediaSrcArr"
-				   poster="episode.poster"
-				   player-id="episode.swap._id"
-				   main-player="true">
+               media-src-arr="$ctrl.episode.swap.mediaSrcArr"
+               poster="$ctrl.episode.poster"
+               player-id="$ctrl.episode.swap._id"
+               main-player="true">
 		</itt-video>
 	</span>
-	<span ng-if="episode.masterAsset && !episode.replacingMasterAsset">
-		<!--<div class="video contentLayer" itt-video="episode.masterAsset" poster="episode.poster"></div>-->
+  <span ng-if="$ctrl.episode.masterAsset && !$ctrl.episode.replacingMasterAsset">
+		<!--<div class="video contentLayer" itt-video="$ctrl.episode.masterAsset" poster="$ctrl.episode.poster"></div>-->
 		<itt-video class="video contentLayer"
-			media-src-arr="episode.masterAsset.mediaSrcArr"
-			poster="episode.poster"
-			player-id="episode.masterAsset._id"
-			main-player="true">
+               media-src-arr="$ctrl.episode.masterAsset.mediaSrcArr"
+               poster="$ctrl.episode.poster"
+               player-id="$ctrl.episode.masterAsset._id"
+               main-player="true">
 		</itt-video>
 	</span>
 
-	<div class="pane fill overlay fgLayer">
-		<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in episode.items | itemLayout:'videoOverlay' | isCurrent">
-		</div>
-	</div>
+  <div class="pane fill overlay fgLayer">
+    <div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate"
+         ng-repeat="item in $ctrl.episode.items | itemLayout:'videoOverlay' | isCurrent">
+    </div>
+  </div>
 </div>

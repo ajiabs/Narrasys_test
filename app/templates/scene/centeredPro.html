@@ -3,7 +3,7 @@
 		 ng-repeat="item in (contentItems | isCurrent | filter:{templateUrl: 'templates/item/text-h1.html'} )">
 	</div>
 	<div class="col">
-		<div itt-magnet class="videoMagnet">
+		<div itt-magnet class="videoMagnet" ng-if="!scene.hide_video">
 			<img src="/images/aspectratiopreserver-16x9.gif">
 		</div>
 		<div class="pane mainPane">

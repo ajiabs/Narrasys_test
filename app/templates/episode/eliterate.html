@@ -1,24 +1,25 @@
 <div class="episode episode-eliterate" ng-class="episode.styleCss">
 
-	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
-	<span ng-include="'templates/episode/components/watchmode.html'"></span>
-	<span ng-repeat="scene in episode.scenes | isCurrent" ng-include="'templates/episode/components/discovermode.html'"></span>
-	<span ng-include="'templates/episode/components/video.html'"></span>
-	<span ng-include="'templates/episode/components/windowfg.html'"></span>
+  <span ng-include="'templates/episode/components/reviewmode.html'"></span>
+  <span ng-include="'templates/episode/components/watchmode.html'"></span>
+  <span ng-repeat="scene in currScene = (episode.scenes | isCurrent)"
+        ng-include="'templates/episode/components/discovermode.html'"></span>
+  <itt-video-container episode="episode" hide-video="currScene[0].hide_video"></itt-video-container>
+  <span ng-include="'templates/episode/components/windowfg.html'"></span>
 
-	<div ng-if="appState.viewMode != 'watch'" class="branding footer">
-		<a class="eliterate logo" href="//www.mindwires.com" target="_blank">
-			<img src="/images/customer/eliterate-mindwires.svg" alt="Mindwires logo">
-		</a>
+  <div ng-if="appState.viewMode != 'watch'" class="branding footer">
+    <a class="eliterate logo" href="//www.mindwires.com" target="_blank">
+      <img src="/images/customer/eliterate-mindwires.svg" alt="Mindwires logo">
+    </a>
 
-		<a class="itt logo" href="//inthetelling.com" target="_blank">
-			<img src="/images/itt.svg" alt="In The Telling logo">
-		</a>
-		<span class="copyright" ng-include="'templates/copyright.html'"></span>
+    <a class="itt logo" href="//inthetelling.com" target="_blank">
+      <img src="/images/itt.svg" alt="In The Telling logo">
+    </a>
+    <span class="copyright" ng-include="'templates/copyright.html'"></span>
 
-	</div>
-	<div class="banner-logo">
-		<img src="/images/customer/eliterate-logo.svg" alt="E-Literate">
-	</div>
+  </div>
+  <div class="banner-logo">
+    <img src="/images/customer/eliterate-logo.svg" alt="E-Literate">
+  </div>
 
 </div>

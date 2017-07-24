@@ -1,6 +1,6 @@
-import {IDataSvc} from '../services/dataSvc';
-import {IModelSvc} from '../services/modelSvc';
-import {ITimelineSvc} from '../services/timelineSvc';
+import {IDataSvc} from '../../services/dataSvc';
+import {IModelSvc} from '../../services/modelSvc';
+import {ITimelineSvc} from '../../services/timelineSvc';
 /* tslint:disable:prefer-const */
 export default function ittVideo() {
   return {

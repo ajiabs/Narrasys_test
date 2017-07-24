@@ -23,11 +23,11 @@
 	</div>
 	<div ng-class="{padForBottomToolbar: appState.videoControlsActive}">
 		<div class="videoPositioner">
-			<div itt-magnet class="videoMagnet">
+			<div itt-magnet class="videoMagnet" ng-if="!scene.hide_video">
 				<img src="/images/aspectratiopreserver-16x9.gif">
 			</div>
 		</div>
-		<div class="pane mainPane">
+		<div class="pane mainPane" ng-class="{'--hide-video': scene.hide_video }">
 			<div class="fill bgLayer">
 				<div class="item animate" ng-repeat="item in (mainBgItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>

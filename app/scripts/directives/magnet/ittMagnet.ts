@@ -12,10 +12,10 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
     link: function (scope, element) {
 
 
-      window.addEventListener('resize', debounce(() => {
-        $rootScope.$emit('magnet.changeMagnet', element);
+      window.addEventListener('resize', () => {
+        $rootScope.$emit('magnet.jumpToMagnet', element);
         scope.$digest();
-      }, 250));
+      });
 
       scope.changeMagnet = function (element) {
         $rootScope.$emit('magnet.changeMagnet', element);

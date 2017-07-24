@@ -640,6 +640,10 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	z-index: 3;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 	padding: 0.5em;
+
+  &.--hide-video {
+    right: 20%;
+  }
 }
 
 .scene.pip .mainPane .content {

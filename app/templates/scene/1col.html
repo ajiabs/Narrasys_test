@@ -1,5 +1,5 @@
 <div class="scene onecol" ng-class="scene.styleCss + ' '+ scene.state">
-	<div itt-magnet class="videoMagnet" ng-class="{hasLeftSidebar: mainContentHasLeftSidebar, hasRightSidebar: mainContentHasRightSidebar}">
+	<div ng-if="!scene.hide_video" itt-magnet class="videoMagnet" ng-class="{hasLeftSidebar: mainContentHasLeftSidebar, hasRightSidebar: mainContentHasRightSidebar}">
 		<img src="/images/aspectratiopreserver-16x9.gif">
 	</div>
 	<div class="col">
