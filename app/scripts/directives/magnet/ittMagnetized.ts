@@ -1,8 +1,8 @@
 'use strict';
 
 // TODO: remove dependence on jQuery? (lots of it here)
-ittMagnetized.$inject = ['$rootScope', '$timeout'];
-export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService) {
+ittMagnetized.$inject = ['$rootScope', '$timeout', 'appState'];
+export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, appState) {
 
   return {
     restrict: 'A',
@@ -29,7 +29,7 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService) 
           return;
         }
         $timeout(() => {
-          if (magnet[0].id === 'searchVideoMagnet') {
+          if (appState.viewMode === 'review') {
             element.css('position', 'fixed');
           } else {
             element.css('position', 'absolute');
