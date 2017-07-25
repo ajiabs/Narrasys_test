@@ -2,27 +2,30 @@
 // In watch mode (only), also watches the window size and tries to keep the video from overflowing the window height
 
 // TODO: remove dependence on jQuery?  (.is(:visible))
-ittMagnet.$inject = ['$rootScope', '$timeout', 'appState', 'playbackService'];
+ittMagnet.$inject = ['$rootScope', 'appState', 'playbackService'];
 
-export default function ittMagnet($rootScope, $timeout, appState, playbackService) {
+export default function ittMagnet($rootScope, appState, playbackService) {
   return {
     restrict: 'A',
     replace: true,
     scope: true,
     link: function (scope, element) {
 
-
-      window.addEventListener('resize', debounce(() => {
-        $rootScope.$emit('magnet.changeMagnet', element);
+      window.addEventListener('resize', () => {
+        $rootScope.$emit('magnet.jumpToMagnet', element);
         scope.$digest();
-      }, 250));
+      });
 
       scope.changeMagnet = function (element) {
         $rootScope.$emit('magnet.changeMagnet', element);
         // skip the animation on first load, and when on mobile
+
         if (appState.isTouchDevice || playbackService.getMetaProp('time') === 0) {
           $rootScope.$emit('magnet.jumpToMagnet', element);
+          return;
         }
+
+        $rootScope.$emit('magnet.changeMagnet', element);
       };
 
       scope.unwatchVisibility = scope.$watch(function () {
@@ -62,25 +65,6 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
           scope.unwatchSize();
         }
       });
-
-      function debounce(func, wait, immediate?) {
-        let timeout;
-        return function () {
-          const context = this, args = arguments;
-          const later = function () {
-            timeout = null;
-            if (!immediate) {
-              func.apply(context, args);
-            }
-          };
-          const callNow = immediate && !timeout;
-          $timeout.cancel(timeout);
-          timeout = $timeout(later, wait);
-          if (callNow) {
-            func.apply(context, args);
-          }
-        };
-      }
     }
   };
 }
