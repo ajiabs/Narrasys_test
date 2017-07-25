@@ -20,7 +20,6 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, 
       element.width(WIDTH);
       element.height(HEIGHT);
 
-
       $rootScope.$on('magnet.changeMagnet', (evt, magnet) => jumpToMagnet(magnet, true));
       $rootScope.$on('magnet.jumpToMagnet', (evt, magnet) => jumpToMagnet(magnet, false));
       function jumpToMagnet (magnet, animateTransition: boolean) {
