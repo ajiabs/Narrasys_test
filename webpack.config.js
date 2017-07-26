@@ -69,7 +69,10 @@ function configWp(env) {
               },
             },
             {
-              loader: 'html-loader'
+              loader: 'html-loader',
+              options: {
+                minimize: !!env.prod
+              }
             }
           ]
         },
