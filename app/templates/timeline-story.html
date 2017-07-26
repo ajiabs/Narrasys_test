@@ -51,7 +51,7 @@
 						<div class="tip" ng-show="seekHandleVisible">{{willSeekTo | asTime}}</div>
 					</div>
 					<div class="tooltip" ng-if="eventGroup.showTooltip" ng-repeat="eventGroup in timeline.displayMarkedEvents" ng-style="{left: markerPercent(eventGroup.start_time)+'%'}">
-						<span class="content">{{eventGroup.toolTipText}}</span>
+						<span class="content" ng-bind-html="eventGroup.toolTipText"></span>
 					</div>
 
 					<!-- draggable handles for start/end time editing. TODO make draggable, move them somewhere
