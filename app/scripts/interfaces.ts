@@ -1,3 +1,4 @@
+export {IAnalyticsSvc} from './services/analyticsSvc';
 export {IAnnotator, IAnnotators} from './directives/sxsAnnotatorAutocomplete';
 export {ITimelineSvc} from './services/timelineSvc';
 export {IMetaObj, IMetaProps} from './services/basePlayerManager/index';

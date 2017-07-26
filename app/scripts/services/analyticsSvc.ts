@@ -128,12 +128,11 @@ export class AnalyticsSvc implements IAnalyticsSvc {
   }
 
   readEventActivity(eventId, activityType) {
-    console.trace('event_user_actions get');
     return this.$http.get(`${this.config.apiDataBaseUrl}/v2/events/${eventId}/event_user_actions`)
       .then(resp => resp.data)
       .then(respData => {
         if (activityType) {
-          for (let i = 0; i < respData.length; i++) {
+          for (let i = 0; i < respData.length; i++) { // tslint:disable-line
             const activity = respData[i];
             if (activity.name === activityType) {
               return true;
