@@ -31,8 +31,8 @@ Use NPM or Yarn to read the package.json file to install the dependencies
 #### Available NPM scripts:
 
 The following can be found in the 'scripts' section of the package.json file.
-Currently webpack is configured to output the contents of a build to the <code>dist</code>
-directory. (*nginx should be configured to serve static assets from this location, and proxy 
+Currently webpack is configured to output the contents of a build to the <code>tmp</code>
+directory, or <code>dist</code> directory for production builds. (*nginx should be configured to serve static assets from this location, and proxy 
 necessary requests to the rails server.)
     
     npm run start

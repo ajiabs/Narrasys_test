@@ -282,7 +282,7 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   private onPlay(pid: string): void {
     this.setMetaProp(pid, 'playerState', 1);
     this.emitStateChange(pid);
-    if (pid !== this.mainPlayerId) {
+    if (pid !== this.mainPlayerId && this.getPlayerState(pid) !== 'unstarted') {
       this.pauseOtherPlayers(pid);
     }
   }
@@ -307,4 +307,3 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   }
 
 }
-
