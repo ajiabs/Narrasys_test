@@ -28,12 +28,12 @@
 }
 
 .itt-filedrop__placeholder {
-  font-family: 'Story', sans-serif;
-  font-size: 96px;
-  color: $file-drop-grey;
-  &:before {
-    content: '\e603';
-  }
+  //font-family: 'Story', sans-serif;
+  //font-size: 96px;
+  //color: $file-drop-grey;
+  //&:before {
+  //  content: '\e603';
+  //}
 
   &.--drop-error {
     color: red;

@@ -1,16 +1,17 @@
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
 
 import {IDataSvc, IModelSvc} from '../interfaces';
+
 import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
 
 interface ISxsContainerAssetsBindings {
   containerId: string;
-  mimeKey: string;
+  mimeKey?: string;
   context?: string;
-  onAssetSelect: ($assetId: string) => string;
+  onAssetSelect?: ($assetId: string) => string;
 }
 
-class SxsContainerAssetsController implements ng.IComponentController {
+class SxsContainerAssetsController implements ng.IComponentController, ISxsContainerAssetsBindings {
   containerId: string;
   mimeKey?: string;
   context?: string;
@@ -34,7 +35,7 @@ class SxsContainerAssetsController implements ng.IComponentController {
     public awsSvc,
     public appState,
     public MIMES,
-    public authSvc){ }
+    public authSvc) { }
 
   $onInit() {
     this.$q((resolve, reject) => {
@@ -66,7 +67,7 @@ class SxsContainerAssetsController implements ng.IComponentController {
             if (asset.tags && asset.tags[0] === SOCIAL_IMAGE_SQUARE || asset.tags[0] === SOCIAL_IMAGE_WIDE) {
               newAssets[assetKey] = asset;
             }
-            return newAssets
+            return newAssets;
           }, {});
       } else {
         this.assets = this.modelSvc.assets;
@@ -111,9 +112,7 @@ class SxsContainerAssetsController implements ng.IComponentController {
   }
 }
 
-
 export class SxsContainerAssets implements ng.IComponentOptions {
-  static Name: string = 'sxsContainerAssets';
   bindings: any = {
     containerId: '@',
     mimeKey: '@?',
@@ -122,4 +121,5 @@ export class SxsContainerAssets implements ng.IComponentOptions {
   };
   templateUrl: string = 'templates/producer/container-assets.html';
   controller: ng.IComponentController = SxsContainerAssetsController;
+  static Name: string = 'sxsContainerAssets'; // tslint:disable-line
 }

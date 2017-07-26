@@ -2,7 +2,8 @@
  * Created by githop on 3/30/17.
  */
 
-// import analyticsSvc from './analyticsSvc';
+import 'angular';
+
 import {AppState} from './appState';
 import authSvc from './authSvc';
 import awsSvc from './awsSvc';
@@ -13,7 +14,7 @@ import imageResize from './imageResizeSvc';
 import {ittUtils} from './ittUtils';
 import mockSvc from './mockSvc';
 import modelSvc from './modelSvc';
-import playbackService from './playbackService';
+import playbackService from './playbackService/playbackService';
 import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
 import selectService from './selectService';
@@ -28,11 +29,17 @@ import kalturaUrlService from './kaltura/kalturaUrlService';
 import youTubePlayerManager from './youtube/YouTubePlayerManager.svc';
 import YTScriptLoader from './youtube/youtubeScriptLoader';
 import youtubeUrlService from './youtube/youtubeUrlService';
-import {ValidationService} from './validation.svc';
+import {
+  WistiaPlayerManager,
+  WistiaScriptLoader,
+  WistiaUrlService
+} from './wistia/index';
+
 import {UploadsService} from './uploadsService';
+import {ValidationService} from './validation.svc';
 import {AnalyticsSvc} from './analyticsSvc';
 
-const servicesModule = angular.module('itt.services', [])
+let servicesModule = angular.module('itt.services', [])
   .service('appState', AppState)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
@@ -58,6 +65,9 @@ const servicesModule = angular.module('itt.services', [])
   .factory('youTubePlayerManager', youTubePlayerManager)
   .factory('YTScriptLoader', YTScriptLoader)
   .factory('youtubeUrlService', youtubeUrlService)
+  .service('wistiaUrlService', WistiaUrlService)
+  .service('wistiaPlayerManager', WistiaPlayerManager)
+  .service('wistiaScriptLoader', WistiaScriptLoader)
   .service('analyticsSvc', AnalyticsSvc)
   .service('validationSvc', ValidationService)
   .service('uploadsService', UploadsService);

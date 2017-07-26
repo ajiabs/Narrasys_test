@@ -11,7 +11,7 @@
     max-height: calc(#{$socialshare-image-height} - 9.5px);
 
     &.--drop-error {
-      opacity: 0;
+      //opacity: 0;
     }
     transition-duration: $socialshare-error-animation-duration;
   }
@@ -46,4 +46,23 @@
     position: absolute;
     z-index: -1;
   }
+}
+
+.social_image_square--default {
+  background: url(https://s3.amazonaws.com/narrasys.branding/assets/images/Narrative-Launch-Graphic-Square.png);
+}
+
+.social_image_wide--default {
+  background: url(https://s3.amazonaws.com/narrasys.branding/assets/images/Narrative-Launch-Graphic-Wide.png);
+}
+
+.social_image_square--default, .social_image_wide--default {
+  width: calc(100% - 9.5px);
+  height: calc(100% - 9.5px);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.--default-image-opacity {
+  opacity: 0.5;
 }

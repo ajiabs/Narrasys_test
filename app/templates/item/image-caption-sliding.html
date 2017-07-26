@@ -14,8 +14,8 @@
 		<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
 		<div class="touchableIndicator"></div>
 		<div class="caption slidingcaption">
-			<div class="title item__title item__title--image title--image-caption-sliding" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
-			<div class="text item__text item__text--image text--image-caption-sliding" ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
+			<div class="title item__title item__title--image item__title--image-caption-sliding" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
+			<div class="text item__text item__text--image item__text--image-caption-sliding" ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 		</div>
 	</div>
 	<div class="clear"></div>

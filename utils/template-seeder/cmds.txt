@@ -18,3 +18,5 @@ node index.js --url 'templates/episode/career-playbook.html' --applies_to_episod
 node index.js --url 'templates/episode/george-washington.html' --applies_to_episodes true --name 'George Washington V2' --seed_template false
 
 node index.js --url 'templates/episode/university-arizona.html' --applies_to_episodes true --name 'University of Arizona' --seed_template false
+
+node index.js --url 'templates/episode/chef-ann-foundation.html' --applies_to_episodes true --name 'Chef Ann Foundation' --seed_template false

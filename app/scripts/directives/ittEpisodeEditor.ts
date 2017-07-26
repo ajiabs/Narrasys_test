@@ -246,8 +246,8 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
             $timeout(function () {
               onDone({
                 duration: playbackService.getMetaProp('duration', 'replaceMe'),
-                url: url,
-                type: type
+                url,
+                type
               });
               //remove temp
               scope.episode.swap = {};
@@ -278,6 +278,11 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
         var contentType;
         var pmTypeAndMimeType = urlService.checkUrl(urlOrEmbedCode);
         var type = pmTypeAndMimeType.type;
+
+        if (type === 'wistia' && !authSvc.userHasRole('admin')) {
+          return;
+        }
+
         if (type.length > 0) {
           contentType = pmTypeAndMimeType.mimeType;
           scope.episode.replacingMasterAsset = true;

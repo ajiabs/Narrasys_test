@@ -1,0 +1,281 @@
+
+$chef-ann-foundationPrimary: #3c3529;
+$chef-ann-foundationAccent: #662e6b;
+$chef-ann-foundationSecondary: #FFFFFF;
+$chef-ann-foundationLink: #662e6b;
+$chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
+@import "helpers";
+
+@mixin chef-ann-foundation-header {
+  font-family: 'Muli',  sans-serif;
+  font-weight:  600;
+  color: $chef-ann-foundationPrimary;
+}
+
+@mixin chef-ann-foundation-body {
+  font-family: 'Muli',  sans-serif;
+  font-weight:  300;
+  color: $chef-ann-foundationPrimary;
+}
+@mixin chef-ann-foundation-pq {
+  font-family: 'Muli',  sans-serif;
+  font-weight:  300;
+  font-style:  italic;
+  color: $chef-ann-foundationPrimary;
+}
+
+.chef-ann-foundation {
+  background-image: url('/images/customer/CAF_Player_Background.svg');
+
+
+ .landingscreen {
+   h1 {
+     @include banner-pq('Muli', $chef-ann-foundationAccent, 2.5vw);
+   }
+
+   .introtext {
+     padding-bottom: 2em;
+   }
+
+   #episode--description {
+     display: none;
+	 }
+ }
+
+  //custom altPane BG, landingscreen
+
+
+  .endingscreen {
+    p {
+      @include banner-pq('Muli', $chef-ann-foundationAccent, 2.5vw);
+    }
+  }
+  //search view
+  .searchPanel__wrapper {
+    @include chef-ann-foundation-body;
+    color: $chef-ann-foundationPrimary;
+    // 'sorted by' button
+    .fake-link--search-results {
+      color: $chef-ann-foundationLink;
+    }
+  }
+
+  .searchResults {
+    @include chef-ann-foundation-header;
+    .item__title--link, .item__link--fake-link, .item__link--escape-link {
+      @include chef-ann-foundation-body;
+      color: $chef-ann-foundationLink;
+      &:before {
+        color: $chef-ann-foundationPrimary;
+      }
+    }
+  }
+
+  //item overrides
+  .item__title {
+    @include chef-ann-foundation-header;
+  }
+
+  .item__title--link, .item__title--file {
+    a {
+      color: $chef-ann-foundationLink;
+    }
+  }
+
+  .item__link--fake-link {
+    @include chef-ann-foundation-body;
+    color: $chef-ann-foundationLink;
+  }
+
+  .item__text {
+    @include chef-ann-foundation-body;
+  }
+
+  .item__text--h2 {
+    @include chef-ann-foundation-header;
+  }
+
+  .item__text--transmedia, .item__text--definition {
+    h1, h2, h3 {
+      @include chef-ann-foundation-header;
+    }
+  }
+
+  .item .item__text--pullquote {
+    @include chef-ann-foundation-pq;
+    &:before {
+      @include chef-ann-foundation-header;
+      //override color set on mixin
+      color: $chef-ann-foundationAccent;
+    }
+  }
+
+  .item__title--image-caption, .item__title--image-caption-sliding,
+  .item__text--image-caption, .item__text--image-caption-sliding {
+    color: $chef-ann-foundationSecondary;
+  }
+
+  .item__link--escape-link {
+    @include chef-ann-foundation-body;
+    color: $chef-ann-foundationLink;
+    &:before {
+    color: $chef-ann-foundationPrimary;
+    }
+  }
+
+  //timestamp
+  .item {
+    .displayTime, .startTime {
+      @include chef-ann-foundation-header;
+      color: $chef-ann-foundationLink;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  //invert
+  .item {
+    &.colorInvert {
+      background-color: $chef-ann-foundationPrimary !important;
+      .item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
+        color: $chef-ann-foundationSecondary !important;
+        &:before {
+          color: $chef-ann-foundationSecondary !important;
+        }
+      }
+
+      h1, h2, h3 {
+        color: $chef-ann-foundationSecondary !important;
+      }
+    }
+  }
+  //highlights
+  .content.allowHighlights {
+    .highlightSolid.item.isCurrent {
+      background-color: $chef-ann-foundationHighlight;
+    }
+
+    .highlightSide.item.isCurrent {
+      border-left: 10px solid $chef-ann-foundationHighlight;
+    }
+
+    .highlightBorder.item.isCurrent {
+      border: 2px solid $chef-ann-foundationHighlight;
+    }
+    //hard code alpha to be 0.3 or half of default
+    //aka translucent
+    .highlightBloom.item.isCurrent {
+      background-color: rgba(102,46,107, 0.3);
+      box-shadow: 0 0 8px rgba(102,46,107, 0.3);
+    }
+  }
+
+  //layout specific overrides
+  .centered-pro {
+    .banner-pull-quote {
+      h1 {
+        @include banner-pq('Muli', $chef-ann-foundationAccent, 2.5vw);
+      }
+    }
+  }
+
+  //pro two col: centerVV
+  //non-pro two col: pip, cornerH, cornerV, twocol
+  //non-pro one col: centered, onecol
+  .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
+    .static-bg__main {
+
+    }
+    .static-bg__alt {
+
+    }
+
+    .item__title--link, .item__title--file {
+      @include chef-ann-foundation-body;
+    }
+
+    .item__title--link.title--link-embed {
+      @include chef-ann-foundation-body;
+    }
+  }
+
+  .centerVV-mondrian {
+    .static-bg__main {
+      border: 4px solid $chef-ann-foundationPrimary;
+      background-color: $chef-ann-foundationAccent;
+    }
+
+    .static-bg__alt {
+
+    }
+    .altPane {
+      background-color: transparent;
+    }
+
+    .mainPane {
+      .item {
+        background-color:  $chef-ann-foundationPrimary;
+      }
+
+      .item__text, .item__title, .item__title a {
+        color: $chef-ann-foundationSecondary;
+      }
+      //override from general item level,
+      //mondrian BG is solid color, so we need to use
+      //the Secondary
+      .item__text--transmedia, .item__text--definition {
+        h1, h2, h3 {
+          color: $chef-ann-foundationSecondary;
+        }
+      }
+
+      .item {
+        &.colorInvert {
+          background-color: $chef-ann-foundationSecondary !important;
+          .item__text, .item__title, .item__title a {
+            color: $chef-ann-foundationPrimary !important;
+            &:before {
+              color: $chef-ann-foundationPrimary !important;
+            }
+          }
+
+          h1, h2, h3 {
+            color: $chef-ann-foundationPrimary !important;
+          }
+        }
+      }
+    }
+    //item__<entity> for non URL titles
+    // item__<entity> a covers both escape and fakeLinks
+    .item__title--link,
+    .item__title--image,
+    .item__title--image-thumbnail,
+    .item__title--link a,
+    .item__title--image a,
+    .item__title--image-thumbnail a {
+      @include chef-ann-foundation-header;
+    }
+
+    .item__link--fake-link {
+      color: $chef-ann-foundationSecondary;
+    }
+
+    .item__link--escape-link {
+      @include chef-ann-foundation-header;
+      color: $chef-ann-foundationSecondary;
+      &:before {
+        color: $chef-ann-foundationAccent;
+      }
+    }
+
+    .item {
+      .displayTime, .startTime {
+        @include chef-ann-foundation-header;
+        color: $chef-ann-foundationSecondary;
+        a {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
