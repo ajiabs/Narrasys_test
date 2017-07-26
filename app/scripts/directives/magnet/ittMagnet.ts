@@ -2,9 +2,9 @@
 // In watch mode (only), also watches the window size and tries to keep the video from overflowing the window height
 
 // TODO: remove dependence on jQuery?  (.is(:visible))
-ittMagnet.$inject = ['$rootScope', '$timeout', 'appState', 'playbackService'];
+ittMagnet.$inject = ['$rootScope', 'appState', 'playbackService'];
 
-export default function ittMagnet($rootScope, $timeout, appState, playbackService) {
+export default function ittMagnet($rootScope, appState, playbackService) {
   return {
     restrict: 'A',
     replace: true,
