@@ -61,7 +61,9 @@ export interface IUrlService {
   parseInput(input: string): string;
   isVideoUrl(url: string): boolean;
   resolveVideo(): any;
-}export interface IParsedMediaSrcObj {
+}
+
+export interface IParsedMediaSrcObj {
   type: 'kaltura' | 'youtube' | 'html5' | 'wistia';
   mediaSrcArr: string[];
 }
