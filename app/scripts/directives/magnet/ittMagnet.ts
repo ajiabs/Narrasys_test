@@ -1,6 +1,9 @@
 // Sends magnet signal whenever becomes visible.
 // In watch mode (only), also watches the window size and tries to keep the video from overflowing the window height
 
+import {CHANGE_MAGNET, JUMP_TO_MAGNET, UPDATE_MAGNET} from '../../constants';
+
+
 // TODO: remove dependence on jQuery?  (.is(:visible))
 ittMagnet.$inject = ['$rootScope', 'appState', 'playbackService'];
 
@@ -9,52 +12,61 @@ export default function ittMagnet($rootScope, appState, playbackService) {
     restrict: 'A',
     replace: true,
     scope: true,
-    link: function (scope, element) {
+    link: function mangetLinkFn(scope, element) {
 
       window.addEventListener('resize', () => {
-        $rootScope.$emit('magnet.jumpToMagnet', element);
+        $rootScope.$emit(JUMP_TO_MAGNET, element);
         scope.$digest();
       });
 
-      scope.changeMagnet = function (element) {
-        // skip the animation on first load, and when on mobile
+      $rootScope.$on(UPDATE_MAGNET, () => changeMagnet(element));
 
+      scope.changeMagnet = changeMagnet;
+      scope.unwatchVisibility = scope.$watch(watchVisibility, handleVisibility);
+
+      if (element.attr('id') === 'watchModeVideoMagnet') {
+        scope.unwatchSize = scope.$watch(watchSize, handleSize, true);
+      }
+
+      function watchVisibility() {
+        return element.is(':visible');
+      }
+
+      function handleVisibility(newV) {
+        if (newV) {
+          changeMagnet(element);
+        }
+      }
+
+      function watchSize() {
+        return {
+          w: angular.element(window).width(),
+          h: angular.element(window).height(),
+          v: element.is(':visible')
+        };
+      }
+
+      function handleSize() {
+        // console.log('watch mode guy');
+        // we want the video to be as wide as possible without overflowing the window.
+        // And dont' want to set the height directly, just the width. So math:
+        const win = angular.element(window);
+        const maxAllowableHeight = win.height() - 46; // TOOLBAR HEIGHT (plus some slop)
+        if (win.width() / maxAllowableHeight > (16 / 9)) {
+          element.width(16 / 9 * maxAllowableHeight);
+        } else {
+          element.width(win.width());
+        }
+        changeMagnet(element);
+      }
+
+      function changeMagnet (elm) {
         if (appState.isTouchDevice || playbackService.getMetaProp('time') === 0) {
-          $rootScope.$emit('magnet.jumpToMagnet', element);
+          $rootScope.$emit(JUMP_TO_MAGNET, elm);
           return;
         }
 
-        $rootScope.$emit('magnet.changeMagnet', element);
-      };
-
-      scope.unwatchVisibility = scope.$watch(function () {
-        return element.is(':visible');
-      }, function (newV) {
-        if (newV) {
-          scope.changeMagnet(element);
-        }
-      });
-
-      if (element.attr("id") === 'watchModeVideoMagnet') {
-        scope.unwatchSize = scope.$watch(function () {
-          return {
-            w: angular.element(window).width(),
-            h: angular.element(window).height(),
-            v: element.is(':visible')
-          };
-        }, function () {
-          // console.log('watch mode guy');
-          // we want the video to be as wide as possible without overflowing the window.
-          // And dont' want to set the height directly, just the width. So math:
-          const win = angular.element(window);
-          const maxAllowableHeight = win.height() - 46; // TOOLBAR HEIGHT (plus some slop)
-          if (win.width() / maxAllowableHeight > (16 / 9)) {
-            element.width(16 / 9 * maxAllowableHeight);
-          } else {
-            element.width(win.width());
-          }
-          scope.changeMagnet(element);
-        }, true);
+        $rootScope.$emit(CHANGE_MAGNET, elm);
       }
 
       // cleanup watchers on destroy
