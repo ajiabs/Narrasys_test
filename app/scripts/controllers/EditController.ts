@@ -1,4 +1,5 @@
 'use strict';
+import {UPDATE_MAGNET} from '../constants';
 
 EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
 
@@ -533,6 +534,8 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
 
     appState.editEvent = false;
     appState.videoControlsLocked = false;
+    // revert video back to original position
+    $timeout(() => $rootScope.$emit(UPDATE_MAGNET), 100);
   };
 
   $scope.cancelEpisodeEdit = function (originalEvent) {
