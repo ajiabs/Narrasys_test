@@ -1,5 +1,7 @@
 'use strict';
 
+import { CHANGE_MAGNET, JUMP_TO_MAGNET } from '../../constants';
+
 // TODO: remove dependence on jQuery? (lots of it here)
 ittMagnetized.$inject = ['$rootScope', '$timeout', 'appState'];
 export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, appState) {
@@ -20,8 +22,8 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, 
       element.width(WIDTH);
       element.height(HEIGHT);
 
-      $rootScope.$on('magnet.changeMagnet', (evt, magnet) => jumpToMagnet(magnet, true));
-      $rootScope.$on('magnet.jumpToMagnet', (evt, magnet) => jumpToMagnet(magnet, false));
+      $rootScope.$on(CHANGE_MAGNET, (evt, magnet) => jumpToMagnet(magnet, true));
+      $rootScope.$on(JUMP_TO_MAGNET, (evt, magnet) => jumpToMagnet(magnet, false));
 
       function jumpToMagnet (magnet, animateTransition: boolean) {
 
