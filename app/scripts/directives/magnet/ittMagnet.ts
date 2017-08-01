@@ -61,7 +61,7 @@ export default function ittMagnet($rootScope, appState, playbackService) {
       }
 
       function changeMagnet (elm) {
-        if (appState.isTouchDevice || playbackService.getMetaProp('time') === 0) {
+        if (playbackService.getMetaProp('time') === 0) {
           $rootScope.$emit(JUMP_TO_MAGNET, elm);
           return;
         }
