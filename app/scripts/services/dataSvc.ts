@@ -1,7 +1,7 @@
 // TODO: load and resolve categories
 
 
-import {createInstance, IAsset} from '../models';
+import {createInstance, IAsset, IEvent} from '../models';
 import {IEmailFields} from '../interfaces';
 /**
  * @ngdoc service
@@ -68,7 +68,7 @@ export interface IDataSvc {
   deleteItem(evtId): ng.IPromise<{}>;
   createAsset(containerId, asset): ng.IPromise<{}>;
   deleteAsset(assetId): ng.IPromise<{}>;
-  storeItem(evt): ng.IPromise<{}>;
+  storeItem(evt): ng.IPromise<IEvent | boolean>;
   prepItemForStorage(evt): any;
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
   readCache(cache, field, val): object | boolean;
@@ -1035,7 +1035,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   // TODO need safety checking here
-  svc.storeItem = function (evt) {
+  svc.storeItem = function (evt: IEvent): ng.IPromise<IEvent | boolean> {
     evt = prepItemForStorage(evt);
     if (!evt) {
       return $q.reject(false);

@@ -124,6 +124,7 @@ export class IEvent {
   _id: string;
   start_time: number;
   type: 'Annotation' | 'Bookmark' | 'File' | 'Image' | 'Link' | 'Plugin' | 'Scene' | 'Chapter' | 'Text' | 'Upload';
+  _type: string;
   end_time: number;
   title: ILangForm;
   description: ILangForm;

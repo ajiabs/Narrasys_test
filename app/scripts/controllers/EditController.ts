@@ -1,9 +1,13 @@
 'use strict';
 import {UPDATE_MAGNET} from '../constants';
+import {IModelSvc} from '../services/modelSvc';
+import {IDataSvc} from '../services/dataSvc';
+import {ITimelineSvc} from '../services/timelineSvc';
+import {IEvent} from '../models';
 
 EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
 
-export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackService) {
+export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc: ITimelineSvc, authSvc, MIMES, playbackService) {
   $scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
   // HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -214,7 +218,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
     }
 
     dataSvc.storeItem(toSave)
-      .then(function (data) {
+      .then(function (data: IEvent) {
         data.cur_episode_id = appState.episodeId;
 
         var saveOperation = 'update';
@@ -233,6 +237,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
 
         if (data._type === 'Scene') {
           timelineSvc.timelineEvents = [];
+          console.log('wtf mate?', data);
           timelineSvc.injectEvents(modelSvc.episodeEvents(appState.episodeId), 0);
         } else {
           modelSvc.resolveEpisodeEvents(appState.episodeId);
