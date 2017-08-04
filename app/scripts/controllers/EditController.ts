@@ -1,13 +1,9 @@
 'use strict';
 import {UPDATE_MAGNET} from '../constants';
-import {IModelSvc} from '../services/modelSvc';
-import {IDataSvc} from '../services/dataSvc';
-import {ITimelineSvc} from '../services/timelineSvc';
-import {IEvent} from '../models';
 
 EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
 
-export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc: ITimelineSvc, authSvc, MIMES, playbackService) {
+export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackService) {
   $scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
   // HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -218,7 +214,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
     }
 
     dataSvc.storeItem(toSave)
-      .then(function (data: IEvent) {
+      .then(function (data) {
         data.cur_episode_id = appState.episodeId;
 
         var saveOperation = 'update';
@@ -237,19 +233,24 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
 
         if (data._type === 'Scene') {
           timelineSvc.timelineEvents = [];
-          console.log('wtf mate?', data);
           timelineSvc.injectEvents(modelSvc.episodeEvents(appState.episodeId), 0);
+          // sometimes the scene prior to the new onne being created is set to be the current scene
+          modelSvc.episodes[appState.episodeId].setCurrentScene(modelSvc.events[data._id]);
         } else {
           modelSvc.resolveEpisodeEvents(appState.episodeId);
           timelineSvc.updateEventTimes(modelSvc.events[data._id]);
         }
 
+        // currently only runs on transcript items
         saveAdjustedEvents(data, saveOperation);
 
         // Delete attached asset(s)  (this should only occur for sxs items, for now)
         // yes we could combine these into one call I suppose but there will almost always only be one
         // unless the user was very indecisive and uploaded/detached a bunch of assets to the same event.
         // It was probably already a premature optimization to use an array here in the first place
+
+        // see ittItemEditor to see where toSave.removedAssets is setup as below is the only
+        // reference in this file.
         angular.forEach(toSave.removedAssets, function (id) {
           dataSvc.deleteAsset(id);
         });

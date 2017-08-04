@@ -30,6 +30,21 @@ export class IEpisode {
   templateUrl: string;
   title: ILangForm;
   updated_at: Date;
+
+  setCurrentScene(scene: IScene): void {
+    if (this.scenes && this.scenes.length) {
+      const ci = this.scenes.indexOf(scene);
+      const pre = this.scenes.slice(0, ci);
+      const post = this.scenes.slice(ci + 1);
+
+      scene.setCurrent();
+      pre.forEach(s => s.setPast());
+      if (post.length > 0) {
+        post.forEach(s => s.setFuture());
+      }
+      this.scenes = [...pre, scene, ...post];
+    }
+  }
 }
 
 export class IContainer {
@@ -131,7 +146,7 @@ export class IEvent {
   cosmetic: boolean;
   stop: boolean;
 //props not in any schema but added dynamically either on the backend somewhere client-side;
-  state?: 'isCurrent' | 'isPast';
+  state?: 'isCurrent' | 'isPast' | 'isFuture';
   isCurrent?: boolean;
   avatar_id: string;
   templateOpts?: any[];
@@ -145,6 +160,21 @@ export class IEvent {
   producerItemType?: string;
   //group ??
   //event_category ??
+
+  setFuture(): void {
+    this.state = 'isFuture';
+    this.isCurrent = false;
+  }
+
+  setPast(): void {
+    this.state = 'isPast';
+    this.isCurrent = false;
+  }
+
+  setCurrent(): void {
+    this.isCurrent = true;
+    this.state = 'isCurrent';
+  }
 }
 
 export class ILinkStatus {

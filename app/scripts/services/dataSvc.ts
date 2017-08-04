@@ -1035,10 +1035,10 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   // TODO need safety checking here
-  svc.storeItem = function (evt: IEvent): ng.IPromise<IEvent | boolean> {
-    evt = prepItemForStorage(evt);
+  svc.storeItem = function (evt: IEvent): ng.IPromise<IEvent> {
+    evt = prepItemForStorage(evt) as IEvent;
     if (!evt) {
-      return $q.reject(false);
+      return $q.reject({});
     }
     if (evt && evt._id && !evt._id.match(/internal/)) {
       // update
@@ -1053,7 +1053,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
   };
 
-  var prepItemForStorage = function (evt) {
+  var prepItemForStorage = function (evt): IEvent | false {
     // Events, that is
     var prepped = {};
     if (evt._id && evt._id.match(/internal/)) {

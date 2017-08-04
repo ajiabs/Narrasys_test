@@ -39,7 +39,7 @@
  either from the timeline or the next scene arrow
  */
 /* tslint:enable */
-import {NEvent} from '../models';
+import {IEvent} from '../models';
 interface ITimelineEvent {
   t: number;
   id: string;
@@ -762,7 +762,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     return displayArr;
   }
 
-  var addMarkedEvent = function (newEvent: NEvent) {
+  var addMarkedEvent = function (newEvent: IEvent) {
     // scan through existing markedEvents; if the new event is already there, replace it; otherwise add it
     var wasFound = false;
     for (var i = 0; i < svc.markedEvents.length; i++) {
@@ -885,8 +885,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         var event = modelSvc.events[tE.id];
         if (event) { // cancelling adding an event can leave "internal:editing" in the event list;
           // TODO keep that from happening but for now just ignore it if it doesn't exist
-          event.state = 'isFuture';
-          event.isCurrent = false;
+          event.setFuture();
         }
       }
     });
@@ -897,16 +896,16 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         var event = modelSvc.events[tE.id];
         if (event) {
           if (tE.action === 'enter') {
-            event.state = 'isCurrent';
-            event.isCurrent = true;
+            event.setCurrent();
           } else if (tE.action === 'exit') {
-            event.state = 'isPast';
-            event.isCurrent = false;
+            event.setPast();
           }
         }
       }
     });
-    // console.log('tlEvents', svc.timelineEvents);
+    // console.count('updateEventState called');
+    // console.trace('updateEventStates');
+    // console.log('tlEvents', modelSvc.episodes[appState.episodeId].scenes);
   };
 
   var alreadyPreloadedImages = {};
