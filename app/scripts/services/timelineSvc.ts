@@ -58,7 +58,7 @@ interface IDisplayMarkedEvent {
 
 export interface ITimelineSvc {
   timelineEvents: ITimelineEvent[];
-  markedEvents: NEvent[];
+  markedEvents: IEvent[];
   displayMarkedEvents: IDisplayMarkedEvent[];
   enforceSingletonPauseListener: boolean;
   setSpeed(speed: number): void;
@@ -135,8 +135,11 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
 
         break;
       case 'ended':
-        console.log('timelineSvc#ended event!');
+        // console.log('timelineSvc#ended event!');
         playbackService.setMetaProp('time', playbackService.getMetaProp('duration'));
+        const episode = modelSvc.episodes[appState.episodeId];
+        const endingScreen = episode.scenes[episode.scenes.length - 1];
+        episode.setCurrentScene(endingScreen);
         break;
       case 'playing':
         var currentTime = playbackService.getCurrentTime();
