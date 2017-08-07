@@ -38,10 +38,15 @@ export class IEpisode {
       const post = this.scenes.slice(ci + 1);
 
       scene.setCurrent();
-      pre.forEach(s => s.setPast());
+
+      if (pre.length > 0) {
+        pre.forEach(s => s.setPast());
+      }
+
       if (post.length > 0) {
         post.forEach(s => s.setFuture());
       }
+
       this.scenes = [...pre, scene, ...post];
     }
   }
