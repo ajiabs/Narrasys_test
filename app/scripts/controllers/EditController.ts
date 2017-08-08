@@ -1,5 +1,5 @@
 'use strict';
-import {UPDATE_MAGNET} from '../constants';
+import {createInstance, } from '../models';
 
 EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
 
@@ -540,8 +540,6 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
 
     appState.editEvent = false;
     appState.videoControlsLocked = false;
-    // revert video back to original position
-    $timeout(() => $rootScope.$emit(UPDATE_MAGNET), 100);
   };
 
   $scope.cancelEpisodeEdit = function (originalEvent) {
@@ -586,7 +584,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
      video (injected episode) TODO
      */
 
-    var stub = {};
+    var stub = Object.create(null);
     if (type === 'scene') {
       stub = {
         "_type": "Scene",
@@ -701,7 +699,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
       stub.templateUrl = defaultTemplateUrls[type];
     }
     angular.extend(base, stub);
-    return base;
+    return createInstance(stub._type, base);
   };
 
 }

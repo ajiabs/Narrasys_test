@@ -74,7 +74,7 @@ import ittValidEpisodeUrl from './ittValidEpisodeUrl';
 import ittValidPathslug from './ittValidPathslug';
 import ittValidUrl from './ittValidUrl';
 import ittVideo from './ittVideo';
-import ittVideoPositionSelect from './ittVideoPositionSelect';
+import { VideoPositionSelect } from './ittVideoPositionSelect';
 import ittVolumeSlider from './ittVolumeSlider';
 import ittWidthWatch from './ittWidthWatch';
 import nysCopyright from './nys-copyright';
@@ -160,7 +160,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittValidPathslug', ittValidPathslug)
   .directive('ittValidUrl', ittValidUrl)
   .directive('ittVideo', ittVideo)
-  .directive('ittVideoPositionSelect', ittVideoPositionSelect)
+  .component(VideoPositionSelect.Name, new VideoPositionSelect())
   .directive('ittVolumeSlider', ittVolumeSlider)
   .directive('ittWidthWatch', ittWidthWatch)
   .directive('nysCopyright', nysCopyright)
