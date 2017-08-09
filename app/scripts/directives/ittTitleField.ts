@@ -23,7 +23,7 @@ export default function ittTitleField() {
     controller: ['appState', 'ittUtils', 'selectService', function (appState, ittUtils, selectService) {
       var ctrl = this;
       ctrl.appState = appState;
-      ctrl.isVisible = selectService.getVisibility;
+      ctrl.isVisible = selectService.getVisibility.bind(selectService);
       ctrl.onName = onName;
 
       if (!ittUtils.existy(ctrl.modelOpts)) {

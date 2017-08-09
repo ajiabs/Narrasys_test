@@ -18,7 +18,7 @@ export default function ittQuestionTypeSelect() {
     controller: ['selectService', 'ittUtils', function (selectService, ittUtils) {
       var ctrl = this;
       ctrl.setNgOpts = ittUtils.setNgOpts;
-      ctrl.getSelectOpts = selectService.getSelectOpts;
+      ctrl.getSelectOpts = selectService.getSelectOpts.bind(selectService);
       onInit();
 
       function onInit() {

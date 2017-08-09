@@ -2,53 +2,72 @@
  *
  * Created by githop on 6/30/16.
  */
-export default function ittDisplaySelect() {
-  return {
-    restrict: 'EA',
-    scope: {
-      data: '=',
-      itemForm: '=?',
-    },
-    template: [
-      '<div class="field" ng-if="$ctrl.getVisibility(\'display\')">',
-      '	<div class="label">Display</div>',
-      '	<div class="input">',
-      '		<select ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)"',
-      '			ng-model="$ctrl.data.layouts[$ctrl.layoutIndex]"',
-      '			ng-options="{{$ctrl.setNgOpts(\'display\')}}"',
-      '			itt-options-disabled="option.isDisabled for option in $ctrl.getSelectOpts(\'display\')">',
-      '		</select>',
-      '	</div>',
-      '</div>',
-      '<div class="field" ng-if="$ctrl.getVisibility(\'bgImagePosition\')">',
-      '	<div class="label">Position</div>',
-      '		<div class="input">',
-      '		<select ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)" ng-model="$ctrl.itemForm.position" ng-options="{{$ctrl.setNgOpts(\'imagePosition\')}}"></select>',
-      '	</div>',
-      '</div>'
-    ].join(''),
-    controller: ['$scope', 'selectService', 'ittUtils', function ($scope, selectService, ittUtils) {
-      var ctrl = this;
-      ctrl.getVisibility = selectService.getVisibility.bind(selectService);
-      ctrl.getSelectOpts = selectService.getSelectOpts.bind(selectService);
-      ctrl.onItemFormUpdate = selectService.onSelectChange.bind(selectService);
-      ctrl.setNgOpts = ittUtils.setNgOpts;
-      //layout index should be 0 for images, 1 for scenes
-      ctrl.layoutIndex = (ctrl.data.producerItemType === 'image') ? 0 : 1;
+import {IEvent} from '../models';
 
-      $scope.$watch(watchTemplate, handleChange);
+import {ISelectService} from '../interfaces';
+import {setNgOpts} from '../services/ittUtils';
 
-      function watchTemplate() {
-        return ctrl.data.templateUrl;
-      }
+const TEMPLATE = `
+<div class="field" ng-if="$ctrl.getVisibility('display')">
+  <div class="label">Display</div>
+  <div class="input">
+    <select ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)"
+      ng-model="$ctrl.data.layouts[$ctrl.layoutIndex]"
+      ng-options="{{$ctrl.setNgOpts('display')}}"
+      itt-options-disabled="option.isDisabled for option in $ctrl.getSelectOpts('display')">
+    </select>
+  </div>
+</div>
+<div class="field" ng-if="$ctrl.getVisibility('bgImagePosition')">
+  <div class="label">Position</div>
+    <div class="input">
+    <select
+      ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)"
+      ng-model="$ctrl.itemForm.position" ng-options="{{$ctrl.setNgOpts('imagePosition')}}"></select>
+  </div>
+</div>
+      `;
 
-      function handleChange(nv) {
-        ctrl.isImageFillTemplate = (nv && nv === 'templates/item/image-fill.html');
+interface IDisplaySelectBindings {
+  data: IEvent;
+  itemForm?: ng.IFormController;
+}
 
-      }
+class DisplaySelectController implements ng.IComponentController, IDisplaySelectBindings {
+  data: IEvent;
+  layoutIndex: number;
+  static $inject = ['selectService'];
+  constructor(private selectService: ISelectService) {
+    //
+  }
 
-    }],
-    controllerAs: '$ctrl',
-    bindToController: true
+  $onInit() {
+    this.layoutIndex = this.data.producerItemType === 'image' ? 0 : 1;
+  }
+
+  getVisibility(type: string) {
+    return this.selectService.getVisibility(type);
+  }
+
+  getSelectOpts(type: string) {
+    return this.selectService.getSelectOpts(type);
+  }
+
+  onItemFormUpdate(item, itemForm) {
+    this.selectService.onSelectChange(item, itemForm);
+  }
+
+  setNgOpts(opts: string) {
+    return setNgOpts(opts);
+  }
+}
+
+export class DisplaySelect implements ng.IComponentOptions {
+  bindings: any = {
+    data: '=',
+    itemForm: '=?'
   };
+  template: string = TEMPLATE;
+  controller = DisplaySelectController;
+  static Name: string = 'npDisplaySelect'; // tslint:disable-line
 }

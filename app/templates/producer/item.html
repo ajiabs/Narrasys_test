@@ -91,7 +91,7 @@
 							<itt-image-field></itt-image-field>
 							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
-							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
+							<np-display-select data="item" item-form="itemForm"></np-display-select>
 							<!--TODO reccommend moving orientation into layout tab-->
 							<itt-flags data="item"
 									   item-form="itemForm"
@@ -131,7 +131,7 @@
 					<div ng-switch on="item.producerItemType">
 						<!--hidden across the board-->
 						<div ng-switch-when="link">
-							<itt-display-select></itt-display-select>
+							<np-display-select data="item"></np-display-select>
 						</div>
 						<!--hidden accross the board-->
 						<div ng-switch-when="transcript">
@@ -141,14 +141,14 @@
 						</div>
 						<div ng-switch-when="annotation">
 							<!--Display-->
-							<itt-display-select></itt-display-select>
+							<np-display-select item="data"></np-display-select>
 						</div>
 						<div ng-switch-when="scene">
 							<!--time, template, position, display-->
 							<itt-time-field></itt-time-field>
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-video-position-select data="item"></itt-video-position-select>
-							<itt-display-select data="item"></itt-display-select>
+							<np-display-select data="item"></np-display-select>
 						</div>
 						<!--file hidden in style tab-->
 						<!--<div ng-switch-when="file">-->
@@ -159,7 +159,7 @@
 						<div ng-switch-when="question">
 							<!--Template, Display, Flags-->
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
-							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
+							<np-display-select data="item" item-form="itemForm"></np-display-select>
 							<itt-flags data="item"
 									   item-form="itemForm"
 									   flags="['required', 'stop', 'cosmetic']"></itt-flags>

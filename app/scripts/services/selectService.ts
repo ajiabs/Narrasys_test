@@ -3,10 +3,19 @@
  */
 
 import {IDataSvc, IModelSvc} from '../interfaces';
-import {IScene} from '../models';
+import {IEvent, IScene} from '../models';
 import {existy, intersection} from './ittUtils';
 
-export class SelectService {
+export interface ISelectService {
+  getSceneName(scene: IScene): string;
+  getSelectOpts(type: string): any[];
+  getVisibility(prop: string): boolean;
+  setupItemForm(stylesArr, type): any;
+  onSelectChange(item: IEvent, itemForm): void;
+  showTab(itemType, tabTitle): boolean;
+}
+
+export class SelectService implements ISelectService {
   private _langOpts = [
     {value: 'en', name: 'English', isDisabled: false},
     {value: 'es', name: 'Spanish', isDisabled: false},
@@ -461,6 +470,7 @@ export class SelectService {
       case 'image':
         //will set to true in image fill
         this._displaySelectVisibility(false);
+        this._bgImagePositionSelectVisibility(false);
         const _currentSceneName = this.getSceneName(this.modelSvc.scene(item.scene_id));
         switch (item.templateUrl) {
           case 'templates/item/image-plain.html':

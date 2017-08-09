@@ -10,7 +10,7 @@ import ittColorSelect from './ittColorSelect';
 import ittContainer from './ittContainer';
 import ittContainerEpisodes from './ittContainerEpisodes';
 import ittDescriptionField from './ittDescriptionField';
-import ittDisplaySelect from './ittDisplaySelect';
+import {DisplaySelect} from './ittDisplaySelect';
 import ittDynamicModel from './ittDynamicModel';
 import ittEditPencil from './ittEditPencil';
 import ittEpisode from './ittEpisode';
@@ -95,7 +95,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittContainer', ittContainer)
   .directive('ittContainerEpisodes', ittContainerEpisodes)
   .directive('ittDescriptionField', ittDescriptionField)
-  .directive('ittDisplaySelect', ittDisplaySelect)
+  .component(DisplaySelect.Name, new DisplaySelect())
   .directive('ittDynamicModel', ittDynamicModel)
   .directive('ittEditPencil', ittEditPencil)
   .directive('ittEpisode', ittEpisode)
