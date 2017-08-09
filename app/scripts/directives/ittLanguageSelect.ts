@@ -19,7 +19,7 @@ export default function ittLanguageSelect() {
     ].join('\n'),
     controller: ['$scope', 'selectService', function ($scope, selectService) {
       var ctrl = this;
-      ctrl.getSelectOpts = selectService.getSelectOpts;
+      ctrl.getSelectOpts = selectService.getSelectOpts.bind(selectService);
       ctrl.setNgOpts = setNgOpts;
       ctrl.langOpts = selectService.getSelectOpts('language');
 

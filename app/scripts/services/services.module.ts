@@ -19,7 +19,7 @@ import playbackService from './playbackService/playbackService';
 import playerManagerCommons from './basePlayerManager/playerManagerCommons';
 import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
-import selectService from './selectService';
+import { SelectService } from './selectService';
 import timelineSvc from './timelineSvc';
 import urlService from './urlService';
 import html5PlayerManager from './html5/html5PlayerManager.svc';
@@ -53,7 +53,7 @@ let servicesModule = angular.module('itt.services', [])
   .factory('playbackService', playbackService)
   .factory('questionAnswersSvc', questionAnswersSvc)
   .factory('recursionHelper', recursionHelper)
-  .factory('selectService', selectService)
+  .service('selectService', SelectService)
   .factory('timelineSvc', timelineSvc)
   .factory('urlService', urlService)
   .factory('playerManagerCommons', playerManagerCommons)

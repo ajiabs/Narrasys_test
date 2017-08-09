@@ -29,9 +29,9 @@ export default function ittDisplaySelect() {
     ].join(''),
     controller: ['$scope', 'selectService', 'ittUtils', function ($scope, selectService, ittUtils) {
       var ctrl = this;
-      ctrl.getVisibility = selectService.getVisibility;
-      ctrl.getSelectOpts = selectService.getSelectOpts;
-      ctrl.onItemFormUpdate = selectService.onSelectChange;
+      ctrl.getVisibility = selectService.getVisibility.bind(selectService);
+      ctrl.getSelectOpts = selectService.getSelectOpts.bind(selectService);
+      ctrl.onItemFormUpdate = selectService.onSelectChange.bind(selectService);
       ctrl.setNgOpts = ittUtils.setNgOpts;
       //layout index should be 0 for images, 1 for scenes
       ctrl.layoutIndex = (ctrl.data.producerItemType === 'image') ? 0 : 1;

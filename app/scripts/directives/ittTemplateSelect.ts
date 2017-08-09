@@ -18,9 +18,9 @@ export default function ittTemplateSelect() {
     ].join(' '),
     controller: ['selectService', 'modelSvc', function (selectService, modelSvc) {
       var ctrl = this;
-      ctrl.isVisible = selectService.getVisibility;
-      ctrl.onSelectChange = selectService.onSelectChange;
-      ctrl.getSelectOpts = selectService.getSelectOpts;
+      ctrl.isVisible = selectService.getVisibility.bind(selectService);
+      ctrl.onSelectChange = selectService.onSelectChange.bind(selectService);
+      ctrl.getSelectOpts = selectService.getSelectOpts.bind(selectService);
       ctrl.labelText = 'Template';
 
       var isAnnotation = ctrl.data.producerItemType === 'annotation';

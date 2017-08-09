@@ -30,7 +30,7 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
         size: null
       };
 
-      $rootScope.$on(UPDATE_MAGNET, () => changeMagnet());
+      $rootScope.$on(UPDATE_MAGNET, () => getMagnetBcr().then((bcr) => changeMagnet(bcr)));
 
       onInit();
 
@@ -53,7 +53,7 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
       }
 
       function onResize() {
-        changeMagnet();
+        getMagnetBcr().then((bcr) => changeMagnet(bcr));
         scope.$digest();
       }
 
@@ -98,7 +98,7 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
         } else {
           element.width(win.width());
         }
-        changeMagnet();
+        getMagnetBcr().then((bcr) => changeMagnet(bcr));
       }
 
       function getMagnetBcr(): ng.IPromise<ClientRect> {
@@ -107,28 +107,15 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
         }, 100);
       }
 
-      function changeMagnet (preCalcedBcr?) {
-
-        if (preCalcedBcr) {
-          const magnetStore = MagnetStore.of(preCalcedBcr);
-          if (playbackService.getMetaProp('time') === 0) {
-            $rootScope.$emit(JUMP_TO_MAGNET, magnetStore.bcr);
-            return;
-          }
-
-          $rootScope.$emit(CHANGE_MAGNET, magnetStore.bcr);
+      function changeMagnet (preCalcedBcr) {
+        const magnetStore = MagnetStore.of(preCalcedBcr);
+        if (playbackService.getMetaProp('time') === 0) {
+          $rootScope.$emit(JUMP_TO_MAGNET, magnetStore.bcr);
           return;
         }
 
-        getMagnetBcr().then((bcr) => {
-          const magnetStore = MagnetStore.of(bcr);
-          if (playbackService.getMetaProp('time') === 0) {
-            $rootScope.$emit(JUMP_TO_MAGNET, magnetStore.bcr);
-            return;
-          }
-
-          $rootScope.$emit(CHANGE_MAGNET, magnetStore.bcr);
-        });
+        $rootScope.$emit(CHANGE_MAGNET, magnetStore.bcr);
+        return;
       }
 
       // cleanup watchers on destroy

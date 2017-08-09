@@ -1,5 +1,5 @@
 'use strict';
-import {createInstance, } from '../models';
+import {createInstance } from '../models';
 
 EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
 
