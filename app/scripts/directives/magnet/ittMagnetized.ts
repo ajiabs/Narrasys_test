@@ -12,52 +12,39 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, 
     scope: true,
     link: function (scope, element) {
       const WIDTH = 854;
-      const HEIGHT = 478;
       const TRANSITION_DURATION = '0.25s';
-      element.css('top', 0);
-      element.css('left', 0);
-      element.css('position', 'absolute');
-      element.css('will-change', 'transform');
-      element.css('transform-origin', 'top left');
-      element.width(WIDTH);
-      element.height(HEIGHT);
 
-      $rootScope.$on(CHANGE_MAGNET, (evt, magnet) => jumpToMagnet(magnet, true));
-      $rootScope.$on(JUMP_TO_MAGNET, (evt, magnet) => jumpToMagnet(magnet, false));
+      $rootScope.$on(CHANGE_MAGNET, (evt, magnetElmBcr: ClientRect) => jumpToMagnet(magnetElmBcr, true));
+      $rootScope.$on(JUMP_TO_MAGNET, (evt, magnetElmBcr: ClientRect) => jumpToMagnet(magnetElmBcr, false));
 
-      function jumpToMagnet (magnet, animateTransition: boolean) {
+      function jumpToMagnet (magnetElmBcr: ClientRect, animateTransition: boolean) {
 
-        if (magnet == null) {
+        if (magnetElmBcr == null) {
           return;
         }
-        $timeout(() => {
-          if (appState.viewMode === 'review') {
-            element.css('position', 'fixed');
-          } else {
-            element.css('position', 'absolute');
-          }
 
-          const {top, left, width} = magnet[0].getBoundingClientRect();
+        if (appState.viewMode === 'review') {
+          element.css('position', 'fixed');
+        } else {
+          element.css('position', 'absolute');
+        }
 
-          if (animateTransition === true) {
-            element.css('transition-timing-function', 'cubic-bezier(0.4, 0, 1, 1)');
-            element.css('transition-duration', TRANSITION_DURATION);
-          } else {
-            element.css('transition-duration', 'unset');
-            element.css('transition-timing-function', 'unset');
-          }
+        const {top, left, width} = magnetElmBcr;
 
-          const scaleFactor = width / WIDTH;
-          if (scaleFactor === 0) {
-            return;
-          }
-          element.css('transform', `translate(${Math.abs(left)}px, ${Math.abs(top)}px) scale(${scaleFactor})`);
+        if (animateTransition === true) {
+          element.css('transition-timing-function', 'cubic-bezier(0.4, 0, 1, 1)');
+          element.css('transition-duration', TRANSITION_DURATION);
+        } else {
+          element.css('transition-duration', 'unset');
+          element.css('transition-timing-function', 'unset');
+        }
 
-          // element.width(Math.ceil(width));
-          // element.height(Math.ceil(width / aspectRatio));
+        const scaleFactor = width / WIDTH;
+        if (scaleFactor === 0) {
+          return;
+        }
 
-        }, 100); //100ms timeout to allow the appropriate height value to be set when coming out of search mode
-
+        element.css('transform', `translate(${Math.abs(left)}px, ${Math.abs(top)}px) scale(${scaleFactor})`);
       }
 
       // cleanup watchers on destroy

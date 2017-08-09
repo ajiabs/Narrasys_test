@@ -39,7 +39,7 @@
  either from the timeline or the next scene arrow
  */
 /* tslint:enable */
-import {NEvent} from '../models';
+import {IEvent} from '../models';
 interface ITimelineEvent {
   t: number;
   id: string;
@@ -58,7 +58,7 @@ interface IDisplayMarkedEvent {
 
 export interface ITimelineSvc {
   timelineEvents: ITimelineEvent[];
-  markedEvents: NEvent[];
+  markedEvents: IEvent[];
   displayMarkedEvents: IDisplayMarkedEvent[];
   enforceSingletonPauseListener: boolean;
   setSpeed(speed: number): void;
@@ -135,8 +135,11 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
 
         break;
       case 'ended':
-        console.log('timelineSvc#ended event!');
+        // console.log('timelineSvc#ended event!');
         playbackService.setMetaProp('time', playbackService.getMetaProp('duration'));
+        const episode = modelSvc.episodes[appState.episodeId];
+        const endingScreen = episode.scenes[episode.scenes.length - 1];
+        episode.setCurrentScene(endingScreen);
         break;
       case 'playing':
         var currentTime = playbackService.getCurrentTime();
@@ -329,7 +332,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     var found = false;
     var currentTime = playbackService.getMetaProp('time');
     var currentDuration = playbackService.getMetaProp('duration');
-    var len = svc.markedEvents.length - 1;
+    var len = svc.markedEvents.length;
     var i = 0;
     for (; i < len; i++) {
       if (svc.markedEvents[i].start_time > currentTime) {
@@ -762,7 +765,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     return displayArr;
   }
 
-  var addMarkedEvent = function (newEvent: NEvent) {
+  var addMarkedEvent = function (newEvent: IEvent) {
     // scan through existing markedEvents; if the new event is already there, replace it; otherwise add it
     var wasFound = false;
     for (var i = 0; i < svc.markedEvents.length; i++) {
@@ -885,8 +888,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         var event = modelSvc.events[tE.id];
         if (event) { // cancelling adding an event can leave "internal:editing" in the event list;
           // TODO keep that from happening but for now just ignore it if it doesn't exist
-          event.state = 'isFuture';
-          event.isCurrent = false;
+          event.setFuture();
         }
       }
     });
@@ -897,16 +899,16 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
         var event = modelSvc.events[tE.id];
         if (event) {
           if (tE.action === 'enter') {
-            event.state = 'isCurrent';
-            event.isCurrent = true;
+            event.setCurrent();
           } else if (tE.action === 'exit') {
-            event.state = 'isPast';
-            event.isCurrent = false;
+            event.setPast();
           }
         }
       }
     });
-    // console.log('tlEvents', svc.timelineEvents);
+    // console.count('updateEventState called');
+    // console.trace('updateEventStates');
+    // console.log('tlEvents', modelSvc.episodes[appState.episodeId].scenes);
   };
 
   var alreadyPreloadedImages = {};

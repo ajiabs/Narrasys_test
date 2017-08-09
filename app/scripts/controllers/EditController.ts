@@ -1,5 +1,5 @@
 'use strict';
-import {UPDATE_MAGNET} from '../constants';
+import {createInstance, } from '../models';
 
 EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
 
@@ -234,17 +234,23 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
         if (data._type === 'Scene') {
           timelineSvc.timelineEvents = [];
           timelineSvc.injectEvents(modelSvc.episodeEvents(appState.episodeId), 0);
+          // sometimes the scene prior to the new onne being created is set to be the current scene
+          modelSvc.episodes[appState.episodeId].setCurrentScene(modelSvc.events[data._id]);
         } else {
           modelSvc.resolveEpisodeEvents(appState.episodeId);
           timelineSvc.updateEventTimes(modelSvc.events[data._id]);
         }
 
+        // currently only runs on transcript items
         saveAdjustedEvents(data, saveOperation);
 
         // Delete attached asset(s)  (this should only occur for sxs items, for now)
         // yes we could combine these into one call I suppose but there will almost always only be one
         // unless the user was very indecisive and uploaded/detached a bunch of assets to the same event.
         // It was probably already a premature optimization to use an array here in the first place
+
+        // see ittItemEditor to see where toSave.removedAssets is setup as below is the only
+        // reference in this file.
         angular.forEach(toSave.removedAssets, function (id) {
           dataSvc.deleteAsset(id);
         });
@@ -534,8 +540,6 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
 
     appState.editEvent = false;
     appState.videoControlsLocked = false;
-    // revert video back to original position
-    $timeout(() => $rootScope.$emit(UPDATE_MAGNET), 100);
   };
 
   $scope.cancelEpisodeEdit = function (originalEvent) {
@@ -580,7 +584,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
      video (injected episode) TODO
      */
 
-    var stub = {};
+    var stub = Object.create(null);
     if (type === 'scene') {
       stub = {
         "_type": "Scene",
@@ -695,7 +699,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
       stub.templateUrl = defaultTemplateUrls[type];
     }
     angular.extend(base, stub);
-    return base;
+    return createInstance(stub._type, base);
   };
 
 }
