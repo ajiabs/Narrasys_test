@@ -51,6 +51,8 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
 
   function html5Ending(pid) {
     stop(pid);
+    const instance = getInstance(pid);
+    onEnded.call(instance);
   }
 
   var getPlayer = base.getPlayer;
@@ -126,7 +128,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
     // _players[divID].instance = plr;
     getPlayer(divID).instance = plr;
 
-    console.log('check', getPlayer(divID));
+    // console.log('check', getPlayer(divID));
     // temp to test out video source change.
     // $timeout(function() {
     // 	console.info('BEGIN QUALITY CHANGE!');
@@ -219,11 +221,18 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
   /*
    HTML5 media event handlers
    */
-  function onSeeked() {
+  function onSeeked(ev) {
     var state = getPlayerState(this.id);
     if (state === 'playing' || state === 'buffering' && appState.isIEOrEdge === true) {
       //manually fire onPlaying for IE/Edge only as to avoid duplicate onplaying events.
       onPlaying.call(this);
+    }
+
+    const {currentTime, duration} = ev.target;
+    const padding = 0.5;
+
+    if (Math.floor(duration - currentTime) <= padding) {
+      onEnded.call(this);
     }
   }
 
@@ -240,7 +249,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
   function onEnded() {
     var instance = getInstance(this.id);
     setMetaProp(this.id, 'playerState', 0);
-    // _emitStateChange(instance);
+    _emitStateChange(instance);
   }
 
   /**
@@ -658,7 +667,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
     Object.keys(evMap).forEach(function (evtName) {
       (function (evtName) {
         videoElement.addEventListener(evtName, evMap[evtName]);
-      })(evtName)
+      })(evtName);
     });
   }
 

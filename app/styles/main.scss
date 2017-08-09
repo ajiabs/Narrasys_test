@@ -328,6 +328,16 @@ h4 {
 	z-index: 3;
 }
 
+.videoContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 854px;
+  height: 478px;
+  will-change: transform;
+  transform-origin: top left;
+}
+
 .videoMask {
 	z-index: 4;
 }
