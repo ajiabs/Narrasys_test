@@ -332,7 +332,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
     var found = false;
     var currentTime = playbackService.getMetaProp('time');
     var currentDuration = playbackService.getMetaProp('duration');
-    var len = svc.markedEvents.length - 1;
+    var len = svc.markedEvents.length;
     var i = 0;
     for (; i < len; i++) {
       if (svc.markedEvents[i].start_time > currentTime) {
