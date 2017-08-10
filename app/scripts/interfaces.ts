@@ -1,3 +1,4 @@
+export {IAnalyticsSvc} from './services/analyticsSvc';
 export {IAnnotator, IAnnotators} from './directives/sxsAnnotatorAutocomplete';
 export {ITimelineSvc} from './services/timelineSvc';
 export {IMetaObj, IMetaProps} from './services/basePlayerManager/index';
@@ -60,7 +61,9 @@ export interface IUrlService {
   parseInput(input: string): string;
   isVideoUrl(url: string): boolean;
   resolveVideo(): any;
-}export interface IParsedMediaSrcObj {
+}
+
+export interface IParsedMediaSrcObj {
   type: 'kaltura' | 'youtube' | 'html5' | 'wistia';
   mediaSrcArr: string[];
 }

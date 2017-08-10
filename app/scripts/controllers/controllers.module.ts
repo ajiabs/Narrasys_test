@@ -19,7 +19,6 @@ import TimelineController from './TimelineController';
 
 let ittControllers = angular.module('itt.controllers', [])
   .controller('EditController', EditController)
-  .controller('EpisodeController', EpisodeController)
   .controller('ErrorController', ErrorController)
   .controller('EventTestController', EventTestController)
   .controller('ItemController', ItemController)
