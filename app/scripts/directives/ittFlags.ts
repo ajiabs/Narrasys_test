@@ -1,11 +1,116 @@
 /**
  * Created by githop on 6/30/16.
  */
+import {IEvent} from '../models';
+import {ISelectService} from '../services/selectService';
+import {existy} from '../services/ittUtils';
+
+const TEMPLATE = ``;
+
+interface IFlagsBindings {
+  flags: string[];
+  data: IEvent;
+  itemForm: ng.IFormController;
+  templateUrl: string;
+}
+
+class FlagsController implements ng.IComponentController, IFlagsBindings {
+  flags: string[];
+  data: IEvent;
+  itemForm: ng.IFormController;
+  templateUrl: string;
+
+  private _flags: string[];
+  private _displays = {
+    required: 'Required',
+    stop: 'Stop item',
+    cosmetic: 'Cosmetic',
+    chapter_marker: 'Chapter Event',
+    invertColor: 'Invert Color'
+  };
+
+  private _ids = {
+    required: 'itemRequired',
+    stop: 'itemStop',
+    cosmetic: 'itemCosmetic',
+    chapter_marker: 'itemChapter',
+    invertColor: 'Invert'
+  };
+
+  static $inject = ['selectService'];
+  constructor(private selectService: ISelectService) {
+    //
+  }
+
+  $onInit() {
+    this._flags = angular.copy(this.flags);
+  }
+
+  $onChanges(changesObj) {
+    // call setFlags
+  }
+
+  handleChange() {
+    if (this.data.hasOwnProperty('stop')) {
+      this.selectService.onSelectChange(this.data, this.itemForm);
+    }
+  }
+
+  private static _h1OrH2(url) {
+    return (url === 'templates/item/text-h1.html' || url === 'templates/item/text-h2.html');
+  }
+
+  private setFlags(newVal:string, oldVal:string) {
+
+    //reset invert color when switching between templates.
+    if (newVal !== oldVal) {
+      this.itemForm.color = '';
+    }
+
+    if (newVal) {
+      if (this.data.templateUrl === 'templates/item/image-fill.html') {
+        this._flags = this._flags.filter(function (f) {
+          return f !== 'stop';
+        });
+      } else {
+        this._flags = this.flags;
+      }
+      if (!FlagsController._h1OrH2(newVal)) {
+        //editing non-h1/h2, reset invert
+        //when adding any new annotation, the invert color will be set as H2 by default (and
+        //h2s by default have the invert color applied)
+        //reset it for non h1/h2 annotations
+        if (existy(this.itemForm) && this.data._id === 'internal:editing') {
+          this.itemForm.color = '';
+
+        }
+
+        this._flags = this._flags.filter(function (f) {
+          return f !== 'chapter_marker' && f !== 'invertColor';
+        });
+      } else {
+        this._flags = this.flags;
+        //set invert for new h1/h2 as default.
+        if (existy(this.itemForm) && this.data._id === 'internal:editing') {
+          this.itemForm.color = 'Invert';
+        }
+      }
+    }
+  }
+}
+
+export class Flags implements ng.IComponentOptions {
+  bindings: any = {};
+  template: string = TEMPLATE;
+  controller = FlagsController;
+  static Name: string = 'npFlags'; // tslint:disable-line
+}
+
 export default function ittFlags() {
   return {
     restrict: 'EA',
     scope: {
-      flags: '=',
+      flags: '<',
       data: '=',
       //for the invertColor option
       itemForm: '=?'
