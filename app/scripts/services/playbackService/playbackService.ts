@@ -243,7 +243,7 @@ export default function playbackService(
    * @param {String} pid id of the player to drive
    * @param {Function} restartFn function to call when restarting.
    */
-  function togglePlayback(pid, restartFn) {
+  function togglePlayback(pid, restartFn, analyticsFn?) {
     pid = _setPid(pid);
     var state = getPlayerState(pid);
     var time = getMetaProp('time', pid);
@@ -257,6 +257,7 @@ export default function playbackService(
       play(pid);
     } else {
       pause(pid);
+      analyticsFn('pause');
     }
   }
 

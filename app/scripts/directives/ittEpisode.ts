@@ -37,7 +37,7 @@ class EpisodeController {
   }
 
   $onDestroy() {
-    this.analyticsSvc.captureEpisodeActivity('episodeEnd');
+    this.analyticsSvc.captureEpisodeActivity('episodeUnload');
     this.analyticsSvc.stopPolling();
   }
 

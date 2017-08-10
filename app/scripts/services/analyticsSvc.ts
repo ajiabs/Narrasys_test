@@ -4,6 +4,7 @@
 
  episode activity:
  episodeLoad					triggered immediately when episode is loaded
+ episodeUnload        triggered immediately when episode is navigated away from.
  episodeEnd					triggered when user reaches end of episode
  play								triggered when user hits play
  pause								triggered when user hits pause
@@ -40,7 +41,7 @@ export interface IAnalyticsSvc {
 
 import {AppState} from './appState';
 
-type AnalyticType = 'episodeLoad' | 'episodeEnd' | 'play' | 'pause' | 'seek' | 'modeChange';
+type AnalyticType = 'episodeLoad' | 'episodeUnload' | 'play' | 'pause' | 'seek' | 'modeChange';
 
 interface IAnalytic {
   name: AnalyticType;
@@ -84,7 +85,6 @@ export class AnalyticsSvc implements IAnalyticsSvc {
   }
 
   captureEpisodeActivity(name: AnalyticType, data?) {
-
     if ((this.appState.user && this.appState.user._id) && (!this.appState.user.track_episode_metrics)) {
       return;
     }
