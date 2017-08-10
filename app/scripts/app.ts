@@ -29,8 +29,8 @@ import 'core-js/client/shim';
 import 'angular';
 import 'angular-ui-tree';
 //text angular
-import 'rangy'
-import 'rangy/lib/rangy-selectionsaverestore'
+import 'rangy';
+import 'rangy/lib/rangy-selectionsaverestore';
 import 'textAngular/dist/textAngular-sanitize.min';
 import 'textAngular/dist/textAngular.min';
 import 'angular-socialshare';
@@ -43,16 +43,16 @@ import './services/services.module';
 import './directives/directives.module';
 
 let itt = angular.module('iTT', [
-  'ngRoute',
-  'ngAnimate',
-  'ngSanitize',
-  'textAngular',
-  'ui.tree',
-  '720kb.socialshare',
-  'itt.controllers',
-  'itt.filters',
-  'itt.services',
-  'itt.directives'
+    'ngRoute',
+    'ngAnimate',
+    'ngSanitize',
+    'textAngular',
+    'ui.tree',
+    '720kb.socialshare',
+    'itt.controllers',
+    'itt.filters',
+    'itt.services',
+    'itt.directives'
   ]
 )
   .constant('MIMES', {
@@ -97,7 +97,7 @@ let itt = angular.module('iTT', [
 function routerConfig($routeProvider) {
   $routeProvider
     .when('/', {
-      title: "Narrative Producer",
+      title: 'Narrative Producer',
       templateUrl: 'templates/root.html'
     })
     .when('/auth', {
@@ -117,7 +117,7 @@ function routerConfig($routeProvider) {
       }]
     })
     .when('/stories', {
-      title: "Available Narratives",
+      title: 'Available Narratives',
       template: [
         '<div class="standaloneAncillaryPage">',
         '	<itt-nav on-logout="logout()"></itt-nav>',
@@ -130,29 +130,29 @@ function routerConfig($routeProvider) {
         narrativesResolve: ['$route', '$q', 'ittUtils', 'authSvc', 'dataSvc', 'modelSvc',
           function ($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
 
-          //needs to be an array
-          var cachedCustomers = modelSvc.getCustomersAsArray();
-          //if use visits /story/:id prior to visiting this route, they will have a single
-          //narrative in modelSvc. We consider the cache 'empty' if the only narrative
-          //in it came from loading data for /story/:id. Otherwise when they visit
-          // /stories, the only listing they would see would be the narrative from
-          // /stories/:id.
-          var isCached = Object.keys(cachedCustomers).length > 0;
+            //needs to be an array
+            var cachedCustomers = modelSvc.getCustomersAsArray();
+            //if use visits /story/:id prior to visiting this route, they will have a single
+            //narrative in modelSvc. We consider the cache 'empty' if the only narrative
+            //in it came from loading data for /story/:id. Otherwise when they visit
+            // /stories, the only listing they would see would be the narrative from
+            // /stories/:id.
+            var isCached = Object.keys(cachedCustomers).length > 0;
 
-          if (isCached) {
-            //since this is going to be displayed in a dropdown, it needs to be an array of objects.
+            if (isCached) {
+              //since this is going to be displayed in a dropdown, it needs to be an array of objects.
 
-            return $q(function (resolve) {
-              return resolve({c: cachedCustomers});
+              return $q(function (resolve) {
+                return resolve({c: cachedCustomers});
+              });
+            }
+
+            return authSvc.authenticate().then(function () {
+              return dataSvc.getCustomerList().then(function (customers) {
+                return {c: customers};
+              });
             });
-          }
-
-          return authSvc.authenticate().then(function () {
-            return dataSvc.getCustomerList().then(function (customers) {
-              return { c: customers };
-            });
-          });
-        }]
+          }]
       }
     })
     .when('/story/:narrativePath', {
@@ -166,100 +166,102 @@ function routerConfig($routeProvider) {
       resolve: {
         narrativeResolve: ['$route', '$q', 'authSvc', 'dataSvc', 'modelSvc', 'ittUtils',
           function ($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
-          var pathOrId = $route.current.params.narrativePath;
-          //this only pulls from the cache.
-          var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
-          var cachedCustomer;
+            var pathOrId = $route.current.params.narrativePath;
+            //this only pulls from the cache.
+            var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+            var cachedCustomer;
 
-          var doPullFromCache = ittUtils.existy(cachedNarr) &&
-            ittUtils.existy(cachedNarr.path_slug) &&
-            ittUtils.existy(cachedNarr.timelines) &&
-            (cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
+            var doPullFromCache = ittUtils.existy(cachedNarr) &&
+              ittUtils.existy(cachedNarr.path_slug) &&
+              ittUtils.existy(cachedNarr.timelines) &&
+              (cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
 
-          if (doPullFromCache) {
-            cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
-            return $q(function (resolve) {
-              return resolve({n: cachedNarr, c: [cachedCustomer]});
+            if (doPullFromCache) {
+              cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
+              return $q(function (resolve) {
+                return resolve({n: cachedNarr, c: [cachedCustomer]});
+              });
+            }
+            return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
+              return dataSvc.getCustomer(narrativeData.customer_id, true).then(function (customer) {
+                return {n: narrativeData, c: [customer]};
+              });
             });
-          }
-          return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
-            return dataSvc.getCustomer(narrativeData.customer_id, true).then(function (customer) {
-              return {n: narrativeData, c: [customer]};
-            });
-          });
-        }]
+          }]
       }
     })
     .when('/story/:narrativePath/:timelinePath', {
       template: '<div itt-narrative-timeline></div>',
       resolve: {
         product: ['appState', function (appState) {
-          appState.product = "player";
-          appState.productLoadedAs = "narrative";
+          appState.init();
+          appState.product = 'player';
+          appState.productLoadedAs = 'narrative';
         }]
       }
     })
     .when('/projects', {
-      title: "Available projects",
+      title: 'Available projects',
       templateUrl: 'templates/producer/episodelist.html'
     })
     .when('/episode/:epId', {
-      title: "Narrative Producer",
-      controller: 'PlayerController',
-      templateUrl: 'templates/player.html',
+      title: 'Narrative Producer',
+      template: '<itt-player-container></itt-player-container>',
       resolve: {
         product: ['appState', function (appState) {
-          appState.product = "player";
-          appState.productLoadedAs = "player";
+          appState.init();
+          appState.product = 'player';
+          appState.productLoadedAs = 'player';
         }]
       }
     })
     .when('/episode/:epId/:viewMode', {
-      title: "Narrative Producer",
-      controller: 'PlayerController',
-      templateUrl: 'templates/player.html',
+      title: 'Narrative Producer',
+      template: '<itt-player-container></itt-player-container>',
       resolve: {
         product: ['appState', function (appState) {
-          appState.product = "player";
-          appState.productLoadedAs = "player";
+          appState.init();
+          appState.product = 'player';
+          appState.productLoadedAs = 'player';
         }]
       }
     })
     .when('/sxs/:epId', {
-      title: "Narrative Producer",
-      controller: 'PlayerController',
-      templateUrl: 'templates/player.html',
+      title: 'Narrative Producer',
+      template: '<itt-player-container></itt-player-container>',
       resolve: {
         product: ['appState', function (appState) {
-          appState.product = "sxs";
-          appState.productLoadedAs = "sxs";
+          appState.init();
+          appState.product = 'sxs';
+          appState.productLoadedAs = 'sxs';
         }]
       }
     })
     .when('/editor/:epId', {
-      title: "Narrative Producer",
-      controller: 'PlayerController',
-      templateUrl: 'templates/player.html',
+      title: 'Narrative Producer',
+      template: '<itt-player-container></itt-player-container>',
       resolve: {
         product: ['appState', function (appState) {
-          appState.product = "sxs";
-          appState.productLoadedAs = "sxs";
+          appState.init();
+          appState.product = 'sxs';
+          appState.productLoadedAs = 'sxs';
         }]
       }
     })
     .when('/producer/:epId', {
-      title: "Narrative Producer",
-      controller: 'PlayerController',
-      templateUrl: 'templates/player.html',
+      title: 'Narrative Producer',
+      template: '<itt-player-container></itt-player-container>',
       resolve: {
-        product: ['appState', function (appState) {
-          appState.product = "producer";
-          appState.productLoadedAs = "producer";
+        product: ['$route', 'appState', ($route, appState) => {
+          appState.init();
+          appState.episodeId = appState.episodeId = $route.current.params.epId;
+          appState.product = 'producer';
+          appState.productLoadedAs = 'producer';
         }]
       }
     })
     .when('/assets/:containerId', {
-      title: "Container Assets test",
+      title: 'Container Assets test',
       controller: 'ContainerAssetsTestController',
       template: [
         '<div class="standaloneAncillaryPage">',
@@ -276,12 +278,12 @@ function routerConfig($routeProvider) {
       }
     })
     .when('/event/:eventId', {
-      title: "Event test",
+      title: 'Event test',
       controller: 'EventTestController',
       templateUrl: 'templates/testbed-event.html'
     })
     .otherwise({
-      title: "Narrative Producer: Error",
+      title: 'Narrative Producer: Error',
       controller: 'ErrorController',
       templateUrl: 'templates/error-404.html'
     });
@@ -302,12 +304,14 @@ function authInterceptorConfig($httpProvider) {
   $httpProvider.defaults.useXDomain = true;
   $httpProvider.defaults.withCredentials = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  $httpProvider.interceptors.push(['$q', 'errorSvc',function ($q, errorSvc) {
+  $httpProvider.interceptors.push(['$q', 'errorSvc', function ($q, errorSvc) {
     return {
       'responseError': function (rejection) {
 
         if (rejection.data && rejection.data.path_slug) {
-          return $q(function(resolve, reject) {return reject(rejection);});
+          return $q(function (resolve, reject) {
+            return reject(rejection);
+          });
         }
 
         errorSvc.error(rejection);
@@ -319,7 +323,8 @@ function authInterceptorConfig($httpProvider) {
 
 function textAngularConfig($provide) {
   $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
-    taOptions.defaultFileDropHandler = function (a, b) {}; //jshint ignore:line
+    taOptions.defaultFileDropHandler = function (a, b) {
+    }; //jshint ignore:line
     taOptions.toolbar = [
       ['h1', 'h2', 'h3'],
       ['bold', 'italics', 'underline', 'strikeThrough'],
@@ -349,13 +354,13 @@ function debugInfoConfig($compileProvider) {
 
 function runFunction($rootScope, errorSvc) {
 
-  $rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
+  $rootScope.$on('$routeChangeSuccess', function (event, currentRoute) {
     document.title = currentRoute.title ? currentRoute.title : 'Narrative Producer';
     errorSvc.init(); // clear display of any errors from the previous route
   });
   // globally emit rootscope event for certain keypresses:
   var fhotkb = false; // user's forehead is not on the keyboard
-  $(document).on("keydown", function (e) {
+  $(document).on('keydown', function (e) {
     if (
       fhotkb ||
       document.activeElement.tagName === 'INPUT' ||
@@ -367,16 +372,16 @@ function runFunction($rootScope, errorSvc) {
 
     fhotkb = true;
     if (e.keyCode === 27) {
-      $rootScope.$emit("userKeypress.ESC");
+      $rootScope.$emit('userKeypress.ESC');
       e.preventDefault();
     }
     if (e.which === 32) {
-      $rootScope.$emit("userKeypress.SPACE");
+      $rootScope.$emit('userKeypress.SPACE');
       e.preventDefault();
     }
 
   });
-  $(document).on("keyup", function () {
+  $(document).on('keyup', function () {
     fhotkb = false; // oh good they've woken up
   });
 }

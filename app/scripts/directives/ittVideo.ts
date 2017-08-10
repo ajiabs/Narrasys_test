@@ -1,6 +1,7 @@
 import {IDataSvc} from '../services/dataSvc';
 import {IModelSvc} from '../services/modelSvc';
 import {ITimelineSvc} from '../services/timelineSvc';
+import {IAnalyticsSvc} from '../services/analyticsSvc';
 /* tslint:disable:prefer-const */
 export default function ittVideo() {
   return {
@@ -24,6 +25,7 @@ export default function ittVideo() {
       'modelSvc',
       'dataSvc',
       'appState',
+      'analyticsSvc',
       function (
         $scope,
         $timeout,
@@ -36,7 +38,8 @@ export default function ittVideo() {
         timelineSvc: ITimelineSvc,
         modelSvc: IModelSvc,
         dataSvc: IDataSvc,
-        appState) {
+        appState,
+        analyticsSvc: IAnalyticsSvc) {
         var ctrl = this; //jshint ignore:line
 
         //controller public properties
@@ -89,7 +92,9 @@ export default function ittVideo() {
 
         //video mask controls
         function videoClick() {
-          playbackService.togglePlayback(ctrl.playerId, timelineSvc.restartEpisode);
+          playbackService.togglePlayback(
+            ctrl.playerId, timelineSvc.restartEpisode,
+            analyticsSvc.captureEpisodeActivity.bind(analyticsSvc));
         }
 
         function setCssClass() {

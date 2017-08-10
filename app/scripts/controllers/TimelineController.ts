@@ -1,6 +1,8 @@
-TimelineController.$inject = ['$scope', '$rootScope', 'timelineSvc', 'playbackService'];
+import {IAnalyticsSvc} from '../services/analyticsSvc';
 
-export default function TimelineController($scope, $rootScope, timelineSvc, playbackService) {
+TimelineController.$inject = ['$scope', '$rootScope', 'timelineSvc', 'playbackService', 'analyticsSvc'];
+
+export default function TimelineController($scope, $rootScope, timelineSvc, playbackService, analyticsSvc: IAnalyticsSvc) {
 
   $scope.playbackService = playbackService;
 
@@ -20,7 +22,9 @@ export default function TimelineController($scope, $rootScope, timelineSvc, play
   }
 
   function timelineBtnClick() {
-    playbackService.togglePlayback(null, timelineSvc.restartEpisode);
+    playbackService.togglePlayback(null,
+      timelineSvc.restartEpisode,
+      analyticsSvc.captureEpisodeActivity.bind(analyticsSvc));
   }
 
   function _getTimelineState() {
