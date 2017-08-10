@@ -42,7 +42,6 @@ class EpisodeController {
   }
 
   loadEpisodeForPlayer() {
-    this.appState.init();
     this.analyticsSvc.startPolling();
     this.analyticsSvc.captureEpisodeActivity('episodeLoad');
   }

@@ -194,6 +194,7 @@ function routerConfig($routeProvider) {
       template: '<div itt-narrative-timeline></div>',
       resolve: {
         product: ['appState', function (appState) {
+          appState.init();
           appState.product = 'player';
           appState.productLoadedAs = 'narrative';
         }]
@@ -208,6 +209,7 @@ function routerConfig($routeProvider) {
       template: '<itt-player-container></itt-player-container>',
       resolve: {
         product: ['appState', function (appState) {
+          appState.init();
           appState.product = 'player';
           appState.productLoadedAs = 'player';
         }]
@@ -218,6 +220,7 @@ function routerConfig($routeProvider) {
       template: '<itt-player-container></itt-player-container>',
       resolve: {
         product: ['appState', function (appState) {
+          appState.init();
           appState.product = 'player';
           appState.productLoadedAs = 'player';
         }]
@@ -228,6 +231,7 @@ function routerConfig($routeProvider) {
       template: '<itt-player-container></itt-player-container>',
       resolve: {
         product: ['appState', function (appState) {
+          appState.init();
           appState.product = 'sxs';
           appState.productLoadedAs = 'sxs';
         }]
@@ -238,6 +242,7 @@ function routerConfig($routeProvider) {
       template: '<itt-player-container></itt-player-container>',
       resolve: {
         product: ['appState', function (appState) {
+          appState.init();
           appState.product = 'sxs';
           appState.productLoadedAs = 'sxs';
         }]
