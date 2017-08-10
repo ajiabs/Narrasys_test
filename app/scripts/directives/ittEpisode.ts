@@ -12,19 +12,20 @@ class EpisodeController {
     private timelineSvc) { }
 
   $onInit() {
-    console.log('episode init!');
+    // console.log('episode init!');
     // this.appState.episodeId = this.$routeParams.epId;
     this.$scope.episode = this.modelSvc.episodes[this.appState.episodeId];
     // TODO: this will break if the timeline and the episode timeline don't match.
     // TODO: check whether this gets called if multiple episodes are added to the timeline...
     // I'm thinking probably not....
-    this.analyticsSvc.startPolling();
-    this.analyticsSvc.captureEpisodeActivity('episodeLoad');
 
     // I did something stupid here wrt scoping, apparently;
     // 'edit episode' causes this scope to refer to a copy of the data rather than back to the modelSvc cache.
     // This is an even stupider but relatively harmless HACK to keep it  pointing at the right data:
     // classic daniel ^^
+
+    this.loadEpisodeForPlayer();
+
     const scopeHack = () => {
       this.$scope.episode = this.modelSvc.episodes[this.appState.episodeId];
       if (this.$scope.episode != null) {
@@ -35,15 +36,16 @@ class EpisodeController {
     this.$interval(scopeHack, 457);
   }
 
-  loadEpisodeForPlayer() {
-    this.appState.init();
-  }
-
   $onDestroy() {
     this.analyticsSvc.captureEpisodeActivity('episodeEnd');
     this.analyticsSvc.stopPolling();
   }
 
+  loadEpisodeForPlayer() {
+    this.appState.init();
+    this.analyticsSvc.startPolling();
+    this.analyticsSvc.captureEpisodeActivity('episodeLoad');
+  }
 }
 
 export default function ittEpisode() {
