@@ -4,7 +4,6 @@
 
 import 'angular';
 
-import analyticsSvc from './analyticsSvc';
 import {AppState} from './appState';
 import authSvc from './authSvc';
 import awsSvc from './awsSvc';
@@ -16,12 +15,12 @@ import {ittUtils} from './ittUtils';
 import mockSvc from './mockSvc';
 import modelSvc from './modelSvc';
 import playbackService from './playbackService/playbackService';
-import playerManagerCommons from './basePlayerManager/playerManagerCommons';
 import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
 import { SelectService } from './selectService';
 import timelineSvc from './timelineSvc';
 import urlService from './urlService';
+import playerManagerCommons from './basePlayerManager/playerManagerCommons';
 import html5PlayerManager from './html5/html5PlayerManager.svc';
 import html5UrlService from './html5/html5UrlService';
 import kalturaPlayerManager from './kaltura/kalturaPlayerManager';
@@ -38,6 +37,7 @@ import {
 
 import {UploadsService} from './uploadsService';
 import {ValidationService} from './validation.svc';
+import {AnalyticsSvc} from './analyticsSvc';
 
 let servicesModule = angular.module('itt.services', [])
   .service('appState', AppState)
@@ -65,10 +65,10 @@ let servicesModule = angular.module('itt.services', [])
   .factory('youTubePlayerManager', youTubePlayerManager)
   .factory('YTScriptLoader', YTScriptLoader)
   .factory('youtubeUrlService', youtubeUrlService)
-  .factory('analyticsSvc', analyticsSvc)
   .service('wistiaUrlService', WistiaUrlService)
   .service('wistiaPlayerManager', WistiaPlayerManager)
   .service('wistiaScriptLoader', WistiaScriptLoader)
+  .service('analyticsSvc', AnalyticsSvc)
   .service('validationSvc', ValidationService)
   .service('uploadsService', UploadsService);
 
