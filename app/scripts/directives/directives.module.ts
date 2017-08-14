@@ -28,7 +28,7 @@ import ittItem from './ittItem';
 import ittItemDetailModal from './ittItemDetailModal';
 import ittItemEditor from './ittItemEditor';
 import ittLanguageFlags from './ittLanguageFlags';
-import ittLanguageSelect from './ittLanguageSelect';
+import { LanguageSelect } from './ittLanguageSelect';
 import ittLoading from './ittLoading';
 import ittLogin from './ittLogin';
 import ittMagnet from './magnet/ittMagnet';
@@ -114,7 +114,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittItemDetailModal', ittItemDetailModal)
   .directive('ittItemEditor', ittItemEditor)
   .directive('ittLanguageFlags', ittLanguageFlags)
-  .directive('ittLanguageSelect', ittLanguageSelect)
+  .component(LanguageSelect.Name, new LanguageSelect())
   .directive('ittLoading', ittLoading)
   .directive('ittLogin', ittLogin)
   .directive('ittMagnet', ittMagnet)

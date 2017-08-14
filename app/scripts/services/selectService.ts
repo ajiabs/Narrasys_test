@@ -8,15 +8,21 @@ import {existy, intersection} from './ittUtils';
 
 export interface ISelectService {
   getSceneName(scene: IScene): string;
-  getSelectOpts(type: string): any[];
+  getSelectOpts(type: string): IOpt[];
   getVisibility(prop: string): boolean;
   setupItemForm(stylesArr, type): any;
   onSelectChange(item: IEvent, itemForm): void;
   showTab(itemType, tabTitle): boolean;
 }
 
+interface IOpt {
+  value: string;
+  name: string;
+  isDisabled?: boolean;
+}
+
 export class SelectService implements ISelectService {
-  private _langOpts = [
+  private _langOpts: IOpt[] = [
     {value: 'en', name: 'English', isDisabled: false},
     {value: 'es', name: 'Spanish', isDisabled: false},
     {value: 'zh', name: 'Chinese', isDisabled: false},
@@ -99,7 +105,7 @@ export class SelectService implements ISelectService {
     })[0];
   }
 
-  getSelectOpts(type) {
+  getSelectOpts(type: string) {
     return this._select[type];
   }
 
@@ -122,15 +128,15 @@ export class SelectService implements ISelectService {
  */
   setupItemForm(stylesArr, type) {
     //global for episode and item
-    const _itemFormStub = {
+    let _itemFormStub = {
       'transition': '',
       'highlight': '',
       'color': '',
       'typography': '',
-      'timestamp': '',
-    };
+      'timestamp': ''
+    } as any;
     const _itemSpecificOpts = {
-      'position': '', // for image fills only
+      'position': '' // for image fills only
     };
     //add additional props for items
     if (type === 'item') {
@@ -288,7 +294,7 @@ export class SelectService implements ISelectService {
         this._templateSelectVisibility(false);
         this._bgImagePositionSelectVisibility(false);
         return [
-          {url: 'templates/item/file.html', name: 'Uploaded File'},
+          {url: 'templates/item/file.html', name: 'Uploaded File'}
         ];
       case 'question':
         this._displaySelectVisibility(true);
