@@ -47,7 +47,7 @@
               <itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
               <itt-url-field data="item" itt-item-form="ittItemForm"></itt-url-field>
               <itt-description-field data="item"></itt-description-field>
-              <itt-template-select data="item" item-form="itemForm"></itt-template-select>
+              <np-template-select data="item" item-form="itemForm"></np-template-select>
               <itt-image-field></itt-image-field>
               <np-flags data="item" template-url="{{item.templateUrl}}"
                         item-form="itemForm"
@@ -65,7 +65,7 @@
               <itt-time-field></itt-time-field>
               <itt-title-field data="item"></itt-title-field>
               <itt-annotation-field data="item" itt-item-form="ittItemForm"></itt-annotation-field>
-              <itt-template-select data="item" item-form="itemForm"></itt-template-select>
+              <np-template-select data="item" item-form="itemForm"></np-template-select>
               <itt-speaker-field></itt-speaker-field>
               <np-flags data="item"
                         template-url="{{item.templateUrl}}"
@@ -80,7 +80,6 @@
               <itt-time-field></itt-time-field>
               <itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
               <itt-file-field></itt-file-field>
-              <!--<itt-template-select data="item"></itt-template-select>-->
               <itt-description-field data="item"></itt-description-field>
               <np-flags data="item"
                         template-url="{{item.templateUrl}}"
@@ -93,7 +92,7 @@
               <itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
               <itt-image-field></itt-image-field>
               <itt-description-field data="item"></itt-description-field>
-              <itt-template-select data="item" item-form="itemForm"></itt-template-select>
+              <np-template-select data="item" item-form="itemForm"></np-template-select>
               <np-display-select data="item" item-form="itemForm"></np-display-select>
               <!--TODO reccommend moving orientation into layout tab-->
               <np-flags data="item"
@@ -140,8 +139,8 @@
             </div>
             <!--hidden accross the board-->
             <div ng-switch-when="transcript">
-              <!--Template, Speaker Thumb, timestamp, highlight-->
-              <itt-template-select data="item" item-form="itemForm"></itt-template-select>
+              <!-- disabled across the board-->
+              <!--<np-template-select data="item" item-form="itemForm"></np-template-select>-->
 
             </div>
             <div ng-switch-when="annotation">
@@ -151,7 +150,7 @@
             <div ng-switch-when="scene">
               <!--time, template, position, display-->
               <itt-time-field></itt-time-field>
-              <itt-template-select data="item" item-form="itemForm"></itt-template-select>
+              <np-template-select data="item" item-form="itemForm"></np-template-select>
               <itt-video-position-select data="item"></itt-video-position-select>
               <np-display-select data="item"></np-display-select>
             </div>
@@ -161,15 +160,16 @@
             <!--image style tab hidden for all roles-->
             <!--<div ng-switch-when="image">-->
             <!--</div>-->
-            <div ng-switch-when="question">
+            <!--<div ng-switch-when="question">-->
+              <!--currently disabled across the board-->
               <!--Template, Display, Flags-->
-              <itt-template-select data="item" item-form="itemForm"></itt-template-select>
-              <np-display-select data="item" item-form="itemForm"></np-display-select>
-              <np-flags data="item"
-                         template-url="{{item.templateUrl}}"
-                         item-form="itemForm"
-                         flags="['required', 'stop', 'cosmetic']"></np-flags>
-            </div>
+              <!--<np-template-select data="item" item-form="itemForm"></np-template-select>-->
+              <!--<np-display-select data="item" item-form="itemForm"></np-display-select>-->
+              <!--<np-flags data="item"-->
+                         <!--template-url="{{item.templateUrl}}"-->
+                         <!--item-form="itemForm"-->
+                         <!--flags="['required', 'stop', 'cosmetic']"></np-flags>-->
+            <!--</div>-->
             <div ng-switch-when="chapter">
               <h4>{{item.producerItemType}}</h4>
             </div>

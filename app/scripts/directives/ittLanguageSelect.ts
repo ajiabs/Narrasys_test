@@ -1,9 +1,8 @@
 /**
  * Created by githop on 8/23/16.
  */
-import {ILangForm} from '../interfaces';
+import {ILangForm, ISelectService} from '../interfaces';
 import {IEvent} from '../models';
-import {ISelectService} from '../services/selectService';
 
 const TEMPLATE = `
 <div class="field">

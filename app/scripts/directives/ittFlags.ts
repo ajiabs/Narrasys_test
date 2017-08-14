@@ -1,8 +1,8 @@
 /**
  * Created by githop on 6/30/16.
  */
+import {ISelectService} from '../interfaces';
 import {IEvent} from '../models';
-import {ISelectService} from '../services/selectService';
 import {existy} from '../services/ittUtils';
 
 const TEMPLATE = `

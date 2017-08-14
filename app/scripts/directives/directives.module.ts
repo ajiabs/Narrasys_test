@@ -54,7 +54,7 @@ import ittSpeakerField from './ittSpeakerField';
 import ittSpeakerThumbField from './ittSpeakerThumbField';
 import ittTabs from './ittTabs';
 import ittTab from './ittTab';
-import ittTemplateSelect from './ittTemplateSelect';
+import { TemplateSelect } from './ittTemplateSelect';
 import ittTimeField from './ittTimeField';
 import ittTimeline from './ittTimeline';
 import ittTimelineEditor from './ittTimelineEditor';
@@ -141,7 +141,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittSpeakerThumbField', ittSpeakerThumbField)
   .directive('ittTabs', ittTabs)
   .directive('ittTab', ittTab)
-  .directive('ittTemplateSelect', ittTemplateSelect)
+  .component(TemplateSelect.Name, new TemplateSelect())
   .directive('ittTimeField', ittTimeField)
   .directive('ittTimeline', ittTimeline)
   .directive('ittTimelineEditor', ittTimelineEditor)

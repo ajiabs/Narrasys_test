@@ -30,6 +30,7 @@ export class IEpisode {
   templateUrl: string;
   title: ILangForm;
   updated_at: Date;
+  producerItemType?: string;
 
   setCurrentScene(scene: IScene): void {
     if (this.scenes && this.scenes.length) {
@@ -259,6 +260,7 @@ export class IScene extends IEvent {
   _type: 'Scene';
   _internal?: boolean; //client only
   cur_episode_id: string;
+  scene_id: string;
 }
 
 export class IText extends IEvent {
