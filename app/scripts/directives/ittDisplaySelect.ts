@@ -14,7 +14,7 @@ const TEMPLATE = `
     <select ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)"
       ng-model="$ctrl.data.layouts[$ctrl.layoutIndex]"
       ng-options="{{$ctrl.setNgOpts('display')}}"
-      itt-options-disabled="option.isDisabled for option in $ctrl.getSelectOpts('display')">
+      np-options-disabled="option.isDisabled for option in $ctrl.getSelectOpts('display')">
     </select>
   </div>
 </div>

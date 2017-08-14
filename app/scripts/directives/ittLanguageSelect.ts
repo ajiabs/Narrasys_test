@@ -11,7 +11,7 @@ const TEMPLATE = `
 		<select
 		  ng-model="$ctrl.data.defaultLanguage"
 		  ng-options="option.value as option.name for option in $ctrl.langOpts"
-		  itt-options-disabled="option.isDisabled for option in $ctrl.langOpts"></select>
+		  np-options-disabled="option.isDisabled for option in $ctrl.langOpts"></select>
 	</div>
 </div>
 `;

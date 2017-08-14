@@ -40,7 +40,7 @@ import ittNarrativeEditor from './ittNarrativeEditor';
 import ittNarrativeList from './ittNarrativeList';
 import ittNarrativeTimeline from './ittNarrativeTimeline';
 import ittNav from './ittNav';
-import ittOptionsDisabled from './ittOptionsDisabled';
+import { OptionsDisabled } from './ittOptionsDisabled';
 import ittQuestionOptions from './ittQuestionOptions';
 import ittQuestionTextField from './ittQuestionTextField';
 import { QuestionTypeSelect } from './ittQuestionTypeSelect';
@@ -126,7 +126,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittNarrativeList', ittNarrativeList)
   .directive('ittNarrativeTimeline', ittNarrativeTimeline)
   .directive('ittNav', ittNav)
-  .directive('ittOptionsDisabled', ittOptionsDisabled)
+  .directive(OptionsDisabled.Name, OptionsDisabled.factory())
   .directive('ittQuestionOptions', ittQuestionOptions)
   .directive('ittQuestionTextField', ittQuestionTextField)
   .component(QuestionTypeSelect.Name, new QuestionTypeSelect())
