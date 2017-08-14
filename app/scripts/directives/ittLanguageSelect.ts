@@ -3,6 +3,7 @@
  */
 import {ILangForm} from '../interfaces';
 import {IEvent} from '../models';
+import {ISelectService} from '../services/selectService';
 
 const TEMPLATE = `
 <div class="field">
@@ -26,7 +27,7 @@ class LanguageSelectController implements ILanguageSelectBindings {
   langForm: ILangForm;
   langOpts: any;
   static $inject = ['selectService'];
-  constructor(public selectService) {
+  constructor(public selectService: ISelectService) {
     //
   }
 

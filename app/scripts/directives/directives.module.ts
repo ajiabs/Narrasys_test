@@ -43,7 +43,7 @@ import ittNav from './ittNav';
 import ittOptionsDisabled from './ittOptionsDisabled';
 import ittQuestionOptions from './ittQuestionOptions';
 import ittQuestionTextField from './ittQuestionTextField';
-import ittQuestionTypeSelect from './ittQuestionTypeSelect';
+import { QuestionTypeSelect } from './ittQuestionTypeSelect';
 import ittReviewMode from './ittReviewMode';
 import ittRouteLoading from './ittRouteLoading';
 import ittScene from './ittScene';
@@ -129,7 +129,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittOptionsDisabled', ittOptionsDisabled)
   .directive('ittQuestionOptions', ittQuestionOptions)
   .directive('ittQuestionTextField', ittQuestionTextField)
-  .directive('ittQuestionTypeSelect', ittQuestionTypeSelect)
+  .component(QuestionTypeSelect.Name, new QuestionTypeSelect())
   .directive('ittReviewMode', ittReviewMode)
   .directive('ittRouteLoading', ittRouteLoading)
   .directive('ittScene', ittScene)
