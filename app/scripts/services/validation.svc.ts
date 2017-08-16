@@ -1,11 +1,30 @@
-import {ILinkStatus} from '../models';
-import {ILinkValidFields, Partial, TUrlFieldContexts} from '../interfaces';
+import { ILinkStatus } from '../models';
+import { ILinkValidFields, Partial, TUrlFieldContexts } from '../interfaces';
+
 /**
  * Created by githop on 5/2/17.
  */
+export interface ILinkValidationMessage {
+  showInfo?: boolean;
+  message?: string;
+  doInfo?: boolean;
+  url?: string;
+}
+
+export interface ILinkValidFields {
+  404: ILinkValidationMessage;
+  301: ILinkValidationMessage;
+  url: ILinkValidationMessage;
+  mixedContent: ILinkValidationMessage;
+  iframeHeaders: ILinkValidationMessage;
+  kaltura: ILinkValidationMessage | null;
+  youtube: ILinkValidationMessage | null;
+  html5: ILinkValidationMessage | null;
+  error: ILinkValidationMessage | null;
+}
 
 export interface IXFrameOptsResult {
-  urlStatus: ILinkStatus
+  urlStatus: ILinkStatus;
   canEmbed: boolean;
   location?: string;
   context?: TUrlFieldContexts;
@@ -15,8 +34,8 @@ export interface IXFrameOptsResult {
 interface IXFrameOptsResponse {
   x_frame_options: string | null;
   content_security_policy: string | null;
-  location?: string
-  err?: string
+  location?: string;
+  err?: string;
   response_code: number;
 }
 
@@ -32,32 +51,39 @@ export interface IValidationSvc {
   mixedContent(viewVal: string, displayObj: IValidationDisplay): boolean;
   mixedContentUrl(url: string): boolean;
   validateUrl(viewVal: string, displayObj: IValidationDisplay): boolean;
-  inspectHeadersAsync(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus, context?: TUrlFieldContexts): ng.IPromise<IXFrameOptsResult>;
+  inspectHeadersAsync(viewVal: string,
+                      displayObj: IValidationDisplay,
+                      cachedResults?: ILinkStatus,
+                      context?: TUrlFieldContexts): ng.IPromise<IXFrameOptsResult>;
 }
+
 export class ValidationService implements IValidationSvc {
+  static $inject = ['$http', '$location', '$q', 'authSvc', 'config', 'ittUtils', 'urlService'];
+
+  constructor(
+    private $http: ng.IHttpService,
+    private $location: ng.ILocationService,
+    private $q: ng.IQService,
+    private authSvc,
+    private config,
+    private ittUtils,
+    private urlService) {
+  }
 
   static parseCSP(csp: string): object {
     if (csp != null) {
-      return csp.split(';').reduce((result: object, directive: string) => {
-        const directiveSet = directive.trim().split(/\s+/g);
-        const key = directiveSet.shift();
-        if (key) {
-          result[key] = directiveSet;
-        }
-        return result
-      }, {})
+      return csp.split(';').reduce(
+        (result: object, directive: string) => {
+          const directiveSet = directive.trim().split(/\s+/g);
+          const key = directiveSet.shift();
+          if (key) {
+            result[key] = directiveSet;
+          }
+          return result;
+        },
+        {}
+      );
     }
-  }
-
-  static $inject = ['$http', '$location', '$q', 'authSvc', 'config', 'ittUtils', 'urlService'];
-
-  constructor(private $http: ng.IHttpService,
-              private $location: ng.ILocationService,
-              private $q: ng.IQService,
-              private authSvc,
-              private config,
-              private ittUtils,
-              private urlService) {
   }
 
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult> {
@@ -65,25 +91,25 @@ export class ValidationService implements IValidationSvc {
     //HTTP methods could one day be implemented in a parent class.
     return this.SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
       .then((resp: IXFrameOptsResponse) => this.handleSuccess(resp))
-      .then((result:IXFrameOptsResponse)  => this.canEmbed(result, url))
+      .then((result: IXFrameOptsResponse) => this.canEmbed(result, url))
       .catch(e => ValidationService.handleErrors(e));
   }
 
-  urlIsEmbeddable(url:string, cspOrXFrameHeader: any): boolean {
-    let xFrameCanEmbed = this.xFrameHeaderCanEmbed(url, cspOrXFrameHeader.x_frame_options);
-    let cspCanEmbed = this.cspCanEmbed(url, cspOrXFrameHeader.content_security_policy);
+  urlIsEmbeddable(url: string, cspOrXFrameHeader: any): boolean {
+    const xFrameCanEmbed = this.xFrameHeaderCanEmbed(url, cspOrXFrameHeader.x_frame_options);
+    const cspCanEmbed = this.cspCanEmbed(url, cspOrXFrameHeader.content_security_policy);
 
     return xFrameCanEmbed && cspCanEmbed;
   }
 
 
-  mixedContent(viewVal:string, displayObj: IValidationDisplay): boolean {
+  mixedContent(viewVal: string, displayObj: IValidationDisplay): boolean {
     if (this.mixedContentUrl(viewVal)) {
       //mixed content detected!
-      displayObj.validatedFields['mixedContent'] = {message: 'Mixed Content Detected', showInfo: true};
+      displayObj.validatedFields['mixedContent'] = { message: 'Mixed Content Detected', showInfo: true };
       return true;
     } else {
-      displayObj.validatedFields['mixedContent'] = {message: '', showInfo: false};
+      displayObj.validatedFields['mixedContent'] = { message: '', showInfo: false };
       return false;
     }
   }
@@ -93,69 +119,41 @@ export class ValidationService implements IValidationSvc {
   }
 
   validateUrl(viewVal: string, displayObj: IValidationDisplay): boolean {
+    const isValidVideoUrl = this.urlService.isVideoUrl(viewVal)
+      || this.ittUtils.isValidURL(viewVal)
+      || ValidationService.emailOrPlaceholder(viewVal);
+
     if (viewVal === '' && !ValidationService.emailOrPlaceholder(viewVal)) {
-      displayObj.validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'};
+      displayObj.validatedFields['url'] = { showInfo: true, message: 'Url cannot be blank' };
       return false;
-    } else if (this.urlService.isVideoUrl(viewVal) || this.ittUtils.isValidURL(viewVal) || ValidationService.emailOrPlaceholder(viewVal)) {
-      displayObj.validatedFields['url'] = {showInfo: false};
+    } else if (isValidVideoUrl) {
+      displayObj.validatedFields['url'] = { showInfo: false };
       return true;
     } else {
-      displayObj.validatedFields['url'] = {showInfo: true, message: viewVal + ' is not a valid URL'}; //jshint ignore:line
+      displayObj.validatedFields['url'] = { showInfo: true, message: viewVal + ' is not a valid URL' };
       return false;
     }
   }
 
-  inspectHeadersAsync(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus, context?: string) {
-
-    // if (context && context === 'editor-video' && !this.urlService.isVideoUrl(viewVal)) {
-    //   return this.$q((resolve) => {
-    //     let stubXFOR: IXFrameOptsResult = {
-    //       canEmbed: true,
-    //       location: null,
-    //       context,
-    //       urlStatus: <ILinkStatus> {
-    //         content_security_policy: null, x_frame_options: null, response_code: null, err: null
-    //       }
-    //     };
-    //     if (this.urlService.checkUrl(viewVal).type === 'kaltura') {
-    //       stubXFOR.location = this.urlService.parseInput(viewVal);
-    //     }
-    //
-    //     const obj = this.handleXframeOptsObj(viewVal, stubXFOR, displayObj);
-    //     return resolve(obj);
-    //   });
-    // }
-    //
-    // if (context && context === 'editor' && this.urlService.isVideoUrl(viewVal)) {
-    //   return this.$q((resolve) => {
-    //     let stubXFOR: IXFrameOptsResult = {
-    //       canEmbed: false,
-    //       location: null,
-    //       context,
-    //       urlStatus: <ILinkStatus> {
-    //         content_security_policy: null, x_frame_options: null, response_code: null, err: null
-    //       }
-    //     };
-    //     const obj = this.handleXframeOptsObj(viewVal, stubXFOR, displayObj);
-    //     return resolve(obj);
-    //   });
-    // }
-
+  inspectHeadersAsync(viewVal: string,
+                      displayObj: IValidationDisplay,
+                      cachedResults?: ILinkStatus,
+                      context?: TUrlFieldContexts): ng.IPromise<IXFrameOptsResult> {
     if (cachedResults != null) {
       return this.$q((resolve) => {
 
-        let xFrameOptsObj: IXFrameOptsResult = {
+        const xFrameOptsObj: IXFrameOptsResult = {
           canEmbed: this.urlIsEmbeddable(viewVal, cachedResults),
           location: cachedResults.location,
-          urlStatus: <ILinkStatus> {
+          urlStatus: {
             content_security_policy: cachedResults.content_security_policy,
             x_frame_options: cachedResults.x_frame_options,
             response_code: cachedResults.response_code,
             err: cachedResults.err
-          },
+          } as ILinkStatus
         };
 
-        const obj = this.handleXframeOptsObj(viewVal, xFrameOptsObj, displayObj);
+        const obj = this.handleXframeOptsObj(viewVal, xFrameOptsObj, displayObj) as IXFrameOptsResult;
         return resolve(obj);
       });
     }
@@ -163,8 +161,8 @@ export class ValidationService implements IValidationSvc {
     //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
     if (viewVal === '' || this.urlService.isVideoUrl(viewVal) || ValidationService.emailOrPlaceholder(viewVal)) {
       return this.$q((resolve) => {
-        displayObj.validatedFields['iframeHeaders'] = {showInfo: false};
-        let stubXFOR: IXFrameOptsResult = {
+        displayObj.validatedFields['iframeHeaders'] = { showInfo: false };
+        const stubXFOR: IXFrameOptsResult = {
           canEmbed: true,
           location: null,
           urlStatus: <ILinkStatus> {
@@ -181,7 +179,18 @@ export class ValidationService implements IValidationSvc {
 
     return this.checkXFrameOpts(viewVal)
     //xFrameOptsObj will have at least x_frame_options field and could have response_code and location fields
-      .then((xFOResult: IXFrameOptsResult) => this.handleXframeOptsObj(viewVal, xFOResult, displayObj));
+      .then(
+        (xFOResult: IXFrameOptsResult) => this.handleXframeOptsObj(viewVal, xFOResult, displayObj) as IXFrameOptsResult
+      );
+  }
+
+  private static emailOrPlaceholder(val: string): boolean {
+    return /mailto:/.test(val) || val === 'https://';
+  }
+
+  private static handleErrors(error) {
+    console.warn('xFrameOpts error:', error);
+    return { canEmbed: false };
   }
 
   private cspCanEmbed(url: string, csp: string): boolean {
@@ -194,7 +203,7 @@ export class ValidationService implements IValidationSvc {
       return true;
     }
 
-    let cspObj = ValidationService.parseCSP(csp);
+    const cspObj = ValidationService.parseCSP(csp);
     const ancestorSourceList = cspObj['frame-ancestors'];
 
     if (ancestorSourceList == null || ancestorSourceList.length === 0) {
@@ -208,19 +217,19 @@ export class ValidationService implements IValidationSvc {
       if (ancestorSourceList.length === 1) {
         const onlyAncestor = ancestorSourceList[0];
         //if CSP is self and the URL is our own, or the only frame-ancestor comes from our own
-        if ((onlyAncestor === "'self'" && url.includes(currentHost)) || onlyAncestor.includes(currentHost)) {
+        if ((onlyAncestor === '\'self\'' && url.includes(currentHost)) || onlyAncestor.includes(currentHost)) {
           return true;
         }
 
-        if (onlyAncestor === "'none'") {
+        if (onlyAncestor === '\'none\'') {
           return false;
         }
       }
 
       //loop over list of sources
-      for (let source of ancestorSourceList) {
+      for (const source of ancestorSourceList) {
         if (source.includes(currentHost)) {
-          return true
+          return true;
         }
       }
 
@@ -238,7 +247,7 @@ export class ValidationService implements IValidationSvc {
     switch (true) {
       case /SAMEORIGIN/i.test(header):
         let currentOrigin = this.$location.host();
-        let parseInputUrl = document.createElement('a');
+        const parseInputUrl = document.createElement('a');
         parseInputUrl.href = url;
         //check our origin
         if (currentOrigin === parseInputUrl.hostname) {
@@ -250,7 +259,7 @@ export class ValidationService implements IValidationSvc {
         //split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
         const xFrameArr = header.split(',');
         currentOrigin = this.$location.host();
-        angular.forEach(xFrameArr, function (i) {
+        angular.forEach(xFrameArr, (i) => {
           const url = i.trim().split(' ')[1];
           const aElm = document.createElement('a');
           aElm.href = url;
@@ -266,25 +275,10 @@ export class ValidationService implements IValidationSvc {
     return canEmbed;
   }
 
-  private handleXframeOptsObj(viewVal: string, XFOResult: IXFrameOptsResult, displayObj: IValidationDisplay): IXFrameOptsResult | ng.IPromise<{}> {
+  private handleXframeOptsObj(
+    viewVal: string, XFOResult: IXFrameOptsResult, // tslint:disable-line
+    displayObj: IValidationDisplay): IXFrameOptsResult | ng.IPromise<'404'> {
     let tipText = '';
-    //check for a new URL if we followed a redirect on the server.
-
-    // if (XFOResult.context && XFOResult.context === 'editor-video') {
-    //   displayObj.validatedFields['videoOnly'] = {
-    //     showInfo: true,
-    //     message: 'Only Youtube, Kaltura, or HTML5 videos allowed here.'
-    //   };
-    //   return this.$q.reject('videoONly');
-    // }
-    //
-    // if (XFOResult.context && XFOResult.context === 'editor') {
-    //   displayObj.validatedFields['videoOnly'] = {
-    //     showInfo: true,
-    //     message: 'Youtube, Kaltura, or HTML5 videos not allowed here.'
-    //   };
-    //   return this.$q.reject('videoONly');
-    // }
 
     if (this.ittUtils.existy(XFOResult.location)) {
       tipText = viewVal + ' redirected to ' + XFOResult.location;
@@ -297,15 +291,17 @@ export class ValidationService implements IValidationSvc {
 
     if (this.ittUtils.existy(XFOResult.urlStatus.response_code) && XFOResult.urlStatus.response_code === 422) {
       tipText = viewVal + ' cannot be found';
-      displayObj.validatedFields['404'] = {showInfo: true, message: tipText};
+      displayObj.validatedFields['404'] = { showInfo: true, message: tipText };
       return this.$q.reject('404');
     }
 
     if (XFOResult.urlStatus.err != null && XFOResult.urlStatus.response_code !== 999) {
-     displayObj.validatedFields['iframeHeaders'] = {
+
+      displayObj.validatedFields['iframeHeaders'] = {
         showInfo: true,
         message: viewVal + ' cannot be embedded: ' + XFOResult.urlStatus.err
-      }
+      };
+
     } else if (!XFOResult.canEmbed && !this.mixedContentUrl(viewVal)) {
       tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
       //we got redirected to resource that can't be embedded.
@@ -314,21 +310,12 @@ export class ValidationService implements IValidationSvc {
         tipText += '. ' + displayObj.validatedFields['301'].message;
         displayObj.validatedFields['301'] = {};
       }
-      displayObj.validatedFields['iframeHeaders'] = {showInfo: true, message: tipText, doInfo: true};
+      displayObj.validatedFields['iframeHeaders'] = { showInfo: true, message: tipText, doInfo: true };
     } else {
-      displayObj.validatedFields['iframeHeaders'] = {showInfo: false};
+      displayObj.validatedFields['iframeHeaders'] = { showInfo: false };
     }
 
     return XFOResult;
-  }
-
-  private static emailOrPlaceholder(val: string): boolean {
-    return /mailto:/.test(val) || val === 'https://';
-  }
-
-  private static handleErrors(error) {
-    console.warn('xFrameOpts error:', error);
-    return {canEmbed: false};
   }
 
   private handleSuccess(result: IXFrameOptsResponse): IXFrameOptsResponse {
@@ -350,7 +337,7 @@ export class ValidationService implements IValidationSvc {
       response_code: result.response_code
     };
 
-    let xFrameOptsObj: IXFrameOptsResult = Object.create(null);
+    const xFrameOptsObj: IXFrameOptsResult = Object.create(null);
     const location = result.location;
 
     if (result.response_code === 999) {
@@ -359,7 +346,7 @@ export class ValidationService implements IValidationSvc {
       xFrameOptsObj.canEmbed = this.urlIsEmbeddable(url, result);
     }
 
-    Object.assign(xFrameOptsObj, {location}, {urlStatus});
+    Object.assign(xFrameOptsObj, { location }, { urlStatus });
     return xFrameOptsObj;
   }
 

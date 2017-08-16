@@ -23,13 +23,13 @@
             <div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>
           </div>
 
-          <itt-url-field
+          <np-url-field
             label="Video URL"
             ng-if="masterAssetType === 'WebUrl'"
             data="::masterAsset.mediaSrcArr[0]"
             context="episode"
             on-attach="attachMediaSrc($url)">
-          </itt-url-field>
+          </np-url-field>
 
           <div class="field" ng-if="showmessage">
             <div class="input" ng-bind-html="showmessage"></div>

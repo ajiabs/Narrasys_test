@@ -1,18 +1,19 @@
-export {IAnalyticsSvc} from './services/analyticsSvc';
-export {IAnnotator, IAnnotators} from './directives/sxsAnnotatorAutocomplete';
-export {ITimelineSvc} from './services/timelineSvc';
-export {IMetaObj, IMetaProps} from './services/basePlayerManager/index';
-export {IPlayerManager} from './services/basePlayerManager/index';
-export {IDataSvc} from './services/dataSvc';
-export {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
-export {TUrlFieldContexts} from './directives/ittUrlField';
-export {IModelSvc} from './services/modelSvc';
-export {IBasePlayerManager} from './services/basePlayerManager/playerManagerCommons';
-export {IWistiaMetaProps, IWistiaPlayerManager} from './services/wistia/wistiaPlayerManager';
-export {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
-export {IUploadData} from './services/uploadsService';
-export {IEmailFields} from './directives/socialshare/ittSocialShare';
-export {IimageResize} from './services/imageResizeSvc';
+export { ILinkValidationMessage, ILinkValidFields } from './services/validation.svc';
+export { IAnalyticsSvc } from './services/analyticsSvc';
+export { IAnnotator, IAnnotators } from './directives/sxsAnnotatorAutocomplete';
+export { ITimelineSvc } from './services/timelineSvc';
+export { IMetaObj, IMetaProps } from './services/basePlayerManager/index';
+export { IPlayerManager } from './services/basePlayerManager/index';
+export { IDataSvc } from './services/dataSvc';
+export { IValidationDisplay, IValidationSvc, IXFrameOptsResult } from './services/validation.svc';
+export { TUrlFieldContexts } from './directives/npUrlField';
+export { IModelSvc } from './services/modelSvc';
+export { IBasePlayerManager } from './services/basePlayerManager/playerManagerCommons';
+export { IWistiaMetaProps, IWistiaPlayerManager } from './services/wistia/wistiaPlayerManager';
+export { IWistiaUrlservice } from './services/wistia/wistiaUrlService';
+export { IUploadData } from './services/uploadsService';
+export { IEmailFields } from './directives/socialshare/ittSocialShare';
+export { IimageResize } from './services/imageResizeSvc';
 /*
  it's nice to have the interface close to the method / object it is annotating. It's also nice to have a common
  point from where to import interfaces from.
@@ -33,25 +34,6 @@ export type Partial<T> = {
 
 export interface IScriptLoader {
   load(...args:any[]): ng.IPromise<{}>;
-}
-
-export interface ILinkValidationMessage {
-  showInfo?: boolean;
-  message?: string;
-  doInfo?: boolean;
-  url?: string;
-}
-
-export interface ILinkValidFields {
-  404: ILinkValidationMessage;
-  301: ILinkValidationMessage;
-  url: ILinkValidationMessage;
-  mixedContent: ILinkValidationMessage;
-  iframeHeaders: ILinkValidationMessage;
-  kaltura: ILinkValidationMessage | null;
-  youtube: ILinkValidationMessage | null;
-  html5: ILinkValidationMessage | null;
-  error: ILinkValidationMessage | null;
 }
 
 export interface IUrlService {
