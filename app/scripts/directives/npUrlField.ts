@@ -82,10 +82,9 @@ class UrlFieldController implements IUrlFieldBindings {
   };
   canEmbed: boolean;
 
-  static $inject = ['$q', 'ittUtils', 'validationSvc'];
+  static $inject = ['$q', 'validationSvc'];
   constructor(
     private $q: ng.IQService,
-    private ittUtils,
     private validationSvc: IValidationSvc) {
     //
   }
