@@ -165,9 +165,9 @@ export class ValidationService implements IValidationSvc {
         const stubXFOR: IXFrameOptsResult = {
           canEmbed: true,
           location: null,
-          urlStatus: <ILinkStatus> {
+          urlStatus: {
             content_security_policy: null, x_frame_options: null, response_code: null, err: null
-          }
+          } as ILinkStatus
         };
         if (this.urlService.checkUrl(viewVal).type === 'kaltura') {
           stubXFOR.location = this.urlService.parseInput(viewVal);

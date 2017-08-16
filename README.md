@@ -6,6 +6,11 @@
 - node >= 7.5.0
 - NPM or yarn ([reccommend yarn](https://yarnpkg.com/en/docs/install#alternatives-tab))
 
+### Code style
+
+All new code should conform to the [airbnb javascript style guide](https://github.com/airbnb/javascript)
+ and are enforced with TSLint. AngularJS conventions are mostly inline with the [Todd Motto AngularJS style guide](https://github.com/toddmotto/angularjs-styleguide/tree/master/typescript) (Typescript version).
+
 ### General architecture notes
 
 narrasys.com uses a client side MVC (written in angularjs 1.x), which is served statically via nginx, which proxies

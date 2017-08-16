@@ -42,6 +42,7 @@
     "no-var-keyword": false,
     "one-variable-per-declaration": false,
     "switch-default": false,
-    "space-before-function-paren": [true, {"anonymous": "always"}]
+    "space-before-function-paren": [true, {"anonymous": "always"}],
+    "no-angle-bracket-type-assertion": true
   }
 }
