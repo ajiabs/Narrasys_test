@@ -66,7 +66,7 @@ import ittTranscriptField from './ittTranscriptField';
 import ittTransitionSelect from './ittTransitionSelect';
 import ittTypographySelect from './ittTypographySelect';
 import { UploadTranscripts } from './ittUploadTranscriptsField';
-import { UrlField } from './npUrlField';
+import { UrlField } from './ittUrlField';
 import ittUser from './ittUser';
 import ittValidAsset from './ittValidAsset';
 import ittValidationTip from './ittValidationTip';

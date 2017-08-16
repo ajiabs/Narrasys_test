@@ -6,7 +6,7 @@ export { IMetaObj, IMetaProps } from './services/basePlayerManager/index';
 export { IPlayerManager } from './services/basePlayerManager/index';
 export { IDataSvc } from './services/dataSvc';
 export { IValidationDisplay, IValidationSvc, IXFrameOptsResult } from './services/validation.svc';
-export { TUrlFieldContexts } from './directives/npUrlField';
+export { TUrlFieldContexts } from './directives/ittUrlField';
 export { IModelSvc } from './services/modelSvc';
 export { IBasePlayerManager } from './services/basePlayerManager/playerManagerCommons';
 export { IWistiaMetaProps, IWistiaPlayerManager } from './services/wistia/wistiaPlayerManager';
