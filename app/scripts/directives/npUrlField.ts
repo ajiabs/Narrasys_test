@@ -93,16 +93,7 @@ class UrlFieldController implements IUrlFieldBindings {
     //
     this.eventUrl = this.data.url;
     if (this.eventUrl !== 'https://') {
-      this.itemUrlValidationPipeline(this.eventUrl, this.data.url_status, this.context);
-    }
-  }
-
-  itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus, context?: TUrlFieldContexts): void {
-    this._resetFields();
-    const isValidUrl = this._setValidity(this.validationSvc.validateUrl(url, this));
-
-    if (isValidUrl) { //only do async stuff if necessary
-      this.inspectHeaders(url, cachedResults, context);
+      this._itemUrlValidationPipeline(this.eventUrl, this.data.url_status, this.context);
     }
   }
 
@@ -116,10 +107,20 @@ class UrlFieldController implements IUrlFieldBindings {
       return;
     }
 
-    this.itemUrlValidationPipeline(url, null, this.context);
+    this._itemUrlValidationPipeline(url, null, this.context);
   }
 
-  async inspectHeaders(url, cachedResults, context?: TUrlFieldContexts) {
+  handleEpisodeValidationMessage(notice) {
+    this.validatedFields = {
+      kaltura: null,
+      youtube: null,
+      html5: null,
+      error: null
+    };
+    Object.assign(this.validatedFields, notice);
+  }
+
+  private async _inspectHeaders(url, cachedResults, context?: TUrlFieldContexts) {
     try {
       const {
         canEmbed,
@@ -145,14 +146,13 @@ class UrlFieldController implements IUrlFieldBindings {
     }
   }
 
-  handleEpisodeValidationMessage(notice) {
-    this.validatedFields = {
-      kaltura: null,
-      youtube: null,
-      html5: null,
-      error: null
-    };
-    Object.assign(this.validatedFields, notice);
+  private _itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus, context?: TUrlFieldContexts): void {
+    this._resetFields();
+    const isValidUrl = this._setValidity(this.validationSvc.validateUrl(url, this));
+
+    if (isValidUrl) { //only do async stuff if necessary
+      this._inspectHeaders(url, cachedResults, context);
+    }
   }
 
   private _disableTemplateOpts(val: boolean): any[] {
@@ -286,7 +286,7 @@ export class UrlField implements ng.IComponentOptions {
 //             //ctrl.data will be a string literal when the context is episode and an object (link event)
 //             //when the context is producer/editor
 //             if (typeof ctrl.data !== 'string' && ctrl.data.url !== 'https://') {
-//               itemUrlValidationPipeline(ctrl.data.url, ctrl.data.url_status, ctrl.context);
+//               _itemUrlValidationPipeline(ctrl.data.url, ctrl.data.url_status, ctrl.context);
 //             }
 //             subscribeWatch();
 //           }
@@ -320,11 +320,11 @@ export class UrlField implements ng.IComponentOptions {
 //             return;
 //           }
 //           if (nextUrl !== origUrl) {
-//             itemUrlValidationPipeline(nextUrl, null, ctrl.context);
+//             _itemUrlValidationPipeline(nextUrl, null, ctrl.context);
 //           }
 //         }
 //
-//         function itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus, context?: TUrlFieldContexts): void {
+//         function _itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus, context?: TUrlFieldContexts): void {
 //           _resetFields();
 //           let isValidUrl = _setValidity(validationSvc.validateUrl(url, ctrl));
 //           // let isMixedContent = validationSvc.mixedContent(url, ctrl);
