@@ -1,4 +1,62 @@
 // Minor jquery dependency ($.inArray)
+
+
+import { IEpisode, IEvent, IScene } from '../models';
+
+const TEMPLATE = `<span ng-include="$ctrl.scene.templateUrl"></span>'`;
+
+interface ISceneBindings extends ng.IComponentController {
+  scene: IScene;
+  episode: IEpisode;
+}
+
+class SceneController implements ISceneBindings {
+  scene: IScene;
+  episode: IEpisode;
+  mainContentHasLeftSidebar: boolean;
+  mainContentHasRightSidebar: boolean;
+  mainContentHasBothSidebars: boolean;
+  altContentHasLeftSidebar: boolean;
+  altContentHasRightSidebar: boolean;
+  altContentHasBothSidebars: boolean;
+  contentItems: IEvent[];
+  mainFgItems: IEvent[];
+  mainBgItems: IEvent[];
+  mainContentItems: IEvent[];
+  altContentItems: IEvent[];
+  showCurrent: boolean;
+  static $inject = ['$filter', 'appState'];
+  constructor(private $filter: ng.IFilterService, private appState) {
+    //
+  }
+
+  $onInit() {
+    //
+  }
+
+  setBgImgUrl() {
+
+  }
+
+  precalculateSceneValues() {
+
+  }
+
+
+}
+
+
+export class Scene implements ng.IComponentOptions {
+  bindings: any = {
+    scene: '<',
+    episode: '<'
+  };
+  template: string = TEMPLATE;
+  controller = SceneController;
+  static Name: string = 'npScene'; // tslint:disable-line
+}
+
+
 ittScene.$inject = ['$interval', 'appState'];
 
 export default function ittScene($interval, appState) {
