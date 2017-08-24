@@ -184,14 +184,6 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
         scope.item.asset = modelSvc.assets[scope.item.asset_id];
       }
 
-      // Slight hack to simplify css for image-fill:
-      if (scope.item.asset && scope.item.styleCss && scope.item.styleCss.match(/fill|contain|cover/)) {
-        // TODO: figure out why item.asset.cssUrl works in IE, and item.backgroundImageStyle works in everything else.
-        // Probably just an escaped-quote issue or something dumb like that
-        scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
-        scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
-      }
-
       // TODO make credly badge its own directive instead of including it here
       if (scope.item.data) {
         scope.plugin = scope.item.data._plugin;

@@ -5,7 +5,7 @@
     "start": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.dev local --progress --watch --colors",
     "prod": "rm -rf dist/* && ./node_modules/.bin/webpack --progress --colors --env.prod",
     "prod:local": "rm -rf tmp/* && ./node_modules/.bin/webpack --progress --colors --env.prod local",
-    "prod:watch": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.prod --progress --colors --watch",
+    "prod:watch": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.prod local --progress --colors --watch",
     "analyze": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.prod analyze --progress --colors"
   },
   "dependencies": {
