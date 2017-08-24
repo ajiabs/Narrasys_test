@@ -4,7 +4,7 @@
 
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
-import {AssetUploader} from './ittAssetUploader';
+import { AssetUploader } from './ittAssetUploader';
 import ittClipboard from './ittClipboard';
 import ittColorSelect from './ittColorSelect';
 import ittContainer from './ittContainer';
@@ -49,7 +49,7 @@ import ittRouteLoading from './ittRouteLoading';
 import ittScene from './ittScene';
 import ittSearchPanel from './ittSearchPanel';
 import ittShowFocus from './ittShowFocus';
-import {ittShowHideVisualOnly, visualHideAnimation} from './ittShowHideVisualOnly';
+import { ittShowHideVisualOnly, visualHideAnimation } from './ittShowHideVisualOnly';
 import ittSpeakerField from './ittSpeakerField';
 import ittSpeakerThumbField from './ittSpeakerThumbField';
 import ittTabs from './ittTabs';
@@ -65,8 +65,8 @@ import ittTooltip from './ittTooltip';
 import ittTranscriptField from './ittTranscriptField';
 import ittTransitionSelect from './ittTransitionSelect';
 import ittTypographySelect from './ittTypographySelect';
-import {UploadTranscripts} from './ittUploadTranscriptsField';
-import ittUrlField from './ittUrlField';
+import { UploadTranscripts } from './ittUploadTranscriptsField';
+import { UrlField } from './npUrlField';
 import ittUser from './ittUser';
 import ittValidAsset from './ittValidAsset';
 import ittValidationTip from './ittValidationTip';
@@ -80,13 +80,13 @@ import ittWidthWatch from './ittWidthWatch';
 import nysCopyright from './nys-copyright';
 import sxsAddContent from './sxsAddContent';
 import sxsAnnotatorAutocomplete from './sxsAnnotatorAutocomplete';
-import {SxsContainerAssets} from './sxsContainerAssets';
+import { SxsContainerAssets } from './sxsContainerAssets';
 import sxsInputI18n from './sxsInputI18n';
 import sxsInputTime from './sxsInputTime';
-import {EnableSocialshare, IttSocialShare} from './socialshare/index';
-import {Filedrop} from './ittFiledrop';
-import {UploadProgress} from './ittUploadProgress';
-import {ittPlayerContainer} from './ittPlayerContainer';
+import { EnableSocialshare, IttSocialShare } from './socialshare/index';
+import { Filedrop } from './ittFiledrop';
+import { UploadProgress } from './ittUploadProgress';
+import { ittPlayerContainer } from './ittPlayerContainer';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -153,7 +153,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittTransitionSelect', ittTransitionSelect)
   .directive('ittTypographySelect', ittTypographySelect)
   .component(UploadTranscripts.Name, new UploadTranscripts())
-  .directive('ittUrlField', ittUrlField)
+  .component(UrlField.Name, new UrlField())
   .directive('ittUser', ittUser)
   .directive('ittValidAsset', ittValidAsset)
   .directive('ittValidationTip', ittValidationTip)

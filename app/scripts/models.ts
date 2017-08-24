@@ -1,7 +1,7 @@
 import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
 
 
-import {TSocialTagTypes} from './constants';
+import { TSocialTagTypes } from './constants';
 /**
  * Created by githop on 5/1/17.
  */
@@ -18,7 +18,7 @@ export class IEpisode {
   display_description: string;
   display_title: string;
   items: NEvent[];
-  languages: Array<{code: string, default: boolean}>;
+  languages: {code: string, default: boolean}[];
   masterAsset: IAsset;
   master_asset_id: string;
   parent_id: string;
@@ -30,6 +30,7 @@ export class IEpisode {
   templateUrl: string;
   title: ILangForm;
   updated_at: Date;
+  producerItemType?: string;
 
   setCurrentScene(scene: IScene): void {
     if (this.scenes && this.scenes.length) {
@@ -237,7 +238,7 @@ export class IImage extends IEvent {
 
 class IPluginData {
   correctFeedback: ILangForm;
-  distractors: Array<{ index: number, text: string }>;
+  distractors: { index: number, text: string }[];
   incorrectFeedback: ILangForm;
   questionText: ILangForm;
   questionType: string;
@@ -259,6 +260,7 @@ export class IScene extends IEvent {
   _type: 'Scene';
   _internal?: boolean; //client only
   cur_episode_id: string;
+  scene_id: string;
 }
 
 export class IText extends IEvent {
