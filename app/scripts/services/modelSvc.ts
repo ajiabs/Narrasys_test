@@ -318,6 +318,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       _asset = urlService.resolveVideo(_asset);
     }
     if (_asset.url) {
+      // escape URLs for css background-image https://stackoverflow.com/q/25613552
       _asset.cssBgUrl = _asset.url.replace(/\"/g, '\\"');
     }
     _asset = setLang(_asset);
