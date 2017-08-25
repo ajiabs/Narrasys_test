@@ -123,14 +123,6 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
           newItem.templateUrl = 'templates/item/link.html';
         }
 
-        if (newItem.asset) {
-          scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";
-          scope.item.backgroundImageStyle = "background-image: url('" + newItem.asset.url + "');";
-        } else {
-          delete scope.item.asset;
-          delete scope.item.backgroundImageStyle;
-        }
-
         // TODO BUG items moved from one scene to another aren't being included in the new scene until the user hits save,
         // only in discover mode (review mode has no problem.)   This was also the case when we ran resolveEpisodeEvents on every edit, it's an older bug.
         // This _should_ be setting it, and it _is_ triggering sceneController precalculateSceneValues...  IT IS A MYSTERY
@@ -167,10 +159,7 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         }
         scope.item.styles = styles;
         // Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
-        if (scope.item.asset) {
-          scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
-          scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
-        }
+
       }, true);
 
       scope.forcePreview = function () {
