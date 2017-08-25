@@ -1,5 +1,5 @@
 {
-  "extends": "tslint:recommended",
+  "extends": "tslint-config-airbnb",
   "rules": {
     "member-access": false,
     "trailing-comma": [true, {
@@ -29,6 +29,7 @@
     "max-classes-per-file": [false],
     "arrow-parens": false,
     "no-console": false,
+    "max-line-length": [true, 120],
     "semicolon": true,
     "no-conditional-assignment": true,
     "no-empty": true,
@@ -40,6 +41,8 @@
     "no-var-keyword": false,
     "one-variable-per-declaration": false,
     "switch-default": false,
-    "space-before-function-paren": [true, {"anonymous": "always"}]
+    "space-before-function-paren": [true, {"anonymous": "always"}],
+    "no-angle-bracket-type-assertion": true,
+    "function-name": false
   }
 }
