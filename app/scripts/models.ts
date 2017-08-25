@@ -120,6 +120,7 @@ export class IAsset {
   status: string;
   upload: any;
   url: string;
+  cssBgUrl?: string;
   filename: string;
   original_filename: string;
   content_type: string;

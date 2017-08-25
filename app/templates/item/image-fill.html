@@ -3,6 +3,6 @@ see ittItem for explanation of the redundant backgroundImageStyle and item.asset
 <a class="edit-event" ng-click="editItem()">
 	<span>Edit item</span>
 </a>
-<div class="itemTemplate imageFill" ng-style="{'background-image': 'url(' + item.asset.url + ')'}">
+<div class="itemTemplate imageFill" ng-style="{'background-image': 'url(' + item.asset.cssBgUrl + ')'}">
 	<img class="fillImg" ng-src="{{item.asset.url}}">
 </div>
