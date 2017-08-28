@@ -163,6 +163,7 @@ export class IEvent {
   template_id: string;
   layout_id: string;
   style_id: string;
+  layouts: string[] = ['inline'];
   templateUrl?: string;
   producerItemType?: string;
   //group ??
