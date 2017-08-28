@@ -22,7 +22,7 @@ export default function ittScene($timeout, appState) {
       scope.appState = appState;
 
       // Trigger twiddleScene when the window changes size, the scene becomes current, or the viewMode changes:
-      if (!isIOS()) {
+      if (!isIframedIOS()) {
         window.addEventListener('resize', () => twiddleScene());
       }
       twiddleScene();
@@ -63,13 +63,13 @@ export default function ittScene($timeout, appState) {
       // scope.crossEpisodePath = appState.crossEpisodePath;
       // }
 
-      function isIOS(): boolean {
-        return (appState.iOSVersion && appState.iOSVersion[0] && appState.iOSVersion[0] > 0);
+      function isIframedIOS(): boolean {
+        return (appState.isFramed && appState.iOSVersion && appState.iOSVersion[0] && appState.iOSVersion[0] > 0);
       }
 
 
       function twiddleScene() {
-        if (isIOS()) {
+        if (isIframedIOS()) {
           return;
         }
         $timeout(
