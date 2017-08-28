@@ -114,7 +114,7 @@ export default function SceneController($scope, $filter, ittUtils) {
     var bgUrl;
 
     if (mainColBgOrFg.length > 0 && ittUtils.existy(mainColBgOrFg[0].asset)) {
-      bgUrl = 'url(' + mainColBgOrFg[0].asset.url + ')';
+      bgUrl = 'url(' + mainColBgOrFg[0].asset.cssBgUrl + ')';
       if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
         opacity = 0.25;
       }

@@ -313,12 +313,16 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   };
 
   svc.deriveAsset = function (asset) {
-    // console.log("deriveAsset:", asset);
-    if (asset._type === 'Asset::Video') {
-      asset = urlService.resolveVideo(asset);
+    let _asset = Object.assign({}, asset);
+    if (_asset._type === 'Asset::Video') {
+      _asset = urlService.resolveVideo(_asset);
     }
-    asset = setLang(asset);
-    return asset;
+    if (_asset.url) {
+      // escape URLs for css background-image https://stackoverflow.com/q/25613552
+      _asset.cssBgUrl = _asset.url.replace(/\"/g, '\\"');
+    }
+    _asset = setLang(_asset);
+    return _asset;
   };
 
   // TODO there are some hacky dependencies on existing templateUrls which really ought to become
