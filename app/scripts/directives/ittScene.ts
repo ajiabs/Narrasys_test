@@ -1,65 +1,7 @@
 // Minor jquery dependency ($.inArray)
+ittScene.$inject = ['$timeout', 'appState'];
 
-
-import { IEpisode, IEvent, IScene } from '../models';
-
-const TEMPLATE = `<span ng-include="$ctrl.scene.templateUrl"></span>'`;
-
-interface ISceneBindings extends ng.IComponentController {
-  scene: IScene;
-  episode: IEpisode;
-}
-
-class SceneController implements ISceneBindings {
-  scene: IScene;
-  episode: IEpisode;
-  mainContentHasLeftSidebar: boolean;
-  mainContentHasRightSidebar: boolean;
-  mainContentHasBothSidebars: boolean;
-  altContentHasLeftSidebar: boolean;
-  altContentHasRightSidebar: boolean;
-  altContentHasBothSidebars: boolean;
-  contentItems: IEvent[];
-  mainFgItems: IEvent[];
-  mainBgItems: IEvent[];
-  mainContentItems: IEvent[];
-  altContentItems: IEvent[];
-  showCurrent: boolean;
-  static $inject = ['$filter', 'appState'];
-  constructor(private $filter: ng.IFilterService, private appState) {
-    //
-  }
-
-  $onInit() {
-    //
-  }
-
-  setBgImgUrl() {
-
-  }
-
-  precalculateSceneValues() {
-
-  }
-
-
-}
-
-
-export class Scene implements ng.IComponentOptions {
-  bindings: any = {
-    scene: '<',
-    episode: '<'
-  };
-  template: string = TEMPLATE;
-  controller = SceneController;
-  static Name: string = 'npScene'; // tslint:disable-line
-}
-
-
-ittScene.$inject = ['$interval', 'appState'];
-
-export default function ittScene($interval, appState) {
+export default function ittScene($timeout, appState) {
   return {
     restrict: 'A',
     replace: false,
@@ -79,6 +21,11 @@ export default function ittScene($interval, appState) {
       scope.precalculateSceneValues();
       scope.appState = appState;
 
+      // Trigger twiddleScene when the window changes size, the scene becomes current, or the viewMode changes:
+      if (!isIOS()) {
+        window.addEventListener('resize', () => twiddleScene());
+      }
+      twiddleScene();
 
       //BEGIN temp code for debugging purposes
       // setCurrentSeneNameOnAppState();
@@ -116,75 +63,52 @@ export default function ittScene($interval, appState) {
       // scope.crossEpisodePath = appState.crossEpisodePath;
       // }
 
-      var twiddleScene = function () {
-        var magnetNode = element.find('.videoMagnet img');
-        if (magnetNode.height() === null) {
-          // console.warn("twiddleScene called with no visible video magnet; waiting.");
-          var unwatchMagnet = scope.$watch(function () {
-            // Don't try to optimize by using magnetNode from above; if we got here in the first place magnetNode is undefined.
-            // This is an expensive $watch but will only run for a tick or two while the scene is being drawn...
-            return element.find('.videoMagnet img').height();
-          }, function (newH) {
-            if (newH > 0) {
-              unwatchMagnet();
-              twiddleScene();
-            }
-          });
-        } else {
-          element.find('.matchVideoHeight:visible').each(function () {
-            $(this).css("height", element.find('.videoMagnet img').height());
-          });
-          var availableViewportHeight = angular.element(window).height() - $('#CONTAINER').scrollTop();
-          /* TOOLBAR HEIGHT */
-          element.find('.stretchToViewport:visible').each(function () {
-            $(this).css("min-height", (availableViewportHeight - $(this).offset().top));
-          });
-          // landing screen: keep the bottom toolbar onscreen
-          element.find('.stretchToViewportShort:visible').each(function () {
-            $(this).css("min-height", (availableViewportHeight - $(this).offset().top - 210)); // HARDCODED FOOTER HEIGHT
-          });
-        }
+      function isIOS(): boolean {
+        return (appState.iOSVersion && appState.iOSVersion[0] && appState.iOSVersion[0] > 0);
+      }
 
-        element.find('.content').each(function () {
-          var contentpane = $(this);
-          if (contentpane.outerWidth() > 550) {
-            contentpane.addClass('allowSidebars');
-          } else {
-            contentpane.removeClass('allowSidebars');
-          }
-        });
-      };
 
-      // Trigger twiddleScene when the window changes size, the scene becomes current, or the viewMode changes:
-      scope.unwatch = scope.$watch(function () {
-        return {
-          winWidth: appState.windowWidth,
-          winHeight: appState.windowHeight,
-          newMode: appState.viewMode
-        };
-      }, function (the) {
-        if (the.newMode === 'discover' && scope.scene.isCurrent) {
-          twiddleScene();
+      function twiddleScene() {
+        if (isIOS()) {
+          return;
         }
-      }, true);
+        $timeout(
+          () => {
+            element.find('.matchVideoHeight:visible').each(function () {
+              $(this).css('height', element.find('.videoMagnet img').height());
+            });
+            const availableViewportHeight = angular.element(window).height() - $('#CONTAINER').scrollTop();
+            /* TOOLBAR HEIGHT */
+            element.find('.stretchToViewport:visible').each(function () {
+              $(this).css('min-height', (availableViewportHeight - $(this).offset().top));
+            });
+            // landing screen: keep the bottom toolbar onscreen
+            element.find('.stretchToViewportShort:visible').each(function () {
+              // HARDCODED FOOTER HEIGHT
+              $(this).css('min-height', (availableViewportHeight - $(this).offset().top - 210));
+            });
+          },
+          100
+        );
+      }
 
       // trigger init when the user edits content:
-      scope.unwatchEdits = scope.$watch(function () {
-        return appState.editEvent;
-      }, scope.precalculateSceneValues, true);
+      scope.unwatchEdits = scope.$watch(
+        () => appState.editEvent,
+        scope.precalculateSceneValues,
+        true
+      );
 
       // HACK to catch cases (mostly on ios) where matchvideoheight isn't matching.
       // slow, odd interval
-      scope.safetyBelt = $interval(twiddleScene, 1321);
+      // scope.safetyBelt = $interval(twiddleScene, 1321);
 
       // cleanup watchers on destroy
-      scope.$on('$destroy', function () {
-        scope.unwatch();
+      scope.$on('$destroy', () => {
+        // scope.unwatch();
         scope.unwatchEdits();
-        $interval.cancel(scope.safetyBelt);
+        // $interval.cancel(scope.safetyBelt);
       });
-
-    },
-
+    }
   };
 }
