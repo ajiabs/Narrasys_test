@@ -1,7 +1,7 @@
 // Sends magnet signal whenever becomes visible.
 // In watch mode (only), also watches the window size and tries to keep the video from overflowing the window height
 
-import {CHANGE_MAGNET, JUMP_TO_MAGNET, UPDATE_MAGNET} from '../../constants';
+import { CHANGE_MAGNET, JUMP_TO_MAGNET, UPDATE_MAGNET } from '../../constants';
 
 class MagnetStore {
   constructor(private _bcr: ClientRect) {}
@@ -27,7 +27,8 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
 
       const $watches = {
         magnetBoundingClientRect: null,
-        size: null
+        size: null,
+        viewMode: null
       };
 
       $rootScope.$on(UPDATE_MAGNET, () => changeMagnet());
@@ -36,8 +37,14 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
 
       function onInit() {
         window.addEventListener('resize', onResize);
-        $watches.magnetBoundingClientRect = scope.$watchCollection(watchBcr, handleNewMagnetBcr, true);
+        // $watches.magnetBoundingClientRect = scope.$watchCollection(watchBcr, handleNewMagnetBcr, true);
 
+        if (this.appState.isIOS()) {
+
+        }
+
+        $watches.viewMode = scope.$watchCollection(watchViewmode, (newMode) => changeMagnet());
+        changeMagnet();
         if (element.attr('id') === 'watchModeVideoMagnet') {
           $watches.size = scope.$watch(watchSize, handleSize, true);
         }
@@ -53,8 +60,9 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
       }
 
       function onResize() {
-        changeMagnet();
-        scope.$digest();
+        console.log('on resize whoa');
+        // changeMagnet();
+        // scope.$digest();
       }
 
       function watchBcr() {
@@ -64,13 +72,21 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
 
         if (appState.viewMode !== 'review') {
           // for IE compatibility
-          const yOffset = (window.pageYOffset !== undefined)
-            ? window.pageYOffset
-            : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-          documentOffset = documentOffset + yOffset;
+          documentOffset = _adjustBcrOffset(top);
         }
 
-        return { top: documentOffset, left, width };
+        return {  left, width, top: documentOffset };
+      }
+
+      function watchViewmode() {
+        return appState.viewMode;
+      }
+
+      function _adjustBcrOffset(top): number {
+        const yOffset = (window.pageYOffset !== undefined)
+          ? window.pageYOffset
+          : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+        return top + yOffset;
       }
 
       function handleNewMagnetBcr(newV) {
@@ -103,7 +119,14 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
 
       function getMagnetBcr(): ng.IPromise<ClientRect> {
         return $timeout(() => {
-          return element[0].getBoundingClientRect();
+          const readOnly = element[0].getBoundingClientRect();
+          return {
+            top: readOnly.top,
+            bottom: readOnly.bottom,
+            left: readOnly.left,
+            right: readOnly.right,
+            width: readOnly.width
+          };
         }, 100);
       }
 
@@ -121,7 +144,14 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
         }
 
         getMagnetBcr().then((bcr) => {
-          const magnetStore = MagnetStore.of(bcr);
+          const bcrCopy = Object.assign({}, bcr);
+          if (appState.viewMode !== 'review') {
+            // for IE compatibility
+            bcrCopy.top = _adjustBcrOffset(bcrCopy.top);
+          }
+
+          const magnetStore = MagnetStore.of(bcrCopy);
+
           if (playbackService.getMetaProp('time') === 0) {
             $rootScope.$emit(JUMP_TO_MAGNET, magnetStore.bcr);
             return;
