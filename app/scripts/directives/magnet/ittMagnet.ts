@@ -28,7 +28,7 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
       const $watches = {
         magnetBoundingClientRect: null,
         size: null,
-        viewMode: null
+        appState: null
       };
 
       $rootScope.$on(UPDATE_MAGNET, () => changeMagnet());
@@ -37,14 +37,34 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
 
       function onInit() {
         window.addEventListener('resize', onResize);
-        // $watches.magnetBoundingClientRect = scope.$watchCollection(watchBcr, handleNewMagnetBcr, true);
 
-        if (this.appState.isIOS()) {
 
+        if (!appState.isIOS()) {
+          $watches.magnetBoundingClientRect = scope.$watchCollection(watchBcr, handleNewMagnetBcr, true);
+        } else {
+          // for iOS, watching the BCR seems to cause cause the video to bounce around when scrolling in longer
+          // layouts and when scrolling in review mode.
+          // for iOS devices, rely on onInit() to set BCR on layout changes and watch the view mode instead
+          // to handle repositioning the video when changing view modes, changing video position in producer etc....
+          changeMagnet();
+          $watches.appState = scope.$watchCollection(
+            watchAppState,
+            (newMode: any, oldMode: any) => {
+
+              if (newMode.videoPosition !== oldMode.videoPosition) {
+                $timeout(() => changeMagnet(), 500);
+                return;
+              }
+
+              if (newMode.viewMode) {
+                changeMagnet();
+              }
+            },
+            true
+          );
         }
 
-        $watches.viewMode = scope.$watchCollection(watchViewmode, (newMode) => changeMagnet());
-        changeMagnet();
+
         if (element.attr('id') === 'watchModeVideoMagnet') {
           $watches.size = scope.$watch(watchSize, handleSize, true);
         }
@@ -60,9 +80,8 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
       }
 
       function onResize() {
-        console.log('on resize whoa');
-        // changeMagnet();
-        // scope.$digest();
+        changeMagnet();
+        scope.$digest();
       }
 
       function watchBcr() {
@@ -78,8 +97,11 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
         return {  left, width, top: documentOffset };
       }
 
-      function watchViewmode() {
-        return appState.viewMode;
+      function watchAppState() {
+        return {
+          viewMode: appState.viewMode,
+          videoPosition: appState.editEvent.styleCss
+        };
       }
 
       function _adjustBcrOffset(top): number {
@@ -118,16 +140,19 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
       }
 
       function getMagnetBcr(): ng.IPromise<ClientRect> {
-        return $timeout(() => {
-          const readOnly = element[0].getBoundingClientRect();
-          return {
-            top: readOnly.top,
-            bottom: readOnly.bottom,
-            left: readOnly.left,
-            right: readOnly.right,
-            width: readOnly.width
-          };
-        }, 100);
+        return $timeout(
+          () => {
+            const readOnly = element[0].getBoundingClientRect();
+            return {
+              top: readOnly.top,
+              bottom: readOnly.bottom,
+              left: readOnly.left,
+              right: readOnly.right,
+              width: readOnly.width
+            };
+          },
+          100
+        );
       }
 
       function changeMagnet (preCalcedBcr?) {
