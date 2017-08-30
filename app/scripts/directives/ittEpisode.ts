@@ -63,19 +63,5 @@ export default function ittEpisode($timeout, appState) {
     replace: true,
     template: `<span ng-include="episode.templateUrl"></span>`,
     controller: EpisodeController
-    // link: (scope) => {
-    //   $timeout(
-    //     () => {
-    //       if (appState.isFramed && appState.iOSVersion && appState.iOSVersion[0] && appState.iOSVersion[0] > 0) {
-    //         const iframedIosCss = {
-    //           'max-height': window.innerHeight,
-    //           'overflow-y': 'scroll'
-    //         };
-    //
-    //         scope.episode.iOSIframed = iframedIosCss;
-    //       }
-    //     }
-    //   );
-    // }
   };
 }
