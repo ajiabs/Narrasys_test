@@ -1,16 +1,18 @@
 <div class="episode episode-kellogg" ng-class="episode.styleCss">
 
-	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
-	<span ng-include="'templates/episode/components/watchmode.html'"></span>
-	<span ng-repeat="scene in episode.scenes | isCurrent" ng-include="'templates/episode/components/discovermode.html'"></span>
-	<span ng-include="'templates/episode/components/video.html'"></span>
-	<span ng-include="'templates/episode/components/windowfg.html'"></span>
+  <span ng-include="'templates/episode/components/reviewmode.html'"></span>
+  <span ng-include="'templates/episode/components/watchmode.html'"></span>
+  <span ng-repeat="scene in episode.scenes | isCurrent"
+        ng-include="'templates/episode/components/discovermode.html'"></span>
+  <span ng-include="'templates/episode/components/video.html'"></span>
+  <span ng-include="'templates/episode/components/windowfg.html'"></span>
 
-	<div ng-if="appState.viewMode != 'watch'" class="branding footer">
-		<img src="/images/customer/kellogg-k.svg">
+  <div ng-if="appState.viewMode != 'watch'" class="branding footer">
+    <a href="">
+      <img src="/images/customer/kellogg-k.svg">
+    </a>
 
-		<span class="copyright" ng-include="'templates/copyright.html'"></span>
-	</div>
-	<div class="banner-logo"></div>
-
+    <span class="copyright" ng-include="'templates/copyright.html'"></span>
+  </div>
+  <div class="banner-logo"></div>
 </div>

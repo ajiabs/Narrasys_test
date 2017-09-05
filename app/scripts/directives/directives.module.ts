@@ -87,6 +87,8 @@ import { EnableSocialshare, IttSocialShare } from './socialshare/index';
 import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
 import { ittPlayerContainer } from './ittPlayerContainer';
+import { Copyright } from './npCopyright';
+import { EpisodeFooter } from './npEpisodeFooter';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -175,6 +177,8 @@ let directivesModule = angular.module('itt.directives', [])
   .component(EnableSocialshare.Name, new EnableSocialshare())
   .component(Filedrop.Name, new Filedrop())
   .component(UploadProgress.Name, new UploadProgress())
-  .directive('ittPlayerContainer', ittPlayerContainer);
+  .directive('ittPlayerContainer', ittPlayerContainer)
+  .component(Copyright.Name, new Copyright())
+  .component(EpisodeFooter.Name, new EpisodeFooter());
 
 export default directivesModule;

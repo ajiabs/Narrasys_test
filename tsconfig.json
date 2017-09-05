@@ -5,7 +5,7 @@
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"strictNullChecks": false,
-    "lib": ["es2015", "dom"],
+    "lib": ["es6", "dom"],
     "types": ["angular", "angular-animate", "jquery", "node", "angular-ui-tree"]
 	},
 	"exclude": [

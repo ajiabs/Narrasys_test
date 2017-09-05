@@ -8,12 +8,21 @@
 	<span ng-include="'templates/episode/components/windowfg.html'"></span>
 
 	<div ng-if="appState.viewMode != 'watch'" class="branding footer">
-		<div id="branding-wrapper">
-			<img src="/images/customer/WSBCTC_Logo.svg" id="sbctc-logo" alt="Washington SBCTC logo"/>
-			<a id="itt-logo" href="//inthetelling.com" target="_blank">
-				<img src="/images/itt-incolor.svg" alt="In The Telling logo">
-			</a>
-		</div>
-		<span class="copyright" ng-include="'templates/copyright.html'"></span>
+
+    <a class="wsbctc-logo">
+      <img src="/images/customer/WSBCTC_Logo.svg" alt="Washington SBCTC logo">
+    </a>
+
+    <a class="itt-logo" href="//inthetelling.com" target="_blank">
+      <img src="/images/itt-incolor.svg" alt="In The Telling logo">
+    </a>
+
+		<!--<div id="branding-wrapper">-->
+			<!--<img src="/images/customer/WSBCTC_Logo.svg" id="sbctc-logo" alt="Washington SBCTC logo"/>-->
+			<!--<a id="itt-logo" href="//inthetelling.com" target="_blank">-->
+				<!--<img src="/images/itt-incolor.svg" alt="In The Telling logo">-->
+			<!--</a>-->
+		<!--</div>-->
+    <np-copyright class="copyright" org="itt"></np-copyright>
 	</div>
 </div>

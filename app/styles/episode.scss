@@ -865,17 +865,21 @@
   color: #2B4B71;
 }
 
-#branding-wrapper {
-  position: relative;
-  float: right;
-  bottom: -80px;
-  padding-right: 10px;
-}
+.episode-wsbctc {
+  .branding.footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
 
-#sbctc-logo {
-  margin-right: 3px;
-  position: relative;
-  bottom: 20px
+  .wsbctc-logo, .itt-logo {
+    margin-bottom: 53px;
+    padding-right: 10px;
+  }
+
+  .wsbctc-logo {
+    padding-bottom: 20px;
+  }
 }
 
 .professional {
@@ -911,7 +915,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    .professional__logo {
+    .professional__logo img {
       height: 130px;
     }
     .professional__copyright {

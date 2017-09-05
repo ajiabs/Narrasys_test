@@ -1,8 +1,9 @@
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
-import {IAnnotators, Partial} from '../interfaces';
-import {createInstance, IAsset, ICustomer, INarrative, IScene, NEvent} from '../models';
+import { IAnnotators, Partial } from '../interfaces';
+import { createInstance, IAsset, ICustomer, INarrative, IScene, NEvent } from '../models';
+import { templateMap } from '../../templates/episode/templateMap';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
@@ -38,7 +39,6 @@ export interface IModelSvc {
 }
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
-
 export default function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
   const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
   var svc: IModelSvc = Object.create(null);
