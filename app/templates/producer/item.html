@@ -46,7 +46,7 @@
 							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
 							<np-url-field data="item" itt-item-form="ittItemForm"></np-url-field>
 							<itt-description-field data="item"></itt-description-field>
-							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
+							<np-template-select data="item" item-form="itemForm"></np-template-select>
 							<itt-image-field></itt-image-field>
 							<itt-flags data="item"
 									   item-form="itemForm"
@@ -64,7 +64,7 @@
 							<itt-time-field></itt-time-field>
 							<itt-title-field data="item"></itt-title-field>
 							<itt-annotation-field data="item" itt-item-form="ittItemForm"></itt-annotation-field>
-							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
+							<np-template-select data="item" item-form="itemForm"></np-template-select>
 							<itt-speaker-field></itt-speaker-field>
 							<itt-flags data="item"
 									   item-form="itemForm"
@@ -90,7 +90,7 @@
 							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
 							<itt-image-field></itt-image-field>
 							<itt-description-field data="item"></itt-description-field>
-							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
+							<np-template-select data="item" item-form="itemForm"></np-template-select>
 							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
 							<!--TODO reccommend moving orientation into layout tab-->
 							<itt-flags data="item"
@@ -136,7 +136,7 @@
 						<!--hidden accross the board-->
 						<div ng-switch-when="transcript">
 							<!--Template, Speaker Thumb, timestamp, highlight-->
-							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
+							<np-template-select data="item" item-form="itemForm"></np-template-select>
 
 						</div>
 						<div ng-switch-when="annotation">
@@ -146,7 +146,7 @@
 						<div ng-switch-when="scene">
 							<!--time, template, position, display-->
 							<itt-time-field></itt-time-field>
-							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
+							<np-template-select data="item" item-form="itemForm"></np-template-select>
 							<itt-video-position-select data="item"></itt-video-position-select>
 							<itt-display-select data="item"></itt-display-select>
 						</div>
@@ -158,7 +158,7 @@
 						<!--</div>-->
 						<div ng-switch-when="question">
 							<!--Template, Display, Flags-->
-							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
+							<np-template-select data="item" item-form="itemForm"></np-template-select>
 							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
 							<itt-flags data="item"
 									   item-form="itemForm"

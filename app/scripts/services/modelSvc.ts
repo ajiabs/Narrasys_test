@@ -268,6 +268,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       episode.origTemplateUrl = episode.templateUrl;
       episode.templateUrl = updateTemplates[episode.templateUrl];
     }
+    episode.templateData = templateMap[episode.template_id];
 
     // unpack languages
     angular.forEach(episode.languages, function (lang) {
@@ -580,7 +581,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           event.isPq = true;
         }
         if (/text-h1|text-h2/.test(event.templateUrl)) {
-          console.log('setting header!!');
           event.isHeader = true;
         }
 

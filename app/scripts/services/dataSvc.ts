@@ -471,7 +471,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     if (obj.template_id) {
       if (dataCache.template[obj.template_id]) {
         obj.templateUrl = dataCache.template[obj.template_id].url;
-        delete obj.template_id;
       } else {
         errorSvc.error({
           data: 'Couldn\'t get templateUrl for id ' + obj.template_id

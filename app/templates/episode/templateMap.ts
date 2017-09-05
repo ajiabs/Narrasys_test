@@ -1,8 +1,12 @@
-const templatePathPrefix = 'templates/episode/';
-const logoPathPrefix = '../../images/customer/';
-
-const ittSvg = getCustomerImage('itt.svg', '../../images/');
-const ittIncolorSvg = getCustomerImage('itt-incolor.svg', '../../images/');
+// const { resolve } = require('path');
+//
+// const imagesDir = resolve(__dirname, 'app', 'images');
+// const customerDir = resolve(__dirname, 'app', 'images', 'customer');
+// const logoPathPrefix = '../../images/customer';
+const pathToImages = require.context('../../images');
+const pathToLogos = require.context('../../images/customer');
+const ittSvg = getCustomerImage('itt.svg', pathToImages);
+const ittIncolorSvg = getCustomerImage('itt-incolor.svg', pathToImages);
 
 const ittDefaults = {
   cssClass: 'itt-logo',
@@ -17,49 +21,49 @@ interface ITemplateData {
   cssClass: string;
   fillClass?: string;
   logos?: {
-    cssClass: string;
+    cssClass?: string;
     link?: string;
     src: string;
-    alt: string;
+    alt?: string;
   }[];
   bannerLogo?: {
-    cssClass: string;
-    src: string;
-    alt: string;
+    cssClass?: string;
+    src?: string;
+    alt?: string;
   };
 }
 
 interface ITemplateMap {
-  [name: string]: ITemplateData;
+  [templateId: string]: ITemplateData;
 }
 
-function getCustomerImage(fname: string, path: string = logoPathPrefix) {
+function getCustomerImage(fname: string, context = pathToLogos) {
   /*
   since we now are using a dynamic path for an ng-href,
   webpack can no longer statically analyze the HTML to
   replace the URLs with the hashed versions in production mode.
   */
-  return require(`${path}${fname}`);
+  return context('./' + fname, false);
 }
 
-export const templateMap = {
-  [templatePathPrefix + 'chef-ann-foundation.html']: {
+export const templateMap: ITemplateMap = {
+  ['597127da22594d486900249b']: {
     pro: true,
     cssClass: 'professional chef-ann-foundation',
     logos: [
       { src: getCustomerImage('School_Food_Academy_Logo_Final.svg') }
     ],
-    bannerLogo: {}
+    bannerLogo: null
   },
-  [templatePathPrefix + 'career-playbook.html']: {
+  ['57b629d522594d9c22003ef6']: {
     pro: true,
     cssClass: 'professional career-playbook',
     logos: [
       { src: getCustomerImage('CPB_Logo-01-2.svg') }
     ],
-    bannerLogo: {}
+    bannerLogo: null
   },
-  [templatePathPrefix + 'columbia.html']: {
+  ['53e903a727f858072a000008']: {
     pro: false,
     cssClass: 'episode-columbia',
     logos: [Object.assign({}, ittDefaults)],
@@ -69,11 +73,11 @@ export const templateMap = {
       alt: 'Columbia University'
     }
   },
-  [templatePathPrefix + 'columbiabusiness.html']: {
+  ['542da13441f6dfa6ff000025']: {
     pro: false,
     cssClass: 'episode-columbiabusiness',
-    hasFill: true,
-    logo: [Object.assign({}, ittDefaults)],
+    fillClass: 'trident',
+    logos: [Object.assign({}, ittDefaults)],
     bannerLogo: {
       cssClass: BANNER_LOGO,
       src: getCustomerImage('cbs-logo.svg'),
@@ -81,7 +85,7 @@ export const templateMap = {
     }
   },
   //special case two logos
-  [templatePathPrefix + 'eliterate.html']: {
+  ['52e15b3fc9b715cfbb000005']: {
     pro: false,
     cssClass: 'episode-eliterate',
     logos: [
@@ -100,19 +104,19 @@ export const templateMap = {
     }
   },
   //the current default
-  [templatePathPrefix + 'episode.html']: {
+  ['52e15b3ec9b715cfbb000004']: {
     pro: true,
     cssClass: 'professional unbranded',
     logos: [
       {
-        src: getCustomerImage('Narrasys_Banner_white.svg'),
+        src: getCustomerImage('Narrasys_Banner_white.svg', pathToImages),
         link: '//narrasys.com',
         alt: 'Narrasys logo'
       }
     ],
-    bannerLogo: {}
+    bannerLogo: null
   },
-  [templatePathPrefix + 'ewb.html']: {
+  ['530bc61c5539d395bd41025f']: {
     pro: false,
     cssClass: 'episode-ewb',
     logos: [Object.assign({}, ittDefaults)],
@@ -122,13 +126,13 @@ export const templateMap = {
       alt: 'Engineers Without Borders'
     }
   },
-  [templatePathPrefix + 'fieldpros.html']: {
+  ['578d686427f858d40b000d33']: {
     pro: true,
     cssClass: 'professional field-pros',
     logos: [
       { src: getCustomerImage('Logo_ColorBars-01.svg') }
     ],
-    bannerLogo: {}
+    bannerLogo: null
   },
   // [templatePathPrefix + 'george-washington.html']: {
   //   pro: true,
@@ -136,7 +140,7 @@ export const templateMap = {
   //   logos: [],
   //   bannerLogo: {}
   // },
-  [templatePathPrefix + 'gw.html']: {
+  ['531898ab5539d395bd410260']: {
     pro: false,
     cssClass: 'episode-gw',
     logos: [],
@@ -146,7 +150,7 @@ export const templateMap = {
       alt: 'George Washington'
     }
   },
-  [templatePathPrefix + 'gwlaw.html']: {
+  ['53e9035227f85827a5000005']: {
     pro: false,
     cssClass: 'episode-gw',
     logos: [],
@@ -157,9 +161,10 @@ export const templateMap = {
     }
   },
   //special case
-  [templatePathPrefix + 'gwsb.html']: {
+  ['54f8ca2727f858f7b4000298']: {
     pro: false,
     cssClass: 'episode-gwsb',
+    fillClass: 'gwsb-seal',
     logos: [],
     bannerLogo: {
       cssClass: BANNER_LOGO,
@@ -168,7 +173,7 @@ export const templateMap = {
     }
   },
   //special case
-  [templatePathPrefix + 'kellogg.html']: {
+  ['5525708b41f6df6b4c000024']: {
     pro: false,
     cssClass: 'episode-kellogg',
     logos: [
@@ -176,11 +181,9 @@ export const templateMap = {
         src: getCustomerImage('kellogg-k.svg')
       }
     ],
-    bannerLogo: {
-      //set with css background-image
-    }
+    bannerLogo: null
   },
-  [templatePathPrefix + 'middlebury.html']: {
+  ['546e50d527f858eef200000d']: {
     pro: false,
     cssClass: 'episode-middlebury',
     logos: [ //                        over-ride default logo with incolor
@@ -198,15 +201,15 @@ export const templateMap = {
       alt: 'Middlebury'
     }
   },
-  [templatePathPrefix + 'narrasys-pro.html']: {
+  ['56e73d2e27f8580230004abc']: {
     pro: true,
     cssClass: 'professional narrasys',
     logos: [
       { src: getCustomerImage('Narrasys_brand_logo.svg') }
     ],
-    bannerLogo: {}
+    bannerLogo: null
   },
-  [templatePathPrefix + 'prolotherapy.html']: {
+  ['54a3034c27f8582a85000005']: {
     pro: false,
     cssClass: 'episode-prolotherapy',
     logos: [Object.assign({}, ittDefaults)],
@@ -216,7 +219,7 @@ export const templateMap = {
       alt: 'American Association of Musculoskeletal Medicine'
     }
   },
-  [templatePathPrefix + 'purdue.html']: {
+  ['539b565ebf31cd93cd000080']: {
     pro: false,
     cssClass: 'episode-purdue',
     logos: [Object.assign({}, ittDefaults)],
@@ -226,13 +229,14 @@ export const templateMap = {
       src: getCustomerImage('purdue-logo.svg')
     }
   },
-  [templatePathPrefix + 'regis.html']: {
+  ['5642137a41f6df55cb000c71']: {
     pro: false,
     cssClass: 'episode-regis',
+    fillClass: 'bgregis',
     logos: [Object.assign({}, ittDefaults)],
     bannerLogo: null
   },
-  [templatePathPrefix + 'schoolclimatesolutions.html']: {
+  ['542da00f27f858de8f00005e']: {
     pro: false,
     cssClass: 'episode-schoolclimatesolutions',
     logos: [Object.assign({}, ittDefaults)],
@@ -242,21 +246,21 @@ export const templateMap = {
       alt: 'SCS: School Climate Solutions'
     }
   },
-  [templatePathPrefix + 'story.html']: {
+  ['story']: {
     pro: false,
     cssClass: 'episode-story',
     logos: [],
-    bannerLogo: {}
+    bannerLogo: null
   },
-  [templatePathPrefix + 'university-arizona.html']: {
+  ['5851af7993d34f8c1200020a']: {
     pro: true,
     cssClass: 'professional university-arizona',
     logos: [
       { src: getCustomerImage('ua_horiz.svg') }
     ],
-    bannerLogo: {}
+    bannerLogo: null
   },
-  [templatePathPrefix + 'usc.html']: {
+  ['53da523abf31cd4efe000025']: {
     pro: false,
     cssClass: 'episode-usc',
     logos: [Object.assign({}, ittDefaults)],
@@ -266,9 +270,10 @@ export const templateMap = {
     }
   },
   //special case - logo id
-  [templatePathPrefix + 'washingtonSBCTC.html']: {
+  ['56817bba27f8582c540009da']: {
     pro: false,
     cssClass: 'episode-wsbctc',
+    fillClass: 'bigwsbctc',
     logos: [
       {
         cssClass: 'wsbctc-logo',
@@ -280,7 +285,7 @@ export const templateMap = {
     bannerLogo: null
   },
   //special class - div class ghost
-  [templatePathPrefix + 'wiley1.html']: {
+  ['555e275241f6dfe3d1001146']: {
     pro: false,
     cssClass: 'episode-wiley wiley-endscreentext',
     logos: [
@@ -291,7 +296,7 @@ export const templateMap = {
     }
   },
   //special case - div class ghost
-  [templatePathPrefix + 'wiley2.html']: {
+  ['555e275227f8583f8e001620']: {
     pro: false,
     cssClass: 'episode-wiley',
     logos: [
@@ -300,15 +305,15 @@ export const templateMap = {
     bannerLogo: {
       cssClass: 'ghost'
     }
-  },
-  [templatePathPrefix + 'wiley3.html']: {
-    pro: false,
-    cssClass: 'episode-wiley wiley-endscreentext',
-    logos: [
-      Object.assign({}, ittDefaults)
-    ],
-    bannerLogo: {
-      cssClass: 'ghost'
-    }
   }
-} as ITemplateMap;
+  // [templatePathPrefix + 'wiley3.html']: {
+  //   pro: false,
+  //   cssClass: 'episode-wiley wiley-endscreentext',
+  //   logos: [
+  //     Object.assign({}, ittDefaults)
+  //   ],
+  //   bannerLogo: {
+  //     cssClass: 'ghost'
+  //   }
+  // }
+};

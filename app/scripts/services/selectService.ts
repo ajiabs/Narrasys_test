@@ -313,7 +313,7 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
           //admins get all templates
           if (_userHasRole('admin')) {
             if (curr.type === 'Episode') {
-              accm.push({url: curr.url, name: curr.displayName});
+              accm.push({ id: curr.id, url: curr.url, name: curr.displayName });
             }
             return accm;
           } else {
@@ -322,7 +322,7 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
               var hasCustomer = ittUtils.intersection(custIds, curr.customerIds);
               //this customer has an episode template OR the default template
               if (hasCustomer.length > 0 || curr.customerIds.length === 0) {
-                accm.push({url: curr.url, name: curr.displayName});
+                accm.push({ id: curr.id, url: curr.url, name: curr.displayName });
               }
             }
             return accm;

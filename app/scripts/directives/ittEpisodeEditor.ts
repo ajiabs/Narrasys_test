@@ -151,8 +151,8 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
         [
           'episode.templateUrl',
           'episode.title[appState.lang]',
-          'episode.description[appState.lang]'
-          // 'episode.navigation_depth'
+          'episode.description[appState.lang]',
+          'episode.template_id'
         ],
         function (newVal, oldVal) {
           // console.log("DETECTED CHANGE", newVal, oldVal);
