@@ -36,7 +36,7 @@ export default function ittItemDetailModal(appState) {
       if (scope.item.isVideoUrl) {
         scope.modalStyle = angular.extend(scope.modalStyle, yOffsets);
       } else if (scope.item.producerItemType === 'image') {
-        scope.modalStyle = angular.extend(scope.modalStyle, imgStyle);
+        scope.modalStyle = angular.extend(scope.modalStyle, imgStyle, { 'margin-top': '6px' });
       } else {
         scope.modalStyle = angular.extend(scope.modalStyle, baseStyle, yOffsets);
       }
