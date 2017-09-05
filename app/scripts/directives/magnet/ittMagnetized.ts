@@ -29,7 +29,7 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, 
           element.css('position', 'absolute');
         }
 
-        const {top, left, width} = magnetElmBcr;
+        const { top, left, width } = magnetElmBcr;
 
         if (animateTransition === true) {
           element.css('transition-timing-function', 'cubic-bezier(0.4, 0, 1, 1)');
@@ -48,7 +48,7 @@ export default function ittMagnetized($rootScope, $timeout: ng.ITimeoutService, 
       }
 
       // cleanup watchers on destroy
-      scope.$on('$destroy', function () {
+      scope.$on('$destroy', () => {
         if (scope.unwatch) {
           scope.unwatch();
         }
