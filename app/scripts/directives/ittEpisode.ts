@@ -1,4 +1,4 @@
-import {IAnalyticsSvc, IDataSvc, IModelSvc} from '../interfaces';
+import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../interfaces';
 class EpisodeController {
   static $inject = ['$scope', '$interval', 'analyticsSvc', 'modelSvc', 'appState', 'dataSvc', 'timelineSvc'];
 
@@ -34,6 +34,7 @@ class EpisodeController {
     };
 
     this.$interval(scopeHack, 457);
+    this.$scope.episode.platformSpecificCss = this._platformSpecificCss();
   }
 
   $onDestroy() {
@@ -45,13 +46,22 @@ class EpisodeController {
     this.analyticsSvc.startPolling();
     this.analyticsSvc.captureEpisodeActivity('episodeLoad');
   }
-}
 
-export default function ittEpisode() {
+  private _platformSpecificCss() {
+    if (this.appState.isIframedIOS()) {
+      return {
+        'max-height': window.innerHeight,
+        'overflow-y': 'scroll'
+      };
+    }
+  }
+}
+ittEpisode.$inject = ['$timeout', 'appState'];
+export default function ittEpisode($timeout, appState) {
   return {
     restrict: 'A',
     replace: true,
-    template: '<span ng-include="episode.templateUrl"></span>',
+    template: `<span ng-include="episode.templateUrl"></span>`,
     controller: EpisodeController
   };
 }
