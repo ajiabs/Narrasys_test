@@ -165,4 +165,12 @@ export class AppState {
       console.log('appState:', this);
     }
   }
+
+  isIframedIOS() {
+    return (this.isFramed && this.isIOS());
+  }
+
+  isIOS() {
+    return(this.iOSVersion && this.iOSVersion[0] && this.iOSVersion[0] > 0);
+  }
 }
