@@ -26,19 +26,18 @@ export default function ittItemDetailModal(appState) {
     link: function (scope) {
       scope.item = scope.item.item;
       if (!scope.item.animate) {
-        scope.modalStyle = { 'transition': 'none' };
+        scope.modalStyle = {'transition': 'none'};
       }
 
-      const baseStyle = { 'bottom': '0' };
-      const yOffsets = { 'padding-top': '5%', 'margin-top': '40px' };
-      const imgStyle = { 'overflow-y': 'auto', 'top': '40%', 'height': '85%', 'z-index': '11' };
+      var baseStyle = {'bottom': '0', 'padding-top': '5%'};
+      var imgStyle = {'overflow-y': 'auto', 'top': '40%', 'height': '85%', 'z-index': '11'};
 
       if (scope.item.isVideoUrl) {
-        scope.modalStyle = angular.extend(scope.modalStyle, yOffsets);
+        scope.modalStyle = angular.extend(scope.modalStyle, {'padding-top': '5%'});
       } else if (scope.item.producerItemType === 'image') {
-        scope.modalStyle = angular.extend(scope.modalStyle, imgStyle, { 'margin-top': '6px' });
+        scope.modalStyle = angular.extend(scope.modalStyle, imgStyle);
       } else {
-        scope.modalStyle = angular.extend(scope.modalStyle, baseStyle, yOffsets);
+        scope.modalStyle = angular.extend(scope.modalStyle, baseStyle);
       }
 
       scope.dismiss = function () {
