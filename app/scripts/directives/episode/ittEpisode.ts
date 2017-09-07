@@ -50,7 +50,9 @@ class EpisodeController {
   private _platformSpecificCss() {
     if (this.appState.isIframedIOS()) {
       return {
+        'position': 'relative',
         'max-height': window.innerHeight,
+        '-webkit-overflow-scrolling': 'touch',
         'overflow-y': 'scroll'
       };
     }
