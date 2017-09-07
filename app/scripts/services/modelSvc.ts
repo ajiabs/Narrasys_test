@@ -2,7 +2,7 @@
  and derives secondary data where necessary for performance/convenience/fun */
 
 import { IAnnotators, Partial } from '../interfaces';
-import { createInstance, IAsset, ICustomer, INarrative, IScene, NEvent } from '../models';
+import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent } from '../models';
 import { templateMap } from '../../templates/episode/templateMap';
 
 export interface IModelSvc {
@@ -1133,6 +1133,12 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           }
         });
       });
+    }
+
+
+    if (thing instanceof IEpisode) {
+      // TODO: add episode namespace until db work is implemented
+      cssArr.push(thing.templateData.cssClass);
     }
 
     // add each episodeStyle, only if it is in a styleCategory the thing isn't already using

@@ -16,7 +16,7 @@ const ittDefaults = {
 };
 const BANNER_LOGO: 'banner-logo' = 'banner-logo';
 
-interface ITemplateData {
+export interface ITemplateData {
   pro: boolean;
   cssClass: string;
   fillClass?: string;

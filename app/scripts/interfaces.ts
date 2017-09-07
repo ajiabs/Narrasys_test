@@ -1,3 +1,4 @@
+export { ITemplateData } from '../templates/episode/templateMap';
 export { ILinkValidationMessage, ILinkValidFields } from './services/validation.svc';
 export { IAnalyticsSvc } from './services/analyticsSvc';
 export { IAnnotator, IAnnotators } from './directives/sxsAnnotatorAutocomplete';

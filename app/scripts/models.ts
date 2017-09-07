@@ -1,4 +1,4 @@
-import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
+import { IAnnotators, ILangForm, ILangformKeys, ITemplateData } from './interfaces';
 
 
 import { TSocialTagTypes } from './constants';
@@ -28,6 +28,7 @@ export class IEpisode {
   style_id: string[];
   styles: string[];
   templateUrl: string;
+  templateData?: ITemplateData;
   title: ILangForm;
   updated_at: Date;
   producerItemType?: string;
