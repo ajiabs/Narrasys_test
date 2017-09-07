@@ -80,6 +80,11 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
       }
 
       function onResize() {
+        if (appState.isIOS() && appState.viewMode === 'review') {
+          // for some reason a resize event is fired when scrolling
+          // in review mode
+          return;
+        }
         changeMagnet();
         scope.$digest();
       }
