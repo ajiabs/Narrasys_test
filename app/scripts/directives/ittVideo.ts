@@ -1,7 +1,5 @@
-import {IDataSvc} from '../services/dataSvc';
-import {IModelSvc} from '../services/modelSvc';
-import {ITimelineSvc} from '../services/timelineSvc';
-import {IAnalyticsSvc} from '../services/analyticsSvc';
+import { IAnalyticsSvc, ITimelineSvc, IModelSvc, IDataSvc } from '../interfaces';
+
 /* tslint:disable:prefer-const */
 export default function ittVideo() {
   return {
@@ -100,8 +98,10 @@ export default function ittVideo() {
           }
 
           playbackService.togglePlayback(
-            ctrl.playerId, timelineSvc.restartEpisode,
-            analyticsSvc.captureEpisodeActivity.bind(analyticsSvc));
+            ctrl.playerId,
+            timelineSvc.restartEpisode,
+            analyticsSvc.captureEpisodeActivity.bind(analyticsSvc)
+          );
         }
 
         function setCssClass() {

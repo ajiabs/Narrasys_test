@@ -1,8 +1,22 @@
-import {IAnalyticsSvc} from '../services/analyticsSvc';
+import { IModelSvc, IAnalyticsSvc } from '../interfaces';
 
-TimelineController.$inject = ['$scope', '$rootScope', 'timelineSvc', 'playbackService', 'analyticsSvc'];
-
-export default function TimelineController($scope, $rootScope, timelineSvc, playbackService, analyticsSvc: IAnalyticsSvc) {
+TimelineController.$inject = [
+  '$scope',
+  '$rootScope',
+  'timelineSvc',
+  'playbackService',
+  'analyticsSvc',
+  'appState',
+  'modelSvc'
+];
+export default function TimelineController(
+  $scope,
+  $rootScope,
+  timelineSvc,
+  playbackService,
+  analyticsSvc: IAnalyticsSvc,
+  appState,
+  modelSvc: IModelSvc) {
 
   $scope.playbackService = playbackService;
 
@@ -22,9 +36,19 @@ export default function TimelineController($scope, $rootScope, timelineSvc, play
   }
 
   function timelineBtnClick() {
-    playbackService.togglePlayback(null,
+
+    if (appState.isIframedIOS()) {
+      const entityId = appState.narrativeId || appState.episodeId;
+      const timelineId = appState.timelineId;
+      window.open(modelSvc.mainVideoNewWindowUrl(entityId, timelineId));
+      return;
+    }
+
+    playbackService.togglePlayback(
+      null,
       timelineSvc.restartEpisode,
-      analyticsSvc.captureEpisodeActivity.bind(analyticsSvc));
+      analyticsSvc.captureEpisodeActivity.bind(analyticsSvc)
+    );
   }
 
   function _getTimelineState() {
