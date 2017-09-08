@@ -35,6 +35,7 @@ export interface IModelSvc {
   addLandingScreen(episodeId: string): void;
   addEndingScreen(episodeId: string): void;
   isTranscoded(video: any): boolean;
+  mainVideoNewWindowUrl(entityId: string, timelineId?: string, startAt?: number): string;
 }
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
@@ -58,6 +59,20 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   // TODO discard unused fields before cacheing
 
   // use angular.extend if an object already exists, so we don't lose existing bindings
+
+
+  svc.mainVideoNewWindowUrl = mainVideoNewWindowUrl;
+  function mainVideoNewWindowUrl(entityId: string, timelineId?: string, startAt?: number): string {
+    const baseNewWindowEndpoint = config.apiDataBaseUrl + '/v1/new_window';
+    const userAccessToken = appState.user.access_token;
+    // if second id is present, first ID must be from a narrative
+    if (entityId && timelineId) {
+      return baseNewWindowEndpoint +
+        `?narrative=${entityId}&timeline=${timelineId}&access_token=${userAccessToken}&t=${startAt || 0}`;
+    } else {
+      return baseNewWindowEndpoint + `?episode=${entityId}&access_token=${userAccessToken}&t=${startAt || 0}`;
+    }
+  }
 
   svc.getNarrativeByPathOrId = function (pathOrId) {
     var isMongoId = /^[0-9a-fA-F]{24}$/.test(pathOrId);

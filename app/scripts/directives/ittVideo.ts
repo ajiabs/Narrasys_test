@@ -92,6 +92,13 @@ export default function ittVideo() {
 
         //video mask controls
         function videoClick() {
+          if (appState.isIframedIOS()) {
+            const entityId = appState.narrativeId || appState.episodeId;
+            const timelineId = appState.timelineId;
+            window.open(modelSvc.mainVideoNewWindowUrl(entityId, timelineId));
+            return;
+          }
+
           playbackService.togglePlayback(
             ctrl.playerId, timelineSvc.restartEpisode,
             analyticsSvc.captureEpisodeActivity.bind(analyticsSvc));
