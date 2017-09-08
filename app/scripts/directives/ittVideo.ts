@@ -93,7 +93,7 @@ export default function ittVideo() {
           if (appState.isIframedIOS()) {
             const entityId = appState.narrativeId || appState.episodeId;
             const timelineId = appState.timelineId;
-            window.open(modelSvc.mainVideoNewWindowUrl(entityId, timelineId));
+            window.open(modelSvc.mainVideoNewWindowUrl(entityId, timelineId, playbackService.getMetaProp('time')));
             return;
           }
 
