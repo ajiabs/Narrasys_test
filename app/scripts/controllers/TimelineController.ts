@@ -36,14 +36,6 @@ export default function TimelineController(
   }
 
   function timelineBtnClick() {
-
-    if (appState.isIframedIOS()) {
-      const entityId = appState.narrativeId || appState.episodeId;
-      const timelineId = appState.timelineId;
-      window.open(modelSvc.mainVideoNewWindowUrl(entityId, timelineId, playbackService.getMetaProp('time')));
-      return;
-    }
-
     playbackService.togglePlayback(
       null,
       timelineSvc.restartEpisode,

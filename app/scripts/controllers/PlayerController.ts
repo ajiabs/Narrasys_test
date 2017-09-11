@@ -203,7 +203,11 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   const entityId = appState.narrativeId || appState.episodeId;
   const timelineId = appState.timelineId;
   $scope.newWindowUrl = modelSvc.mainVideoNewWindowUrl(entityId, timelineId, playbackService.getMetaProp('time'));
+  $scope.iframeIOSOverlayHandler = iframeIOSOverlayHandler;
 
+  function iframeIOSOverlayHandler() {
+    window.open($scope.newWindowUrl);
+  }
   // put this in template instead
   // if (appState.user.access_token) {
   // 	$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
