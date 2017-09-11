@@ -29,7 +29,7 @@
 	 			&& !narrative.disable_new_window ) )" class="escapegroup buttongroup">
       <!-- this needs to be an <a> or it trips popup blockers -->
       <a class="button button-mainframeescape" ng-click="pause()"
-         ng-href="{{newWindowUrl}}&t={{playbackService.getMetaProp('time')|| 0}}&access_token={{appState.user.access_token}}"
+         ng-href="{{newWindowUrl}}"
          target="_blank">
         <span>New window</span>
       </a>

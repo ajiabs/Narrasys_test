@@ -70,7 +70,7 @@ function begin(version) {
     } else {
 
       try {
-        versionerInstance.productionRelease()
+        versionerInstance.productionRelease(versionType)
       } catch (e) {
         utils.warn(e.message);
         return;
@@ -279,11 +279,12 @@ function gitMagic(finalVersion) {
 }
 
 function showVersionDiff(newVersion) {
-  const releaseType = versionerInstance.getReleaseType();
+  const releaseType = versionerInstance.getReleaseType(true);
+  const vType = versionerInstance.getVersionType();
   let verionDiffStr = `${currentVersion}...${newVersion}`;
 
   if (releaseType === 'PRODUCTION') {
-    verionDiffStr = `${versionerInstance.lastProductionRelease()}...${newVersion}`
+    verionDiffStr = `${versionerInstance.lastProductionRelease(newVersion, vType)}...${newVersion}`
   }
 
   return `https://github.com/inthetelling/client/compare/${verionDiffStr}`;
