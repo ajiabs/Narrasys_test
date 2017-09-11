@@ -78,7 +78,7 @@ const versioner = versionTxt => {
     }
   }
 
-  function productionRelease() {
+  function productionRelease(versionType) {
     //this is a production build,
     //if we have a dev tag or any sort, do not bump the production number
     //(we should only be able to get here from a dev build, so this should prob be default)
@@ -91,6 +91,7 @@ const versioner = versionTxt => {
       patch = stripDevBlob[0];
 
       //set final version
+      _versionType = versionType;
       finalVersion = `v${major}.${minor}.${patch}`;
     } else {
       throw new Error('production builds must come from dev releases');
@@ -98,21 +99,26 @@ const versioner = versionTxt => {
 
   }
 
-  function lastProductionRelease() {
-    let [_maj, _min, _patch] = [major, minor, patch];
-    switch (_versionType) {
+  function lastProductionRelease(currentProdVersion, versionType) {
+
+    const parts = currentProdVersion.split('.');
+    let maj = parseInt(parts[0].slice(1), 10);
+    let min = parseInt(parts[1], 10);
+    let patch = parseInt(parts[2], 10);
+
+    switch (versionType) {
       case 'MAJOR':
-        _maj = major - 1;
+        maj -= 1;
         break;
       case 'MINOR':
-        _min = minor - 1;
+        min -= 1;
         break;
       case 'PATCH':
-        _patch = patch - 1;
+        patch -= 1;
         break;
     }
 
-    return `v${_maj}.${_min}.${_patch}`;
+    return `v${maj}.${Math.max(min, 0)}.${patch}`;
   }
 
 
