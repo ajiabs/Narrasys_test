@@ -204,6 +204,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   const timelineId = appState.timelineId;
   $scope.newWindowUrl = modelSvc.mainVideoNewWindowUrl(entityId, timelineId, playbackService.getMetaProp('time'));
   $scope.iframeIOSOverlayHandler = iframeIOSOverlayHandler;
+  $scope.showIframeIOSOverlay = appState.isIframedIOS();
 
   function iframeIOSOverlayHandler() {
     window.open($scope.newWindowUrl);

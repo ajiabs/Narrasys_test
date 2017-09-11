@@ -1,4 +1,4 @@
-<div class="ios-iframe-overlay" ng-click="iframeIOSOverlayHandler()"></div>
+<div class="ios-iframe-overlay" ng-if="showIframeIOSOverlay" ng-click="iframeIOSOverlayHandler()"></div>
 <div ng-class="{
 	isTouchDevice: appState.isTouchDevice,
 	isFramed: appState.isFramed,
