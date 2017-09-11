@@ -34,7 +34,6 @@ class EpisodeController {
     };
 
     this.$interval(scopeHack, 457);
-    this.$scope.episode.platformSpecificCss = this._platformSpecificCss();
   }
 
   $onDestroy() {
@@ -45,17 +44,6 @@ class EpisodeController {
   loadEpisodeForPlayer() {
     this.analyticsSvc.startPolling();
     this.analyticsSvc.captureEpisodeActivity('episodeLoad');
-  }
-
-  private _platformSpecificCss() {
-    if (this.appState.isIframedIOS()) {
-      return {
-        'position': 'relative',
-        'max-height': window.innerHeight,
-        '-webkit-overflow-scrolling': 'touch',
-        'overflow-y': 'scroll'
-      };
-    }
   }
 }
 ittEpisode.$inject = ['$timeout', 'appState'];
