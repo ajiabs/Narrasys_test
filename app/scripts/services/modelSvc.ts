@@ -35,7 +35,13 @@ export interface IModelSvc {
   addLandingScreen(episodeId: string): void;
   addEndingScreen(episodeId: string): void;
   isTranscoded(video: any): boolean;
-  mainVideoNewWindowUrl(entityId: string, timelineId?: string, startAt?: number): string;
+  mainVideoNewWindowUrl(
+    accessToken: string,
+    entityId: string,
+    timelineId?: string,
+    startAt?: number,
+    playerType?: 'episode' | 'editor' | 'producer'
+  ): string;
 }
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
@@ -62,15 +68,20 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
 
   svc.mainVideoNewWindowUrl = mainVideoNewWindowUrl;
-  function mainVideoNewWindowUrl(entityId: string, timelineId?: string, startAt?: number): string {
+  function mainVideoNewWindowUrl(
+    accessToken: string,
+    entityId: string,
+    timelineId?: string,
+    startAt?: number,
+    playerType: 'episode' | 'producer' | 'editor'  = 'episode'): string {
+
     const baseNewWindowEndpoint = config.apiDataBaseUrl + '/v1/new_window';
-    const userAccessToken = appState.user.access_token;
     // if second id is present, first ID must be from a narrative
     if (entityId && timelineId) {
       return baseNewWindowEndpoint +
-        `?narrative=${entityId}&timeline=${timelineId}&access_token=${userAccessToken}&t=${startAt || 0}`;
+        `?narrative=${entityId}&timeline=${timelineId}&access_token=${accessToken}&t=${startAt || 0}`;
     } else {
-      return baseNewWindowEndpoint + `?episode=${entityId}&access_token=${userAccessToken}&t=${startAt || 0}`;
+      return baseNewWindowEndpoint + `?${playerType}=${entityId}&access_token=${accessToken}&t=${startAt || 0}`;
     }
   }
 

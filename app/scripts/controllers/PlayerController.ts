@@ -200,14 +200,23 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   //   $scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
   // }
 
-  const entityId = appState.narrativeId || appState.episodeId;
-  const timelineId = appState.timelineId;
-  $scope.newWindowUrl = modelSvc.mainVideoNewWindowUrl(entityId, timelineId, playbackService.getMetaProp('time'));
-  $scope.iframeIOSOverlayHandler = iframeIOSOverlayHandler;
   $scope.showIframeIOSOverlay = appState.isIframedIOS();
+  $scope.iframeIOSOverlayHandler = iframeIOSOverlayHandler;
+  $scope.calcNewWindowUrl = calcNewWindowUrl;
+
+  function calcNewWindowUrl() {
+    const entityId = appState.narrativeId || appState.episodeId;
+    const timelineId = appState.timelineId;
+    return modelSvc.mainVideoNewWindowUrl(
+      appState.user.access_token,
+      entityId,
+      timelineId,
+      playbackService.getMetaProp('time')
+    );
+  }
 
   function iframeIOSOverlayHandler() {
-    window.open($scope.newWindowUrl);
+    window.open(calcNewWindowUrl());
   }
   // put this in template instead
   // if (appState.user.access_token) {
