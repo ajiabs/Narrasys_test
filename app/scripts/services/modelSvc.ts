@@ -63,13 +63,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
   svc.mainVideoNewWindowUrl = mainVideoNewWindowUrl;
   function mainVideoNewWindowUrl(accessToken: string, entityId: string, timelineId?: string, startAt?: number): string {
-    if (accessToken == null) {
-      /*
-        until we have our access token, return null, then we can use a one time binding (since this method is going
-        to be called from a template)
-      */
-      return null;
-    }
 
     const baseNewWindowEndpoint = config.apiDataBaseUrl + '/v1/new_window';
     // if second id is present, first ID must be from a narrative
