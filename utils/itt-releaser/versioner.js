@@ -19,7 +19,12 @@ const versioner = versionTxt => {
   //-dev or -dev-n if it is a development release
   let patchBlob = vNum[2];
 
-  function getReleaseType() {
+  function getReleaseType(skipCalc) {
+
+    if (skipCalc === true) {
+      return releaseType;
+    }
+
     if (patchBlob.indexOf('-') > -1) {
       releaseType = 'DEVELOPMENT';
     } else {

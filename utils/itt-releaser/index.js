@@ -279,7 +279,7 @@ function gitMagic(finalVersion) {
 }
 
 function showVersionDiff(newVersion) {
-  const releaseType = versionerInstance.getReleaseType();
+  const releaseType = versionerInstance.getReleaseType(true);
   let verionDiffStr = `${currentVersion}...${newVersion}`;
 
   if (releaseType === 'PRODUCTION') {
