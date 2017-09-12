@@ -1,12 +1,8 @@
-// const { resolve } = require('path');
-//
-// const imagesDir = resolve(__dirname, 'app', 'images');
-// const customerDir = resolve(__dirname, 'app', 'images', 'customer');
-// const logoPathPrefix = '../../images/customer';
-import { capitalize } from '../../scripts/services/ittUtils';
 
-const pathToImages = require.context('../../images');
-const pathToLogos = require.context('../../images/customer');
+import { capitalize } from '../../services/ittUtils';
+
+const pathToImages = require.context('../../../images');
+const pathToLogos = require.context('../../../images/customer');
 const ittSvg = getCustomerImage('itt.svg', pathToImages);
 const ittIncolorSvg = getCustomerImage('itt-incolor.svg', pathToImages);
 

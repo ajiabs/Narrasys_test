@@ -3,7 +3,7 @@
 
 import { IAnnotators, Partial } from '../interfaces';
 import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent } from '../models';
-import { templateMap } from '../../templates/episode/templateMap';
+import { templateMap } from '../directives/episode/templateMap';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
