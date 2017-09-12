@@ -28,7 +28,7 @@ export class IEpisode {
   style_id: string[];
   styles: string[];
   templateUrl: string;
-  templateData?: ITemplateData;
+  template_data?: ITemplateData;
   title: ILangForm;
   updated_at: Date;
   producerItemType?: string;

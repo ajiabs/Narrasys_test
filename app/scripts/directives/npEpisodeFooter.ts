@@ -3,7 +3,7 @@ const TEMPLATE = `
 
   <div ng-if="$ctrl.templateData.pro" class="branding--content">
     <np-copyright org="np" class="professional__copyright"></np-copyright>
-      <a class="progessional__logo">
+      <a class="professional__logo">
         <img ng-src="{{$ctrl.templateData.logos[0].src}}"/>
       </a>
   </div>
@@ -11,12 +11,11 @@ const TEMPLATE = `
   <div ng-if="!$ctrl.templateData.pro">
     <a
       ng-repeat="logoImg in $ctrl.templateData.logos"
-      ng-if="logImg.src"
       ng-class="logoImg.cssClass"
-      ng-href="logoImg."
+      ng-href="logoImg.link"
       target="_blank"
       rel="noopener noreferrer">
-        <img ng-src="" alt=""/>
+        <img ng-src="{{logoImg.src}}" alt="{{logoImg.alt}}"/>
     </a>
     <np-copyright org="itt"></np-copyright>
   </div>

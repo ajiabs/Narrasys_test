@@ -41,8 +41,10 @@ import './controllers/controllers.module';
 import './filters/filters';
 import './services/services.module';
 import './directives/directives.module';
+import './directives/episode/episode.module';
 
 let itt = angular.module('iTT', [
+    'npEpisode',
     'ngRoute',
     'ngAnimate',
     'ngSanitize',
@@ -143,13 +145,13 @@ function routerConfig($routeProvider) {
               //since this is going to be displayed in a dropdown, it needs to be an array of objects.
 
               return $q(function (resolve) {
-                return resolve({c: cachedCustomers});
+                return resolve({ c: cachedCustomers });
               });
             }
 
             return authSvc.authenticate().then(function () {
               return dataSvc.getCustomerList().then(function (customers) {
-                return {c: customers};
+                return { c: customers };
               });
             });
           }]
@@ -179,12 +181,12 @@ function routerConfig($routeProvider) {
             if (doPullFromCache) {
               cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
               return $q(function (resolve) {
-                return resolve({n: cachedNarr, c: [cachedCustomer]});
+                return resolve({ n: cachedNarr, c: [cachedCustomer] });
               });
             }
             return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
               return dataSvc.getCustomer(narrativeData.customer_id, true).then(function (customer) {
-                return {n: narrativeData, c: [customer]};
+                return { n: narrativeData, c: [customer] };
               });
             });
           }]

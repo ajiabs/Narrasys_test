@@ -3,6 +3,8 @@
 // const imagesDir = resolve(__dirname, 'app', 'images');
 // const customerDir = resolve(__dirname, 'app', 'images', 'customer');
 // const logoPathPrefix = '../../images/customer';
+import { capitalize } from '../../scripts/services/ittUtils';
+
 const pathToImages = require.context('../../images');
 const pathToLogos = require.context('../../images/customer');
 const ittSvg = getCustomerImage('itt.svg', pathToImages);
@@ -317,3 +319,19 @@ export const templateMap: ITemplateMap = {
   //   }
   // }
 };
+
+// manually add the color, typography classes
+// for these customers.
+export const colorTypographyMap = {
+  '52e15b3fc9b715cfbb000005': 'eliterate',
+  '531898ab5539d395bd410260': 'gw',
+  '54f8ca2727f858f7b4000298': 'gwsb',
+  '539b565ebf31cd93cd000080': 'purdue',
+  '53da523abf31cd4efe000025': 'usc',
+  '53e903a727f858072a000008': 'columbia',
+  '542da13441f6dfa6ff000025': 'columbiabusiness'
+};
+
+Object.entries(colorTypographyMap).forEach(([id, name]: [string, string]) => {
+  templateMap[id].cssClass += ` color${capitalize(name)} typography${capitalize(name)}`;
+});

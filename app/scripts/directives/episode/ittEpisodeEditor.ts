@@ -156,36 +156,36 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
         ],
         function (newVal, oldVal) {
           // console.log("DETECTED CHANGE", newVal, oldVal);
-          if (newVal[0] !== oldVal[0]) { // templateUrl
-            // Some templates have built-in color and typography selections; need to update them along with the template.
-            // TODO This would be a lot simpler if I hadn't chosen such a dumb structure for style info...
-            // console.log("Template changed from ", oldVal[0], " to ", newVal[0]);
-            // console.log(scope.episode.styles);
-            var fixStyles = [];
-
-            //oldVal may be empty if newly created episode
-            if (oldVal[0]) {
-              var oldCustomer = oldVal[0].match('templates/episode/(.*).html')[1];
-              // remove color-oldVal and typography-oldVal.
-              angular.forEach(scope.episode.styles, function (style) {
-                if (style.toLowerCase() !== "color" + oldCustomer && style.toLowerCase() !== "typography" + oldCustomer) {
-                  fixStyles.push(style);
-                }
-              });
-            }
-
-            var newCustomer = newVal[0].match('templates/episode/(.*).html')[1];
-            // add color-newVal and typography-newVal (only for ep templates that use this:)
-            angular.forEach(["eliterate", "gw", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
-              if (newCustomer === customer) {
-                fixStyles.push("color" + customer[0].toUpperCase() + customer.substring(1));
-                fixStyles.push("typography" + customer[0].toUpperCase() + customer.substring(1));
-              }
-            });
-            scope.episode.styles = angular.copy(fixStyles);
-            // console.log("Updated styles:", scope.episode.styles);
-
-          }
+          // if (newVal[0] !== oldVal[0]) { // templateUrl
+          //   // Some templates have built-in color and typography selections; need to update them along with the template.
+          //   // TODO This would be a lot simpler if I hadn't chosen such a dumb structure for style info...
+          //   // console.log("Template changed from ", oldVal[0], " to ", newVal[0]);
+          //   // console.log(scope.episode.styles);
+          //   var fixStyles = [];
+          //
+          //   //oldVal may be empty if newly created episode
+          //   if (oldVal[0]) {
+          //     var oldCustomer = oldVal[0].match('templates/episode/(.*).html')[1];
+          //     // remove color-oldVal and typography-oldVal.
+          //     angular.forEach(scope.episode.styles, function (style) {
+          //       if (style.toLowerCase() !== "color" + oldCustomer && style.toLowerCase() !== "typography" + oldCustomer) {
+          //         fixStyles.push(style);
+          //       }
+          //     });
+          //   }
+          //
+          //   var newCustomer = newVal[0].match('templates/episode/(.*).html')[1];
+          //   // add color-newVal and typography-newVal (only for ep templates that use this:)
+          //   angular.forEach(["eliterate", "gw", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
+          //     if (newCustomer === customer) {
+          //       fixStyles.push("color" + customer[0].toUpperCase() + customer.substring(1));
+          //       fixStyles.push("typography" + customer[0].toUpperCase() + customer.substring(1));
+          //     }
+          //   });
+          //   scope.episode.styles = angular.copy(fixStyles);
+          //   // console.log("Updated styles:", scope.episode.styles);
+          //
+          // }
 
           modelSvc.deriveEpisode(scope.episode);
           // modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes

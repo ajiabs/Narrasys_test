@@ -294,8 +294,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       episode.origTemplateUrl = episode.templateUrl;
       episode.templateUrl = updateTemplates[episode.templateUrl];
     }
-    episode.templateData = templateMap[episode.template_id];
-
+    episode.template_data = templateMap[episode.template_id];
     // unpack languages
     angular.forEach(episode.languages, function (lang) {
       if (lang.default) {
@@ -313,22 +312,33 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     if (!episode.styles) {
       episode.styles = [];
     }
-    angular.forEach(['eliterate', 'gw', 'gwsb', 'purdue', 'usc', 'columbia', 'columbiabusiness'], function (customer) {
-      if (episode.templateUrl === 'templates/episode/' + customer + '.html') {
-        angular.forEach(['color', 'typography'], function (styleType) {
-          // if the episode doesn't already have styletypeFoo, add styletypeCustomer
-          var found = false;
-          angular.forEach(episode.styles, function (style) {
-            if (style.match(styleType)) {
-              found = true;
-            }
-          });
-          if (!found) {
-            episode.styles.push(styleType + customer[0].toUpperCase() + customer.substring(1));
-          }
-        });
-      }
-    });
+
+    // if (colorTypographyMap[episode.template_id]) {
+    //   const customer = colorTypographyMap[episode.template_id];
+    //   ['color', 'typography'].forEach((styleType: string) => {
+    //     const found = episode.styles.filter((style: string) => style.match(styleType)).length > 0;
+    //     if (!found) {
+    //       episode.styles.push(styleType + capitalize(customer));
+    //     }
+    //   });
+    // }
+
+    // angular.forEach(['eliterate', 'gw', 'gwsb', 'purdue', 'usc', 'columbia', 'columbiabusiness'], function (customer) {
+    //   if (episode.templateUrl === 'templates/episode/' + customer + '.html') {
+    //     angular.forEach(['color', 'typography'], function (styleType) {
+    //       // if the episode doesn't already have styletypeFoo, add styletypeCustomer
+    //       var found = false;
+    //       angular.forEach(episode.styles, function (style) {
+    //         if (style.match(styleType)) {
+    //           found = true;
+    //         }
+    //       });
+    //       if (!found) {
+    //         episode.styles.push(styleType + customer[0].toUpperCase() + customer.substring(1));
+    //       }
+    //     });
+    //   }
+    // });
 
     if (episode.title && svc.events['internal:landingscreen:' + episode._id]) {
       svc.events['internal:landingscreen:' + episode._id].title = episode.title;
@@ -1164,7 +1174,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
     if (thing instanceof IEpisode) {
       // TODO: add episode namespace until db work is implemented
-      cssArr.push(thing.templateData.cssClass);
+      cssArr.push(thing.template_data.cssClass);
     }
 
     // add each episodeStyle, only if it is in a styleCategory the thing isn't already using

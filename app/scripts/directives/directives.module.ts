@@ -13,9 +13,6 @@ import ittDescriptionField from './ittDescriptionField';
 import ittDisplaySelect from './ittDisplaySelect';
 import ittDynamicModel from './ittDynamicModel';
 import ittEditPencil from './ittEditPencil';
-import ittEpisode from './episode/ittEpisode';
-import ittEpisodeEditor from './episode/ittEpisodeEditor';
-import ittEpisodeList from './episode/ittEpisodeList';
 import ittFileField from './ittFileField';
 import ittFilesHandler from './ittFilesHandler';
 import ittFlags from './ittFlags';
@@ -101,9 +98,6 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittDisplaySelect', ittDisplaySelect)
   .directive('ittDynamicModel', ittDynamicModel)
   .directive('ittEditPencil', ittEditPencil)
-  .directive('ittEpisode', ittEpisode)
-  .directive('ittEpisodeEditor', ittEpisodeEditor)
-  .directive('ittEpisodeList', ittEpisodeList)
   .directive('ittFileField', ittFileField)
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittFlags', ittFlags)

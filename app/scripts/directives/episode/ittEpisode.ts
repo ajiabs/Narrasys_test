@@ -1,4 +1,28 @@
 import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../../interfaces';
+
+const TEMPLATE = `
+<div class="episode" ng-class="episode.styleCss">
+
+  <div
+    class="fill"
+    ng-class="episode.template_data.fillClass"
+    ng-if="episode.template_data.fillClass != null">
+    
+    <div ng-if="episode.template_data.fillClass === 'gwsb-seal'" class="fill"></div>
+  </div>
+
+  <span ng-include="'templates/episode/components/reviewmode.html'"></span>
+  <span ng-include="'templates/episode/components/watchmode.html'"></span>
+  <span ng-repeat="scene in episode.scenes | isCurrent"
+        ng-include="'templates/episode/components/discovermode.html'"></span>
+  <span ng-include="'templates/episode/components/video.html'"></span>
+  <span ng-include="'templates/episode/components/windowfg.html'"></span>
+  
+  <np-episode-footer template-data="episode.template_data"></np-episode-footer>
+</div>
+`;
+
+
 class EpisodeController {
   static $inject = ['$scope', '$interval', 'analyticsSvc', 'modelSvc', 'appState', 'dataSvc', 'timelineSvc'];
 
@@ -46,12 +70,11 @@ class EpisodeController {
     this.analyticsSvc.captureEpisodeActivity('episodeLoad');
   }
 }
-ittEpisode.$inject = ['$timeout', 'appState'];
-export default function ittEpisode($timeout, appState) {
+export default function ittEpisode() {
   return {
-    restrict: 'A',
-    replace: true,
-    template: `<span ng-include="episode.templateUrl"></span>`,
+    restrict: 'EA',
+    replace: false,
+    template: TEMPLATE,
     controller: EpisodeController
   };
 }
