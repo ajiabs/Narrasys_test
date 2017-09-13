@@ -7,7 +7,7 @@ const ittSvg = getCustomerImage('itt.svg', pathToImages);
 const ittIncolorSvg = getCustomerImage('itt-incolor.svg', pathToImages);
 
 const ittDefaults = {
-  cssClass: 'itt-logo',
+  cssClass: 'itt logo',
   link: '//inthetelling.com',
   src: ittSvg,
   alt: 'In The Telling logo'
@@ -278,7 +278,7 @@ export const templateMap: ITemplateMap = {
         src: '/images/customer/WSBCTC_Logo.svg"',
         alt: 'Washington SBCTC logo'
       },
-      Object.assign({}, ittDefaults, { src: ittIncolorSvg })
+      Object.assign({}, ittDefaults, { src: ittIncolorSvg }, { cssClass: 'itt-logo' })
     ],
     bannerLogo: null
   },

@@ -1,3 +1,5 @@
+import { ITemplateData } from './episode/templateMap';
+
 const TEMPLATE = `
 <div ng-if="$ctrl.appState.viewMode != 'watch'" ng-class="$ctrl.brandingDivClass">
 
@@ -8,17 +10,16 @@ const TEMPLATE = `
       </a>
   </div>
   
-  <div ng-if="!$ctrl.templateData.pro">
-    <a
-      ng-repeat="logoImg in $ctrl.templateData.logos"
-      ng-class="logoImg.cssClass"
-      ng-href="logoImg.link"
-      target="_blank"
-      rel="noopener noreferrer">
-        <img ng-src="{{logoImg.src}}" alt="{{logoImg.alt}}"/>
-    </a>
-    <np-copyright org="itt"></np-copyright>
-  </div>
+  <a
+    ng-if="!$ctrl.templateData.pro"
+    ng-repeat="logoImg in $ctrl.templateData.logos"
+    ng-class="logoImg.cssClass"
+    ng-href="logoImg.link"
+    target="_blank"
+    rel="noopener noreferrer">
+      <img ng-src="{{logoImg.src}}" alt="{{logoImg.alt}}"/>
+  </a>
+  <np-copyright ng-if="!$ctrl.templateData.pro" class="copyright" org="itt"></np-copyright>
 </div>
 <div ng-if="$ctrl.templateData.bannerLogo != null" ng-class="$ctrl.templateData.bannerLogo.cssClass">
   <img
@@ -29,18 +30,34 @@ const TEMPLATE = `
 `;
 
 interface IEpisodeFooterBindings extends ng.IComponentController {
-  templateData: any;
+  templateData: ITemplateData;
 }
 
 class EpisodeFooterController implements IEpisodeFooterBindings {
-  templateData: any;
+  templateData: ITemplateData;
+  brandingDivClass: string;
   static $inject = ['appState'];
   constructor(public appState) {
     //
   }
 
-  $onInit() {
-    //
+  $onChanges(changesObj) {
+    const legacyFooterClass = 'branding footer';
+    const proFooterClass = 'professional__branding';
+    if (!changesObj.templateData.isFirstChange()) {
+      if (this.templateData.pro) {
+        this.brandingDivClass = proFooterClass;
+
+        if (this.templateData.cssClass === 'professional unbranded') {
+          this.brandingDivClass = `${legacyFooterClass} ${proFooterClass}`;
+        }
+
+      } else {
+        this.brandingDivClass = legacyFooterClass;
+      }
+
+      console.log('ok class?', this.brandingDivClass, this.templateData);
+    }
   }
 }
 

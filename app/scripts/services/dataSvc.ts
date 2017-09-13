@@ -400,13 +400,17 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          updated_at					"2013-11-20T20:13:31Z"
          url									"templates/scene-centered.html"
          */
-        dataCache.template[item._id] = {
+        dataCache.template[item._id] = createInstance('Template',{
           id: item._id,
-          url: item.url,
+          // url: item.url,
           type: (item.applies_to_episodes ? 'Episode' : item.event_types ? item.event_types[0] : undefined),
           displayName: item.name,
-          customerIds: item.customer_ids
-        };
+          customerIds: item.customer_ids,
+          css_configuration: item.css_configuration,
+          fonts: item.fonts
+        });
+
+        // console.log('template?', dataCache.template[item._id]);
       } else if (cacheType === 'layouts') {
         /* API format:
          _id									"528d17ebba4f65e57800000a"
@@ -604,6 +608,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         }
         if (episodeData.status === 'Published' || authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
           modelSvc.cache('episode', svc.resolveIDs(episodeData));
+          const templateInfo = dataCache.template[episodeData.template_id];
+          console.log('this template!', templateInfo);
           getEvents(epId, segmentId)
             .success(function (events) {
               events = events || [];
@@ -1208,7 +1214,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'master_asset_id',
       'poster_frame_id',
       'status',
-      'languages'
+      'languages',
+      'template_id'
       // "navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
     ];
 

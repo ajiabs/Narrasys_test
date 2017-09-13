@@ -6,6 +6,30 @@ import { TSocialTagTypes } from './constants';
  * Created by githop on 5/1/17.
  */
 
+export class ICssConfiguration {
+  _id: string;
+  colors: string[];
+  font_configurations: { fallback: string, font_id: string, variant: string, _id: string }[];
+}
+
+export class IFont {
+  _id: string;
+  google: { families: string[] };
+}
+
+export class ITemplate {
+  id: string;
+  name: string;
+  url: string;
+  applies_to_episodes: boolean;
+  applies_to_narratives: boolean;
+  created_at: Date;
+  css?: string;
+  css_configuration?: ICssConfiguration;
+  customer_ids?: string[];
+  fonts?: IFont;
+}
+
 export class IEpisode {
   _id: string;
   annotators: IAnnotators;
@@ -291,7 +315,8 @@ type TInstance =
   | 'Customer'
   | 'Timeline'
   | 'Episode'
-  | 'Container';
+  | 'Container'
+  | 'Template';
 export function createInstance<T>(type: TInstance, data: any): T {
   let model;
   switch (type) {
@@ -340,6 +365,18 @@ export function createInstance<T>(type: TInstance, data: any): T {
     case 'Container':
       model = new IContainer();
       break;
+    case 'Template':
+      model = new ITemplate();
+      Object.assign(model, data);
+      //handle any 'relations'
+      if (data.css_configuration) {
+        model.css_configuration = Object.assign(new ICssConfiguration(), data.css_configuration);
+      }
+
+      if (data.fonts) {
+        model.fonts = Object.assign(new IFont(), data.fonts);
+      }
+      return model;
   }
   Object.assign(model, data);
   return model;
