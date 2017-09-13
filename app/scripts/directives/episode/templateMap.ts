@@ -188,8 +188,8 @@ export const templateMap: ITemplateMap = {
       Object.assign({}, ittDefaults, { src: ittIncolorSvg }),
       {
         cssClass: 'logo',
-        link: getCustomerImage('middlebury-shield.svg'),
-        src: 'http://middlebury.edu',
+        link: 'http://middlebury.edu',
+        src: getCustomerImage('middlebury-shield.svg'),
         alt: 'Middlebury logo'
       }
     ],

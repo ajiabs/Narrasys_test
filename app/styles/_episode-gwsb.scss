@@ -1,0 +1,136 @@
+.episode-gwsb .gwsb-seal {
+  background: #fffdf9;
+  background: radial-gradient(ellipse at center, #fffdf9 0%, #fff0b5 100%);
+  position: fixed !important;
+}
+
+.episode-gwsb .gwsb-seal div {
+  background: url("/images/customer/gwsb-seal.svg") 50% 50% no-repeat;
+  background-size: 90%;
+  opacity: 0.05;
+}
+
+.episode-gwsb .branding {
+  background: none;
+}
+
+.episode-gwsb .copyright,
+.episode-gwsb .copyright a {
+  text-shadow: none;
+  color: #CCC !important;
+}
+
+.episode-gwsb .altPane {
+  background: none;
+}
+
+.episode-gwsb .content {
+  border: 2px solid #c0ab80;
+  margin: 0.5em;
+}
+
+.episode-gwsb .mainPane .fill .item,
+.episode-gwsb .altPane .fill .item {
+  margin: 0 0.5em;
+}
+
+.episode-gwsb .cornerH .altPane .fill .item {
+  margin: 0.5em;
+}
+
+.episode-gwsb .centered .content,
+.episode-gwsb .cornerH .mainPane .content,
+.episode-gwsb .pip .content {
+  border: none;
+  margin: 0;
+}
+
+.episode-gwsb .content.isEmpty,
+.episode-gwsb .reviewMode .content {
+  border: none;
+}
+
+.episode-gwsb .reviewMode .mainPane {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.episode-gwsb .videoMask.firstplay {
+  /* GW doesn't want our logo here */
+  background-image: url('/images/play-overlay.png');
+}
+
+.episode-gwsb .videoMask.rewind {
+  background-image: url('/images/rewind-nologo-overlay.png');
+}
+
+.episode-gwsb .landingscreen {
+  padding: 2em 0 0 0;
+  text-align: center;
+}
+
+.episode-gwsb .landingscreen p {
+  padding: 0.5em 0 2em 0;
+}
+
+.episode-gwsb .landingscreen > div {
+  position: absolute;
+  width: 100%;
+}
+
+.episode-gwsb .landingscreen .introtext {
+  font-family: Helvetica, sans-serif;
+  color: #008BC4;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.episode-gwsb .landingscreen .videoMagnet {
+  float: none;
+  margin: auto;
+  clear: both;
+}
+
+.episode-gwsb .landingscreen-end {
+  background: url('/images/customer/gw-logo-big.svg') 50% 100% no-repeat;
+  width: 100%;
+  height: 150px;
+}
+
+.episode-gwsb .landingscreen .introtext .episode-gwsb .footer {
+  background: url('/images/customer/gw-bug.svg') top right no-repeat;
+  background-size: 80px;
+}
+
+.episode-gwsb a.startTime.displayTime,
+.episode-gwsb .title,
+.episode-gwsb .authorName {
+  font-family: Helvetica, sans-serif;
+  font-size: 1.3em;
+  line-height: 1.3em;
+  color: #004B6E;
+  text-transform: uppercase;
+}
+
+.episode-gwsb .title,
+.episode-gwsb .title a {
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.episode-gwsb .startTime {
+  font-weight: lighter
+}
+
+.episode-gwsb .sceneTitle {
+  margin: 0;
+  border-bottom: 2px solid #c0ab80;
+}
+
+.episode-gwsb .content.allowHighlights .highlightBorder.item.isCurrent {
+  border: 2px solid #c0ab80;
+  margin: 0.5em;
+}
+
+.episode-gwsb .content.allowHighlights .highlightSide.item.isCurrent {
+  border-left: 10px solid #c0ab80;
+}

@@ -1,0 +1,79 @@
+
+.episode-wsbctc {
+  background-image: url("/images/customer/WSBCTC_Star.svg");
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 95%;
+  font-family: 'Gotham', sans-serif;
+}
+
+.episode-wsbctc .branding {
+  background: transparent;
+}
+
+.episode-wsbctc .copyright {
+  color: grey;
+  text-shadow: none !important;
+}
+
+.episode-wsbctc .copyright a {
+  color: grey !important;
+  text-shadow: none !important;
+}
+
+.episode-wsbctc .scene.isCurrent::before,
+.episode-wsbctc .searchMode::before,
+.episode-wsbctc .reviewMode::before {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  top: 45px;
+  left: 0;
+}
+
+.episode-wsbctc .searchMode .item.isCurrent {
+  background-color: #d8d3c3 !important;
+}
+
+.episode-wsbctc .content.allowHighlights .highlightSolid.item.isCurrent{
+  background-color: #d8d3c3 !important;
+}
+
+.episode-wsbctc .content .item.colorInvert {
+  color: #fff !important;
+  background-color: #2B4B71  !important;
+}
+
+.episode-wsbctc .item.colorInvert a {
+  color: #fff !important;
+  background-color: #2B4B71  !important;
+}
+
+.episode-wsbctc .authorName,
+.episode-wsbctc .title,
+.episode-wsbctc .searchMode .item a.fakeLink {
+  font-size: 1.2em;
+  color: #2B4B71;
+}
+
+.episode-wsbctc a, a:visited, .fakeLink {
+  color: #2B4B71;
+}
+
+.episode-wsbctc {
+  .branding.footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  .wsbctc-logo, .itt-logo {
+    margin-bottom: 53px;
+    padding-right: 10px;
+  }
+
+  .wsbctc-logo {
+    padding-bottom: 20px;
+  }
+}

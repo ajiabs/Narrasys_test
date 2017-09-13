@@ -1,0 +1,23 @@
+.episode-prolotherapy {
+  font-family: 'Source Sans Pro', sans-serif; }
+
+.episode-prolotherapy .colorInvert {
+  background-color: #3f58a7;
+  color: #FFF; }
+
+.episode-prolotherapy .colorInvert .colorInvert {
+  background-color: #FFF;
+  color: #3f58a7; }
+
+.episode-prolotherapy .content.allowHighlights .highlightSolid.item.isCurrent {
+  background-color: rgba(63, 88, 167, 0.2); }
+
+.episode-prolotherapy .landingscreen {
+  background: url("/images/customer/prolotherapy-image.png") no-repeat left bottom; }
+
+.episode-prolotherapy .landingscreen .videoMagnet {
+  float: right; }
+
+.episode-prolotherapy .landingscreen .introtext {
+  float: left; }
+

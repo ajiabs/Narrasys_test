@@ -1,0 +1,42 @@
+.episode-eliterate .branding a.eliterate {
+  left: 5%; }
+
+.episode-eliterate {
+  background-image: url("/images/customer/eliterate-bg.svg");
+  background-size: 90%;
+  background-position: 0 30%;
+  background-repeat: no-repeat; }
+
+/* -- */
+.episode-gw .videoMask.firstplay {
+  /* GW doesn't want our logo here */
+  background-image: url("/images/play-overlay.png"); }
+
+.episode-gw .videoMask.rewind {
+  background-image: url("/images/rewind-nologo-overlay.png"); }
+
+.episode-gw .landingscreen {
+  width: 400px;
+  margin: 0 auto 50px auto;
+  background-image: url("/images/customer/gw-logo-big.svg");
+  background-size: 60%;
+  background-position: 50% 40px;
+  background-repeat: no-repeat;
+  padding: 150px 0 0 0; }
+
+.episode-gw .landingscreen .introtext,
+.episode-gw .landingscreen .videoMagnet {
+  float: none;
+  width: 100%;
+  clear: both; }
+
+.episode-gw .landingscreen .introtext h1 {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 25px; }
+
+@media screen and (max-width: 500px) {
+  .episode-gw .landingscreen {
+    width: 90%;
+    padding-top: 45%; } }
+
