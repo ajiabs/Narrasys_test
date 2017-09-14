@@ -64,7 +64,7 @@ function handleBuildAnswer(
       });
   } else {
     return confirmMasterBranch(type)
-      .then(() => versioner.productionRelease(type))
+      .then(() => versioner.productionRelease())
       .then((finalVersion: string) => ({ finalVersion, buildType: type }));
   }
 }
