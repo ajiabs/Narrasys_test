@@ -24,7 +24,15 @@ const TEMPLATE = `
 
 
 class EpisodeController {
-  static $inject = ['$scope', '$interval', 'analyticsSvc', 'modelSvc', 'appState', 'dataSvc', 'timelineSvc'];
+  static $inject = [
+    '$scope',
+    '$interval',
+    'analyticsSvc',
+    'modelSvc',
+    'appState',
+    'dataSvc',
+    'timelineSvc'
+  ];
 
   constructor(
     public $scope: ng.IScope,

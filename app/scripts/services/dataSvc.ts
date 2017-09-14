@@ -77,8 +77,8 @@ export interface IDataSvc {
   sendSocialshareEmail(tlId:string, email: IEmailFields): ng.IPromise<void>;
 }
 
-dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
-export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'cssScriptLoader'];
+export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, cssScriptLoader) {
   var svc: IDataSvc = Object.create(null);
 
   /* ------------------------------------------------------------------------------ */
@@ -613,8 +613,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           const templateLogoImg = templateInfo.css_configuration.image_logo_bottom_right_id;
           // console.log('this template!', templateInfo)
           if (templateMap[episodeData.template_id].pro) {
-            $rootScope.templateId = episodeData.template_id;
+            // cssScriptLoader.loadThemeStyleSheet(episodeData.template_id);
           }
+
           getEvents(epId, segmentId)
             .success(function (events) {
               events = events || [];
