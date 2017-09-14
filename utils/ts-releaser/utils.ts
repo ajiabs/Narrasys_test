@@ -1,6 +1,6 @@
 
 const { exec, spawn } = require('child_process');
-const { readFile } =  require('fs');
+const { readFile, writeFile } =  require('fs');
 const { resolve } = require('path');
 const chalk = require('chalk');
 const clog = console.log;
@@ -29,6 +29,11 @@ export function warn(...args: string[]): void {
   clog(chalk`{red.bold ${statement}}`);
 }
 
+export function success(...args: string[]): void {
+  const statement = timestamp('Success:', args).join(' ');
+  clog(chalk`{green.bold ${statement}`);
+}
+
 export function pReadFile(path: string): Promise<string> {
   return new Promise((resolve, reject) => {
     readFile(path, 'utf8', (err: any, data: any) => {
@@ -36,6 +41,17 @@ export function pReadFile(path: string): Promise<string> {
         return reject(err);
       }
       return resolve(data);
+    });
+  });
+}
+
+export function pWriteFile(path: string, file: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    writeFile(path, file, 'utf8', (err: string) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve();
     });
   });
 }
@@ -50,7 +66,12 @@ export function pSpawn(cmd: string, args: string[]): Promise<any> {
   });
   return new Promise((resolve, reject) => {
     childProcess.on('error', (data: string) => reject(data));
-    childProcess.on('close', (code: any) => resolve(code));
+    childProcess.on('close', (code: any) => {
+      if (code !== 0) {
+        return reject(code);
+      }
+      return resolve(code);
+    });
   });
 }
 
@@ -82,6 +103,6 @@ export function runCmd(...args: any[]): Promise<any> {
     };
 
     args.push(cb);
-    exec.apply(exec, args);
+    exec.apply(exec, args, { cwd: clientDir });
   });
 }
