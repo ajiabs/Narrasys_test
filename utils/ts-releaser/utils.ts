@@ -5,6 +5,7 @@ const { resolve } = require('path');
 const chalk = require('chalk');
 const clog = console.log;
 const inquirer = require('inquirer');
+const got = require('got');
 
 export const prompt = inquirer.prompt;
 export const clientDir = resolve('../../');
@@ -31,7 +32,11 @@ export function warn(...args: string[]): void {
 
 export function success(...args: string[]): void {
   const statement = timestamp('Success:', args).join(' ');
-  clog(chalk`{green.bold ${statement}`);
+  clog(chalk`{green.bold ${statement}}`);
+}
+
+export function link(...args: string[]): void {
+  clog(chalk`{blue.underline ${args.join(' ')}}`);
 }
 
 export function pReadFile(path: string): Promise<string> {
@@ -73,6 +78,10 @@ export function pSpawn(cmd: string, args: string[]): Promise<any> {
       return resolve(code);
     });
   });
+}
+
+export function httpRequest(url: string): Promise<string> {
+  return got(url).then((response: any) => response.body);
 }
 
 export function runCmd(...args: any[]): Promise<any> {

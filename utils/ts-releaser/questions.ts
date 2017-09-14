@@ -36,5 +36,11 @@ export const gitQuestions = [
     name: 'commitAndTag',
     message: 'commit, tag, and release build: ',
     default: false
+  },
+  {
+    type: 'confirm',
+    name: 'confirmOnMaster',
+    message: 'You are not on the master branch, are you certain you want to continue?' +
+    ' (typically prod releases are off master)'
   }
 ];

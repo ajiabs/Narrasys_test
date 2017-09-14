@@ -1,8 +1,15 @@
 {
+  "scripts": {
+    "release": "./node_modules/.bin/ts-node index.ts"
+  },
   "dependencies": {
+    "@types/chalk": "^0.4.31",
     "@types/node": "^8.0.28",
     "chalk": "^2.1.0",
     "got": "^7.1.0",
     "inquirer": "^3.2.3"
+  },
+  "devDependencies": {
+    "ts-node": "^3.3.0"
   }
 }
