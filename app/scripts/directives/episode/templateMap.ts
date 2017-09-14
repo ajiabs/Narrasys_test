@@ -44,10 +44,12 @@ function getCustomerImage(fname: string, context = pathToLogos) {
   return context('./' + fname, false);
 }
 
+const PRO_TEMPLATE_CSS_CLASS = 'professional episode-template';
+
 export const templateMap: ITemplateMap = {
   ['597127da22594d486900249b']: {
     pro: true,
-    cssClass: 'professional chef-ann-foundation',
+    cssClass: PRO_TEMPLATE_CSS_CLASS,
     logos: [
       { src: getCustomerImage('School_Food_Academy_Logo_Final.svg') }
     ],
@@ -55,7 +57,7 @@ export const templateMap: ITemplateMap = {
   },
   ['57b629d522594d9c22003ef6']: {
     pro: true,
-    cssClass: 'professional career-playbook',
+    cssClass: PRO_TEMPLATE_CSS_CLASS,
     logos: [
       { src: getCustomerImage('CPB_Logo-01-2.svg') }
     ],
@@ -104,7 +106,7 @@ export const templateMap: ITemplateMap = {
   //the current default
   ['52e15b3ec9b715cfbb000004']: {
     pro: true,
-    cssClass: 'professional unbranded',
+    cssClass: PRO_TEMPLATE_CSS_CLASS,
     logos: [
       {
         src: getCustomerImage('Narrasys_Banner_white.svg', pathToImages),
@@ -126,7 +128,7 @@ export const templateMap: ITemplateMap = {
   },
   ['578d686427f858d40b000d33']: {
     pro: true,
-    cssClass: 'professional field-pros',
+    cssClass: PRO_TEMPLATE_CSS_CLASS,
     logos: [
       { src: getCustomerImage('Logo_ColorBars-01.svg') }
     ],
@@ -203,7 +205,7 @@ export const templateMap: ITemplateMap = {
   },
   ['56e73d2e27f8580230004abc']: {
     pro: true,
-    cssClass: 'professional narrasys',
+    cssClass: PRO_TEMPLATE_CSS_CLASS,
     logos: [
       { src: getCustomerImage('Narrasys_brand_logo.svg') }
     ],
@@ -256,7 +258,7 @@ export const templateMap: ITemplateMap = {
   },
   ['5851af7993d34f8c1200020a']: {
     pro: true,
-    cssClass: 'professional university-arizona',
+    cssClass: PRO_TEMPLATE_CSS_CLASS,
     logos: [
       { src: getCustomerImage('ua_horiz.svg') }
     ],

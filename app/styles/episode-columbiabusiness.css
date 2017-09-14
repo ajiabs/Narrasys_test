@@ -1,17 +1,1 @@
-/* CBS */
-.episode-columbiabusiness {
-  background: linear-gradient(#A9B8D3, #FEFCFC); }
-
-.episode-columbiabusiness .trident {
-  background: url("/images/customer/cbs-trident-white.svg") 50% 50%;
-  background-size: 250%;
-  position: fixed !important;
-  opacity: 0.3;
-  pointer-events: none; }
-
-.episode-columbiabusiness .DiscoverModeOnly .item {
-  background-color: rgba(221, 224, 234, 0.5); }
-
-.episode-schoolclimatesolutions {
-  background: url("/images/customer/schoolclimatelogo-big.svg") no-repeat scroll right -140px bottom -140px/90% auto #FFF; }
-
+.episode-template{background:-webkit-gradient(linear,left top,left bottom,from(#a9b8d3),to(#fefcfc));background:linear-gradient(#a9b8d3,#fefcfc)}.episode-template .trident{background:url(/images/customer/cbs-trident-white.svg) 50% 50%;background-size:250%;position:fixed!important;opacity:.3;pointer-events:none}.episode-template .DiscoverModeOnly .item{background-color:rgba(221,224,234,.5)}

@@ -3,6 +3,7 @@
 
 import {createInstance, IAsset, IEvent} from '../models';
 import {IEmailFields} from '../interfaces';
+import { templateMap } from '../directives/episode/templateMap';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -602,14 +603,18 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     var url = (segmentId) ? '/v3/episode_segments/' + segmentId + '/resolve' : '/v3/episodes/' + epId;
     $http.get(config.apiDataBaseUrl + url)
       .success(function (ret) {
-        var episodeData = {};
+        var episodeData = Object.create(null);
         if (ret) {
           episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
         }
         if (episodeData.status === 'Published' || authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
           modelSvc.cache('episode', svc.resolveIDs(episodeData));
           const templateInfo = dataCache.template[episodeData.template_id];
-          console.log('this template!', templateInfo);
+          const templateLogoImg = templateInfo.css_configuration.image_logo_bottom_right_id;
+          // console.log('this template!', templateInfo)
+          if (templateMap[episodeData.template_id].pro) {
+            $rootScope.templateId = episodeData.template_id;
+          }
           getEvents(epId, segmentId)
             .success(function (events) {
               events = events || [];
@@ -623,6 +628,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
               // we need to also get the master asset and poster, while we are at it
               assetIds.push(episodeData.master_asset_id);
+              //add template assets - more to come.
+              assetIds.push(templateLogoImg);
 
               if (episodeData.poster_frame_id) {
                 assetIds.push(episodeData.poster_frame_id);

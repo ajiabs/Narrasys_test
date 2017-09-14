@@ -10,6 +10,7 @@ export class ICssConfiguration {
   _id: string;
   colors: string[];
   font_configurations: { fallback: string, font_id: string, variant: string, _id: string }[];
+  image_logo_bottom_right_id: string;
 }
 
 export class IFont {
