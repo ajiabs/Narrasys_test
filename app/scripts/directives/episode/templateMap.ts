@@ -179,7 +179,9 @@ export const templateMap: ITemplateMap = {
         src: getCustomerImage('kellogg-k.svg')
       }
     ],
-    bannerLogo: null
+    bannerLogo: {
+      cssClass: 'banner-logo' // uses images in css file
+    }
   },
   ['546e50d527f858eef200000d']: {
     pro: false,
@@ -205,7 +207,9 @@ export const templateMap: ITemplateMap = {
     logos: [
       { src: getCustomerImage('Narrasys_brand_logo.svg') }
     ],
-    bannerLogo: null
+    bannerLogo: {
+      cssClass: 'banner-logo'
+    }
   },
   ['54a3034c27f8582a85000005']: {
     pro: false,
