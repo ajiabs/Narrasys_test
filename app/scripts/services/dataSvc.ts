@@ -1,7 +1,7 @@
 // TODO: load and resolve categories
 
 
-import {createInstance, IAsset, IEvent} from '../models';
+import { createInstance, IAsset, IEvent, ITemplate } from '../models';
 import {IEmailFields} from '../interfaces';
 import { templateMap } from '../directives/episode/templateMap';
 /**
@@ -73,12 +73,13 @@ export interface IDataSvc {
   prepItemForStorage(evt): any;
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
   readCache(cache, field, val): object | boolean;
-  getTemplates(): any;
+  getTemplates(): ITemplate[];
+  getTemplate(id: string): ITemplate;
   sendSocialshareEmail(tlId:string, email: IEmailFields): ng.IPromise<void>;
 }
 
-dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'cssScriptLoader'];
-export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, cssScriptLoader) {
+dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
+export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, episodeTheme) {
   var svc: IDataSvc = Object.create(null);
 
   /* ------------------------------------------------------------------------------ */
@@ -403,7 +404,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          */
         dataCache.template[item._id] = createInstance('Template',{
           id: item._id,
-          // url: item.url,
+          url: item.url,
           type: (item.applies_to_episodes ? 'Episode' : item.event_types ? item.event_types[0] : undefined),
           displayName: item.name,
           customerIds: item.customer_ids,
@@ -609,12 +610,16 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         }
         if (episodeData.status === 'Published' || authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
           modelSvc.cache('episode', svc.resolveIDs(episodeData));
-          const templateInfo = dataCache.template[episodeData.template_id];
-          const templateLogoImg = templateInfo.css_configuration.image_logo_bottom_right_id;
-          // console.log('this template!', templateInfo)
-          if (templateMap[episodeData.template_id].pro) {
-            // cssScriptLoader.loadThemeStyleSheet(episodeData.template_id);
+          const episodeTemplate = dataCache.template[episodeData.template_id];
+          const localWebFontArr = templateMap[episodeData.template_id].webFontArr;
+          // use temporary templateMap until db model has settled.
+          if (!episodeTemplate.fonts && localWebFontArr) {
+            episodeTemplate.fonts = { google: { families: localWebFontArr } };
+            console.log('using local guy', episodeTemplate.fonts);
           }
+
+          episodeTheme.setTheme(episodeTemplate);
+          // console.log('this template!', templateInfo)
 
           getEvents(epId, segmentId)
             .success(function (events) {
@@ -625,16 +630,22 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
                 modelSvc.cache('event', svc.resolveIDs(eventData));
               });
               modelSvc.resolveEpisodeEvents(epId);
-              var assetIds = getAssetIdsFromEvents(events);
+              const assetIds = getAssetIdsFromEvents(events);
               assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
               // we need to also get the master asset and poster, while we are at it
               assetIds.push(episodeData.master_asset_id);
               //add template assets - more to come.
-              assetIds.push(templateLogoImg);
 
               if (episodeData.poster_frame_id) {
                 assetIds.push(episodeData.poster_frame_id);
               }
+
+              //add template assets
+              if (episodeTemplate.css_configuration) {
+                const templateLogoImgId = episodeTemplate.css_configuration.image_logo_bottom_right_id;
+                assetIds.push(templateLogoImgId);
+              }
+
               //batch get assets
               getAssetsByAssetIds(assetIds)
                 .then((assets: IAsset[]) => {
@@ -1335,6 +1346,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       return dataCache.template[t];
     });
   };
+
+  svc.getTemplate = getTemplate;
+  function getTemplate(id: string): ITemplate {
+    return dataCache.template[id];
+  }
 
   /*
    gets ID of Style Class when given the 'css_name'. 'css_name' is a attribute on the Style Class.

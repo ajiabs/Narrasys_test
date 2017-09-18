@@ -18,6 +18,7 @@ export interface ITemplateData {
   pro: boolean;
   cssClass: string;
   fillClass?: string;
+  webFontArr?: string[];
   logos?: {
     cssClass?: string;
     link?: string;
@@ -144,6 +145,7 @@ export const templateMap: ITemplateMap = {
     pro: false,
     cssClass: 'episode-gw',
     logos: [],
+    webFontArr: ['Montserrat:400,700'],
     bannerLogo: {
       cssClass: BANNER_LOGO,
       src: getCustomerImage('gw-logo.svg'),
@@ -154,6 +156,7 @@ export const templateMap: ITemplateMap = {
     pro: false,
     cssClass: 'episode-gw',
     logos: [],
+    webFontArr: ['Montserrat:400,700'],
     bannerLogo: {
       cssClass: BANNER_LOGO,
       src: getCustomerImage('gw-law.jpg'),
@@ -267,6 +270,7 @@ export const templateMap: ITemplateMap = {
   ['53da523abf31cd4efe000025']: {
     pro: false,
     cssClass: 'episode-usc',
+    webFontArr: ['Crimson Text'],
     logos: [Object.assign({}, ittDefaults)],
     bannerLogo: {
       cssClass: BANNER_LOGO,

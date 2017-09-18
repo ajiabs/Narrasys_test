@@ -3,19 +3,42 @@
 
  TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
  */
-ittEpisodeEditor.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'dataSvc', 'authSvc', 'selectService', 'playbackService', 'urlService'];
+import dataSvc from '../../services/dataSvc';
+
+ittEpisodeEditor.$inject = [
+  '$rootScope',
+  '$timeout',
+  'appState',
+  'modelSvc',
+  'dataSvc',
+  'authSvc',
+  'selectService',
+  'playbackService',
+  'urlService',
+  'episodeTheme'
+];
 
 export interface ILangformFlags {
-  en: boolean
-  es?: boolean
-  zh?: boolean
-  pt?: boolean
-  fr?: boolean
-  de?: boolean
-  it?: boolean
+  en: boolean;
+  es?: boolean;
+  zh?: boolean;
+  pt?: boolean;
+  fr?: boolean;
+  de?: boolean;
+  it?: boolean;
 }
 
-export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSvc, dataSvc, authSvc, selectService, playbackService, urlService) {
+export default function ittEpisodeEditor(
+  $rootScope,
+  $timeout,
+  appState,
+  modelSvc,
+  dataSvc,
+  authSvc,
+  selectService,
+  playbackService,
+  urlService,
+  episodeTheme) {
   return {
     restrict: 'A',
     replace: true,
@@ -186,6 +209,10 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
           //   // console.log("Updated styles:", scope.episode.styles);
           //
           // }
+          // scope.episode.template_id = newVal[3];
+          // $rootScope.templateId = newVal[3];
+          const template = dataSvc.getTemplate(newVal[3]);
+          episodeTheme.setTheme(template);
 
           modelSvc.deriveEpisode(scope.episode);
           // modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes

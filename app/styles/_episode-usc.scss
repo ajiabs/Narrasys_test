@@ -1,6 +1,19 @@
 
 /* USC */
 
+.episode-usc {
+  font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  h1, h2, h3, .headerItem {
+    font-family: "Adobe Caslon", "Crimson Text", serif;
+  }
+
+  .item .pullquote:before {
+    line-height: 0.7em;
+  }
+
+}
+
 .uscWindowFgOnly {
   display: none;
 }

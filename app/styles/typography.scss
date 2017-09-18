@@ -78,6 +78,7 @@ a {
 .item.typographyBook h1,
 .item.typographyBook h2,
 .item.typographyBook h3 {
+  // falls back to EB Garamond in test on chrome 61 macbook.
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
 
@@ -112,78 +113,74 @@ a {
  *
 //===========================*/
 
-.typographyEliterate {
-	font-family: Arial, Helvetica, Tahoma, sans-serif;
-	font-size: 15px;
-}
-
 
 /* ----- */
 
-.typographyGw {
-	font-family: "Helvetica", "Arial", sans-serif;
-	font-weight: 300;
-}
-
-.typographyGw h1,
-.typographyGw h2,
-.typographyGw h3,
-.typographyGw .item a,
-.typographyGw.navPanel a {
-	font-family: "Montserrat", sans-serif;
-}
-
-.typographyGw h1,
-.typographyGw h2,
-.typographyGw h3 {
-	font-weight: 700
-}
-
-.typographyGw .item .title {
-	font-family: "Montserrat", sans-serif;
-	font-weight: 400;
-	font-size: 1em;
-	line-height: 1.2em;
-}
-
-.typographyGw .item .pullquote,
-.typographyGw .item .pullquoteSpeaker {
-	font-family: "Cardo", serif;
-}
-
-.typographyGw .item .pullquote:before {
-	font-family: "Cardo", serif;
-}
+//.typographyGw {
+//	font-family: "Helvetica", "Arial", sans-serif;
+//	font-weight: 300;
+//}
+//
+//.typographyGw h1,
+//.typographyGw h2,
+//.typographyGw h3,
+//.typographyGw .item a,
+//.typographyGw.navPanel a {
+//	font-family: "Montserrat", sans-serif;
+//}
+//
+//.typographyGw h1,
+//.typographyGw h2,
+//.typographyGw h3 {
+//	font-weight: 700
+//}
+//
+//.typographyGw .item .title {
+//	font-family: "Montserrat", sans-serif;
+//	font-weight: 400;
+//	font-size: 1em;
+//	line-height: 1.2em;
+//}
+//
+//.typographyGw .item .pullquote,
+//.typographyGw .item .pullquoteSpeaker {
+//	font-family: "Cardo", serif;
+//}
+//
+//.typographyGw .item .pullquote:before {
+//	font-family: "Cardo", serif;
+//}
 
 
 /* ------ */
 
-.typographyUsc {
-	font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.typographyUsc h1,
-.typographyUsc h2,
-.typographyUsc h3,
-.typographyUsc .headerItem {
-	font-family: "Adobe Caslon", "Crimson Text", serif;
-	/*line-height: 1.6em;*/
-}
-
-.typographyUsc .item .pullquote:before {
-	line-height: 0.7em;
-}
-
+//.typographyUsc {
+//	font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
+//}
+//
+//.typographyUsc h1,
+//.typographyUsc h2,
+//.typographyUsc h3,
+//.typographyUsc .headerItem {
+//	font-family: "Adobe Caslon", "Crimson Text", serif;
+//	/*line-height: 1.6em;*/
+//}
+//
+//.typographyUsc .item .pullquote:before {
+//	line-height: 0.7em;
+//}
 
 /* ----- */
 
 .typographyPurdue {
+  // falls back to arial
 	font-family: "Myriad Pro", "Arial";
 }
 
 .typographyPurdue h1,
 .typographyPurdue h2,
 .typographyPurdue h3 {
+  // falls back to Impact on mac - system font
 	font-family: "Champion", "Impact", "Charcoal", sans-serif;
 	letter-spacing: 1px;
 }
@@ -205,6 +202,7 @@ a {
 .typographyColumbia h1,
 .typographyColumbia h2,
 .typographyColumbia h3 {
+  // falls back to EB Garamond mac
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
 
@@ -275,6 +273,7 @@ a {
 }
 
 .episode-kellogg h1 {
+  // falls back to Arial
 	font-family: "Gotham", "Arial", "Helvetica", sans-serif;
 }
 
@@ -282,6 +281,7 @@ a {
 .episode-kellogg h3,
 .episode-kellogg .item a,
 .episode-kellogg.navPanel a {
+  // Georgia - system font
 	font-family: "Georgia";
 	font-style: italic;
 }
