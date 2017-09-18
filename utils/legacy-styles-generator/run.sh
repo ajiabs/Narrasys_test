@@ -12,3 +12,5 @@
 ./node_modules/.bin/gulp legacy-css --replace episode-regis --css episode-regis.css
 ./node_modules/.bin/gulp legacy-css --replace episode-wiley --css episode-wiley.css
 ./node_modules/.bin/gulp legacy-css --replace episode-wsbctc --css episode-wsbctc.css
+./node_modules/.bin/gulp legacy-css --replace episode-eliterate --css episode-eliterate.css
+./node_modules/.bin/gulp legacy-css --replace episode-usc --css episode-usc.css
