@@ -134,3 +134,59 @@
 .episode-gwsb .content.allowHighlights .highlightSide.item.isCurrent {
   border-left: 10px solid #c0ab80;
 }
+
+.episode-gwsb {
+  font-family: 'EB Garamond', 'Adobe Garamond', Garamond, serif;
+
+  h1, h2, h3 {
+    // system font
+    font-family: Helvetica, sans-serif;
+    color: #004B6E;
+    text-transform: uppercase;
+  }
+
+  .title, .fakeLink, a.startTime.displayTime {
+    color: #008BC4;
+  }
+
+  a {
+    color: #008BC4;
+  }
+
+  .colorInvert {
+    color: #000;
+    background-color: #BEDAE9;
+
+    a, a.startTime.displayTime {
+      color: #004B6E
+    }
+  }
+
+  .authorName {
+    font-family: Helvetica, sans-serif;
+  }
+
+  .item {
+    .pullquote, .pullquoteSpeaker {
+      font-family: Helvetica, sans-serif;
+      font-weight: lighter;
+    }
+
+    .pullquote {
+      color: #008bC4;
+      &:before {
+        color: #FFD838;
+        font-family: "Cardo", serif;
+        font-size: 6em;
+      }
+    }
+
+    .colorInvert .pullquote {
+      color: #008bC4;
+
+      &:before {
+        color: #FFD838;
+      }
+    }
+  }
+}

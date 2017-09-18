@@ -3,6 +3,21 @@
 
 .episode-usc {
   font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #F7F9ED;
+
+  .altPane {
+    background-color: #FFF;
+  }
+
+  .colorInvert {
+    background-color: #900;
+    color: #FC0;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  }
+
+  .footer {
+    background-color: #900;
+  }
 
   h1, h2, h3, .headerItem {
     font-family: "Adobe Caslon", "Crimson Text", serif;
@@ -10,6 +25,11 @@
 
   .item .pullquote:before {
     line-height: 0.7em;
+  }
+
+  a, a:visited {
+    color: #900;
+    font-weight: bold;
   }
 
 }

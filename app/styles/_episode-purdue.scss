@@ -1,8 +1,57 @@
 /* Purdue */
 
-.episode-purdue .landingscreen {
-  background-image: url("/images/customer/purdue-bg.svg");
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 110%;
+.episode-purdue {
+  // falls back - Mryiad Pro - adobe font.
+  font-family: "Myriad Pro", "Arial", sans-serif;
+  .landingscreen {
+    background-image: url("/images/customer/purdue-bg.svg");
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 110%;
+  }
+
+  h1, h2, h3, h4, .headerItem {
+    font-family: "Champion", "Impact", "Charcoal", sans-serif;
+    letter-spacing: 1px;
+    color: #a3792c;
+  }
+
+  .colorInvert {
+    background-color: #a3792c !important;
+    color: #fff !important;
+    h1, h2, h3, h4 {
+      background-color: #a3792c !important;
+      color: #fff !important;
+    }
+
+    .headerItem {
+      background-color: #a3792c !important;
+      color: #fff !important;
+    }
+  }
+
+  .headerItem {
+    font-family: "Chaparral Pro", "Times New Roman", "Times", serif;
+  }
+
+  a, a:visited {
+    color: #e3ae24;
+    font-weight: bold;
+    text-shadow: -1px -1px 0 #fff;
+  }
+
+  .footer {
+    background-color: #a3792c;
+
+    a, a:visited {
+      color: #FFF;
+      text-shadow: none;
+    }
+  }
+
+  .altPane {
+    background-color: #FAFAFA;
+    border-left: 1px solid #746c66;
+    border-right: 1px solid #746c66;
+  }
 }

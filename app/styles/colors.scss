@@ -116,202 +116,204 @@ a.startTime.displayTime {
  *
 //===========================*/
 
-.colorEliterate .startTime {
-	background-color: rgba(0, 0, 0, 0.05);
-	border-radius: 3px;
-	padding: 3px;
-}
-.colorEliterate {
-	color: #6F7D8B;
-}
-.colorEliterate a,
-.colorEliterate .fakeLink {
-	color: #1376bb
-}
-.colorEliterate h1,
-.colorEliterate h2,
-.colorEliterate h3 {
-	font-weight: normal;
-	color: #384d62;
-}
-.colorEliterate .colorInvert {
-	color: #FFF;
-	background-color: #6F7D8B;
-}
-.colorEliterate .colorInvert h1,
-.colorEliterate .colorInvert h2,
-.colorEliterate .colorInvert h3 {
-	color: #FFF
-}
+//.colorEliterate .startTime {
+//	background-color: rgba(0, 0, 0, 0.05);
+//	border-radius: 3px;
+//	padding: 3px;
+//}
+//.colorEliterate {
+//	color: #6F7D8B;
+//}
+//.colorEliterate a,
+//.colorEliterate .fakeLink {
+//	color: #1376bb
+//}
+//.colorEliterate h1,
+//.colorEliterate h2,
+//.colorEliterate h3 {
+//	font-weight: normal;
+//	color: #384d62;
+//}
+//.colorEliterate .colorInvert {
+//	color: #FFF;
+//	background-color: #6F7D8B;
+//}
+//.colorEliterate .colorInvert h1,
+//.colorEliterate .colorInvert h2,
+//.colorEliterate .colorInvert h3 {
+//	color: #FFF
+//}
 /* -- */
 
-.colorGw h1,
-.colorGw h2,
-.colorGw h3,
-.colorGw h4,
-.colorGw h5,
-.colorGw .item a,
-.colorGw.navPanel a {
-	color: #003A5C;
-}
-.colorGw .colorInvert {
-	background-color: #003A5C;
-}
-.colorGw .colorInvert * {
-	color: #FFF;
-}
-.colorGw .item .pullquote:before {
-	color: rgba(0, 58, 92, 0.5);
-}
-.colorGw .colorInvert.item .pullquote:before {
-	color: rgba(255, 255, 255, 0.4);
-}
-.colorGw .escapelink:before {
-	color: #AB9767;
-}
-.colorGw .content.allowHighlights .item.isCurrent.highlightSolid,
-.colorGw .reviewMode .content.allowHighlights .item.isCurrent {
-	background-color: rgba(171, 151, 103, 0.3);
-}
-.colorGw .altPane {
-	background-color: rgba(0, 58, 92, 0.05);
-}
+//.colorGw h1,
+//.colorGw h2,
+//.colorGw h3,
+//.colorGw h4,
+//.colorGw h5,
+//.colorGw .item a,
+//.colorGw.navPanel a {
+//	color: #003A5C;
+//}
+//.colorGw .colorInvert {
+//	background-color: #003A5C;
+//}
+//.colorGw .colorInvert * {
+//	color: #FFF;
+//}
+//.colorGw .item .pullquote:before {
+//	color: rgba(0, 58, 92, 0.5);
+//}
+//.colorGw .colorInvert.item .pullquote:before {
+//	color: rgba(255, 255, 255, 0.4);
+//}
+//.colorGw .escapelink:before {
+//	color: #AB9767;
+//}
+//.colorGw .content.allowHighlights .item.isCurrent.highlightSolid,
+//.colorGw .reviewMode .content.allowHighlights .item.isCurrent {
+//	background-color: rgba(171, 151, 103, 0.3);
+//}
+//.colorGw .altPane {
+//	background-color: rgba(0, 58, 92, 0.05);
+//}
 /* -- */
 
-.colorUsc a,
-.colorUsc a:visited {
-	color: #900;
-	font-weight: bold;
-}
-.episode.colorUsc {
-	background-color: #F7F9ED;
-}
-.colorUsc .altPane {
-	background-color: #FFF;
-}
-.colorUsc .colorInvert {
-	background-color: #900;
-	color: #FC0;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-}
-.colorUsc .footer {
-	background-color: #900;
-}
+//.colorUsc a,
+//.colorUsc a:visited {
+//	color: #900;
+//	font-weight: bold;
+//}
+//.episode.colorUsc {
+//	background-color: #F7F9ED;
+//}
+//.colorUsc .altPane {
+//	background-color: #FFF;
+//}
+//.colorUsc .colorInvert {
+//	background-color: #900;
+//	color: #FC0;
+//	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+//}
+//.colorUsc .footer {
+//	background-color: #900;
+//}
 /* -- */
 
-.colorPurdue a,
-.colorPurdue a:visited {
-	color: #e3ae24;
-	font-weight: bold;
-	text-shadow: -1px -1px 0 #fff;
-}
-.colorPurdue .footer {
-	background-color: #a3792c;
-}
-.colorPurdue .footer a,
-.colorPurdue .footer a:visited {
-	color: #FFF;
-	text-shadow: none;
-}
-.colorPurdue .altPane {
-	background-color: #FAFAFA;
-	border-left: 1px solid #746c66;
-	border-right: 1px solid #746c66;
-}
-.colorPurdue h1,
-.colorPurdue h2,
-.colorPurdue h3,
-.colorPurdue h4,
-.colorPurdue .headerItem {
-	color: #a3792c;
-}
-.colorPurdue .colorInvert,
-.colorPurdue .colorInvert h1,
-.colorPurdue .colorInvert h2,
-.colorPurdue .colorInvert h3,
-.colorPurdue .colorInvert h4,
-.colorPurdue .colorInvert .headerItem {
-	background-color: #a3792c !important;
-	color: #fff !important;
-}
-.colorPurdue a,
-.colorPurdue a:visited {
-	color: #e3ae24;
-	text-shadow: -1px -1px 0 #fff;
-}
+//.colorPurdue a,
+//.colorPurdue a:visited {
+//	color: #e3ae24;
+//	font-weight: bold;
+//	text-shadow: -1px -1px 0 #fff;
+//}
+//.colorPurdue .footer {
+//	background-color: #a3792c;
+//}
+//.colorPurdue .footer a,
+//.colorPurdue .footer a:visited {
+//	color: #FFF;
+//	text-shadow: none;
+//}
+//.colorPurdue .altPane {
+//	background-color: #FAFAFA;
+//	border-left: 1px solid #746c66;
+//	border-right: 1px solid #746c66;
+//}
+//.colorPurdue h1,
+//.colorPurdue h2,
+//.colorPurdue h3,
+//.colorPurdue h4,
+//.colorPurdue .headerItem {
+//	color: #a3792c;
+//}
+//.colorPurdue .colorInvert,
+//.colorPurdue .colorInvert h1,
+//.colorPurdue .colorInvert h2,
+//.colorPurdue .colorInvert h3,
+//.colorPurdue .colorInvert h4,
+//.colorPurdue .colorInvert .headerItem {
+//	background-color: #a3792c !important;
+//	color: #fff !important;
+//}
+//.colorPurdue a,
+//.colorPurdue a:visited {
+//	color: #e3ae24;
+//	text-shadow: -1px -1px 0 #fff;
+//}
 /* -- */
 /* Columbia:  #0F4082 (dark blue), #5892C1 (light blue) */
 
-.colorColumbia .startTime {
-	border-radius: 3px;
-	padding: 3px;
-	margin-left: 3px;
-}
-.colorColumbia a,
-.colorColumbia .fakeLink {
-	color: #0F4082
-}
-.colorColumbia h1,
-.colorColumbia h2,
-.colorColumbia h3 {
-	font-weight: normal;
-	color: #5892C1;
-}
-.colorColumbia .colorInvert {
-	color: #FFF;
-	background-color: #0F4082;
-}
-.colorColumbia .colorInvert h1,
-.colorColumbia .colorInvert h2,
-.colorColumbia .colorInvert h3 {
-	color: #5892C1
-}
+//.colorColumbia .startTime {
+//	border-radius: 3px;
+//	padding: 3px;
+//	margin-left: 3px;
+//}
+//.colorColumbia a,
+//.colorColumbia .fakeLink {
+//	color: #0F4082
+//}
+//.colorColumbia h1,
+//.colorColumbia h2,
+//.colorColumbia h3 {
+//	font-weight: normal;
+//	color: #5892C1;
+//}
+//.colorColumbia .colorInvert {
+//	color: #FFF;
+//	background-color: #0F4082;
+//}
+//.colorColumbia .colorInvert h1,
+//.colorColumbia .colorInvert h2,
+//.colorColumbia .colorInvert h3 {
+//	color: #5892C1
+//}
 /* Columbia business school */
 
-.colorColumbiabusiness a,
-.colorColumbiabusiness .fakeLink {
-	color: #205F9C;
-}
-.colorColumbiabusiness .colorInvert {
-	color: #FFF;
-	background-color: #0F4082;
-}
-.colorColumbiabusiness .category span {
-	color: #FFF;
-	font-weight: 400 !important;
-	background-color: #205F9C;
-	padding: 2px;
-	text-transform: uppercase;
-	margin-left: -0.5em;
-}
-.colorGwsb h1,
-.colorGwsb h2,
-.colorGwsb h3 {
-	color: #004B6E;
-	text-transform: uppercase;
-}
-.colorGwsb .title,
-.colorGwsb .fakeLink,
-.colorGwsb a.startTime.displayTime {
-	color: #008BC4;
-}
-.colorGwsb .colorInvert {
-	color: #000;
-	background-color: #BEDAE9;
-}
-.colorGwsb a {
-	color: #008BC4;
-}
-.colorGwsb .colorInvert a,
-.colorInvert a.startTime.displayTime {
-	color: #004B6E
-}
-.colorGwsb .colorInvert .pullquote,
-.colorGwsb .pullquote {
-	color: #008bC4;
-}
-.colorGwsb .colorInvert .pullquote:before,
-.colorGwsb .pullquote:before {
-	color: #FFD838;
-}
+//.colorColumbiabusiness a,
+//.colorColumbiabusiness .fakeLink {
+//	color: #205F9C;
+//}
+//.colorColumbiabusiness .colorInvert {
+//	color: #FFF;
+//	background-color: #0F4082;
+//}
+//.colorColumbiabusiness .category span {
+//	color: #FFF;
+//	font-weight: 400 !important;
+//	background-color: #205F9C;
+//	padding: 2px;
+//	text-transform: uppercase;
+//	margin-left: -0.5em;
+//}
+
+
+//.colorGwsb h1,
+//.colorGwsb h2,
+//.colorGwsb h3 {
+//	color: #004B6E;
+//	text-transform: uppercase;
+//}
+//.colorGwsb .title,
+//.colorGwsb .fakeLink,
+//.colorGwsb a.startTime.displayTime {
+//	color: #008BC4;
+//}
+//.colorGwsb .colorInvert {
+//	color: #000;
+//	background-color: #BEDAE9;
+//}
+//.colorGwsb a {
+//	color: #008BC4;
+//}
+//.colorGwsb .colorInvert a,
+//.colorInvert a.startTime.displayTime {
+//	color: #004B6E
+//}
+//.colorGwsb .colorInvert .pullquote,
+//.colorGwsb .pullquote {
+//	color: #008bC4;
+//}
+//.colorGwsb .colorInvert .pullquote:before,
+//.colorGwsb .pullquote:before {
+//	color: #FFD838;
+//}
 

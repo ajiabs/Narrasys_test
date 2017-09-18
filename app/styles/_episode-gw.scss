@@ -8,6 +8,36 @@
     font-weight: 700
   }
 
+  h1, h2, h3, h4, h5,
+  .item a,
+  .navPanel a {
+    color: #003A5C;
+  }
+
+  .colorInvert {
+    background-color: #003A5C;
+    * {
+      color: #FFF;
+    }
+
+    &.item .pullquote:before {
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  .escapelink:before {
+    color: #AB9767;
+  }
+
+  .content.allowHighlights .item.isCurrent.highlightSolid,
+  .reviewMode .content.allowHighlights .item.isCurrent {
+    background-color: rgba(171, 151, 103, 0.3);
+  }
+
+  .altPane {
+    background-color: rgba(0, 58, 92, 0.05);
+  }
+
   .item {
     a {
       font-family: "Montserrat", sans-serif;
