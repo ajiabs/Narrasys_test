@@ -32,3 +32,11 @@ note: Font weight, variant etc... are listed if specified.
 - regis: '/images/customer/regis-big.svg', '/images/customer/regis-landing.svg'
 - school climate solutions: '/images/customer/schoolclimatelogo-big.svg'
 - wsbctc: '/images/customer/WSBCTC_Star.svg'
+
+
+# Gotham Font
+Currently in use in The Narrasys Template. "Gotham" is referenced in Kellogg and WSBCTC although in both cases the 
+fallback font is used. Narrasys uses variants of Gotham; e.g. "Gotham Thin" and we do not have a font that handles "Gotham",
+thus why "Gotham" in kellogg and WSBCTC falls back.
+
+Suggest to replace "Gotham" with "Montserrat"
