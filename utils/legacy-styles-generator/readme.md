@@ -20,7 +20,7 @@ note: Font weight, variant etc... are listed if specified.
 ### Kellogg
 - Gotham (Narrasys template also uses gotham, perhaps use same google font replacement)
 
-# Static Images used in Customer CSS
+# Static Images used in legacy CSS
 
 - gw: '/images/customer/gw-logo-big.svg', **'/images/rewind-nologo-overlay.png'**, **'/images/play-overlay.png**'
 - gwsb: '/images/customer/gwsb-seal.svg', '/images/customer/gw-bug.svg', '/images/customer/gw-logo-big.svg', **'/images/rewind-nologo-overlay.png'**, **'/images/play-overlay.png'** 
