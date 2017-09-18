@@ -4,7 +4,7 @@ $unbrandedAccent: #CCCCCC;
 $unbrandedSecondary: #DDDDDD;
 $unbrandedLink: #0000CC;
 $unbrandedHighlight: rgba(204,204,204, 0.6);
-@import "helpers";
+@import "../../../app/styles/helpers";
 
 @mixin unbranded-header {
   font-family: 'Open Sans',  sans-serif;
@@ -24,9 +24,9 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
 }
 
 .unbranded {
-  
-           
-  
+
+
+
 .landingscreen {
   div {
     display: block;
@@ -35,18 +35,18 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
     margin: 2em 0 1em 0;
   }
   padding: 10% 15%;
-  
+
   .introtext {
     width: 45%;
     float: right;
   }
-  
+
   .videoMagnet {
     width: 50%;
     float: left;
     }
   }
-  
+
   @media screen and (max-width: 501px) {
     .landingscreen {
       div {
@@ -69,9 +69,9 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
       }
 		}
 	}
-      
+
   //custom altPane BG, landingscreen
-  
+
 //TS-1109
 .professional__branding {
   width: 100%;
@@ -89,15 +89,15 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
     }
 	}
 }
-//TS-1102	
+//TS-1102
 .altPane {
   background-color: rgba(0, 0, 0, 0.05);
 }
-  
+
   .endingscreen {
     p {
       @include banner-pq('Open Sans', $unbrandedAccent, 2.5vw);
-    }   
+    }
   }
   //search view
   .searchPanel__wrapper {
@@ -108,7 +108,7 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
       color: $unbrandedLink;
     }
   }
-  
+
   .searchResults {
     @include unbranded-header;
     .item__title--link, .item__link--fake-link, .item__link--escape-link {
@@ -119,37 +119,37 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
       }
     }
   }
-  
+
   //item overrides
   .item__title {
     @include unbranded-header;
   }
-  
+
   .item__title--link, .item__title--file {
     a {
       color: $unbrandedLink;
     }
   }
-  
+
   .item__link--fake-link {
     @include unbranded-body;
     color: $unbrandedLink;
   }
-  
+
   .item__text {
     @include unbranded-body;
   }
-  
+
   .item__text--h2 {
     @include unbranded-header;
   }
-  
+
   .item__text--transmedia, .item__text--definition {
     h1, h2, h3 {
       @include unbranded-header;
     }
   }
-  
+
   .item .item__text--pullquote {
     @include unbranded-pq;
     &:before {
@@ -158,12 +158,12 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
       color: $unbrandedAccent;
     }
   }
-  
+
   .item__title--image-caption, .item__title--image-caption-sliding,
   .item__text--image-caption, .item__text--image-caption-sliding {
     color: $unbrandedSecondary;
   }
-  
+
   .item__link--escape-link {
     @include unbranded-body;
     color: $unbrandedLink;
@@ -171,7 +171,7 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
     color: $unbrandedPrimary;
     }
   }
-  
+
   //timestamp
   .item {
     .displayTime, .startTime {
@@ -182,7 +182,7 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
       }
     }
   }
-  //invert 
+  //invert
   .item {
     &.colorInvert {
       background-color: $unbrandedPrimary !important;
@@ -192,7 +192,7 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
           color: $unbrandedSecondary !important;
         }
       }
-      
+
       h1, h2, h3 {
         color: $unbrandedSecondary !important;
       }
@@ -203,11 +203,11 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
     .highlightSolid.item.isCurrent {
       background-color: $unbrandedHighlight;
     }
-  
+
     .highlightSide.item.isCurrent {
       border-left: 10px solid $unbrandedHighlight;
     }
-  
+
     .highlightBorder.item.isCurrent {
       border: 2px solid $unbrandedHighlight;
     }
@@ -218,7 +218,7 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
       box-shadow: 0 0 8px rgba(204,204,204, 0.3);
     }
   }
-  
+
   //layout specific overrides
   .centered-pro {
     .banner-pull-quote {
@@ -227,45 +227,45 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
       }
     }
   }
-  
+
   //pro two col: centerVV
   //non-pro two col: pip, cornerH, cornerV, twocol
   //non-pro one col: centered, onecol
   .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
     .static-bg__main {
-      
+
     }
     .static-bg__alt {
-      
+
     }
-    
+
     .item__title--link, .item__title--file {
       @include unbranded-body;
     }
-    
+
     .item__title--link.title--link-embed {
       @include unbranded-body;
     }
   }
-  
+
   .centerVV-mondrian {
     .static-bg__main {
       border: 4px solid $unbrandedPrimary;
       background-color: $unbrandedAccent;
     }
-    
+
     .static-bg__alt {
-      
+
     }
     .altPane {
       background-color: transparent;
     }
-    
+
     .mainPane {
       .item {
         background-color:  $unbrandedPrimary;
       }
-      
+
       .item__text, .item__title, .item__title a {
         color: $unbrandedSecondary;
       }
@@ -277,7 +277,7 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
           color: $unbrandedSecondary;
         }
       }
-      
+
       .item {
         &.colorInvert {
           background-color: $unbrandedSecondary !important;
@@ -287,7 +287,7 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
               color: $unbrandedPrimary !important;
             }
           }
-          
+
           h1, h2, h3 {
             color: $unbrandedPrimary !important;
           }
@@ -304,11 +304,11 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
     .item__title--image-thumbnail a {
       @include unbranded-header;
     }
-    
+
     .item__link--fake-link {
       color: $unbrandedSecondary;
     }
-    
+
     .item__link--escape-link {
       @include unbranded-header;
       color: $unbrandedSecondary;
@@ -316,7 +316,7 @@ $unbrandedHighlight: rgba(204,204,204, 0.6);
         color: $unbrandedAccent;
       }
     }
-    
+
     .item {
       .displayTime, .startTime {
         @include unbranded-header;

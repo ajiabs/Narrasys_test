@@ -4,7 +4,7 @@ $chef-ann-foundationAccent: #662e6b;
 $chef-ann-foundationSecondary: #FFFFFF;
 $chef-ann-foundationLink: #662e6b;
 $chef-ann-foundationHighlight: rgba(102,46,107, 0.6);
-@import "helpers";
+@import "../../../app/styles/helpers";
 
 @mixin chef-ann-foundation-header {
   font-family: 'Muli',  sans-serif;
