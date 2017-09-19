@@ -739,6 +739,12 @@ gulp-sass@^3.1.0:
     through2 "^2.0.0"
     vinyl-sourcemaps-apply "^0.2.0"
 
+gulp-tap@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/gulp-tap/-/gulp-tap-1.0.1.tgz#e671124e1259b4cea219ed1ca97b7f585c334690"
+  dependencies:
+    through2 "^2.0.3"
+
 gulp-util@3.0.8, gulp-util@^3.0, gulp-util@^3.0.0:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
@@ -1868,13 +1874,13 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-"semver@2 || 3 || 4 || 5", semver@^4.1.0:
-  version "4.3.6"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-4.3.6.tgz#300bc6e0e86374f7ba61068b5b1ecd57fc6532da"
-
-semver@~5.3.0:
+"semver@2 || 3 || 4 || 5", semver@~5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
+
+semver@^4.1.0:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-4.3.6.tgz#300bc6e0e86374f7ba61068b5b1ecd57fc6532da"
 
 sequencify@~0.0.7:
   version "0.0.7"
@@ -2050,7 +2056,7 @@ textextensions@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-1.0.2.tgz#65486393ee1f2bb039a60cbba05b0b68bd9501d2"
 
-through2@2.0.3, through2@^2.0.0:
+through2@2.0.3, through2@^2.0.0, through2@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:
