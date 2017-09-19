@@ -28,7 +28,7 @@ async function buildApp(): Promise<void> {
   await tryWebpackBuild();
   await handleSourcemaps();
   await confirmVersionFile(releaseTypeAnswer.finalVersion);
-  await showGitStatus();
+  const currentSha = await showGitStatus();
   await stageChanges(currentVersion);
   await commitChanges(releaseTypeAnswer.finalVersion, currentVersion);
   await pushChanges();
@@ -103,7 +103,7 @@ function confirmMasterBranch(buildType: string): Promise<void> {
   return runCmd('git symbolic-ref --short HEAD')
     .then((branch: string) => {
       if (branch !== 'master' && buildType === 'PRODUCTION') {
-        return prompt(questions.gitQuestions[2])
+        return prompt(questions.gitQuestions[5])
           .then((answer: { confirmOnMaster: boolean }) => answer.confirmOnMaster)
           .then((confirm: boolean) => {
             if (!confirm) {
@@ -117,7 +117,8 @@ function confirmMasterBranch(buildType: string): Promise<void> {
 
 function showGitStatus(): Promise<void> {
   return runCmd('git status')
-    .then((gitStatus: string) => console.log(gitStatus));
+    .then((gitStatus: string) => console.log(gitStatus))
+    .then(() => getCurrentSha());
 }
 
 function stageChanges(currentVersion: string): Promise<void> {
@@ -138,7 +139,7 @@ function commitChanges(finalVersion: string, currentVersion: string): Promise<vo
   const commitMessage = `build ${finalVersion} :shipit:`;
   questions.gitQuestions[1].message += finalVersion + '?';
   return prompt(questions.gitQuestions[1])
-    .then((answer: { commitAndTag: boolean }) => answer.commitAndTag)
+    .then((answer: { commitChanges: boolean }) => answer.commitChanges)
     .then((confirm: boolean) => {
       if (!confirm) {
         return pWriteFile(clientDir + '/app/version.txt', currentVersion)
@@ -150,8 +151,17 @@ function commitChanges(finalVersion: string, currentVersion: string): Promise<vo
     });
 }
 
-function pushChanges(): Promise<void> {
-  return runCmd('git symbolic-ref --short HEAD')
+function pushChanges(currentSha: string): Promise<void> {
+  const pushChangesPrompt = questions.gitQuestions[2];
+  return prompt(pushChangesPrompt)
+    .then((answer: { pushChanges: boolean }) => answer.pushChanges)
+    .then((confirm: boolean) => {
+      if (!confirm) {
+        return hardReset(currentSha)
+          .then(() => Promise.reject('Build Aborted!'));
+      }
+    })
+    .then(() => runCmd('git symbolic-ref --short HEAD'))
     .then((branch: string) => {
       inform('pushing commit, current branch:', branch);
       return branch;
@@ -160,18 +170,48 @@ function pushChanges(): Promise<void> {
     .then(() => success('push complete.'));
 }
 
-function addTag(finalVersion: string): Promise<void> {
-  inform(`adding tag: ${finalVersion}`);
-  return runCmd(`git tag ${finalVersion}`)
+function addTag(finalVersion: string, currentSha: string): Promise<void> {
+  const addTagPrompt = questions.gitQuestions[3];
+  return prompt(addTagPrompt)
+    .then((answer: { addTag: boolean }) => answer.addTag)
+    .then((confirm: boolean) => {
+      if (!confirm) {
+        return hardReset(currentSha)
+          .then(() => Promise.reject('Build Aborted!'));
+      }
+    })
+    .then(() => runCmd(`git tag ${finalVersion}`))
     .then(() => success(`tag ${finalVersion} added.`));
 }
 
-function pushTag(finalVersion: string): Promise<void> {
-  return runCmd('git push --tags')
+function pushTag(finalVersion: string, currentSha: string): Promise<void> {
+  const pushTagPrompt = questions.gitQuestions[4];
+  return prompt(pushTagPrompt)
+    .then((answer: { pushTag: boolean }) => answer.pushTag)
+    .then((confirm: boolean) => {
+      if (!confirm) {
+        return revertTag(finalVersion)
+          .then(() => hardReset(currentSha))
+          .then(() => Promise.reject('Build Aborted!'));
+      }
+    })
+    .then(() => runCmd('git push --tags'))
     .then(() => {
       success('tag pushed.');
       success(`build ${finalVersion} ready for release!`);
     });
+}
+
+function getCurrentSha(): Promise<string> {
+  return runCmd('git rev-parse HEAD');
+}
+
+function hardReset(currentSha: string): Promise<void> {
+  return runCmd(`git reset --hard ${currentSha}`);
+}
+
+function revertTag(tag: string): Promise<void> {
+  return runCmd();
 }
 
 function showVersionDiff(releaseType: string, currentVersion: string, finalVersion: string): Promise<void> {
