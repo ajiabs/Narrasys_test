@@ -23,7 +23,7 @@ gulp.task('legacy-sass', () => {
         .pipe(replace(replaceCssClass, EPISODE_TEMPLATE_CSS_CLASS))
         .pipe(replace(BG_URL_REGEX, (match) => {
           const fileName = match.slice(match.lastIndexOf('/') + 1, -2);
-          return `url("${EPISODE_IMAGE_PATH + fileName}")`
+          return `url('${EPISODE_IMAGE_PATH + fileName}')`
         }))
         .pipe(autoprefixer({
           browsers: ['last 2 versions'],
