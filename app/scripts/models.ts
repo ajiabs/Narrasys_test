@@ -1,4 +1,4 @@
-import { IAnnotators, ILangForm, ILangformKeys, ITemplateData } from './interfaces';
+import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
 
 
 import { TSocialTagTypes } from './constants';
@@ -6,11 +6,19 @@ import { TSocialTagTypes } from './constants';
  * Created by githop on 5/1/17.
  */
 
+export class ITemplateImage {
+  src: string;
+  alt_text?: string;
+  css_class?: string;
+  url?: string;
+}
+
 export class ICssConfiguration {
   _id: string;
-  colors: string[];
+  fill_class?: string;
   font_configurations: { fallback: string, font_id: string, variant: string, _id: string }[];
-  image_logo_bottom_right_id: string;
+  legacy_logos: ITemplateImage[];
+  legacy_banner_logo: ITemplateImage;
 }
 
 export class IFont {
@@ -21,7 +29,10 @@ export class IFont {
 export class ITemplate {
   id: string;
   name: string;
+  displayName: string;
+  type: string;
   url: string;
+  pro_episode_template?: boolean;
   applies_to_episodes: boolean;
   applies_to_narratives: boolean;
   created_at: Date;
@@ -52,8 +63,9 @@ export class IEpisode {
   styleCss: string;
   style_id: string[];
   styles: string[];
-  templateUrl: string;
-  template_data?: ITemplateData;
+  // templateUrl: string;
+  template_id: string;
+  template?: ITemplate;
   title: ILangForm;
   updated_at: Date;
   producerItemType?: string;

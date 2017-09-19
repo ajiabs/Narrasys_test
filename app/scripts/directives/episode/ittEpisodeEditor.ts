@@ -213,6 +213,7 @@ export default function ittEpisodeEditor(
           // $rootScope.templateId = newVal[3];
           const template = dataSvc.getTemplate(newVal[3]);
           episodeTheme.setTheme(template);
+          scope.episode.template_id = template.id;
 
           modelSvc.deriveEpisode(scope.episode);
           // modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes

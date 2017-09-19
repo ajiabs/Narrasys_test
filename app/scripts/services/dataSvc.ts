@@ -409,7 +409,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           displayName: item.name,
           customerIds: item.customer_ids,
           css_configuration: item.css_configuration,
-          fonts: item.fonts
+          fonts: item.fonts,
+          pro_episode_template: item.pro_episode_template
         });
 
         // console.log('template?', dataCache.template[item._id]);
@@ -609,17 +610,19 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
         }
         if (episodeData.status === 'Published' || authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
-          modelSvc.cache('episode', svc.resolveIDs(episodeData));
           const episodeTemplate = dataCache.template[episodeData.template_id];
-          const localWebFontArr = templateMap[episodeData.template_id].webFontArr;
+          episodeData.template = episodeTemplate;
+          modelSvc.cache('episode', svc.resolveIDs(episodeData));
+
+          // const localWebFontArr = templateMap[episodeData.template_id].webFontArr;
           // use temporary templateMap until db model has settled.
-          if (!episodeTemplate.fonts && localWebFontArr) {
-            episodeTemplate.fonts = { google: { families: localWebFontArr } };
-            console.log('using local guy', episodeTemplate.fonts);
-          }
+          // if (!episodeTemplate.fonts && localWebFontArr) {
+          //   episodeTemplate.fonts = { google: { families: localWebFontArr } };
+          //   console.log('using local guy', episodeTemplate.fonts);
+          // }
 
           episodeTheme.setTheme(episodeTemplate);
-          // console.log('this template!', templateInfo)
+
 
           getEvents(epId, segmentId)
             .success(function (events) {
@@ -641,10 +644,10 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               }
 
               //add template assets
-              if (episodeTemplate.css_configuration) {
-                const templateLogoImgId = episodeTemplate.css_configuration.image_logo_bottom_right_id;
-                assetIds.push(templateLogoImgId);
-              }
+              // if (episodeTemplate.css_configuration) {
+              //   const templateLogoImgId = episodeTemplate.css_configuration.image_logo_bottom_right_id;
+              //   assetIds.push(templateLogoImgId);
+              // }
 
               //batch get assets
               getAssetsByAssetIds(assetIds)

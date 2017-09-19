@@ -294,7 +294,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       episode.origTemplateUrl = episode.templateUrl;
       episode.templateUrl = updateTemplates[episode.templateUrl];
     }
-    episode.template_data = templateMap[episode.template_id];
+    // episode.template_data = templateMap[episode.template_id];
     // unpack languages
     angular.forEach(episode.languages, function (lang) {
       if (lang.default) {
@@ -1172,10 +1172,10 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
 
 
-    if (thing instanceof IEpisode) {
-      // TODO: add episode namespace until db work is implemented
-      cssArr.push(thing.template_data.cssClass);
-    }
+    // if (thing instanceof IEpisode) {
+    //   // TODO: add episode namespace until db work is implemented
+    //   cssArr.push(thing.template_data.cssClass);
+    // }
 
     // add each episodeStyle, only if it is in a styleCategory the thing isn't already using
     if (thing.cur_episode_id) {
@@ -1195,6 +1195,12 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         if (cssArr[i].match(/transition/) && cssArr[i] !== 'transitionNone') {
           cssArr[i] = 'transitionFade';
         }
+      }
+    }
+
+    if (thing instanceof IEpisode) {
+      if (thing.template && thing.template.pro_episode_template) {
+        cssArr.push('professional');
       }
     }
 

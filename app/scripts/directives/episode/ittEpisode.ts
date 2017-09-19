@@ -1,14 +1,14 @@
 import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../../interfaces';
 
 const TEMPLATE = `
-<div class="episode" ng-class="episode.styleCss">
+<div class="episode episode-template" ng-class="episode.styleCss">
 
   <div
     class="fill"
-    ng-class="episode.template_data.fillClass"
-    ng-if="episode.template_data.fillClass != null">
+    ng-if="episode.template.css_configuration.fill_class != null"
+    ng-class="episode.template.css_configuration.fill_class">
     
-    <div ng-if="episode.template_data.fillClass === 'gwsb-seal'" class="fill"></div>
+    <div ng-if="episode.template.css_configuration.fill_class === 'gwsb-seal'" class="fill"></div>
   </div>
 
   <span ng-include="'templates/episode/components/reviewmode.html'"></span>
@@ -18,7 +18,7 @@ const TEMPLATE = `
   <span ng-include="'templates/episode/components/video.html'"></span>
   <span ng-include="'templates/episode/components/windowfg.html'"></span>
   
-  <np-episode-footer template-data="episode.template_data"></np-episode-footer>
+  <np-episode-footer template-data="episode.template"></np-episode-footer>
 </div>
 `;
 
