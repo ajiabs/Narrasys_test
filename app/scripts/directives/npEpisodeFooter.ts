@@ -1,9 +1,10 @@
 import { ITemplateData } from './episode/templateMap';
+import { ITemplate } from '../models';
 
 const TEMPLATE = `
 <div ng-if="$ctrl.appState.viewMode != 'watch'" ng-class="$ctrl.brandingDivClass">
 
-  <div ng-if="$ctrl.templateData.pro" class="branding--content">
+  <div ng-if="$ctrl.templateData.pro_episode_template" class="branding--content">
     <np-copyright org="np" class="professional__copyright"></np-copyright>
       <a class="professional__logo">
         <img ng-src="{{$ctrl.templateData.logos[0].src}}"/>
@@ -11,7 +12,7 @@ const TEMPLATE = `
   </div>
   
   <a
-    ng-if="!$ctrl.templateData.pro"
+    ng-if="!$ctrl.templateData.pro_episode_template"
     ng-repeat="logoImg in $ctrl.templateData.logos"
     ng-class="logoImg.cssClass"
     ng-href="logoImg.link"
@@ -19,7 +20,7 @@ const TEMPLATE = `
     rel="noopener noreferrer">
       <img ng-src="{{logoImg.src}}" alt="{{logoImg.alt}}"/>
   </a>
-  <np-copyright ng-if="!$ctrl.templateData.pro" class="copyright" org="itt"></np-copyright>
+  <np-copyright ng-if="!$ctrl.templateData.pro_episode_template" class="copyright" org="itt"></np-copyright>
 </div>
 <div ng-if="$ctrl.templateData.bannerLogo != null" ng-class="$ctrl.templateData.bannerLogo.cssClass">
   <img
@@ -30,11 +31,11 @@ const TEMPLATE = `
 `;
 
 interface IEpisodeFooterBindings extends ng.IComponentController {
-  templateData: ITemplateData;
+  templateData: ITemplate;
 }
 
 class EpisodeFooterController implements IEpisodeFooterBindings {
-  templateData: ITemplateData;
+  templateData: ITemplate;
   brandingDivClass: string;
   static $inject = ['appState'];
   constructor(public appState) {
