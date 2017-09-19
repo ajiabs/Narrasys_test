@@ -1,7 +1,7 @@
 // TODO: load and resolve categories
 
 
-import { createInstance, IAsset, IEvent, ITemplate } from '../models';
+import { createInstance, IAsset, IEpisode, IEvent, ITemplate } from '../models';
 import {IEmailFields} from '../interfaces';
 import { templateMap } from '../directives/episode/templateMap';
 /**
@@ -471,9 +471,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // console.log("resolving IDs", obj);
 
     // temporary:
-    if (obj.everyone_group && !obj.template_id) {
-      obj.templateUrl = 'templates/narrative/default.html';
-    }
+    // if (obj.everyone_group && !obj.template_id) {
+    //   obj.templateUrl = 'templates/narrative/default.html';
+    // }
 
     if (obj.template_id) {
       if (dataCache.template[obj.template_id]) {
@@ -1249,9 +1249,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     prepped.style_id = get_id_values('style', epData.styles);
 
+    if (epData instanceof IEpisode) {
+      // episodes no longer use templateUrl
+      return prepped;
+    }
+
     var template = svc.readCache('template', 'url', epData.templateUrl);
     if (template) {
-      prepped.template_id = template.id;
     } else {
       prepped.template_id = reverseTemplateUpdate(epData.templateUrl);
     }
@@ -1270,12 +1274,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // TODO: can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
     var reverseTemplates = {
       // episodes
-      'templates/episode/episode.html': 'templates/episode-default.html',
-      'templates/episode/eliterate.html': 'templates/episode-eliterate.html',
-      'templates/episode/ewb.html': 'templates/episode-ewb.html',
-      'templates/episode/gw.html': 'templates/episode-gw.html',
-      'templates/episode/purdue.html': 'templates/episode-purdue.html',
-      'templates/episode/story.html': 'templates/episode-tellingstory.html',
+      // 'templates/episode/episode.html': 'templates/episode-default.html',
+      // 'templates/episode/eliterate.html': 'templates/episode-eliterate.html',
+      // 'templates/episode/ewb.html': 'templates/episode-ewb.html',
+      // 'templates/episode/gw.html': 'templates/episode-gw.html',
+      // 'templates/episode/purdue.html': 'templates/episode-purdue.html',
+      // 'templates/episode/story.html': 'templates/episode-tellingstory.html',
 
       // annotation
       'templates/item/transcript.html': 'templates/transcript-default.html',

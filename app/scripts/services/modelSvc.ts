@@ -47,7 +47,7 @@ export interface IModelSvc {
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
 export default function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
-  const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
+  // const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
   var svc: IModelSvc = Object.create(null);
 
   svc.episodes = {};
@@ -220,12 +220,12 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   // update template paths from v1.  This is temporary until I have the set of new templates nailed down
   // and have figured out which can be merged or etc; then we can update the values in the database
   var updateTemplates = {
-    'templates/episode-default.html': 'templates/episode/episode.html',
-    'templates/episode-eliterate.html': 'templates/episode/eliterate.html',
-    'templates/episode-ewb.html': 'templates/episode/ewb.html',
-    'templates/episode-gw.html': 'templates/episode/gw.html',
-    'templates/episode-purdue.html': 'templates/episode/purdue.html',
-    'templates/episode-tellingstory.html': 'templates/episode/story.html',
+    // 'templates/episode-default.html': 'templates/episode/episode.html',
+    // 'templates/episode-eliterate.html': 'templates/episode/eliterate.html',
+    // 'templates/episode-ewb.html': 'templates/episode/ewb.html',
+    // 'templates/episode-gw.html': 'templates/episode/gw.html',
+    // 'templates/episode-purdue.html': 'templates/episode/purdue.html',
+    // 'templates/episode-tellingstory.html': 'templates/episode/story.html',
 
     'templates/scene-1col.html': 'templates/scene/1col.html',
     'templates/scene-2colL.html': 'templates/scene/2colL.html',
@@ -285,17 +285,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   svc.deriveEpisode = function (episode) {
     // console.log("deriveEpisode:", episode);
 
-    //If the episode doesn't have a template then assign it the default template
-    if (!episode.templateUrl) {
-      episode.templateUrl = DEFAULT_EPISODE_TEMPLATE_URL;
-    }
-
-    if (updateTemplates[episode.templateUrl]) {
-      episode.origTemplateUrl = episode.templateUrl;
-      episode.templateUrl = updateTemplates[episode.templateUrl];
-    }
-    // episode.template_data = templateMap[episode.template_id];
-    // unpack languages
     angular.forEach(episode.languages, function (lang) {
       if (lang.default) {
         // console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
@@ -312,33 +301,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     if (!episode.styles) {
       episode.styles = [];
     }
-
-    // if (colorTypographyMap[episode.template_id]) {
-    //   const customer = colorTypographyMap[episode.template_id];
-    //   ['color', 'typography'].forEach((styleType: string) => {
-    //     const found = episode.styles.filter((style: string) => style.match(styleType)).length > 0;
-    //     if (!found) {
-    //       episode.styles.push(styleType + capitalize(customer));
-    //     }
-    //   });
-    // }
-
-    // angular.forEach(['eliterate', 'gw', 'gwsb', 'purdue', 'usc', 'columbia', 'columbiabusiness'], function (customer) {
-    //   if (episode.templateUrl === 'templates/episode/' + customer + '.html') {
-    //     angular.forEach(['color', 'typography'], function (styleType) {
-    //       // if the episode doesn't already have styletypeFoo, add styletypeCustomer
-    //       var found = false;
-    //       angular.forEach(episode.styles, function (style) {
-    //         if (style.match(styleType)) {
-    //           found = true;
-    //         }
-    //       });
-    //       if (!found) {
-    //         episode.styles.push(styleType + customer[0].toUpperCase() + customer.substring(1));
-    //       }
-    //     });
-    //   }
-    // });
 
     if (episode.title && svc.events['internal:landingscreen:' + episode._id]) {
       svc.events['internal:landingscreen:' + episode._id].title = episode.title;
