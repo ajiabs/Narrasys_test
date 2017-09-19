@@ -1,4 +1,6 @@
-export const versionQuestions = [
+import { Question } from 'inquirer';
+
+export const versionQuestions: Question[] = [
   {
     type: 'list',
     name: 'type',
@@ -15,7 +17,7 @@ export const versionQuestions = [
   }
 ];
 
-export const finalVersionQuestions = [
+export const finalVersionQuestions: Question[] = [
   {
     type: 'confirm',
     name: 'finalVersion',
@@ -24,7 +26,7 @@ export const finalVersionQuestions = [
   }
 ];
 
-export const gitQuestions = [
+export const gitQuestions: Question[] = [
   {
     type: 'confirm',
     name: 'add',
