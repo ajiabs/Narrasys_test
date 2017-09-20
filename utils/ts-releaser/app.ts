@@ -107,7 +107,7 @@ export function stageChanges(currentVersion: string): Promise<void> {
         return pWriteFile(clientDir + '/app/version.txt', currentVersion)
           .then(() => Promise.reject('Build Aborted!'));
       } else {
-        return runCmd('git add -A .')
+        return runCmd('git add -A .', true)
           .then(() => success('changes staged.'));
       }
     });
@@ -123,7 +123,7 @@ export function commitChanges(finalVersion: string, currentVersion: string): Pro
         return pWriteFile(clientDir + '/app/version.txt', currentVersion)
           .then(() => Promise.reject('Build Aborted!'));
       } else {
-        return runCmd(`git commit -m "${commitMessage}"`)
+        return runCmd(`git commit -m "${commitMessage}"`, true)
           .then(() => success('Changes committed.'));
       }
     });
