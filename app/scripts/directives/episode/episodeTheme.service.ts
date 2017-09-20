@@ -1,7 +1,13 @@
 import * as WebFont from 'webfontloader';
 import { IFont, ITemplate } from '../../models';
 
-export class EpisodeTheme {
+export interface IEpisodeTheme {
+  setTheme(template: ITemplate): void;
+  loadThemeStyleSheet(templateId: string): ng.IPromise<void>;
+  loadFontFamily(font: IFont): void;
+}
+
+export class EpisodeTheme implements IEpisodeTheme {
   linkId: string = 'np-template-theme';
   linkTag: HTMLLinkElement;
   static Name = 'episodeTheme'; // tslint:disable-line
@@ -29,16 +35,14 @@ export class EpisodeTheme {
   }
 
   loadFontFamily(font: IFont): void {
-    if (font == null) {
-      return;
+    if (font != null) {
+      WebFont.load(font);
     }
-    WebFont.load(font);
   }
 
   private _changeHref(id): void {
     this.linkTag.setAttribute('href', this._getHrefPath(id));
   }
-
 
   private _getHrefPath(templateId): string {
     return `https:${this.config.apiDataBaseUrl}/v1/templates/${templateId}.css`;

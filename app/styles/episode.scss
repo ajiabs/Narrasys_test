@@ -143,10 +143,16 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    .professional__logo img {
+
+    .professional__logo {
       height: 130px;
+      width: 100%;
+      background-size: 100% 130px;
+      background-repeat: no-repeat;
+      flex: 1;
     }
     .professional__copyright {
+      flex: 3;
       margin-bottom: 55px;
       z-index: 1;
       color: grey;
@@ -417,35 +423,13 @@
     display:none;
     border: 1px solid red;
   }
-  .professional {
-    .professional__logo {
-      display:none;
-    }
-  }
-}
-
-
-/*Narrasys pro*/
-@font-face {
-  font-family: 'Gotham Thin';
-  src: url('/images/font/Gotham-Thin.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Gotham Medium';
-  src: url('/images/font/Gotham-Medium.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Gotham Light Italic';
-  src: url('/images/font/Gotham-LightItalic.otf') format('opentype');
 }
 
 
 //pro templates
 //@import 'field-pros';
 //@import 'narrasys';
-//@import 'career-playbook';
+//@import '../../utils/legacy-styles-generator/pro-styles/career-playbook';
 //@import 'george-washington';
 //@import 'unbranded';
 //@import 'university-arizona';

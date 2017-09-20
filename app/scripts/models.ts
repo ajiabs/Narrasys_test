@@ -61,6 +61,7 @@ export class IEpisode {
   scenes: IScene[];
   status: string;
   styleCss: string;
+  templateCss?: string;
   style_id: string[];
   styles: string[];
   // templateUrl: string;

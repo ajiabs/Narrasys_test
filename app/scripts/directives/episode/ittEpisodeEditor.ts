@@ -4,6 +4,7 @@
  TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
  */
 import dataSvc from '../../services/dataSvc';
+import { IEpisodeTheme, IModelSvc, IDataSvc } from '../../interfaces';
 
 ittEpisodeEditor.$inject = [
   '$rootScope',
@@ -32,13 +33,13 @@ export default function ittEpisodeEditor(
   $rootScope,
   $timeout,
   appState,
-  modelSvc,
-  dataSvc,
+  modelSvc: IModelSvc,
+  dataSvc: IDataSvc,
   authSvc,
   selectService,
   playbackService,
   urlService,
-  episodeTheme) {
+  episodeTheme: IEpisodeTheme) {
   return {
     restrict: 'A',
     replace: true,
@@ -212,13 +213,13 @@ export default function ittEpisodeEditor(
           // scope.episode.template_id = newVal[3];
           // $rootScope.templateId = newVal[3];
           const template = dataSvc.getTemplate(newVal[3]);
-          episodeTheme.setTheme(template);
           scope.episode.template_id = template.id;
+          scope.episode.template = template;
 
           modelSvc.deriveEpisode(scope.episode);
           // modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
           modelSvc.resolveEpisodeEvents(scope.episode._id); // needed for template or style changes
-
+          episodeTheme.setTheme(template);
         }
       );
 

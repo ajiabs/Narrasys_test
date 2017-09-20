@@ -2,8 +2,7 @@
 
 
 import { createInstance, IAsset, IEpisode, IEvent, ITemplate } from '../models';
-import {IEmailFields} from '../interfaces';
-import { templateMap } from '../directives/episode/templateMap';
+import { IEmailFields, IEpisodeTheme } from '../interfaces';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -79,7 +78,7 @@ export interface IDataSvc {
 }
 
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
-export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, episodeTheme) {
+export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, episodeTheme: IEpisodeTheme) {
   var svc: IDataSvc = Object.create(null);
 
   /* ------------------------------------------------------------------------------ */
@@ -402,7 +401,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          updated_at					"2013-11-20T20:13:31Z"
          url									"templates/scene-centered.html"
          */
-        dataCache.template[item._id] = createInstance('Template',{
+        dataCache.template[item._id] = createInstance('Template', {
           id: item._id,
           url: item.url,
           type: (item.applies_to_episodes ? 'Episode' : item.event_types ? item.event_types[0] : undefined),

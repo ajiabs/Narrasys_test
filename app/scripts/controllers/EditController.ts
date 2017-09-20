@@ -1,9 +1,10 @@
 'use strict';
-import {createInstance, } from '../models';
+import { createInstance, IEpisode } from '../models';
+import { IEpisodeTheme } from '../directives/episode/episodeTheme.service';
 
-EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
+EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService', 'episodeTheme'];
 
-export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackService) {
+export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackService, episodeTheme: IEpisodeTheme) {
   $scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
   // HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -542,7 +543,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
     appState.videoControlsLocked = false;
   };
 
-  $scope.cancelEpisodeEdit = function (originalEvent) {
+  $scope.cancelEpisodeEdit = function (originalEvent: IEpisode) {
 
     modelSvc.episodes[appState.episodeId] = originalEvent;
 
@@ -550,6 +551,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
     modelSvc.resolveEpisodeContainers(originalEvent._id); // only needed for navigation_depth changes
     modelSvc.resolveEpisodeEvents(originalEvent._id); // needed for template or style changes
     // console.log("Episode StyleCss is now ", modelSvc.episodes[originalEvent._id].styleCss);
+    episodeTheme.setTheme(originalEvent.template);
     appState.editEpisode = false;
     appState.videoControlsLocked = false;
   };

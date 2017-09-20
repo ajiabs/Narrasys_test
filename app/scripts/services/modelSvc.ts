@@ -3,7 +3,6 @@
 
 import { IAnnotators, Partial } from '../interfaces';
 import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent } from '../models';
-import { templateMap } from '../directives/episode/templateMap';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
@@ -306,6 +305,15 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       svc.events['internal:landingscreen:' + episode._id].title = episode.title;
       svc.events['internal:landingscreen:' + episode._id] = setLang(svc.events['internal:landingscreen:' + episode._id]);
     }
+    if (episode.template) {
+      const doResizeIframe =
+        episode.template.displayName === 'Career Playbook'
+        || episode.template.displayName === 'Narrasys Professional';
+
+      if (episode.template && doResizeIframe) {
+        appState.resizeIframeReviewMode = true;
+      }
+    }
 
     episode = setLang(episode);
     return episode;
@@ -417,7 +425,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         event.avatar = svc.assets[event.avatar_id];
       }
 
-      if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].templateUrl === 'templates/episode/usc.html') {
+
+      if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].template.displayName === 'University of Southern California') {
         // HACKS AHOY
         // USC made a bunch of change requests post-release; this was the most expedient way
         // to deal with them. Sorry!
@@ -910,6 +919,12 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
     // Now that we have the structure, calculate event styles (for scenes and items:)
     episode.styleCss = cascadeStyles(episode);
+    // the professional css class only should be applied on the ittEpisode template div
+    // episode.styleCss is used elsewhere and with the professional class it causes issues in some cases
+    episode.templateCss = episode.styleCss;
+    if (episode instanceof IEpisode && episode.template.pro_episode_template) {
+      episode.templateCss = 'professional ' + episode.templateCss;
+    }
     angular.forEach(svc.events, function (event) {
       if (event.cur_episode_id !== epId) {
         return;
@@ -1157,12 +1172,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         if (cssArr[i].match(/transition/) && cssArr[i] !== 'transitionNone') {
           cssArr[i] = 'transitionFade';
         }
-      }
-    }
-
-    if (thing instanceof IEpisode) {
-      if (thing.template && thing.template.pro_episode_template) {
-        cssArr.push('professional');
       }
     }
 

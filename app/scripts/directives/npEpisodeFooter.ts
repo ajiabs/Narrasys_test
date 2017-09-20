@@ -1,32 +1,31 @@
-import { ITemplateData } from './episode/templateMap';
 import { ITemplate } from '../models';
-
 const TEMPLATE = `
 <div ng-if="$ctrl.appState.viewMode != 'watch'" ng-class="$ctrl.brandingDivClass">
 
-  <div ng-if="$ctrl.templateData.pro_episode_template" class="branding--content">
-    <np-copyright org="np" class="professional__copyright"></np-copyright>
-      <a class="professional__logo">
-        <img ng-src="{{$ctrl.templateData.logos[0].src}}"/>
-      </a>
+  <div ng-if="$ctrl.proTemplate" class="branding--content">
+    <np-copyright org="np" class="professional__copyright"></np-copyright>  
+    <div class="professional__logo">
+      <!--<img ng-src="{{$ctrl.cpbLogo}}">-->
+    </div>
   </div>
   
   <a
-    ng-if="!$ctrl.templateData.pro_episode_template"
-    ng-repeat="logoImg in $ctrl.templateData.logos"
-    ng-class="logoImg.cssClass"
-    ng-href="logoImg.link"
+    ng-if="!$ctrl.proTemplate"
+    ng-repeat="logoImg in $ctrl.logos"
+    ng-class="logoImg.css_class"
+    ng-href="logoImg.url"
     target="_blank"
     rel="noopener noreferrer">
-      <img ng-src="{{logoImg.src}}" alt="{{logoImg.alt}}"/>
+      <img ng-src="{{logoImg.src}}" alt="{{logoImg.alt_text}}"/>
   </a>
-  <np-copyright ng-if="!$ctrl.templateData.pro_episode_template" class="copyright" org="itt"></np-copyright>
+  <np-copyright ng-if="!$ctrl.proTemplate" class="copyright" org="itt"></np-copyright>
 </div>
-<div ng-if="$ctrl.templateData.bannerLogo != null" ng-class="$ctrl.templateData.bannerLogo.cssClass">
+
+<div ng-if="$ctrl.bannerLogo != null" ng-class="$ctrl.bannerLogo.css_class">
   <img
-    ng-if="$ctrl.templateData.bannerLogo.src"
-    ng-src="{{$ctrl.templateData.bannerLogo.src}}"
-    alt="{{ctrl.templateData.bannerLogo.alt}}"/>
+    ng-if="$ctrl.bannerLogo.src"
+    ng-src="{{$ctrl.bannerLogo.src}}"
+    alt="{{ctrl.bannerLogo.alt_text}}"/>
 </div>
 `;
 
@@ -42,22 +41,38 @@ class EpisodeFooterController implements IEpisodeFooterBindings {
     //
   }
 
+  get proTemplate() {
+    if (this.templateData) {
+      return this.templateData.pro_episode_template;
+    }
+  }
+
+  get bannerLogo() {
+    if (this.templateData && this.templateData.css_configuration != null) {
+      return this.templateData.css_configuration.legacy_banner_logo;
+    }
+  }
+
+  get logos() {
+    if (this.templateData && this.templateData.css_configuration != null) {
+      return this.templateData.css_configuration.legacy_logos;
+    }
+  }
+
   $onChanges(changesObj) {
     const legacyFooterClass = 'branding footer';
     const proFooterClass = 'professional__branding';
     if (!changesObj.templateData.isFirstChange()) {
-      if (this.templateData.pro) {
+      if (this.templateData.pro_episode_template) {
         this.brandingDivClass = proFooterClass;
 
-        if (this.templateData.cssClass === 'professional unbranded') {
+        if (this.templateData.displayName === '(unbranded)') {
           this.brandingDivClass = `${legacyFooterClass} ${proFooterClass}`;
         }
 
       } else {
         this.brandingDivClass = legacyFooterClass;
       }
-
-      console.log('ok class?', this.brandingDivClass, this.templateData);
     }
   }
 }

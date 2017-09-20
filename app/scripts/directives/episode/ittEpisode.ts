@@ -1,7 +1,7 @@
 import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../../interfaces';
 
 const TEMPLATE = `
-<div class="episode episode-template" ng-class="episode.styleCss">
+<div class="episode episode-template" ng-class="episode.templateCss">
 
   <div
     class="fill"
@@ -60,9 +60,6 @@ class EpisodeController {
 
     const scopeHack = () => {
       this.$scope.episode = this.modelSvc.episodes[this.appState.episodeId];
-      if (this.$scope.episode != null) {
-        this.appState.playerTemplate = this.$scope.episode.templateUrl;
-      }
     };
 
     this.$interval(scopeHack, 457);
