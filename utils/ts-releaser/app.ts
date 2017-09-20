@@ -60,6 +60,7 @@ export function confirmVersionFile(finalVersion: string): Promise<void> {
     .then((confirmed: boolean) => {
       if (confirmed) {
         return pWriteFile(clientDir + '/app/version.txt', finalVersion)
+          .then(() => pWriteFile(clientDir + '/dist/version.txt', finalVersion))
           .then(() => success(`version.txt updated to ${finalVersion}`));
       } else {
         return Promise.reject('Build Aborted!');
