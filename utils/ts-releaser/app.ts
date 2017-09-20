@@ -89,7 +89,7 @@ function confirmMasterBranch(buildType: string): Promise<void> {
     });
 }
 
-function getCurrentBranchName() {
+function getCurrentBranchName(): Promise<string> {
   return runCmd('git symbolic-ref --short HEAD');
 }
 
@@ -208,19 +208,20 @@ export function showVersionDiff(releaseType: string, currentVersion: string, fin
       .then((currentProdVersion: string) => {
         link(`${ghCompareStr}/${currentProdVersion}...${finalVersion}`);
       })
-      .then(() => getCurrentBranchName())
-      .then((branch: string) => inform('Current branch', branch));
+      .then(() => logBranch());
   } else {
     return Promise.resolve()
-      .then(() => link(`${ghCompareStr}/${currentVersion}...${finalVersion}`));
+      .then(() => link(`${ghCompareStr}/${currentVersion}...${finalVersion}`))
+      .then(() => logBranch());
   }
+}
+
+function logBranch() {
+  return getCurrentBranchName()
+    .then((branch: string) => inform('Current branch:', branch));
 }
 
 function getLastProductionRelease(): Promise<string> {
   return httpRequest('https://np.narrasys.com/version.txt')
     .then((currentVersion: string) => currentVersion);
-}
-
-export function delay(...args: string[]) {
-  return () => runCmd(args);
 }
