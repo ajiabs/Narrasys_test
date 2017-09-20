@@ -107,7 +107,7 @@ export function stageChanges(currentVersion: string): Promise<void> {
         return pWriteFile(clientDir + '/app/version.txt', currentVersion)
           .then(() => Promise.reject('Build Aborted!'));
       } else {
-        return runCmd('git add -A .', true)
+        return runCmd('git add -A', true)
           .then(() => success('changes staged.'));
       }
     });
@@ -207,7 +207,9 @@ export function showVersionDiff(releaseType: string, currentVersion: string, fin
     return getLastProductionRelease()
       .then((currentProdVersion: string) => {
         link(`${ghCompareStr}/${currentProdVersion}...${finalVersion}`);
-      });
+      })
+      .then(() => getCurrentBranchName())
+      .then((branch: string) => inform('Current branch', branch));
   } else {
     return Promise.resolve()
       .then(() => link(`${ghCompareStr}/${currentVersion}...${finalVersion}`));
@@ -217,4 +219,8 @@ export function showVersionDiff(releaseType: string, currentVersion: string, fin
 function getLastProductionRelease(): Promise<string> {
   return httpRequest('https://np.narrasys.com/version.txt')
     .then((currentVersion: string) => currentVersion);
+}
+
+export function delay(...args: string[]) {
+  return () => runCmd(args);
 }
