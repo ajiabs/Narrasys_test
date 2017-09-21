@@ -1,5 +1,5 @@
 
-import { capitalize } from '../../services/ittUtils';
+import { capitalize } from '../../../app/scripts/services/ittUtils';
 
 const pathToImages = require.context('../../../images');
 const pathToLogos = require.context('../../../images/customer');

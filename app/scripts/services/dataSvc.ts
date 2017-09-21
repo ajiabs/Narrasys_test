@@ -613,15 +613,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           episodeData.template = episodeTemplate;
           modelSvc.cache('episode', svc.resolveIDs(episodeData));
 
-          // const localWebFontArr = templateMap[episodeData.template_id].webFontArr;
-          // use temporary templateMap until db model has settled.
-          // if (!episodeTemplate.fonts && localWebFontArr) {
-          //   episodeTemplate.fonts = { google: { families: localWebFontArr } };
-          //   console.log('using local guy', episodeTemplate.fonts);
-          // }
-
           episodeTheme.setTheme(episodeTemplate);
-
 
           getEvents(epId, segmentId)
             .success(function (events) {

@@ -4,16 +4,14 @@ const TEMPLATE = `
 
   <div ng-if="$ctrl.proTemplate" class="branding--content">
     <np-copyright org="np" class="professional__copyright"></np-copyright>  
-    <div class="professional__logo">
-      <!--<img ng-src="{{$ctrl.cpbLogo}}">-->
-    </div>
+    <div class="professional__logo"></div>
   </div>
   
   <a
     ng-if="!$ctrl.proTemplate"
     ng-repeat="logoImg in $ctrl.logos"
     ng-class="logoImg.css_class"
-    ng-href="logoImg.url"
+    ng-href="{{logoImg.url}}"
     target="_blank"
     rel="noopener noreferrer">
       <img ng-src="{{logoImg.src}}" alt="{{logoImg.alt_text}}"/>
