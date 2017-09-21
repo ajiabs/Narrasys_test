@@ -13,8 +13,11 @@ const TEMPLATE = `
 
   <span ng-include="'templates/episode/components/reviewmode.html'"></span>
   <span ng-include="'templates/episode/components/watchmode.html'"></span>
-  <span ng-repeat="scene in episode.scenes | isCurrent"
-        ng-include="'templates/episode/components/discovermode.html'"></span>
+  <span
+    ng-class="{'colorInvert DiscoverModeOnly': episode.template.displayName === 'Middlebury'}"
+    ng-repeat="scene in episode.scenes | isCurrent"
+    ng-include="'templates/episode/components/discovermode.html'">
+  </span>
   <span ng-include="'templates/episode/components/video.html'"></span>
   <span ng-include="'templates/episode/components/windowfg.html'"></span>
   
