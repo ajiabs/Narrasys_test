@@ -1,8 +1,9 @@
 // TODO: load and resolve categories
 
 
-import { createInstance, IAsset, IEpisode, IEvent, ITemplate } from '../models';
-import { IEmailFields, IEpisodeTheme } from '../interfaces';
+import { createInstance, IAsset, IEpisode, IEvent, ILayout, IStyle, ITemplate } from '../models';
+import { IEmailFields, IEpisodeTheme, Partial } from '../interfaces';
+import { pick } from './ittUtils';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -400,18 +401,35 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          name								"Scene 2 columns right"
          updated_at					"2013-11-20T20:13:31Z"
          url									"templates/scene-centered.html"
+         type: string
          */
-        dataCache.template[item._id] = createInstance('Template', {
-          id: item._id,
-          url: item.url,
-          type: (item.applies_to_episodes ? 'Episode' : item.event_types ? item.event_types[0] : undefined),
-          displayName: item.name,
-          customerIds: item.customer_ids,
-          css_configuration: item.css_configuration,
-          fonts: item.fonts,
-          pro_episode_template: item.pro_episode_template
-        });
 
+        if (item.applies_to_episodes) {
+          dataCache.template[item._id] = createInstance('EpisodeTemplate', {
+            id: item._id,
+            url: item.url,
+            type: 'Episode',
+            displayName: item.name,
+            customerIds: item.customer_ids,
+            css_configuration: item.css_configuration,
+            fonts: item.fonts,
+            pro_episode_template: item.pro_episode_template
+          });
+        } else if (item.event_types && item.event_types && item.event_types[0] === 'Scene') {
+          dataCache.template[item._id] = createInstance('LayoutTemplate', {
+            id: item._id,
+            url: item.url,
+            type: 'Scene',
+            displayName: item.name
+          });
+        } else {
+          dataCache.template[item._id] = createInstance('ItemTemplate', {
+            id: item._id,
+            url: item.url,
+            type: item.event_types && item.event_types[0],
+            displayName: item.name
+          });
+        }
         // console.log('template?', dataCache.template[item._id]);
       } else if (cacheType === 'layouts') {
         /* API format:
@@ -422,11 +440,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          display_name				"Video Left"
          updated_at					"2013-11-20T20:13:31Z"
          */
-        dataCache.layout[item._id] = {
+        dataCache.layout[item._id] = createInstance('Layout', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
-        };
+        });
 
       } else if (cacheType === 'styles') {
         /* API format:
@@ -437,11 +455,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          display_name	"Typography Serif"
          updated_at		"2013-11-20T20:13:37Z"
          */
-        dataCache.style[item._id] = {
+        dataCache.style[item._id] = createInstance('Style', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
-        };
+        });
       }
     });
   };
@@ -473,10 +491,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // if (obj.everyone_group && !obj.template_id) {
     //   obj.templateUrl = 'templates/narrative/default.html';
     // }
-
     if (obj.template_id) {
       if (dataCache.template[obj.template_id]) {
-        obj.templateUrl = dataCache.template[obj.template_id].url;
+        if (obj.master_asset_id == null) {
+          obj.templateUrl = dataCache.template[obj.template_id].url;
+        }
       } else {
         errorSvc.error({
           data: 'Couldn\'t get templateUrl for id ' + obj.template_id
@@ -989,7 +1008,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   svc.storeEpisode = function (epData) {
     var preppedData = prepEpisodeForStorage(epData);
     console.log('prepped for storage:', preppedData);
-    if (preppedData) {
+    if (preppedData != null) {
       return PUT('/v3/episodes/' + preppedData._id, preppedData);
     } else {
       return false;
@@ -1212,13 +1231,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
   };
 
-  var prepEpisodeForStorage = function (epData) {
-    var prepped = {};
+  const prepEpisodeForStorage = function (epData): Partial<IEpisode> {
+
     if (epData._id && epData._id.match(/internal/)) {
       delete epData._id;
     }
 
-    var fields = [
+    const fields = [
       '_id',
       'title',
       'description',
@@ -1229,34 +1248,22 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'status',
       'languages',
       'template_id'
-      // "navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
+      // "navigation_depth"
+      // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
     ];
 
-    for (var i = 0; i < fields.length; i++) {
-      if (epData[fields[i]] || epData[fields[i]] === 0) {
-        prepped[fields[i]] = angular.copy(epData[fields[i]]);
-      }
-    }
-
+    const prepped: Partial<IEpisode> = pick(epData, fields);
     prepped.style_id = get_id_values('style', epData.styles);
 
-    if (epData instanceof IEpisode) {
-      // episodes no longer use templateUrl
-      return prepped;
-    }
-
-    var template = svc.readCache('template', 'url', epData.templateUrl);
-    if (template) {
-    } else {
-      prepped.template_id = reverseTemplateUpdate(epData.templateUrl);
-    }
-    if (prepped.template_id) {
+    const template = svc.readCache('template', 'id', epData.template_id) as ITemplate;
+    if (template && template.id) {
+      prepped.template_id = template.id;
       return prepped;
     } else {
       errorSvc.error({
-        data: 'Tried to store a template with no ID: ' + epData.templateUrl
+        data: 'Tried to store a template with no ID: ' + epData.template_id
       });
-      return false;
+      return null;
     }
   };
 
@@ -1293,6 +1300,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       //link
       'templates/item/link.html': 'templates/transmedia-link-default.html',
       'templates/item/link-embed.html': 'templates/transmedia-link-embed.html',
+      'templates/item/sxs-link.html': 'templates/sxs-link.html',
 
       //scene
       'templates/scene/1col.html': 'templates/scene-1col.html',
@@ -1303,15 +1311,10 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'templates/scene/cornerV.html': 'templates/scene-cornerV.html',
 
       //question
-      'templates/item/question-mc-formative.html': 'templates/question-mc-formative.html',
-      'templates/item/question-mc-poll.html': 'templates/question-mc-poll.html',
-
       'templates/item/question-mc.html': 'templates/question-mc.html',
       'templates/item/question-mc-image-left.html': 'templates/question-mc-image-left.html',
       'templates/item/question-mc-image-right.html': 'templates/question-mc-image-right.html',
-
-      'templates/item/sxs-question.html': 'templates/sxs-question.html',
-      'templates/item/sxs-link.html': 'templates/sxs-link.html'
+      'templates/item/sxs-question.html': 'templates/sxs-question.html'
     };
     if (reverseTemplates[templateUrl]) {
       var template = svc.readCache('template', 'url', reverseTemplates[templateUrl]);
@@ -1334,7 +1337,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
     return false;
   };
-  if (config.debugInBrowser) {
+  if (config.debugInBrowser || true) {
     // console.log("DataSvc:", svc);
     console.log('DataSvc cache:', dataCache);
   }
@@ -1355,45 +1358,21 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
    for example:
    get_id_values('style', ['cover', '']) -> ['532708d8ed245331bd000007', '52e15b47c9b715cfbb00003f']
    */
-  var get_id_values = function (cache, realNames) {
-
-    // HACK These values won't have IDs, they're generated inside modelSvc.
-    // Can remove this after template config is updated
-    var pseudos = [
-      'colorEliterate',
-      'colorGw',
-      'colorGwsb',
-      'colorPurdue',
-      'colorUsc',
-      'colorColumbia',
-      'colorColumbiabusiness',
-      'typographyEliterate',
-      'typographyGw',
-      'typographyGwsb',
-      'typographyPurdue',
-      'typographyUsc',
-      'typographyColumbia',
-      'typographyColumbiabusiness'
-    ];
+  const get_id_values = function (cache, realNames): string[] {
 
     // convert real styles and layouts back into id arrays. Not for templateUrls!
-    var ids = [];
+    const ids = [];
 
-    angular.forEach(realNames, function (realName) {
+    angular.forEach(realNames, (realName) => {
       if (realName) {
-        var cachedValue = svc.readCache(cache, 'css_name', realName);
+        const cachedValue = svc.readCache(cache, 'css_name', realName) as IStyle | ILayout;
         if (cachedValue) {
           ids.push(cachedValue.id);
         } else {
-          // HACK ignore pseudo-styles generated within modelSvc:
-          if (pseudos.indexOf(realName) === -1) {
-            errorSvc.error({
-              data: 'Tried to store a ' + cache + ' with no ID: ' + realName
-            });
-            return false;
-          } else {
-            console.log('Ignoring ', realName);
-          }
+          errorSvc.error({
+            data: 'Tried to store a ' + cache + ' with no ID: ' + realName
+          });
+          return false;
         }
       }
     });

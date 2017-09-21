@@ -267,13 +267,9 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     // "templates/upload-demo.html": "templates/item/debug.html",
 
     //questions
-    'templates/question-mc-formative.html': 'templates/item/question-mc-formative.html',
-    'templates/question-mc-poll.html': 'templates/item/question-mc-poll.html',
-
     'templates/question-mc.html': 'templates/item/question-mc.html',
     'templates/question-mc-image-left.html': 'templates/item/question-mc-image-left.html',
     'templates/question-mc-image-right.html': 'templates/item/question-mc-image-right.html',
-
     'templates/sxs-question.html': 'templates/item/sxs-question.html'
   };
 

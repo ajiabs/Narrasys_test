@@ -44,12 +44,15 @@ export function bitwiseCeil(n) {
 }
 
 export function pick(obj, arr) {
-  return arr.reduce(function (accm, field) {
-    if (existy(obj[field])) {
-      accm[field] = angular.copy(obj[field]);
-    }
-    return accm;
-  }, {});
+  return arr.reduce(
+    (accm, field) => {
+      if (existy(obj[field])) {
+        accm[field] = angular.copy(obj[field]);
+      }
+      return accm;
+    },
+    {}
+  );
 }
 
 export function stripHtmlTags(str) {

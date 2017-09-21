@@ -6,6 +6,18 @@ import { TSocialTagTypes } from './constants';
  * Created by githop on 5/1/17.
  */
 
+abstract class UIAsset {
+  id: string;
+  css_name: string;
+  display_name: string;
+  description?: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
+export class IStyle extends UIAsset { }
+export class ILayout extends UIAsset { }
+
 export class ITemplateImage {
   src: string;
   alt_text?: string;
@@ -26,20 +38,33 @@ export class IFont {
   google: { families: string[] };
 }
 
-export class ITemplate {
+export abstract class ITemplate {
   id: string;
   name: string;
   displayName: string;
-  type: string;
-  url: string;
+  event_types: string[];
   pro_episode_template?: boolean;
-  applies_to_episodes: boolean;
-  applies_to_narratives: boolean;
+  applies_to_episodes?: boolean;
+  applies_to_narratives?: boolean;
   created_at: Date;
+}
+
+export class IEpisodeTemplate extends ITemplate {
+  type: 'Episode';
   css?: string;
   css_configuration?: ICssConfiguration;
   customer_ids?: string[];
   fonts?: IFont;
+}
+
+export class IItemTemplate extends ITemplate {
+  type: 'Annotation' | 'Upload' | 'Link' | 'Plugin';
+  url: string;
+}
+
+export class ILayoutTemplate extends ITemplate {
+  type: 'Scene';
+  url: string;
 }
 
 export class IEpisode {
@@ -180,11 +205,22 @@ export class IAsset {
   user_id: string;
 }
 
+type TEventTypes = 'Annotation'
+  | 'Bookmark'
+  | 'File'
+  | 'Image'
+  | 'Link'
+  | 'Plugin'
+  | 'Scene'
+  | 'Chapter'
+  | 'Text'
+  | 'Upload';
+
 export class IEvent {
   //props
   _id: string;
   start_time: number;
-  type: 'Annotation' | 'Bookmark' | 'File' | 'Image' | 'Link' | 'Plugin' | 'Scene' | 'Chapter' | 'Text' | 'Upload';
+  type: TEventTypes;
   _type: string;
   end_time: number;
   title: ILangForm;
@@ -314,6 +350,7 @@ export class IUpload extends IEvent {
   _type: 'Upload';
   asset_id: string;
 }
+
 type TInstance =
   'Link'
   | 'Annotation'
@@ -330,7 +367,11 @@ type TInstance =
   | 'Timeline'
   | 'Episode'
   | 'Container'
-  | 'Template';
+  | 'EpisodeTemplate'
+  | 'LayoutTemplate'
+  | 'ItemTemplate'
+  | 'Layout'
+  | 'Style';
 export function createInstance<T>(type: TInstance, data: any): T {
   let model;
   switch (type) {
@@ -379,8 +420,14 @@ export function createInstance<T>(type: TInstance, data: any): T {
     case 'Container':
       model = new IContainer();
       break;
-    case 'Template':
-      model = new ITemplate();
+    case 'LayoutTemplate':
+      model = new ILayoutTemplate();
+      break;
+    case 'ItemTemplate':
+      model = new IItemTemplate();
+      break;
+    case 'EpisodeTemplate':
+      model = new IEpisodeTemplate();
       Object.assign(model, data);
       //handle any 'relations'
       if (data.css_configuration) {
@@ -391,6 +438,12 @@ export function createInstance<T>(type: TInstance, data: any): T {
         model.fonts = Object.assign(new IFont(), data.fonts);
       }
       return model;
+    case 'Layout':
+      model = new ILayout();
+      break;
+    case 'Style':
+      model = new IStyle();
+      break;
   }
   Object.assign(model, data);
   return model;

@@ -1,8 +1,8 @@
 import * as WebFont from 'webfontloader';
-import { IFont, ITemplate } from '../../models';
+import { IFont, IEpisodeTemplate } from '../../models';
 
 export interface IEpisodeTheme {
-  setTheme(template: ITemplate): void;
+  setTheme(template: IEpisodeTemplate): void;
   loadThemeStyleSheet(templateId: string): ng.IPromise<void>;
   loadFontFamily(font: IFont): void;
 }
@@ -18,7 +18,7 @@ export class EpisodeTheme implements IEpisodeTheme {
     //
   }
 
-  setTheme(template: ITemplate): void {
+  setTheme(template: IEpisodeTemplate): void {
     this.loadThemeStyleSheet(template.id);
     this.loadFontFamily(template.fonts);
   }

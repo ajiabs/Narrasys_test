@@ -85,7 +85,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   var wileyNag = function () {
     // HACK design-by-committee TS-829 for framed Wiley episodes.
     // (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
-    if (!appState.isFramed || (modelSvc.episodes[appState.episodeId].templateUrl.indexOf('wiley') === -1)) {
+    if (!appState.isFramed || (modelSvc.episodes[appState.episodeId].template.displayName.indexOf('Wiley') === -1)) {
       return;
     }
     var localStorageAllowed = true;

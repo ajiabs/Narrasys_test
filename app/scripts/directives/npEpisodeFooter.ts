@@ -1,4 +1,4 @@
-import { ITemplate } from '../models';
+import { IEpisodeTemplate } from '../models';
 const TEMPLATE = `
 <div ng-if="$ctrl.appState.viewMode != 'watch'" ng-class="$ctrl.brandingDivClass">
 
@@ -28,11 +28,11 @@ const TEMPLATE = `
 `;
 
 interface IEpisodeFooterBindings extends ng.IComponentController {
-  templateData: ITemplate;
+  templateData: IEpisodeTemplate;
 }
 
 class EpisodeFooterController implements IEpisodeFooterBindings {
-  templateData: ITemplate;
+  templateData: IEpisodeTemplate;
   brandingDivClass: string;
   static $inject = ['appState'];
   constructor(public appState) {
