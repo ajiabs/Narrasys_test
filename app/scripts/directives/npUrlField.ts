@@ -173,8 +173,10 @@ class UrlFieldController implements IUrlFieldBindings {
     });
   }
 
-  private _setValidity(val: boolean, field: string = 'itemUrl', controller = this): boolean {
-    controller.ittItemForm.$setValidity(field, val, null);
+  private _setValidity(val: boolean, field: string = 'itemUrl'): boolean {
+    if (this.ittItemForm != null) {
+      this.ittItemForm.$setValidity(field, val, null);
+    }
     return val;
   }
 
