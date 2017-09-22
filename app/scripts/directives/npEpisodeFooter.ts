@@ -63,11 +63,6 @@ class EpisodeFooterController implements IEpisodeFooterBindings {
     if (!changesObj.templateData.isFirstChange()) {
       if (this.templateData.pro_episode_template) {
         this.brandingDivClass = proFooterClass;
-
-        if (this.templateData.displayName === '(unbranded)') {
-          this.brandingDivClass = `${legacyFooterClass} ${proFooterClass}`;
-        }
-
       } else {
         this.brandingDivClass = legacyFooterClass;
       }
