@@ -54,6 +54,14 @@ export default function kalturaUrlService() {
     var params = {};
     var myArray = [];
     var urlParams;
+    if (input == null) {
+      return {
+        partnerId: null,
+        uiconfId: null,
+        entryId: null,
+        uniqueObjId: null
+      };
+    }
     if (input.substring(0, 7) === "<script") {
       myArray = /^.*?src\=.https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?(.*?)\".*/g.exec(input);
       if (myArray != null) {
