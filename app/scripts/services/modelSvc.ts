@@ -216,63 +216,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
   };
 
-  // update template paths from v1.  This is temporary until I have the set of new templates nailed down
-  // and have figured out which can be merged or etc; then we can update the values in the database
-  var updateTemplates = {
-    // 'templates/episode-default.html': 'templates/episode/episode.html',
-    // 'templates/episode-eliterate.html': 'templates/episode/eliterate.html',
-    // 'templates/episode-ewb.html': 'templates/episode/ewb.html',
-    // 'templates/episode-gw.html': 'templates/episode/gw.html',
-    // 'templates/episode-purdue.html': 'templates/episode/purdue.html',
-    // 'templates/episode-tellingstory.html': 'templates/episode/story.html',
-
-    'templates/scene-1col.html': 'templates/scene/1col.html',
-    'templates/scene-2colL.html': 'templates/scene/2colL.html',
-    'templates/scene-2colR.html': 'templates/scene/2colR.html',
-    'templates/scene-centered.html': 'templates/scene/centered.html',
-    'templates/scene-cornerH.html': 'templates/scene/cornerH.html',
-    'templates/scene-cornerV.html': 'templates/scene/cornerV.html',
-
-    //annotation:
-    'templates/transcript-default.html': 'templates/item/transcript.html',
-    'templates/transcript-withthumbnail.html': 'templates/item/transcript-withthumbnail.html',
-    'templates/transcript-withthumbnail-alt.html': 'templates/item/transcript-withthumbnail-alt.html',
-    'templates/text-h1.html': 'templates/item/text-h1.html',
-    'templates/text-h2.html': 'templates/item/text-h2.html',
-    'templates/text-pullquote-noattrib.html': 'templates/item/pullquote-noattrib.html',
-    'templates/text-pullquote.html': 'templates/item/pullquote.html',
-
-    // upload
-    'templates/transmedia-caption.html': 'templates/item/image-caption.html',
-    'templates/transmedia-image-default.html': 'templates/item/image.html',
-    'templates/transmedia-slidingcaption.html': 'templates/item/image-caption-sliding.html',
-    'templates/transmedia-image-fill.html': 'templates/item/image-fill.html',
-    'templates/transmedia-image-plain.html': 'templates/item/image-plain.html',
-    'templates/transmedia-linkonly.html': 'templates/item/image-linkonly.html',
-    'templates/transmedia-thumbnail.html': 'templates/item/image-thumbnail.html',
-
-    //link
-    'templates/transmedia-link-default.html': 'templates/item/link.html',
-    'templates/transmedia-link-frameicide.html': 'templates/item/link.html',
-    'templates/transmedia-link-noembed.html': 'templates/item/link.html',
-    'templates/transmedia-link-embed.html': 'templates/item/link-embed.html',
-    'templates/transmedia-link-youtube.html': 'templates/item/link.html',
-    'templates/transmedia-embed-youtube.html': 'templates/item/link-embed.html',
-
-    // was used internally in v3 player, never exposed to authors so shouldn't appear BUT YOU NEVER KNOW:
-    'templates/transmedia-link-icon.html': 'templates/item/link.html',
-
-    // (from old sxs demo; can delete later)
-    // "templates/upload-demo-inline.html": "templates/item/debug.html",
-    // "templates/upload-demo.html": "templates/item/debug.html",
-
-    //questions
-    'templates/question-mc.html': 'templates/item/question-mc.html',
-    'templates/question-mc-image-left.html': 'templates/item/question-mc-image-left.html',
-    'templates/question-mc-image-right.html': 'templates/item/question-mc-image-right.html',
-    'templates/sxs-question.html': 'templates/item/sxs-question.html'
-  };
-
   // svc.deriveFoo() are for efficiency precalculations.
   // Input API data, output API data plus clientside-only convenience variables.
   // Should call this after making any changes to the underlying data.
@@ -509,29 +452,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       if (event.templateUrl.match(/frameicide/)) {
         event.targetTop = true;
       }
-    }
-
-    // both scenes and items.  Do this last for now, since we're doing some ugly string matching against the old templateUrl:
-    if (updateTemplates[event.templateUrl]) {
-      event.origTemplateUrl = event.templateUrl;
-      event.templateUrl = updateTemplates[event.templateUrl];
-
-      // coerce old image-plain background images into image-fill:
-      if (!event.isContent && event.templateUrl === 'templates/item/image-plain.html') {
-        event.templateUrl = 'templates/item/image-fill.html';
-      }
-      // hack for old authoring tool quirk:
-      // if (event.templateUrl === "templates/item/image-plain.html") {
-      // 	console.log('adding timestamp none!!');
-      // 	if (event.styles) {
-      // 		event.styles.push("timestampNone");
-      // 	} else {
-      // 		event.styles = ["timestampNone"];
-      // 	}
-      // }
-    } else {
-      // console.log("Keeping same templateUrl:", event.templateUrl);
-      event.origTemplateUrl = event.templateUrl;
     }
 
     // Finally one more super-fragile HACK for producer:

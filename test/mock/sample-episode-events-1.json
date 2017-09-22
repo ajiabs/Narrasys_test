@@ -1843,7 +1843,6 @@ var mockEpisodeEvents1 = [{
 	"type": "Scene",
 	"episode_id": "54c9551e41f6df9359000060",
 	"producerItemType": "scene",
-	"templateUrl": "templates/scene/2colL.html"
 }, {
 	"_id": "54ee567127f858e3f900005e",
 	"_type": "Plugin",

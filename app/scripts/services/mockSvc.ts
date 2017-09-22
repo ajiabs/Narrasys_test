@@ -85,8 +85,6 @@ export default function mockSvc(modelSvc) {
     var scenetemplateurls = [
       "templates/scene/cornerH.html",
       "templates/scene/cornerV.html",
-      "templates/scene/2colL.html",
-      "templates/scene/2colR.html",
       "templates/scene/centered.html",
       "templates/scene/1col.html"
     ];
@@ -215,7 +213,6 @@ export default function mockSvc(modelSvc) {
       "type": "Link",
       "episode_id": epId,
       "cur_episode_id": epId,
-      "templateUrl": "templates/item/link-withimage.html",
       "layouts": ["inline"],
       "styles": ["timestampNone"],
       "isContent": true,

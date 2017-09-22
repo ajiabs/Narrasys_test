@@ -1,7 +1,10 @@
 // TODO: load and resolve categories
 
 
-import { createInstance, IAsset, IEpisode, IEvent, ILayout, IStyle, ITemplate } from '../models';
+import {
+  createInstance, IAsset, IEpisode, IEvent, IItemTemplate, ILayout, ILayoutTemplate, IStyle,
+  ITemplate
+} from '../models';
 import { IEmailFields, IEpisodeTheme, Partial } from '../interfaces';
 import { pick } from './ittUtils';
 /**
@@ -1176,11 +1179,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     if (evt._type === 'Chapter') {
       return prepped;
     }
-    var template = svc.readCache('template', 'url', evt.templateUrl);
+    const template = svc.readCache('template', 'url', evt.templateUrl) as ILayoutTemplate | IItemTemplate;
     if (template) {
       prepped.template_id = template.id;
-    } else {
-      prepped.template_id = reverseTemplateUpdate(evt.templateUrl);
     }
     if (prepped.template_id) {
       return prepped;
@@ -1264,63 +1265,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         data: 'Tried to store a template with no ID: ' + epData.template_id
       });
       return null;
-    }
-  };
-
-  var reverseTemplateUpdate = function (templateUrl) {
-    // HACK: this reverses the template versioning done in modelSvc
-    // TODO: can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
-    var reverseTemplates = {
-      // episodes
-      // 'templates/episode/episode.html': 'templates/episode-default.html',
-      // 'templates/episode/eliterate.html': 'templates/episode-eliterate.html',
-      // 'templates/episode/ewb.html': 'templates/episode-ewb.html',
-      // 'templates/episode/gw.html': 'templates/episode-gw.html',
-      // 'templates/episode/purdue.html': 'templates/episode-purdue.html',
-      // 'templates/episode/story.html': 'templates/episode-tellingstory.html',
-
-      // annotation
-      'templates/item/transcript.html': 'templates/transcript-default.html',
-      'templates/item/transcript-withthumbnail.html': 'templates/transcript-withthumbnail.html',
-      'templates/item/transcript-withthumbnail-alt.html': 'templates/transcript-withthumbnail-alt.html',
-      'templates/item/text-h1.html': 'templates/text-h1.html',
-      'templates/item/text-h2.html': 'templates/text-h2.html',
-      'templates/item/pullquote-noattrib.html': 'templates/text-pullquote-noattrib.html',
-      'templates/item/pullquote.html': 'templates/text-pullquote.html',
-
-      // upload
-      'templates/item/image.html': 'templates/transmedia-image-default.html',
-      'templates/item/image-caption.html': 'templates/transmedia-caption.html',
-      'templates/item/image-caption-sliding.html': 'templates/transmedia-slidingcaption.html',
-      'templates/item/image-fill.html': 'templates/transmedia-image-fill.html',
-      'templates/item/image-plain.html': 'templates/transmedia-image-plain.html',
-      'templates/item/image-linkonly.html': 'templates/transmedia-linkonly.html',
-      'templates/item/image-thumbnail.html': 'templates/transmedia-thumbnail.html',
-
-      //link
-      'templates/item/link.html': 'templates/transmedia-link-default.html',
-      'templates/item/link-embed.html': 'templates/transmedia-link-embed.html',
-      'templates/item/sxs-link.html': 'templates/sxs-link.html',
-
-      //scene
-      'templates/scene/1col.html': 'templates/scene-1col.html',
-      'templates/scene/2colL.html': 'templates/scene-2colL.html',
-      'templates/scene/2colR.html': 'templates/scene-2colR.html',
-      'templates/scene/centered.html': 'templates/scene-centered.html',
-      'templates/scene/cornerH.html': 'templates/scene-cornerH.html',
-      'templates/scene/cornerV.html': 'templates/scene-cornerV.html',
-
-      //question
-      'templates/item/question-mc.html': 'templates/question-mc.html',
-      'templates/item/question-mc-image-left.html': 'templates/question-mc-image-left.html',
-      'templates/item/question-mc-image-right.html': 'templates/question-mc-image-right.html',
-      'templates/item/sxs-question.html': 'templates/sxs-question.html'
-    };
-    if (reverseTemplates[templateUrl]) {
-      var template = svc.readCache('template', 'url', reverseTemplates[templateUrl]);
-      return template.id;
-    } else {
-      return false;
     }
   };
 

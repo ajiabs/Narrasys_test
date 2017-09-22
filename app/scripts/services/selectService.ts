@@ -43,8 +43,6 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
     centered: 'templates/scene/centered.html',      			//Center 1
     centeredPro: 'templates/scene/centeredPro.html',			//Center 2
     '1col': 'templates/scene/1col.html',						//Center 3
-    '2colL': 'templates/scene/2colL.html',						//OLD two cols
-    '2colR': 'templates/scene/2colR.html',						//Old Two Cols mirrored
     mirroredTwoCol: 'templates/scene/mirrored-twocol.html', 	//Split 2
     cornerV: 'templates/scene/cornerV.html',               		//Split 1
     centerVV: 'templates/scene/centerVV.html',             		//Split 3
@@ -153,8 +151,6 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
         itemForm.position = itemForm.position || 'fill'; //P1-A
         item.layouts = item.layouts || ['windowBg'];
         break;
-      case '2colL':
-      case '2colR':
       case 'mirroredTwoCol':
         _displaySelectVisibility(true);
         _select.display = [
@@ -357,13 +353,6 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
           {url: _scenes.pip, name: 'Split 6 (TM / V\u2022TS\u2022ANT)'}
         ];
 
-        if (_userHasRole('admin')) {
-          scenes.push(
-            {url: _scenes['2colL'], name: 'OLD Two Columns'},
-            {url: _scenes['2colR'], name: 'OLD Two Columns (mirrored)'}
-          );
-        }
-
         return scenes;
       case 'transcript':
         _speakerFieldVisibility(true);
@@ -396,7 +385,6 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
           {url: 'templates/item/link.html', name: 'Link'},
           {url: 'templates/item/link-withimage-notitle.html', name: 'Link - hide title'},
           {url: 'templates/item/link-modal-thumb.html', name: 'Link modal'},
-          // {url: 'templates/item/link-withimage.html', name: 'Link with image'},
           {url: 'templates/item/link-embed.html', name: 'Embedded link'}
         ];
         if (_userHasRole('admin')) {
@@ -519,24 +507,6 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
               item.layouts[1] = _D3.b.value;
             }
             break;
-          case 'templates/scene/2colL.html': // Two Columns
-          case 'templates/scene/2colR.html': //Two Columns mirrored
-            _displaySelectVisibility(true);
-            _videoPositionSelectVisibility(true);
-            _select.video = [
-              {value: '', name: 'Video Centered'},
-              {value: 'videoLeft', name: 'Video on Left'},
-              {value: 'videoRight', name: 'Video on Right'}
-            ];
-            _select.display = [
-              {value: _D3.a.value, name: _D3.a.name},
-              {value: _D3.b.value, name: _D3.b.name}
-            ];
-            if (isInline) {
-              item.layouts[0] = ''; //P3
-              item.layouts[1] = _D3.b.value;
-            }
-            break;
         }
         break;
       case 'link':
@@ -558,7 +528,6 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
 
         switch (item.templateUrl) {
           case 'templates/item/link.html':
-          case 'templates/item/link-withimage.html':
           case 'templates/item/link-withimage-notitle.html':
           case 'templates/item/link-modal-thumb.html':
             _imageFieldVisibility(true);
