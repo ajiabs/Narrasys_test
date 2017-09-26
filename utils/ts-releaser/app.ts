@@ -91,7 +91,8 @@ function confirmMasterBranch(buildType: string): Promise<void> {
 }
 
 function getCurrentBranchName(): Promise<string> {
-  return runCmd('git symbolic-ref --short HEAD');
+  return runCmd('git symbolic-ref --short HEAD')
+    .then((branch: string) => branch.trim());
 }
 
 export function showGitStatus(): Promise<string> {
