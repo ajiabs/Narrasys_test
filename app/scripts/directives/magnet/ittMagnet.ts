@@ -46,7 +46,7 @@ export default function ittMagnet($rootScope, $timeout, appState, playbackServic
           // layouts and when scrolling in review mode.
           // for iOS devices, rely on onInit() to set BCR on layout changes and watch the view mode instead
           // to handle repositioning the video when changing view modes, changing video position in producer etc....
-          $timeout(() => changeMagnet(), 1000);
+          changeMagnet();
           $watches.appState = scope.$watchCollection(
             watchAppState,
             (newMode: any, oldMode: any) => {
