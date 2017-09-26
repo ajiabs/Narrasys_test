@@ -68,7 +68,7 @@ const INITIAL_APP_STATE = {
   isFramed: (window.parent != window), // are we inside an iframe?  Don't use !== because IE8 gets it wrong
   isTouchDevice: (/iPad|iPod|iPhone/.test(navigator.platform) || /Android/.test(navigator.userAgent)),
   isIEOrEdge: (/Trident|Edge/.test(navigator.userAgent) || /Trident|Edge/.test(navigator.platform)),
-  isIPhone: (navigator.platform.match(/iPod|iPhone/)), // iPhone has weird video handling, see  timelineSvc
+  isIPhone: /iPod|iPhone/.test(navigator.platform), // iPhone has weird video handling, see  timelineSvc
   iOSVersion: '',
   windowWidth: 0,
   windowHeight: 0,

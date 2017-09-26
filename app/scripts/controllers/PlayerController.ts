@@ -1,6 +1,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 import {IModelSvc, IDataSvc} from '../interfaces';
+import { JUMP_TO_MAGNET, UPDATE_MAGNET } from '../constants';
 PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService'];
 
 export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService) {
@@ -17,7 +18,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
     if (newMode === 'review') {
       // magnet animation looks too choppy when loading review mode; skip it:
       $timeout(function () {
-        $rootScope.$emit('magnet.jumpToMagnet');
+        $rootScope.$emit(UPDATE_MAGNET);
       });
       appState.autoscroll = true;
       appState.autoscrollBlocked = false;
@@ -139,6 +140,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
             modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
             timelineSvc.init(appState.episodeId);
             $scope.loading = false;
+            $rootScope.$emit(UPDATE_MAGNET);
           }
         });
       } else {
