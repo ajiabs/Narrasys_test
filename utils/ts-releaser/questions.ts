@@ -1,4 +1,6 @@
-export const versionQuestions = [
+import { Question } from 'inquirer';
+
+export const versionQuestions: Question[] = [
   {
     type: 'list',
     name: 'type',
@@ -15,7 +17,7 @@ export const versionQuestions = [
   }
 ];
 
-export const finalVersionQuestions = [
+export const finalVersionQuestions: Question[] = [
   {
     type: 'confirm',
     name: 'finalVersion',
@@ -24,7 +26,7 @@ export const finalVersionQuestions = [
   }
 ];
 
-export const gitQuestions = [
+export const gitQuestions: Question[] = [
   {
     type: 'confirm',
     name: 'add',
@@ -33,9 +35,27 @@ export const gitQuestions = [
   },
   {
     type: 'confirm',
-    name: 'commitAndTag',
-    message: 'commit, tag, and release build: ',
+    name: 'commitChanges',
+    // message: 'commit, tag, and release build: ',
+    message: 'commit changes?',
     default: false
+  },
+  {
+    type: 'confirm',
+    name: 'pushChanges',
+    // message: 'commit, tag, and release build: ',
+    message: 'push changes?',
+    default: false
+  },
+  {
+    type: 'confirm',
+    name: 'addTag',
+    message: 'add tag?'
+  },
+  {
+    type: 'confirm',
+    name: 'pushTag',
+    message: 'push tag?'
   },
   {
     type: 'confirm',
