@@ -50,17 +50,20 @@ export const gitQuestions: Question[] = [
   {
     type: 'confirm',
     name: 'addTag',
-    message: 'add tag?'
+    message: 'add tag?',
+    default: true
   },
   {
     type: 'confirm',
     name: 'pushTag',
-    message: 'push tag?'
+    message: 'push tag?',
+    default: true
   },
   {
     type: 'confirm',
     name: 'confirmOnMaster',
     message: 'You are not on the master branch, are you certain you want to continue?' +
-    ' (typically prod releases are off master)'
+    ' (typically prod releases are off master)',
+    default: true
   }
 ];
