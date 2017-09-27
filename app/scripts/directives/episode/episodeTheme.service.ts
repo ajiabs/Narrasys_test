@@ -2,7 +2,7 @@ import * as WebFont from 'webfontloader';
 import { IFont, IEpisodeTemplate } from '../../models';
 
 export interface IEpisodeTheme {
-  setTheme(template: IEpisodeTemplate): void;
+  setTheme(template: IEpisodeTemplate): ng.IPromise<void>;
   loadThemeStyleSheet(templateId: string): ng.IPromise<void>;
   loadFontFamily(font: IFont): void;
 }
@@ -10,6 +10,7 @@ export interface IEpisodeTheme {
 export class EpisodeTheme implements IEpisodeTheme {
   linkId: string = 'np-template-theme';
   linkTag: HTMLLinkElement;
+  private imgElm: HTMLImageElement;
   static Name = 'episodeTheme'; // tslint:disable-line
   static $inject = ['$q', 'config'];
   constructor(
@@ -18,19 +19,30 @@ export class EpisodeTheme implements IEpisodeTheme {
     //
   }
 
-  setTheme(template: IEpisodeTemplate): void {
-    this.loadThemeStyleSheet(template.id);
-    this.loadFontFamily(template.fonts);
+  setTheme(template: IEpisodeTemplate): ng.IPromise<void> {
+    return this.loadThemeStyleSheet(template.id)
+      .then(() => this.loadFontFamily(template.fonts));
   }
 
   loadThemeStyleSheet(templateId: string): ng.IPromise<void> {
+    this.imgElm = document.createElement('img');
+
     return this.$q((resolve) => {
       if (this.linkTag != null) {
         this._changeHref(templateId);
       } else {
         this._appendLinkTag(templateId);
       }
-      this.linkTag.onload = resolve;
+
+      this.imgElm.src = this.linkTag.href;
+      document.body.appendChild(this.imgElm);
+
+      this.imgElm.onerror = () => {
+        // https://www.viget.com/articles/js-201-run-a-function-when-a-stylesheet-finishes-loading
+        document.body.removeChild(this.imgElm);
+        resolve(void 0);
+      };
+
     });
   }
 

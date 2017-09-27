@@ -624,7 +624,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
    startingscreen extends from below zero to 0.01s
 
    */
-  svc.resolveEpisodeEvents = function (epId) {
+  svc.resolveEpisodeEvents = function (epId: string): IEpisode {
     // console.log("resolveEpisodeEvents");
     //Build up child arrays: episode->scene->item
     var scenes = [];

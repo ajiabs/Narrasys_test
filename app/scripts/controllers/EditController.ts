@@ -735,8 +735,8 @@ export default function EditController(
 
   $scope.updateEpisodeTemplate = updateEpisodeTemplate;
   function updateEpisodeTemplate($data: { episode: IEpisode, templateId: string }) {
-    $scope.episode = episodeEdit.updateEpisodeTemplate($data.episode, $data.templateId);
-
+    episodeEdit.updateEpisodeTemplate($data.episode, $data.templateId)
+      .then((episode: IEpisode) => $scope.episode = episode);
   }
 
 }

@@ -2,11 +2,12 @@
 
 import {IModelSvc, IDataSvc} from '../interfaces';
 import { UPDATE_MAGNET } from '../constants';
-PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService'];
+PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService', 'episodeEdit'];
 
-export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService) {
+export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService, episodeEdit) {
   // console.log("playerController", $scope);
 
+  $scope.episodeEdit = episodeEdit;
   $scope.viewMode = function (newMode) {
     appState.viewMode = newMode;
     analyticsSvc.captureEpisodeActivity("modeChange", {

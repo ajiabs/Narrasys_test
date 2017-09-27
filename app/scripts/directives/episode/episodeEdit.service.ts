@@ -4,10 +4,12 @@ import { IDataSvc, IEpisodeTheme, IModelSvc } from '../../interfaces';
 import modelSvc from '../../services/modelSvc';
 
 export interface IEpisodeEditService {
-  updateEpisodeTemplate(episode: IEpisode, templateId: string): IEpisode;
+  sheetLoading: boolean;
+  updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode>;
 }
 
 export class EpisodeEditService implements IEpisodeEditService{
+  private _sheetLoading = false;
   static Name = 'episodeEdit'; // tslint:disable-line
   static $inject = ['modelSvc', 'dataSvc', 'episodeTheme'];
   constructor(
@@ -17,7 +19,16 @@ export class EpisodeEditService implements IEpisodeEditService{
    //
   }
 
-  updateEpisodeTemplate(episode: IEpisode, templateId: string): IEpisode {
+  get sheetLoading() {
+    return this._sheetLoading;
+  }
+
+  set sheetLoading(val: boolean) {
+    this._sheetLoading = val;
+  }
+
+  updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode> {
+    this.sheetLoading = true;
     const template = this.dataSvc.getTemplate(templateId) as IEpisodeTemplate;
     const copy = createInstance<IEpisode>('Episode', episode);
     copy.template = template;
@@ -25,8 +36,9 @@ export class EpisodeEditService implements IEpisodeEditService{
     const derived = this.modelSvc.deriveEpisode(copy);
     this.modelSvc.cache('episode', derived); // because resolveEpisodeEvents pulls from cache by ID
     const resolved = this.modelSvc.resolveEpisodeEvents(derived._id); // needed for template or style changes
-    this.episodeTheme.setTheme(template);
-    return resolved;
+    return this.episodeTheme.setTheme(template)
+      .then(() => this.sheetLoading = false)
+      .then(() => resolved);
   }
 
 }
