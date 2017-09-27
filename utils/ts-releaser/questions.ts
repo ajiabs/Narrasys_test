@@ -31,21 +31,21 @@ export const gitQuestions: Question[] = [
     type: 'confirm',
     name: 'add',
     message: 'stage changes?',
-    default: false
+    default: true
   },
   {
     type: 'confirm',
     name: 'commitChanges',
     // message: 'commit, tag, and release build: ',
     message: 'commit changes?',
-    default: false
+    default: true
   },
   {
     type: 'confirm',
     name: 'pushChanges',
     // message: 'commit, tag, and release build: ',
     message: 'push changes?',
-    default: false
+    default: true
   },
   {
     type: 'confirm',
