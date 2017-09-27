@@ -17,12 +17,12 @@ export interface IModelSvc {
   getCustomersAsArray(): any[];
   getNarrativesAsArray(): any[];
   cache(cacheType: string, item: any): void;
-  deriveEpisode(episode: any): void;
+  deriveEpisode(episode: any): IEpisode;
   deriveAsset(asset: any): any;
   deriveContainer(container: any): any;
   deriveEvent(event: Partial<NEvent>): NEvent;
   setLanguageStrings(): void;
-  resolveEpisodeEvents(epId: string): void;
+  resolveEpisodeEvents(epId: string): IEpisode;
   resolveEpisodeContainers(epId: string): void;
   episode(epId: string): any;
   episodeEvents(epId: string): NEvent[];
@@ -904,6 +904,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
       event.styleCss = event.styleCss.replace(/timestampInline/, '');
     });
+
+    return episode;
   };
 
   svc.resolveEpisodeContainers = function (epId) {

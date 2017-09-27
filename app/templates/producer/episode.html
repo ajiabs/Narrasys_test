@@ -90,7 +90,7 @@
         </div>
         <div class="ittTab" itt-tab title="Style">
           <!-- begin styles tab -->
-          <np-template-select data="episode"></np-template-select>
+          <np-template-select data="episode" on-episode-edit="updateEpisodeTemplate($data)"></np-template-select>
           <!--<itt-typography-select></itt-typography-select>-->
           <!--<itt-color-select></itt-color-select>-->
           <itt-timestamp-select></itt-timestamp-select>

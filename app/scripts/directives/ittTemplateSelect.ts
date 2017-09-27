@@ -2,7 +2,7 @@
  * Created by githop on 6/30/16.
  */
 import { IModelSvc } from '../interfaces';
-import { IAnnotation, IEpisode, IEvent, IScene } from '../models';
+import { createInstance, IAnnotation, IEpisode, IEvent, IScene } from '../models';
 
 const TEMPLATE = `
 <div class="field" ng-if="$ctrl.isVisible">
@@ -19,6 +19,7 @@ const TEMPLATE = `
     <select
       ng-if="$ctrl.context === 'episode'"
 		  ng-model="$ctrl.data.template_id"
+		  ng-change="$ctrl.onEpisodeTemplateChange()"
 		  ng-options="option.id as option.name for option in $ctrl.data.templateOpts">
     </select>
 	</div>
@@ -27,6 +28,7 @@ const TEMPLATE = `
 interface ITemplateSelectBindings extends ng.IComponentController {
   data: IEvent | IEpisode;
   itemForm?: ng.IFormController;
+  onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
 }
 
 class TemplateSelectController implements ITemplateSelectBindings {
@@ -35,6 +37,7 @@ class TemplateSelectController implements ITemplateSelectBindings {
   isAnnotation: boolean;
   isEpisode: boolean;
   context: 'episode' | 'event' = 'event';
+  onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
   static $inject = ['selectService', 'modelSvc'];
   constructor(public selectService, public modelSvc: IModelSvc) {
     //
@@ -81,12 +84,23 @@ class TemplateSelectController implements ITemplateSelectBindings {
     this.selectService.onSelectChange(item, form);
   }
 
+  onEpisodeTemplateChange() {
+    const dataToEmit = {
+      $data: {
+        episode: this.data as IEpisode,
+        templateId: this.data.template_id
+      }
+    };
+    this.onEpisodeEdit(dataToEmit);
+  }
+
 }
 
 export class TemplateSelect implements ng.IComponentOptions {
   bindings: any = {
     data: '=',
-    itemForm: '=?'
+    itemForm: '=?',
+    onEpisodeEdit: '&'
   };
   template: string = TEMPLATE;
   controller = TemplateSelectController;

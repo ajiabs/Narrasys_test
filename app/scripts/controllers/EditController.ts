@@ -1,10 +1,39 @@
 'use strict';
 import { createInstance, IEpisode } from '../models';
-import { IEpisodeTheme } from '../directives/episode/episodeTheme.service';
+import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../interfaces';
 
-EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService', 'episodeTheme'];
+EditController.$inject = [
+  '$scope',
+  '$rootScope',
+  '$timeout',
+  '$window',
+  'selectService',
+  'appState',
+  'dataSvc',
+  'modelSvc',
+  'timelineSvc',
+  'authSvc',
+  'MIMES',
+  'playbackService',
+  'episodeTheme',
+  'episodeEdit'
+];
 
-export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackService, episodeTheme: IEpisodeTheme) {
+export default function EditController(
+  $scope: ng.IScope,
+  $rootScope: ng.IRootScopeService,
+  $timeout: ng.ITimeoutService,
+  $window,
+  selectService,
+  appState,
+  dataSvc: IDataSvc,
+  modelSvc: IModelSvc,
+  timelineSvc: ITimelineSvc,
+  authSvc,
+  MIMES,
+  playbackService,
+  episodeTheme: IEpisodeTheme,
+  episodeEdit: IEpisodeEditService) {
   $scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
   // HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -703,5 +732,12 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
     angular.extend(base, stub);
     return createInstance(stub._type, base);
   };
+
+  $scope.updateEpisodeTemplate = updateEpisodeTemplate;
+  function updateEpisodeTemplate($data: { episode: IEpisode, templateId: string }) {
+    console.log('what the fucK', $data);
+    $scope.episode = episodeEdit.updateEpisodeTemplate($data.episode, $data.templateId);
+
+  }
 
 }
