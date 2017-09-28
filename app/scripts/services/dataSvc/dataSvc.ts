@@ -4,9 +4,9 @@
 import {
   createInstance, IAsset, IEpisode, IEvent, IItemTemplate, ILayout, ILayoutTemplate, IStyle,
   ITemplate
-} from '../models';
-import { IEmailFields, IEpisodeTheme, Partial } from '../interfaces';
-import { pick } from './ittUtils';
+} from '../../models';
+import { IEmailFields, IEpisodeTheme, Partial } from '../../interfaces';
+import { pick } from '../ittUtils';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc

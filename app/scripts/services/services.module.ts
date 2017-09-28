@@ -5,20 +5,20 @@
 import 'angular';
 
 import {AppState} from './appState';
-import authSvc from './authSvc';
+import authSvc from './authSvc/authSvc';
 import awsSvc from './awsSvc';
 import config from './config';
-import dataSvc from './dataSvc';
+import dataSvc from './dataSvc/dataSvc';
 import errorSvc from './errorSvc';
 import imageResize from './imageResizeSvc';
 import {ittUtils} from './ittUtils';
 import mockSvc from './mockSvc';
-import modelSvc from './modelSvc';
+import modelSvc from './modelSvc/modelSvc';
 import playbackService from './playbackService/playbackService';
 import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
 import selectService from './selectService';
-import timelineSvc from './timelineSvc';
+import timelineSvc from './timelineSvc/timelineSvc';
 import urlService from './urlService';
 import playerManagerCommons from './basePlayerManager/playerManagerCommons';
 import html5PlayerManager from './html5/html5PlayerManager.svc';
@@ -37,7 +37,7 @@ import {
 
 import {UploadsService} from './uploadsService';
 import {ValidationService} from './validation.svc';
-import {AnalyticsSvc} from './analyticsSvc';
+import {AnalyticsSvc} from './analyticsSvc/analyticsSvc';
 
 let servicesModule = angular.module('itt.services', [])
   .service('appState', AppState)

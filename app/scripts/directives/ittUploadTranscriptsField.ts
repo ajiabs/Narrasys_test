@@ -1,5 +1,5 @@
 import {IModelSvc, Partial} from '../interfaces';
-import {IDataSvc} from '../services/dataSvc';
+import {IDataSvc} from '../services/dataSvc/dataSvc';
 import {existy} from '../services/ittUtils';
 /**
  * Created by githop on 1/31/17.

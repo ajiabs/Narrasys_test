@@ -1,7 +1,7 @@
 
 import { createInstance, IEpisode, IEpisodeTemplate } from '../../models';
 import { IDataSvc, IEpisodeTheme, IModelSvc } from '../../interfaces';
-import modelSvc from '../../services/modelSvc';
+import modelSvc from '../../services/modelSvc/modelSvc';
 
 export interface IEpisodeEditService {
   sheetLoading: boolean;

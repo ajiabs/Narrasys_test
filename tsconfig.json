@@ -6,7 +6,16 @@
 		"sourceMap": true,
 		"strictNullChecks": false,
     "lib": ["es6", "dom"],
-    "types": ["angular", "angular-animate", "jquery", "node", "angular-ui-tree"]
+    "types": [
+      "angular",
+      "angular-mocks",
+      "webpack",
+      "jasmine",
+      "angular-animate",
+      "jquery",
+      "node",
+      "angular-ui-tree"
+    ]
 	},
 	"exclude": [
 		"node_modules"
