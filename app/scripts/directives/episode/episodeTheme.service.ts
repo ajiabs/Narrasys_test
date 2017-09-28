@@ -25,31 +25,33 @@ export class EpisodeTheme implements IEpisodeTheme {
   }
 
   loadThemeStyleSheet(templateId: string): ng.IPromise<void> {
-    this.imgElm = document.createElement('img');
+    if (this.linkTag != null) {
+      this._changeHref(templateId);
+    } else {
+      this._appendLinkTag(templateId);
+    }
 
-    return this.$q((resolve) => {
-      if (this.linkTag != null) {
-        this._changeHref(templateId);
-      } else {
-        this._appendLinkTag(templateId);
-      }
-
-      this.imgElm.src = this.linkTag.href;
-      document.body.appendChild(this.imgElm);
-
-      this.imgElm.onerror = () => {
-        // https://www.viget.com/articles/js-201-run-a-function-when-a-stylesheet-finishes-loading
-        document.body.removeChild(this.imgElm);
-        resolve(void 0);
-      };
-
-    });
+    return this._imgLoadEvtHack();
   }
 
   loadFontFamily(font: IFont): void {
     if (font != null) {
       WebFont.load(font);
     }
+  }
+
+  private _imgLoadEvtHack(): ng.IPromise<void> {
+    // https://www.viget.com/articles/js-201-run-a-function-when-a-stylesheet-finishes-loading
+    return this.$q((resolve) => {
+      this.imgElm = document.createElement('img');
+      this.imgElm.src = this.linkTag.href;
+      document.body.appendChild(this.imgElm);
+
+      this.imgElm.onerror = () => {
+        document.body.removeChild(this.imgElm);
+        return resolve(void 0);
+      };
+    });
   }
 
   private _changeHref(id): void {
