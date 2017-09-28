@@ -1,7 +1,7 @@
 import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../../interfaces';
 
 const TEMPLATE = `
-<div class="episode episode-template" ng-class="episode.templateCss" ng-hide="episodeEdit.sheetLoading">
+<div class="episode episode-template" ng-class="episode.templateCss" ng-hide="episodeTheme.sheetLoading">
 
   <div
     class="fill"

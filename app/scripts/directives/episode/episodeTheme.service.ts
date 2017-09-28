@@ -2,6 +2,7 @@ import * as WebFont from 'webfontloader';
 import { IFont, IEpisodeTemplate } from '../../models';
 
 export interface IEpisodeTheme {
+  sheetLoading: boolean;
   setTheme(template: IEpisodeTemplate): ng.IPromise<void>;
   loadThemeStyleSheet(templateId: string): ng.IPromise<void>;
   loadFontFamily(font: IFont): void;
@@ -11,12 +12,21 @@ export class EpisodeTheme implements IEpisodeTheme {
   linkId: string = 'np-template-theme';
   linkTag: HTMLLinkElement;
   private imgElm: HTMLImageElement;
+  private _sheetLoading: boolean = false;
   static Name = 'episodeTheme'; // tslint:disable-line
   static $inject = ['$q', 'config'];
   constructor(
     private $q: ng.IQService,
     private config) {
     //
+  }
+
+  get sheetLoading() {
+    return this._sheetLoading;
+  }
+
+  set sheetLoading(val: boolean) {
+    this._sheetLoading = val;
   }
 
   setTheme(template: IEpisodeTemplate): ng.IPromise<void> {
@@ -42,6 +52,7 @@ export class EpisodeTheme implements IEpisodeTheme {
 
   private _imgLoadEvtHack(): ng.IPromise<void> {
     // https://www.viget.com/articles/js-201-run-a-function-when-a-stylesheet-finishes-loading
+    this.sheetLoading = true;
     return this.$q((resolve) => {
       this.imgElm = document.createElement('img');
       this.imgElm.src = this.linkTag.href;
@@ -49,6 +60,7 @@ export class EpisodeTheme implements IEpisodeTheme {
 
       this.imgElm.onerror = () => {
         document.body.removeChild(this.imgElm);
+        this.sheetLoading = false;
         return resolve(void 0);
       };
     });
