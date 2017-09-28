@@ -84,7 +84,7 @@ import { EnableSocialshare, IttSocialShare } from './socialshare/index';
 import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
 import { ittPlayerContainer } from './ittPlayerContainer';
-import { Copyright } from './npCopyright';
+import { Copyright } from './copyright/npCopyright';
 import { EpisodeFooter } from './npEpisodeFooter';
 
 let directivesModule = angular.module('itt.directives', [])
