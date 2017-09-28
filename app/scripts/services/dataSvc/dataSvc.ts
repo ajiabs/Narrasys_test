@@ -1281,7 +1281,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
     return false;
   };
-  if (config.debugInBrowser || true) {
+  if (config.debugInBrowser) {
     // console.log("DataSvc:", svc);
     console.log('DataSvc cache:', dataCache);
   }

@@ -974,7 +974,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
   svc.episode = function (epId) {
     if (!svc.episodes[epId]) {
-      console.warn('called modelSvc.episode for a nonexistent ID', epId);
+      // console.warn('called modelSvc.episode for a nonexistent ID', epId);
     }
     return svc.episodes[epId];
   };
@@ -1023,7 +1023,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   svc.scene = function (sceneId) {
     // console.log("modelsvc.scene: ", sceneId);
     if (!svc.events[sceneId]) {
-      console.warn('called modelSvc.scene for a nonexistent ID', sceneId);
+      // console.warn('called modelSvc.scene for a nonexistent ID', sceneId);
     }
     return svc.events[sceneId];
   };
@@ -1158,7 +1158,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     var episode = svc.episodes[episodeId];
 
     if (!episode || !episode.scenes) {
-      console.warn('addEndingScreen called on an episode without scenes');
+      // console.warn('addEndingScreen called on an episode without scenes');
       return;
     }
 
@@ -1173,7 +1173,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     });
     var lastScene = episode.scenes[episode.scenes.length - 1];
     if (lastScene._id.match(/internal:endingscreen/)) {
-      console.error('Attempted to add an ending screen twice');
+      // console.error('Attempted to add an ending screen twice');
       return;
     }
 
