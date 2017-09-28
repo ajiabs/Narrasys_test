@@ -17,6 +17,15 @@ export const versionQuestions: Question[] = [
   }
 ];
 
+export const unitTests: Question[] = [
+  {
+    type: 'confirm',
+    name: 'runTests',
+    message: 'Run the unit test suite?',
+    default: false
+  }
+];
+
 export const finalVersionQuestions: Question[] = [
   {
     type: 'confirm',

@@ -14,6 +14,7 @@ import {
   showGitStatus,
   showVersionDiff,
   stageChanges,
+  tryWebpackTest,
   tryWebpackBuild
 } from './app';
 
@@ -27,6 +28,7 @@ async function buildApp(): Promise<void> {
   initialGreeting(currentVersion);
   const buildTypeAnswer = await askBuildType();
   const releaseTypeAnswer = await handleBuildAnswer(buildTypeAnswer, versioner);
+  await tryWebpackTest(buildTypeAnswer.type);
   await tryWebpackBuild();
   await handleSourcemaps();
   await confirmVersionFile(releaseTypeAnswer.finalVersion);
