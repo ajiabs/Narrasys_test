@@ -62,7 +62,7 @@
         </div>
 
         <div ng-if="timelineUnderEdit != null">
-          <itt-timeline-editor
+          <np-timeline-editor
             class="tl__editor"
             timeline="timelineUnderEdit"
             narrative="narrative"
@@ -70,7 +70,7 @@
             on-done="doneEditingTimeline()"
             on-update="editorAction(t, timelineUnderEdit)"
             on-delete="deleteTimeline(t)">
-          </itt-timeline-editor>
+          </np-timeline-editor>
         </div>
 
       </itt-modal>
