@@ -24,7 +24,7 @@
 
 
  */
-import {createInstance, INarrative} from '../models';
+import { createInstance, IEpisode, INarrative, ITempTimeline, ITimeline } from '../models';
 export default function ittNarrative() {
   return {
     templateUrl: 'templates/narrative/default.html',
@@ -258,7 +258,7 @@ export default function ittNarrative() {
         function persistTmpTimeline(tl) {
           _updateSortOrder(tl.index, $scope.narrative.timelines);
           dataSvc.createChildEpisode({
-            parent_id: tl.parent_episode._id,
+            parent_id: tl.parent_episode._id
           })
             .then(storeChildEpisode)
             .then(handleEpisodeSegment)
@@ -270,20 +270,20 @@ export default function ittNarrative() {
             });
           }
 
-          function handleEpisodeSegment(config) {
-            var tlData = config.d;
-            var childEpisode = config.e;
+          function handleEpisodeSegment(config: {d: ITempTimeline, e: IEpisode}) {
+            const tlData = config.d;
+            const childEpisode = config.e;
             dataSvc.createEpisodeSegment(tlData._id, {
               episode_id: childEpisode._id,
               start_time: 0,
               end_time: tl.duration,
               sort_order: 0,
               timeline_id: tlData._id
-            }).then(function(segmentData) {
+            }).then((segmentData) => {
               tlData.episode_segments = [segmentData];
-              angular.forEach($scope.narrative.timelines, function(tl) {
+              angular.forEach($scope.narrative.timelines, (tl: ITempTimeline | ITimeline) =>  {
                 if (tl.sort_order === tlData.sort_order) {
-                  angular.extend(tl, tlData);
+                  angular.extend(tl, tlData, { isTemp: false });
                 }
               });
               $scope.tmpTimeline = null;

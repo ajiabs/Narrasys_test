@@ -57,7 +57,7 @@ import ittTab from './ittTab';
 import ittTemplateSelect from './ittTemplateSelect';
 import ittTimeField from './ittTimeField';
 import ittTimeline from './ittTimeline';
-import ittTimelineEditor from './ittTimelineEditor';
+import { TimelineEditor } from './npTimelineEditor';
 import ittTimestampSelect from './ittTimestampSelect';
 import ittTitleField from './ittTitleField';
 import ittToolbarStory from './ittToolbarStory';
@@ -144,7 +144,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittTemplateSelect', ittTemplateSelect)
   .directive('ittTimeField', ittTimeField)
   .directive('ittTimeline', ittTimeline)
-  .directive('ittTimelineEditor', ittTimelineEditor)
+  .component(TimelineEditor.Name, new TimelineEditor())
   .directive('ittTimestampSelect', ittTimestampSelect)
   .directive('ittTitleField', ittTitleField)
   .directive('ittToolbarStory', ittToolbarStory)
