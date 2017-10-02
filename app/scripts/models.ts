@@ -143,6 +143,13 @@ export class ITimeline {
   timeline_image_ids: string[] = [];
 }
 
+export class ITempTimeline extends ITimeline {
+  social_image_square?: any;
+  social_image_wide?: any;
+  isTemp: boolean;
+  index: number;
+}
+
 export class ICustomer {
   _id: string;
   name: ILangForm;

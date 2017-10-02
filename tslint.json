@@ -43,6 +43,7 @@
     "switch-default": false,
     "space-before-function-paren": [true, {"anonymous": "always"}],
     "no-angle-bracket-type-assertion": true,
-    "function-name": false
+    "function-name": false,
+    "prefer-array-literal": false
   }
 }
