@@ -1323,8 +1323,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       );
   }
 
-  svc.getEpisodeTemplatesByCustomerIds = getEpisodteTemplatesByCustomerIds;
-  function getEpisodteTemplatesByCustomerIds(custIds: string[]): ITemplateSelect[] {
+  svc.getEpisodeTemplatesByCustomerIds = getEpisodeTemplatesByCustomerIds;
+  function getEpisodeTemplatesByCustomerIds(custIds: string[]): ITemplateSelect[] {
     return svc.getTemplates()
       .reduce(
         (ts: ITemplateSelect[], t: IEpisodeTemplate) => {
