@@ -324,7 +324,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
           return dataSvc.getEpisodeTemplatesAdmin().sort(_sortAlpha);
         } else {
           const custIds = authSvc.getCustomerIdsFromRoles();
-          return dataSvc.getEpisodteTemplatesByCustomerIds(custIds).sort(_sortAlpha);
+          return dataSvc.getEpisodeTemplatesByCustomerIds(custIds).sort(_sortAlpha);
         }
 
       case 'scene':

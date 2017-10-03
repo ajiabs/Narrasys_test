@@ -87,7 +87,7 @@ export interface IDataSvc {
   sendSocialshareEmail(tlId:string, email: IEmailFields): ng.IPromise<void>;
   fetchTemplates(): ng.IPromise<ITemplate[]>;
   getEpisodeTemplatesAdmin(): ITemplateSelect[];
-  getEpisodteTemplatesByCustomerIds(custids: string[]): ITemplateSelect[];
+  getEpisodeTemplatesByCustomerIds(custids: string[]): ITemplateSelect[];
 }
 
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
@@ -1323,7 +1323,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       );
   }
 
-  svc.getEpisodteTemplatesByCustomerIds = getEpisodteTemplatesByCustomerIds;
+  svc.getEpisodeTemplatesByCustomerIds = getEpisodteTemplatesByCustomerIds;
   function getEpisodteTemplatesByCustomerIds(custIds: string[]): ITemplateSelect[] {
     return svc.getTemplates()
       .reduce(

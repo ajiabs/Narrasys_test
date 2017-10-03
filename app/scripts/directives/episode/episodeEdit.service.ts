@@ -35,7 +35,7 @@ export class EpisodeEditService implements IEpisodeEditService{
       'title': angular.copy(newContainer.name)
     };
     return this.dataSvc.fetchTemplates()
-      .then(() => this.dataSvc.getEpisodteTemplatesByCustomerIds([newContainer.customer_id]))
+      .then(() => this.dataSvc.getEpisodeTemplatesByCustomerIds([newContainer.customer_id]))
       .then((templates: any) => {
         // do template stuff...
         // if the customer does not have a custom template, use the unbranded one
