@@ -1,8 +1,9 @@
 /* For admin screen episode list */
-import {INarrative} from '../models';
-ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils'];
+import { IContainer } from '../models';
+import { IEpisodeEditService } from './episode/episodeEdit.service';
+ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils', 'episodeEdit'];
 
-export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils) {
+export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils, episodeEdit: IEpisodeEditService) {
   return {
     restrict: 'A',
     replace: false,
@@ -80,41 +81,22 @@ export default function ittContainer($timeout, $location, appState, modelSvc, re
         };
 
         scope.addContainer = function (container) {
-          var newContainer = {
+          const newContainer = {
             'customer_id': scope.container.customer_id,
             'parent_id': scope.container._id,
             'name': {
               en: angular.copy(scope.container.newContainerTitle)
             }
           };
-          dataSvc.createContainer(newContainer).then(function (newContainer) {
+          dataSvc.createContainer(newContainer).then((newContainer) => {
             console.log('Created container:', newContainer);
             if (scope.depth === 2) {
-              var newEpisode = {
-                'container_id': newContainer._id,
-                'title': angular.copy(newContainer.name)
-              };
-              dataSvc.getCommon().then(function () {
-                dataSvc.createEpisode(newEpisode).then(function (episode) {
-                  console.log('Created episode: ', episode);
-                  var newScene = {
-                    '_type': 'Scene',
-                    'title': {},
-                    'description': {},
-                    'templateUrl': 'templates/scene/1col.html',
-                    'start_time': 0,
-                    'end_time': 0,
-                    'episode_id': episode._id
-                  };
-
-                  dataSvc.storeItem(newScene);
-                  //will force a sort
-                }).then(function () {
-                  scope.onContainerAdd({$container: container});
-                });
-              });
+              return episodeEdit.addEpisodeToContainer(newContainer)
+                // onContainerAdd will force a sort
+                .then((container: IContainer) => scope.onContainerAdd({ $container: container }))
+                .catch(e => console.log('error adding episode to container!'));
             } else {
-              scope.onContainerAdd({$container: container});
+              scope.onContainerAdd({ $container: container });
             }
           });
           scope.container.newContainerTitle = '';

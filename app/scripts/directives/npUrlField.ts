@@ -92,7 +92,7 @@ class UrlFieldController implements IUrlFieldBindings {
   $onInit() {
     //
     this.eventUrl = this.data.url;
-    if (this.eventUrl !== 'https://') {
+    if (this.context !== 'episode' && this.eventUrl !== 'https://') {
       this._itemUrlValidationPipeline(this.eventUrl, this.data.url_status, this.context);
     }
   }

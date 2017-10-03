@@ -2,11 +2,11 @@
 
 
 import {
-  createInstance, IAsset, IEpisode, IEvent, IItemTemplate, ILayout, ILayoutTemplate, IStyle,
+  createInstance, IAsset, IEpisode, IEpisodeTemplate, IEvent, IItemTemplate, ILayout, ILayoutTemplate, IStyle,
   ITemplate
 } from '../../models';
 import { IEmailFields, IEpisodeTheme, Partial } from '../../interfaces';
-import { pick } from '../ittUtils';
+import { existy, intersection, pick } from '../ittUtils';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -30,6 +30,12 @@ import { pick } from '../ittUtils';
  * @requires mockSvc
  * @requires questionAnswersSvc
  */
+
+interface ITemplateSelect {
+  id: string;
+  name: string;
+  customer_ids: string[];
+}
 
 export interface IDataSvc {
   beginBackgroundTranslations(episodeId: string): any;
@@ -72,13 +78,16 @@ export interface IDataSvc {
   deleteItem(evtId): ng.IPromise<{}>;
   createAsset(containerId, asset): ng.IPromise<{}>;
   deleteAsset(assetId): ng.IPromise<{}>;
-  storeItem(evt): ng.IPromise<IEvent | boolean>;
+  storeItem(evt: IEvent): ng.IPromise<IEvent | boolean>;
   prepItemForStorage(evt): any;
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
   readCache(cache, field, val): object | boolean;
   getTemplates(): ITemplate[];
   getTemplate(id: string): ITemplate;
   sendSocialshareEmail(tlId:string, email: IEmailFields): ng.IPromise<void>;
+  fetchTemplates(): ng.IPromise<ITemplate[]>;
+  getEpisodeTemplatesAdmin(): ITemplateSelect[];
+  getEpisodteTemplatesByCustomerIds(custids: string[]): ITemplateSelect[];
 }
 
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
@@ -413,7 +422,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             url: item.url,
             type: 'Episode',
             displayName: item.name,
-            customerIds: item.customer_ids,
+            customer_ids: item.customer_ids,
             css_configuration: item.css_configuration,
             fonts: item.fonts,
             pro_episode_template: item.pro_episode_template
@@ -634,8 +643,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           const episodeTemplate = dataCache.template[episodeData.template_id];
           episodeData.template = episodeTemplate;
           modelSvc.cache('episode', svc.resolveIDs(episodeData));
-
-          episodeTheme.setTheme(episodeTemplate);
+          if (episodeTemplate) {
+            episodeTheme.setTheme(episodeTemplate);
+          }
 
           getEvents(epId, segmentId)
             .success(function (events) {
@@ -1291,6 +1301,80 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       return dataCache.template[t];
     });
   };
+
+  svc.getEpisodeTemplatesAdmin = getEpisodeTemplatesAdmin;
+  function getEpisodeTemplatesAdmin(): ITemplateSelect[] {
+    if (!authSvc.userHasRole('admin')) {
+      return;
+    }
+    return svc.getTemplates()
+      .reduce(
+        (ts: ITemplateSelect[], t: IEpisodeTemplate) => {
+          if (t instanceof IEpisodeTemplate) {
+            ts.push({
+              id: t.id,
+              name: t.displayName,
+              customer_ids: t.customer_ids
+            });
+          }
+          return ts;
+        },
+        []
+      );
+  }
+
+  svc.getEpisodteTemplatesByCustomerIds = getEpisodteTemplatesByCustomerIds;
+  function getEpisodteTemplatesByCustomerIds(custIds: string[]): ITemplateSelect[] {
+    return svc.getTemplates()
+      .reduce(
+        (ts: ITemplateSelect[], t: IEpisodeTemplate) => {
+          if (t instanceof IEpisodeTemplate) {
+            const hasCustomer = intersection(custIds, t.customer_ids);
+            if (hasCustomer.length > 0 || t.customer_ids.length === 0) {
+              ts.push({
+                id: t.id,
+                name: t.displayName,
+                customer_ids: t.customer_ids
+              });
+            }
+          }
+          return ts;
+        },
+        []
+      );
+  }
+
+  function getTemplatesByCustId(custIds: string[], checkAdmin = false): Array<{id: string, name: string}> {
+    const _reduceTemplates = function (accm, curr) {
+      //admins get all templates
+      if (checkAdmin && authSvc.userHasRole('admin')) {
+        if (curr.type === 'Episode') {
+          accm.push({ id: curr.id, name: curr.displayName, customer_ids: curr.customer_ids });
+        }
+        return accm;
+      } else {
+        //return templates with assoc to customer
+        if (curr.type === 'Episode' && existy(curr.customerIds)) {
+          const hasCustomer = intersection(custIds, curr.customerIds);
+          //this customer has an episode template OR the default template
+          if (hasCustomer.length > 0 || curr.customerIds.length === 0) {
+            accm.push({ id: curr.id, name: curr.displayName, customer_ids: curr.customer_ids });
+          }
+        }
+        return accm;
+      }
+    };
+
+    return svc.getTemplates().reduce(_reduceTemplates, []);
+  }
+
+  svc.fetchTemplates = fetchTemplates;
+  function fetchTemplates(): ng.IPromise<ITemplate[]> {
+    return SANE_GET('/v1/templates')
+      .then((templates: ITemplate[]) => svc.cache('templates', templates))
+      .then(() => svc.getTemplates());
+  }
+
 
   svc.getTemplate = getTemplate;
   function getTemplate(id: string): ITemplate {

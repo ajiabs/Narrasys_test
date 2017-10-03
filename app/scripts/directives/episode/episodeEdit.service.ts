@@ -1,9 +1,10 @@
 
-import { createInstance, IEpisode, IEpisodeTemplate } from '../../models';
-import { IDataSvc, IEpisodeTheme, IModelSvc } from '../../interfaces';
+import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IEvent, IScene, ITemplate } from '../../models';
+import { IDataSvc, IEpisodeTheme, IModelSvc, Partial } from '../../interfaces';
 
 export interface IEpisodeEditService {
   updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode>;
+  addEpisodeToContainer(newContainer: IContainer): ng.IPromise<IContainer>
 }
 
 export class EpisodeEditService implements IEpisodeEditService{
@@ -26,6 +27,44 @@ export class EpisodeEditService implements IEpisodeEditService{
     const resolved = this.modelSvc.resolveEpisodeEvents(derived._id); // needed for template or style changes
     return this.episodeTheme.setTheme(template)
       .then(() => resolved);
+  }
+
+  addEpisodeToContainer(newContainer: IContainer): ng.IPromise<IContainer> {
+    const newEpisode: Partial<IEpisode> = {
+      'container_id': newContainer._id,
+      'title': angular.copy(newContainer.name)
+    };
+    return this.dataSvc.fetchTemplates()
+      .then(() => this.dataSvc.getEpisodteTemplatesByCustomerIds([newContainer.customer_id]))
+      .then((templates: any) => {
+        // do template stuff...
+        // if the customer does not have a custom template, use the unbranded one
+        if (templates.length === 1) {
+          newEpisode.template_id = templates[0].id;
+        } else {
+          // if they have a custom template, use the first template (by their customer id) that
+          // is not the unbranded one
+          const customerTemplate = templates.filter(t => t.name !== '(Unbranded)');
+          newEpisode.template_id = customerTemplate[0].id;
+        }
+      })
+      .then(() => {
+        return this.dataSvc.createEpisode(newEpisode)
+          .then((epResp: IEpisode) => {
+            const newScene = {
+              '_type': 'Scene',
+              'title': {},
+              'description': {},
+              'templateUrl': 'templates/scene/1col.html',
+              'start_time': 0,
+              'end_time': 0,
+              'episode_id': epResp._id
+            } as IScene;
+            return newScene;
+          })
+          .then((firstScene: IScene) => this.dataSvc.storeItem(firstScene))
+          .then(() => newContainer);
+      });
   }
 
 }

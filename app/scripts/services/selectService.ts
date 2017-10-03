@@ -1,9 +1,11 @@
 /**
  * Created by githop on 6/7/16.
  */
+import { IDataSvc, IModelSvc } from '../interfaces';
+
 selectService.$inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
 
-export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
+export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDataSvc, ittUtils) {
   var _userHasRole = authSvc.userHasRole;
   var _existy = ittUtils.existy;
 
@@ -304,28 +306,10 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
   function getTemplates(type) {
     switch (type) {
       case 'episode':
-        var custIds = authSvc.getCustomerIdsFromRoles();
-        var _reduceTemplates = function (accm, curr) {
-          //admins get all templates
-          if (_userHasRole('admin')) {
-            if (curr.type === 'Episode') {
-              accm.push({ id: curr.id, name: curr.displayName });
-            }
-            return accm;
-          } else {
-            //return templates with assoc to customer
-            if (curr.type === 'Episode' && _existy(curr.customerIds)) {
-              var hasCustomer = ittUtils.intersection(custIds, curr.customerIds);
-              //this customer has an episode template OR the default template
-              if (hasCustomer.length > 0 || curr.customerIds.length === 0) {
-                accm.push({ id: curr.id, name: curr.displayName });
-              }
-            }
-            return accm;
-          }
-        };
 
-        var _sortAlpha = function (a, b) {
+        const isAdmin = _userHasRole('admin');
+
+        const _sortAlpha = function (a, b) {
           if (a.name.toLowerCase() < b.name.toLowerCase()) {
             return -1;
           } else if (a.name.toLowerCase() > b.name.toLowerCase()) {
@@ -335,7 +319,14 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
           }
         };
         _titleFieldVisibility(true); // NP-1159
-        return dataSvc.getTemplates().reduce(_reduceTemplates, []).sort(_sortAlpha);
+
+        if (isAdmin) {
+          return dataSvc.getEpisodeTemplatesAdmin().sort(_sortAlpha);
+        } else {
+          const custIds = authSvc.getCustomerIdsFromRoles();
+          return dataSvc.getEpisodteTemplatesByCustomerIds(custIds).sort(_sortAlpha);
+        }
+
       case 'scene':
         _displaySelectVisibility(false);
         _videoPositionSelectVisibility(false);
