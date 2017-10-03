@@ -1344,30 +1344,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       );
   }
 
-  function getTemplatesByCustId(custIds: string[], checkAdmin = false): Array<{id: string, name: string}> {
-    const _reduceTemplates = function (accm, curr) {
-      //admins get all templates
-      if (checkAdmin && authSvc.userHasRole('admin')) {
-        if (curr.type === 'Episode') {
-          accm.push({ id: curr.id, name: curr.displayName, customer_ids: curr.customer_ids });
-        }
-        return accm;
-      } else {
-        //return templates with assoc to customer
-        if (curr.type === 'Episode' && existy(curr.customerIds)) {
-          const hasCustomer = intersection(custIds, curr.customerIds);
-          //this customer has an episode template OR the default template
-          if (hasCustomer.length > 0 || curr.customerIds.length === 0) {
-            accm.push({ id: curr.id, name: curr.displayName, customer_ids: curr.customer_ids });
-          }
-        }
-        return accm;
-      }
-    };
-
-    return svc.getTemplates().reduce(_reduceTemplates, []);
-  }
-
   svc.fetchTemplates = fetchTemplates;
   function fetchTemplates(): ng.IPromise<ITemplate[]> {
     return SANE_GET('/v1/templates')
