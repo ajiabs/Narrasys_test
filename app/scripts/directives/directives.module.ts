@@ -15,7 +15,7 @@ import ittDynamicModel from './ittDynamicModel';
 import ittEditPencil from './ittEditPencil';
 import ittFileField from './ittFileField';
 import ittFilesHandler from './ittFilesHandler';
-import ittFlags from './ittFlags';
+import { Flags } from './ittFlags';
 import ittFlotr2Chart from './ittFlotChart';
 import ittGuestAccessibleUrl from './ittGuestAccessibleUrl';
 import ittHighlightSelect from './ittHighlightSelect';
@@ -100,7 +100,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittEditPencil', ittEditPencil)
   .directive('ittFileField', ittFileField)
   .directive('ittFilesHandler', ittFilesHandler)
-  .directive('ittFlags', ittFlags)
+  .component(Flags.Name, new Flags())
   .directive('ittFlotr2Chart', ittFlotr2Chart)
   .directive('ittGuestAccessibleUrl', ittGuestAccessibleUrl)
   .directive('ittHighlightSelect', ittHighlightSelect)

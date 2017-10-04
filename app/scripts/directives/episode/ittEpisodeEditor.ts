@@ -6,7 +6,6 @@
  I expect the episode styling to drift away from the event styling,
  though, so letting myself repeat myself repeat myself for now
  */
-import dataSvc from '../../services/dataSvc/dataSvc';
 import { IModelSvc, IDataSvc } from '../../interfaces';
 
 ittEpisodeEditor.$inject = [

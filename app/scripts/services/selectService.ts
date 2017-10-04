@@ -303,11 +303,9 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
     return _itemFormStub;
   }
 
-  function getTemplates(type) {
+  function getTemplates(type, customerIds?: string[]) {
     switch (type) {
       case 'episode':
-
-        const isAdmin = _userHasRole('admin');
 
         const _sortAlpha = function (a, b) {
           if (a.name.toLowerCase() < b.name.toLowerCase()) {
@@ -320,12 +318,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         };
         _titleFieldVisibility(true); // NP-1159
 
-        if (isAdmin) {
-          return dataSvc.getEpisodeTemplatesAdmin().sort(_sortAlpha);
-        } else {
-          const custIds = authSvc.getCustomerIdsFromRoles();
-          return dataSvc.getEpisodeTemplatesByCustomerIds(custIds).sort(_sortAlpha);
-        }
+        return dataSvc.getEpisodeTemplatesByCustomerIds(customerIds).sort(_sortAlpha);
 
       case 'scene':
         _displaySelectVisibility(false);

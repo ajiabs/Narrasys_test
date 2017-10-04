@@ -4,13 +4,16 @@ import { IDataSvc, IEpisodeTheme, IModelSvc, Partial } from '../../interfaces';
 
 export interface IEpisodeEditService {
   updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode>;
-  addEpisodeToContainer(newContainer: IContainer): ng.IPromise<IContainer>
+  addEpisodeToContainer(newContainer: IContainer): ng.IPromise<IContainer>;
+  setEpisodeToEdit(): void;
 }
 
 export class EpisodeEditService implements IEpisodeEditService{
   static Name = 'episodeEdit'; // tslint:disable-line
-  static $inject = ['modelSvc', 'dataSvc', 'episodeTheme'];
+  static $inject = ['appState', 'selectService', 'modelSvc', 'dataSvc', 'episodeTheme'];
   constructor(
+    private appState,
+    private selectService,
     private modelSvc: IModelSvc,
     private dataSvc: IDataSvc,
     private episodeTheme: IEpisodeTheme) {
@@ -65,6 +68,15 @@ export class EpisodeEditService implements IEpisodeEditService{
           .then((firstScene: IScene) => this.dataSvc.storeItem(firstScene))
           .then(() => newContainer);
       });
+  }
+
+  setEpisodeToEdit(): void {
+    const episode = this.modelSvc.episodes[this.appState.episodeId];
+    const customerId = this.modelSvc.containers[episode.container_id].customer_id;
+    this.appState.editEpisode = episode;
+    this.appState.editEpisode.templateOpts = this.selectService.getTemplates('episode', [customerId]);
+    this.appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+    this.appState.videoControlsLocked = true;
   }
 
 }

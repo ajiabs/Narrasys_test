@@ -507,10 +507,7 @@ export default function EditController(
   };
 
   $scope.editEpisode = function () {
-    appState.editEpisode = modelSvc.episodes[appState.episodeId];
-    appState.editEpisode.templateOpts = selectService.getTemplates('episode');
-    appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-    appState.videoControlsLocked = true;
+    episodeEdit.setEpisodeToEdit();
   };
 
   $scope.deleteEvent = function (eventId) {
