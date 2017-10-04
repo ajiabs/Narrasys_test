@@ -2,6 +2,7 @@
  * Created by githop on 6/30/16.
  */
 import { IEvent } from '../models';
+import { existy } from '../services/ittUtils';
 
 const TEMPLATE = `
 <div class="field">
@@ -68,8 +69,8 @@ class FlagsController implements IFlagsBindings {
 
   $onChanges(changesObj) {
     if (changesObj.templateUrl) {
-      const { currentValue } = changesObj.templateUrl;
-      this.$timeout(() => this.setFlags(currentValue));
+      const { previousValue, currentValue } = changesObj.templateUrl;
+      this.$timeout(() => this.setFlags(currentValue, previousValue));
     }
   }
 
@@ -79,9 +80,12 @@ class FlagsController implements IFlagsBindings {
     }
   }
 
-  setFlags(newVal) {
-
+  setFlags(newVal, oldVal) {
     //reset invert color when switching between templates.
+    if (newVal !== oldVal) {
+      this.itemForm.color = '';
+    }
+
     if (newVal) {
 
       if (newVal === 'templates/item/image-fill.html') {
@@ -93,15 +97,24 @@ class FlagsController implements IFlagsBindings {
       }
 
       if (!FlagsController._h1OrH2(newVal)) {
-        this.itemForm.color = '';
+        if (this._isEditingItemForm()) {
+          this.itemForm.color = '';
+        }
+
         this._flags = this._flags.filter((f) => {
           return f !== 'chapter_marker';
         });
       } else {
-        this.itemForm.color = 'Invert';
         this._flags = this.flags;
+        if (this._isEditingItemForm()) {
+          this.itemForm.color = 'Invert';
+        }
       }
     }
+  }
+
+  private _isEditingItemForm() {
+    return existy(this.itemForm) && this.data._id === 'internal:editing';
   }
 
   private static _h1OrH2(url) {
