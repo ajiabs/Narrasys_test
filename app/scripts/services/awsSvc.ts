@@ -460,7 +460,9 @@ export default function awsSvc($http, $q, config) {
     var defer = $q.defer();
     getUploadSession().then(function createMultipartUpload() {
       var params = {
-        Key: awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName
+        Key: awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName,
+        ContentType: fileBeingUploaded.type,
+        ACL: PUBLIC_READ
       };
       awsCache.s3.createMultipartUpload(params, function (err, data) {
         if (err) {
@@ -639,21 +641,6 @@ export default function awsSvc($http, $q, config) {
           deferredUpload.reject(err);
           defer.reject(err);
         } else {
-          // console.log('awsSvc, uploadedComplete! data:', data);
-          params = {
-            Bucket: multipartUpload.Bucket,
-            Key: multipartUpload.Key,
-            ACL: PUBLIC_READ
-          };
-          awsCache.s3.putObjectAcl(params, function (err, data) {
-            if (err) {
-              deferredUpload.reject(err);
-              console.error(err, err.stack); // an error occurred
-              defer.reject(err);
-            } else {
-              console.log('awsSvc, set file permissions:', data);
-            }
-          });
           deferredUpload.resolve(data);
           defer.resolve(data);
         }
