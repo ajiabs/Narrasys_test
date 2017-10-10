@@ -53,8 +53,12 @@
       font-family: 'Cardo', serif;
     }
 
-    .pullquote:before {
-      font-family: 'Cardo', serif;
+    .pullquote {
+
+      &:before {
+        font-family: 'Cardo', serif;
+        color: rgba(0, 58, 92, 0.5);
+      }
     }
 
   }

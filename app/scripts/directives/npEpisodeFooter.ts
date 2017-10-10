@@ -16,7 +16,7 @@ const TEMPLATE = `
     rel="noopener noreferrer">
       <img ng-src="{{logoImg.src}}" alt="{{logoImg.alt_text}}"/>
   </a>
-  <np-copyright ng-if="!$ctrl.proTemplate" class="copyright" org="itt"></np-copyright>
+  <np-copyright ng-if="!$ctrl.proTemplate" class="copyright" org="np"></np-copyright>
 </div>
 
 <div ng-if="$ctrl.bannerLogo != null" ng-class="$ctrl.bannerLogo.css_class">
