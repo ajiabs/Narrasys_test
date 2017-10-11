@@ -89,7 +89,6 @@ class UrlFieldController implements IUrlFieldBindings {
   }
 
   $onInit() {
-    //
     this.eventUrl = this.data.url;
     if (this.context !== 'episode') {
       this.onUrlFieldChange(this.eventUrl, this.data.url_status);
