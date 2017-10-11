@@ -37,9 +37,9 @@ const TEMPLATE = `
     <input
       type="text"
       name="itemUrl"
-      ng-change="$ctrl.onUrlFieldChange($ctrl.eventUrl)"
-      ng-model="$ctrl.eventUrl"
-      ng-model-options="{ updateOn: 'blur' }"/>
+      ng-blur="$ctrl.onUrlFieldChange($ctrl.eventUrl)"
+      ng-focus="$ctrl.onFocused()"
+      ng-model="$ctrl.eventUrl"/>
   </div>
   <div class="input" ng-if="$ctrl.context === 'episode'">
     <input
@@ -82,18 +82,16 @@ class UrlFieldController implements IUrlFieldBindings {
   };
   canEmbed: boolean;
 
-  static $inject = ['$q', 'validationSvc'];
+  static $inject = ['validationSvc'];
   constructor(
-    private $q: ng.IQService,
     private validationSvc: IValidationSvc) {
     //
   }
 
   $onInit() {
-    //
     this.eventUrl = this.data.url;
-    if (this.eventUrl !== 'https://') {
-      this._itemUrlValidationPipeline(this.eventUrl, this.data.url_status, this.context);
+    if (this.context !== 'episode') {
+      this.onUrlFieldChange(this.eventUrl, this.data.url_status);
     }
   }
 
@@ -101,13 +99,18 @@ class UrlFieldController implements IUrlFieldBindings {
     this.data.templateOpts = this._disableTemplateOpts(this.data.target === '_blank');
   }
 
-  onUrlFieldChange(url: string) {
+  onFocused(): void {
+    // if user focuses input, eagerly set form to invalid and allow blur event to handle recovery
+    this._setValidity(false);
+  }
+
+  onUrlFieldChange(url: string, urlStatus?: ILinkStatus): void {
     if (url === 'https://') {
       this._setValidity(false);
       return;
     }
 
-    this._itemUrlValidationPipeline(url, null, this.context);
+    this._itemUrlValidationPipeline(url, urlStatus, this.context);
   }
 
   handleEpisodeValidationMessage(notice) {
