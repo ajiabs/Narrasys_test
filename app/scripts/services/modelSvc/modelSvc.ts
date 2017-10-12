@@ -841,6 +841,10 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     if (episode instanceof IEpisode && episode.template.pro_episode_template) {
       episode.templateCss = 'professional ' + episode.templateCss;
     }
+
+    if (episode.template && episode.template.displayName === 'Wiley') {
+      episode.templateCss += ' wiley-endscreentext ';
+    }
     angular.forEach(svc.events, function (event) {
       if (event.cur_episode_id !== epId) {
         return;

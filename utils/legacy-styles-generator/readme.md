@@ -24,7 +24,7 @@ note: Font weight, variant etc... are listed if specified.
 - Lato 300 700
 
 ## Wiley
-- Source Sans Pro 300, 400
+- Source Sans Pro 200, 300, 400
 
 # Static Images used in legacy episode CSS
 
