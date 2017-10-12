@@ -15,13 +15,13 @@ note: Font weight, variant etc... are listed if specified.
 - EB Garamond
 
 ### Columbia Business
-- Source Sans Pro
+- Source Sans Pro 400, 700
 
 ### Kellogg
 - Gotham (Narrasys template also uses gotham, perhaps use same google font replacement)
 
 ## Regis
-- Lato 300
+- Lato 300 700
 
 ## Wiley
 - Source Sans Pro 300, 400
