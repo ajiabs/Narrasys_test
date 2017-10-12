@@ -70,7 +70,9 @@ class FlagsController implements IFlagsBindings {
   $onChanges(changesObj) {
     if (changesObj.templateUrl) {
       const { previousValue, currentValue } = changesObj.templateUrl;
-      this.$timeout(() => this.setFlags(currentValue, previousValue));
+      if (!changesObj.templateUrl.isFirstChange()) {
+        this.$timeout(() => this.setFlags(currentValue, previousValue));
+      }
     }
   }
 

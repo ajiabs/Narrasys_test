@@ -57,6 +57,13 @@
   font-size: 90%;
 }
 
+// from item.scss, which used to be under episode.scss in the cascade.
+// styles from the server are appended as the last link tag in the document <head>
+a.startTime.displayTime {
+  text-decoration: none;
+  text-shadow: none;
+}
+
 .episode-kellogg .item a:hover {
   /* time to party like it's 1996: */
   text-decoration: none;

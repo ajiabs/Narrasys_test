@@ -9,7 +9,7 @@ note: Font weight, variant etc... are listed if specified.
 - Cardo
 
 ### Usc
-- Crimson Text
+- Crimson Text 700
 
 ### Columbia
 - EB Garamond
@@ -19,6 +19,12 @@ note: Font weight, variant etc... are listed if specified.
 
 ### Kellogg
 - Gotham (Narrasys template also uses gotham, perhaps use same google font replacement)
+
+## Regis
+- Lato 300
+
+## Wiley
+- Source Sans Pro 300, 400
 
 # Static Images used in legacy episode CSS
 
