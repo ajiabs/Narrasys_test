@@ -39,7 +39,7 @@
  either from the timeline or the next scene arrow
  */
 /* tslint:enable */
-import {IEvent} from '../models';
+import {IEvent} from '../../models';
 interface ITimelineEvent {
   t: number;
   id: string;

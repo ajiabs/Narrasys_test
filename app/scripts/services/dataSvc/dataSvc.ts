@@ -1,8 +1,8 @@
 // TODO: load and resolve categories
 
 
-import {createInstance, IAsset, IEvent} from '../models';
-import {IEmailFields} from '../interfaces';
+import {createInstance, IAsset, IEvent} from '../../models';
+import {IEmailFields} from '../../interfaces';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc

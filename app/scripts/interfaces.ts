@@ -1,13 +1,13 @@
 export { ILinkValidationMessage, ILinkValidFields } from './services/validation.svc';
-export { IAnalyticsSvc } from './services/analyticsSvc';
+export { IAnalyticsSvc } from './services/analyticsSvc/analyticsSvc';
 export { IAnnotator, IAnnotators } from './directives/sxsAnnotatorAutocomplete';
-export { ITimelineSvc } from './services/timelineSvc';
+export { ITimelineSvc } from './services/timelineSvc/timelineSvc';
 export { IMetaObj, IMetaProps } from './services/basePlayerManager/index';
 export { IPlayerManager } from './services/basePlayerManager/index';
-export { IDataSvc } from './services/dataSvc';
+export { IDataSvc } from './services/dataSvc/dataSvc';
 export { IValidationDisplay, IValidationSvc, IXFrameOptsResult } from './services/validation.svc';
 export { TUrlFieldContexts } from './directives/npUrlField';
-export { IModelSvc } from './services/modelSvc';
+export { IModelSvc } from './services/modelSvc/modelSvc';
 export { IBasePlayerManager } from './services/basePlayerManager/playerManagerCommons';
 export { IWistiaMetaProps, IWistiaPlayerManager } from './services/wistia/wistiaPlayerManager';
 export { IWistiaUrlservice } from './services/wistia/wistiaUrlService';

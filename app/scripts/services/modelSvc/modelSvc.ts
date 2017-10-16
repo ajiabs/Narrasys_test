@@ -1,8 +1,8 @@
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
-import {IAnnotators, Partial} from '../interfaces';
-import {createInstance, IAsset, ICustomer, INarrative, IScene, NEvent} from '../models';
+import {IAnnotators, Partial} from '../../interfaces';
+import {createInstance, IAsset, ICustomer, INarrative, IScene, NEvent} from '../../models';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
