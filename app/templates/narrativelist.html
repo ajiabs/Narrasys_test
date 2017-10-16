@@ -48,7 +48,10 @@
           <itt-tooltip tip-text="Go to Narrative">
             <a ng-click="$ctrl.gotoNarrative(narrative._id, $event)" class="icon__button button__generateNarrative" title="Go to Narrative"></a>
           </itt-tooltip>
-          <a np-guest-accessible-url narrative="narrative" clipboard-mode="Click to Copy"></a>
+          <a>
+            <np-guest-accessible-url narrative="narrative" clipboard-mode="Click to Copy">
+            </np-guest-accessible-url>
+          </a>
         </div>
 
 

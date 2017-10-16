@@ -8,14 +8,14 @@ import { AssetUploader } from './ittAssetUploader';
 import ittClipboard from './ittClipboard';
 import ittColorSelect from './ittColorSelect';
 import ittContainer from './ittContainer';
-import ittContainerEpisodes from './ittContainerEpisodes';
+import { ContainerEpisodes } from './ittContainerEpisodes';
 import ittDescriptionField from './ittDescriptionField';
 import ittDisplaySelect from './ittDisplaySelect';
 import ittDynamicModel from './ittDynamicModel';
 import ittEditPencil from './ittEditPencil';
 import ittEpisode from './ittEpisode';
 import ittEpisodeEditor from './ittEpisodeEditor';
-import ittEpisodeList from './ittEpisodeList';
+import { EpisodeList } from './ittEpisodeList';
 import ittFileField from './ittFileField';
 import ittFilesHandler from './ittFilesHandler';
 import ittFlags from './ittFlags';
@@ -96,14 +96,14 @@ const directivesModule = angular.module('itt.directives', [])
   .directive('ittClipboard', ittClipboard)
   .directive('ittColorSelect', ittColorSelect)
   .directive('ittContainer', ittContainer)
-  .directive('ittContainerEpisodes', ittContainerEpisodes)
+  .component(ContainerEpisodes.Name,  new ContainerEpisodes())
   .directive('ittDescriptionField', ittDescriptionField)
   .directive('ittDisplaySelect', ittDisplaySelect)
   .directive('ittDynamicModel', ittDynamicModel)
   .directive('ittEditPencil', ittEditPencil)
   .directive('ittEpisode', ittEpisode)
   .directive('ittEpisodeEditor', ittEpisodeEditor)
-  .directive('ittEpisodeList', ittEpisodeList)
+  .component(EpisodeList.Name, new EpisodeList())
   .directive('ittFileField', ittFileField)
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittFlags', ittFlags)

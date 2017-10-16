@@ -25,8 +25,11 @@
            ng-click="$ctrl.exportToSpreadsheet(narrative._id)">
         </a>
       </itt-tooltip>
-      <np-guest-accessible-url narrative="$ctrl.narrative" sub-domain="{{$ctrl.narrative.narrative_subdomain}}"
-                               clipboard-mode="Click to copy URL"></np-guest-accessible-url>
+      <np-guest-accessible-url
+        narrative="$ctrl.narrative"
+        sub-domain="{{$ctrl.narrative.narrative_subdomain}}"
+        clipboard-mode="Click to copy URL">
+      </np-guest-accessible-url>
     </div>
   </div>
 
@@ -34,17 +37,29 @@
 
   <!--add narrative modal top level-->
   <itt-modal ng-if="$ctrl.showEpisodeList">
-    <div itt-episode-list class="admin episodePicker">
-      <!--Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>-->
-      Choose an episode:
-      <button ng-click="$ctrl.toggleEpisodeList(); $ctrl.doneEditingTimeline()">cancel</button>
-      <ul
-        ng-repeat="child in root.children"
-        x-for-admin="true"
-        itt-container-episodes="containers[child._id]"
-        on-node-click="$ctrl.onEpisodeSelect(node)" root-context="$ctrl.onEpisodeSelect"
-        depth="0"></ul>
-    </div>
+    <np-episode-list
+      depth="0"
+      context="narrative"
+      class="admin episodePicker"
+      on-episode-select="$ctrl.onEpisodeSelect(node)"
+      on-cancel="$ctrl.toggleEpisodeList(); $ctrl.doneEditingTimeline()">
+    </np-episode-list>
+    <!--<np-episode-list class="admin episodePicker">-->
+      <!--&lt;!&ndash;Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>&ndash;&gt;-->
+      <!--Choose an episode:-->
+      <!--<button ng-click="$ctrl.toggleEpisodeList(); $ctrl.doneEditingTimeline()">cancel</button>-->
+      <!--<ul>-->
+
+        <!--<li ng-repeat="child in $parent.$episodeListCtrl.root.children">-->
+          <!--<np-container-episodes-->
+            <!--on-node-click="$ctrl.onEpisodeSelect(node)"-->
+            <!--root-context="$ctrl.onEpisodeSelect"-->
+            <!--for-admin="true"-->
+            <!--container="$ctrl.containers[child._id]">-->
+          <!--</np-container-episodes>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</np-episode-list>-->
   </itt-modal>
 
   <!--edit narrative or timeline modal-->

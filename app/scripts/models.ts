@@ -61,6 +61,8 @@ export class IContainer {
   episodes: IEpisode[];
   evenOdd?: boolean;
   haveNotLoadedChildData?: boolean;
+  wasClicked?: boolean;
+  isActive?: boolean;
   keywords: ILangForm;
   loadedChildData?: boolean;
   name: ILangForm;

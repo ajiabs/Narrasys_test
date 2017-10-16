@@ -10,7 +10,7 @@ const TEMPLATE = `
     <label for="{{$ctrl.display.id[$ctrl.type]}}">Guest Accessible URL:
       <itt-validation-tip ng-if="$ctrl[$ctrl.type].error" text="{{$ctrl[$ctrl.type].error}}"></itt-validation-tip>
       <p class="--break-word">
-        <small ng-class="{ 'error-red': $ctrl[$ctrl.type].error, unselectable: $ctrl[$ctrl.type].error }">
+        <small ng-class="{ \\'error-red\\': $ctrl[$ctrl.type].error, unselectable: $ctrl[$ctrl.type].error }">
           {{$ctrl.formatGuestAccessibleUrl()}}
         </small>
       </p>
@@ -24,31 +24,6 @@ const TEMPLATE = `
       narrative-id="{{$ctrl.narrative._id}}"
       ng-model="$ctrl[$ctrl.type].path_slug.en">
   </div>
-</div>
-<a
-  ng-if="$ctrl.clipboardMode"
-  itt-clipboard
-  source-text="{{$ctrl.formatUrlToCopy()}}"
-  on-copy="$event.stopPropagation()">
-</a>
-<div ng-if="$ctrl.narrative.guest_access_allowed === true"
-<label for="{{$ctrl.display.id[$ctrl.type]}}">Guest Accessible URL:
-  <itt-validation-tip ng-if="$ctrl[$ctrl.type].error" text="{{$ctrl[$ctrl.type].error}}"></itt-validation-tip>
-  <p class="--break-word">
-    <small ng-class="{ 'error-red': $ctrl[$ctrl.type].error, unselectable: $ctrl[$ctrl.type].error }">
-      {{$ctrl.formatGuestAccessibleUrl()}}
-    </small>
-  </p>
-</label>
-<input
-  id="{{$ctrl.display.id[$ctrl.type]}}"
-  type="text"
-  name="path"
-  placeholder="{{$ctrl.display.placeholder}}"
-  itt-valid-pathslug
-  narrative-id="{{$ctrl.narrative._id}}"
-  ng-model="$ctrl[$ctrl.type].path_slug.en">
-</div>
 </div>
 <a
   ng-if="$ctrl.clipboardMode"

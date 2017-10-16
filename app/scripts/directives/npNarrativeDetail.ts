@@ -210,20 +210,14 @@ class NarrativeDetailController implements INarrativeDetailBindings {
 
   persistTmpTimeline(tl) {
     this.narrative.timelines = NarrativeDetailController._updateSortOrder(tl.index, this.narrative.timelines);
-    this.dataSvc.createChildEpisode({
-      parent_id: tl.parent_episode._id
-    })
-      .then(storeChildEpisode)
-      .then(handleEpisodeSegment)
-      .catch(logErr);
 
-    function storeChildEpisode(childEpisode) {
+    const storeChildEpisode = (childEpisode) => {
       return this.dataSvc.storeTimeline(this.narrative._id, tl).then((tlData) => {
         return { d: tlData, e: childEpisode };
       });
-    }
+    };
 
-    function handleEpisodeSegment(config: {d: ITempTimeline, e: IEpisode}) {
+    const handleEpisodeSegment = (config: {d: ITempTimeline, e: IEpisode}) => {
       const tlData = config.d;
       const childEpisode = config.e;
       this.dataSvc.createEpisodeSegment(tlData._id, {
@@ -243,9 +237,17 @@ class NarrativeDetailController implements INarrativeDetailBindings {
         this.doneEditingTimeline();
         this._setTotalNarrativeDuration(this.narrative.timelines);
       });
-    }
+    };
 
-    function logErr(e) { console.log(e); }
+    const logErr = (e: any) => console.log(e);
+
+    this.dataSvc.createChildEpisode({
+      parent_id: tl.parent_episode._id
+    })
+      .then(storeChildEpisode)
+      .then(handleEpisodeSegment)
+      .catch(logErr);
+
   }
 
   editorAction(newTl: ITempTimeline, currTl: ITimeline) {
