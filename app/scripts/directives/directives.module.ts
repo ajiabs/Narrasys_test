@@ -20,7 +20,7 @@ import ittFileField from './ittFileField';
 import ittFilesHandler from './ittFilesHandler';
 import ittFlags from './ittFlags';
 import ittFlotr2Chart from './ittFlotChart';
-import ittGuestAccessibleUrl from './ittGuestAccessibleUrl';
+import { GuestAccessibleUrl } from './guest-accessible-url/npGuestAccessibleUrl';
 import ittHighlightSelect from './ittHighlightSelect';
 import ittIframe from './ittIframe';
 import ittImageField from './ittImageField';
@@ -35,9 +35,11 @@ import ittMagnet from './magnet/ittMagnet';
 import ittMagnetized from './magnet/ittMagnetized';
 import ittMcQuestion from './ittMcQuestion';
 import ittModal from './ittModal';
-import ittNarrative from './ittNarrative';
-import ittNarrativeEditor from './ittNarrativeEditor';
-import ittNarrativeList from './ittNarrativeList';
+import { NarrativeDetail } from './npNarrativeDetail';
+import { NarrativeEditor } from './npNarrativeEditor';
+import { NarrativeList } from './npNarrativeList';
+import { NarrativesContainer } from './npNarrativesContainer';
+import { NarrativeContainer } from './npNarrativeContainer';
 import ittNarrativeTimeline from './ittNarrativeTimeline';
 import ittNav from './ittNav';
 import ittOptionsDisabled from './ittOptionsDisabled';
@@ -88,7 +90,7 @@ import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
 import { ittPlayerContainer } from './ittPlayerContainer';
 
-let directivesModule = angular.module('itt.directives', [])
+const directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
   .component(AssetUploader.Name, new AssetUploader())
   .directive('ittClipboard', ittClipboard)
@@ -106,7 +108,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittFlags', ittFlags)
   .directive('ittFlotr2Chart', ittFlotr2Chart)
-  .directive('ittGuestAccessibleUrl', ittGuestAccessibleUrl)
+  .component(GuestAccessibleUrl.Name, new GuestAccessibleUrl())
   .directive('ittHighlightSelect', ittHighlightSelect)
   .directive('ittIframe', ittIframe)
   .directive('ittImageField', ittImageField)
@@ -121,9 +123,8 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittMagnetized', ittMagnetized)
   .directive('ittMcQuestion', ittMcQuestion)
   .directive('ittModal', ittModal)
-  .directive('ittNarrative', ittNarrative)
-  .directive('ittNarrativeEditor', ittNarrativeEditor)
-  .directive('ittNarrativeList', ittNarrativeList)
+  .component(NarrativeEditor.Name, new NarrativeEditor())
+  .component(NarrativeList.Name, new NarrativeList())
   .directive('ittNarrativeTimeline', ittNarrativeTimeline)
   .directive('ittNav', ittNav)
   .directive('ittOptionsDisabled', ittOptionsDisabled)
@@ -175,6 +176,9 @@ let directivesModule = angular.module('itt.directives', [])
   .component(EnableSocialshare.Name, new EnableSocialshare())
   .component(Filedrop.Name, new Filedrop())
   .component(UploadProgress.Name, new UploadProgress())
-  .directive('ittPlayerContainer', ittPlayerContainer);
+  .directive('ittPlayerContainer', ittPlayerContainer)
+  .component(NarrativeDetail.Name, new NarrativeDetail())
+  .component(NarrativeContainer.Name, new NarrativeContainer())
+  .component(NarrativesContainer.Name, new NarrativesContainer());
 
 export default directivesModule;

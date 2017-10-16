@@ -16,7 +16,7 @@ const TEMPLATE = `
     <label for="tlDescription">Description</label>
     <textarea id="tlDescription" name="description" placeholder="Insert Description..."
               ng-model="$ctrl._timeline.description.en"></textarea>
-    <itt-guest-accessible-url narrative="$ctrl.narrative" timeline="$ctrl._timeline"></itt-guest-accessible-url>
+    <np-guest-accessible-url narrative="$ctrl.narrative" timeline="$ctrl._timeline"></np-guest-accessible-url>
     <label>Hidden</label>
     <input type="checkbox" ng-model="$ctrl._timeline.hidden"/>
     <itt-enable-socialshare

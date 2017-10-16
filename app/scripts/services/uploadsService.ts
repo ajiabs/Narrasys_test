@@ -6,11 +6,11 @@ export interface IUploadData {
   bytesSent: number;
   bytesTotal: number;
   percent: number;
-  name: string
+  name: string;
 }
 
-interface IUploadsService {
-  uploadTaggedFiles(fileLists: {file: FileList, tag: string}[], containerId: string, tag): ng.IPromise<any>
+export interface IUploadsService {
+  uploadTaggedFiles(fileLists: {file: FileList, tag: string}[], containerId: string): ng.IPromise<any>;
   resetUploads(): void;
 }
 
@@ -20,7 +20,7 @@ export class UploadsService implements IUploadsService {
   // uploadsDisplay: IUploadData[];
   uploadsDisplay = {
     social_image_square: null,
-    social_image_wide: null,
+    social_image_wide: null
   };
   private uploadQueue: ng.IPromise<any>[] = [];
 
@@ -29,10 +29,10 @@ export class UploadsService implements IUploadsService {
 
   }
 
-  uploadTaggedFiles(fileLists: {file: FileList, tag: string}[], containerId: string, tag): ng.IPromise<any> {
+  uploadTaggedFiles(fileLists: {file: FileList, tag: string}[], containerId: string): ng.IPromise<any> {
 
     return this.$q((resolve, reject) => {
-      for (const {file, tag} of fileLists) {
+      for (const { file, tag } of fileLists) {
         this.uploadsDisplay[tag] = {
           'bytesSent': 0,
           'bytesTotal': 1,
@@ -53,7 +53,7 @@ export class UploadsService implements IUploadsService {
   resetUploads(): void {
     this.uploadsDisplay = {
       social_image_square: null,
-      social_image_wide: null,
+      social_image_wide: null
     };
     this.uploadQueue = [];
   }
