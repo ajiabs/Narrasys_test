@@ -30,11 +30,11 @@ import {IEmailFields} from '../../interfaces';
 export interface IDataSvc {
   beginBackgroundTranslations(episodeId: string): any;
   batchUploadTranscripts(episodeId: string, formData: any, params: any): ng.IPromise<{}>;
-  generateNewNarrative(containerId, postData): ng.IPromise<{}>;
+  generateNewNarrative(containerId: string, postData: any): ng.IPromise<{}>;
   getNarrative(narrativeId): ng.IPromise<{}>;
   getNarrativeOverview(narrativeId): ng.IPromise<{}>;
   getNarrativeExportAsSpreadsheet(nId: string): void;
-  getCustomerLinkStatusReportSpreadsheet(customerId): void;
+  getCustomerLinkStatusReportSpreadsheet(customerId: string): void;
   getUserNarratives(userId): ng.IPromise<{}>;
   getCustomerList(): any;
   getCustomer(customerId: string, retrieve: boolean): ng.IPromise<any>;
@@ -109,7 +109,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   //used in ittContainer
   svc.generateNewNarrative = generateNewNarrative;
-  function generateNewNarrative(containerId, postData) {
+  function generateNewNarrative(containerId: string, postData: any) {
     return SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
       .then(function (resp) {
         return resp.data;
@@ -155,7 +155,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.getCustomerLinkStatusReportSpreadsheet = getCustomerLinkStatusReportSpreadsheet;
-  function getCustomerLinkStatusReportSpreadsheet(customerId) {
+  function getCustomerLinkStatusReportSpreadsheet(customerId: string) {
     var url = '/v3/customers/' + customerId + '/link_status.xlsx';
     window.open(url);
   }

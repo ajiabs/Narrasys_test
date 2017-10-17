@@ -1,5 +1,107 @@
 /* For admin screen episode list */
-import {INarrative} from '../models';
+import { IContainer, ICustomer, INarrative } from '../models';
+import { IDataSvc, IModelSvc } from '../interfaces';
+
+
+const TEMPLATE = ``;
+
+interface IContainerBindings extends ng.IComponentController {
+  container: '<';
+  depth: '<';
+  onContainerClick: ($container: { container: IContainer, bool: boolean }) => ({
+    $container: { container: IContainer, bool: boolean }
+  });
+  onContainerAdd: ($container: IContainer) => ({ $container: IContainer });
+}
+
+class ContainerController implements IContainerBindings {
+  container: '<';
+  depth: '<';
+  onContainerClick: ($container: { container: IContainer, bool: boolean }) => ({
+    $container: { container: IContainer, bool: boolean }
+  });
+  onContainerAdd: ($container: IContainer) => ({ $container: IContainer });
+  //
+  showNarrativeModal: boolean;
+  resolvingNarrative: boolean;
+  customers: ICustomer[];
+  customer: ICustomer;
+  containers: { [containerId: string]: IContainer };
+  isDemoServer: boolean;
+  containerTypes: string[] = ['customer', 'project', 'module', 'episode'];
+  static $inject = ['$timeout', '$location', 'appState', 'modelSvc', 'dataSvc', 'authSvc'];
+  constructor(
+    private $timeout: ng.ITimeoutService,
+    private $location: ng.ILocationService,
+    private appState,
+    private modelSvc: IModelSvc,
+    private dataSvc: IDataSvc,
+    private authSvc) {
+
+  }
+
+  get isAdmin() {
+    return this.authSvc.userHasRole('admin');
+  }
+
+  get canAccess() {
+    return this.isAdmin || this.authSvc.userHasRole('customer admin');
+  }
+
+  $onInit() {
+    this.customers = this.modelSvc.getCustomersAsArray();
+  }
+
+  toggleNarrativeModal() {
+    this.showNarrativeModal = !this.showNarrativeModal;
+  }
+
+  postNewNarrative({ narrative, containerId }: { containerId: string, narrative: INarrative }) {
+    this.resolvingNarrative = true;
+    this.dataSvc.generateNewNarrative(containerId, narrative).then((narrativeResp: INarrative) => {
+      this.modelSvc.cache('narrative', narrativeResp);
+      this.$location.path('/story/' + narrativeResp._id);
+      this.resolvingNarrative = false;
+    });
+  }
+
+  getLinkStatusReport(customerId: string): void {
+    this.dataSvc.getCustomerLinkStatusReportSpreadsheet(customerId);
+  }
+
+  selectText() {
+    //
+  }
+
+  onToggleChildren() {
+   //
+  }
+
+  renameContainer() {
+
+  }
+
+  addContainer() {
+    //
+  }
+
+  deleteEpisodeAndContainer() {
+
+  }
+}
+
+interface IComponentBindings {
+  [binding: string]: '<' | '<?' | '&' | '&?' | '@' | '@?' | '=' | '=?';
+}
+
+export class Container implements ng.IComponentOptions {
+  bindings: IComponentBindings = {};
+  template: string = TEMPLATE;
+  controller = ContainerController;
+  static Name: string = 'npContainer'; // tslint:disable-line
+}
+
+
 ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils'];
 
 export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils) {
@@ -31,14 +133,14 @@ export default function ittContainer($timeout, $location, appState, modelSvc, re
         $scope.showNarrativeModal = !$scope.showNarrativeModal;
       }
 
-      function postNewNarrative(narrativeData) {
-        $scope.resolvingNarrative = true;
-        dataSvc.generateNewNarrative(narrativeData.c, narrativeData.n).then(function (narrative) {
-          modelSvc.cache('narrative', narrative);
-          $location.path('/story/' + narrative._id);
-          $scope.resolvingNarrative = false;
-        });
-      }
+        function postNewNarrative({ narrative, containerId }: { containerId: string, narrative: INarrative }) {
+          $scope.resolvingNarrative = true;
+          dataSvc.generateNewNarrative(containerId, narrative).then((narrative) => {
+            modelSvc.cache('narrative', narrative);
+            $location.path('/story/' + narrative._id);
+            $scope.resolvingNarrative = false;
+          });
+        }
 
 
     }],
