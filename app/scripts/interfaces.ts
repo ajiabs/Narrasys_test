@@ -26,11 +26,15 @@ export { IimageResize } from './services/imageResizeSvc';
 
 export type ILangformKeys = 'en' | 'es' | 'zh' | 'pt' | 'fr' | 'de' | 'it';
 export type ILangForm = {
-  [K in ILangformKeys]: string
+  [K in ILangformKeys]?: string
 };
 
 export type Partial<T> = {
   [P in keyof T]?: T[P];
+};
+
+export type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
 };
 
 export interface IScriptLoader {

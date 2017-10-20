@@ -5,24 +5,19 @@ const TEMPLATE = `
 <div ng-if="$ctrl.context === 'episode' && $ctrl.userHasRole('admin') || $ctrl.userHasRole('customer admin')">
   <itt-loading ng-if="$ctrl.loading"></itt-loading>
 
-  <div ng-repeat="child in $ctrl.root.children"
-     itt-container="$ctrl.containers[child._id]"
-     ng-class="{
-     'container__row--odd': $ctrl.containers[child._id].evenOdd === false,
-     'container__row--even': $ctrl.containers[child._id].evenOdd === true 
-     }"
-     depth="0"
-     on-container-click="$ctrl.onContainerClick($container)"
-     on-container-add="$ctrl.onContainerAdd($container)"
-     add-root-context="$ctrl.onContainerAdd"
-     click-root-context="$ctrl.onContainerClick">
-
-  </div>
+  <np-container
+    ng-repeat="child in $ctrl.root.children"
+    depth="0"
+    container="child"
+    on-container-click="$ctrl.onContainerClick($container)"
+    on-container-add="$ctrl.onContainerAdd($container)">
+  </np-container>
   <div ng-if="$ctrl.showAdmin">
     Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.
   </div>
 </div>
 
+<!--for the add timeline modal in /story/:id-->
 <div ng-if="$ctrl.context === 'narrative'">
       Choose an episode:
       <button ng-click="$ctrl.onCancel()">cancel</button>
@@ -149,9 +144,9 @@ class EpisodeListController implements IEpisodeListBindings {
       }
 
       // have already loaded kids
-
       this.walkContainers(this.root.children, true, false);
     } else {
+
       this.dataSvc.getContainer($container.container._id).then((id) => {
         $container.container = this.modelSvc.containers[id];
 

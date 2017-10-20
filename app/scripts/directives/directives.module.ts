@@ -7,7 +7,7 @@ import ittAnnotationField from './ittAnnotationField';
 import { AssetUploader } from './ittAssetUploader';
 import ittClipboard from './ittClipboard';
 import ittColorSelect from './ittColorSelect';
-import ittContainer from './ittContainer';
+import { Container } from './ittContainer';
 import { ContainerEpisodes } from './ittContainerEpisodes';
 import ittDescriptionField from './ittDescriptionField';
 import ittDisplaySelect from './ittDisplaySelect';
@@ -95,7 +95,7 @@ const directivesModule = angular.module('itt.directives', [])
   .component(AssetUploader.Name, new AssetUploader())
   .directive('ittClipboard', ittClipboard)
   .directive('ittColorSelect', ittColorSelect)
-  .directive('ittContainer', ittContainer)
+  .component(Container.Name, new Container())
   .component(ContainerEpisodes.Name,  new ContainerEpisodes())
   .directive('ittDescriptionField', ittDescriptionField)
   .directive('ittDisplaySelect', ittDisplaySelect)

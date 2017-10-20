@@ -10,7 +10,7 @@ const TEMPLATE = `
     <label for="{{$ctrl.display.id[$ctrl.type]}}">Guest Accessible URL:
       <itt-validation-tip ng-if="$ctrl[$ctrl.type].error" text="{{$ctrl[$ctrl.type].error}}"></itt-validation-tip>
       <p class="--break-word">
-        <small ng-class="{ \\'error-red\\': $ctrl[$ctrl.type].error, unselectable: $ctrl[$ctrl.type].error }">
+        <small ng-class="{ 'error-red': $ctrl[$ctrl.type].error, unselectable: $ctrl[$ctrl.type].error }">
           {{$ctrl.formatGuestAccessibleUrl()}}
         </small>
       </p>

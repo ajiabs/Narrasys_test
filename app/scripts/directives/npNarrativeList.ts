@@ -127,10 +127,10 @@ class NarrativeListController implements INarrativeListBindings {
     }
   }
 
-  addOrUpdateNarrative(n: INarrative): void {
-    const method = n._id == null ? 'createNarrative' : 'updateNarrative';
-    this._addOrUpdateNarr(n, method)
-      .then((n: INarrative) => this.closeAddOrEditModal(n, true))
+  addOrUpdateNarrative($narrative: INarrative): void {
+    const method = $narrative._id == null ? 'createNarrative' : 'updateNarrative';
+    this._addOrUpdateNarr($narrative, method)
+      .then((narrative: INarrative) => this.closeAddOrEditModal(narrative, true))
       .catch((err: any) => this._handleErr(err));
   }
 

@@ -76,18 +76,15 @@ const TEMPLATE = `
     </label>
     <input id="nSupportUrl" type="text" name="supportUrl" itt-valid-url placeholder="link for support"
            ng-model="$ctrl.narrative.support_url"/>
-
     <div class="narrative-flags">
       <div>
         <input id="nNewWindow" type="checkbox" ng-model="$ctrl.narrative.disable_new_window"/>
         <label for="nNewWindow">Disable New Window</label>
       </div>
-
       <div>
         <input id="nDisableNav" type="checkbox" ng-model="$ctrl.narrative.disable_navigation"/>
         <label for="nDisableNav">Disable Navigation</label>
       </div>
-
       <div>
         <input
           id="nGuestAccess"
@@ -96,7 +93,6 @@ const TEMPLATE = `
           ng-model="$ctrl.narrative.guest_access_allowed"/>
         <label for="nGuestAccess">Enable Guest Access</label>
       </div>
-
       <div ng-if="$ctrl.trueAdmin && $ctrl.narrative._id">
         <input
           id="socialshare-checkbox"
@@ -106,7 +102,6 @@ const TEMPLATE = `
         <label for="socialshare-checkbox">Enable Socialshare</label>
       </div>
     </div>
-
     <itt-enable-socialshare
       ng-if="$ctrl.trueAdmin && $ctrl.narrative._id"
       container-id="{{$ctrl.selectedCustomer.root_container_id}}"
@@ -130,8 +125,8 @@ interface IContainerInfo {
 }
 
 interface INarrativeEditorEmit {
-  n?: Partial<INarrative>;
-  data?: { n: Partial<INarrative>, c: IContainerInfo };
+  $narrative?: Partial<INarrative>;
+  data?: { narrative: Partial<INarrative>, containerId: string };
 }
 
 interface INarrativeEditorBindings extends ng.IComponentController {
@@ -237,13 +232,14 @@ class NarrativeEditorController implements INarrativeEditorBindings {
         .then((assets) => {
           assets.forEach((asset: any) => narrative.narrative_image_ids.push(asset.file._id));
           this.uploadsService.resetUploads();
-          this.onUpdate({ n: narrative });
+          this.onUpdate({ $narrative: narrative });
           return;
         });
     } else if (existy(this._containerInfo)) {
-      this.onUpdate({ data: { n: narrative, c: this._containerInfo.containerId } });
+      const { containerId } = this._containerInfo;
+      this.onUpdate({ data: { narrative, containerId } });
     } else {
-      this.onUpdate({ n: narrative });
+      this.onUpdate({ $narrative: narrative });
     }
 
   }

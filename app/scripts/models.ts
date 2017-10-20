@@ -68,6 +68,10 @@ export class IContainer {
   name: ILangForm;
   parent_id: string;
   sort_order: number;
+  editingContainer?: boolean;
+  newContainerTitle?: string;
+  addingContainer?: boolean;
+  showChildren?: boolean;
 }
 
 export class ITimeline {
