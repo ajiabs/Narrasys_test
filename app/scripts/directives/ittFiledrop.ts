@@ -14,11 +14,16 @@ const TEMPLATE = `
 </div>
 `;
 
-class FiledropController implements ng.IComponentController {
-  static $inject = ['$element'];
-  onDrop: (files: any) => FileList;
+interface IFileDropBindings extends ng.IComponentController {
   onError: boolean;
-  constructor(public $element){
+  onDrop: ($ev: {files: FileList}) => { files: FileList };
+}
+
+class FiledropController implements IFileDropBindings {
+  onError: boolean;
+  onDrop: ($ev: {files: FileList}) => { files: FileList };
+  static $inject = ['$element'];
+  constructor(public $element) {
   }
 
   $postLink() {
@@ -47,36 +52,38 @@ class FiledropController implements ng.IComponentController {
     e.preventDefault();
     e.stopPropagation();
     this.handleDragLeave(e);
-    this.onDrop({files: e.dataTransfer.files});
-  };
+    this.onDrop({ files: e.dataTransfer.files });
+  }
 
   private handleDragOver(e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     this.handleDragEnter(e);
     return false;
-  };
+  }
 
   private handleDragEnter(ev) {
     this.$element.children().addClass('itt-filedrop--droppable');
-  };
+  }
 
   private handleDragLeave(ev) {
     this.$element.children().removeClass('itt-filedrop--droppable');
-  };
+  }
 }
 
-
+interface IComponentBindings {
+  [binding: string]: '<' | '<?' | '&' | '&?' | '@' | '@?' | '=' | '=?';
+}
 export class Filedrop implements ng.IComponentOptions {
-  static Name: string = 'ittFiledrop';
   transclude = {
     'target': 'ittFiledropTarget',
     'preview': 'ittFiledropPreview'
   };
-  bindings: any = {
+  bindings: IComponentBindings = {
     onError: '<',
     onDrop: '&'
   };
   template: string = TEMPLATE;
   controller = FiledropController;
+  static Name: string = 'ittFiledrop'; // tslint:disable-line
 }

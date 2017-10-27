@@ -201,7 +201,7 @@ class NarrativeEditorController implements INarrativeEditorBindings {
       n.customer_id = this.selectedCustomer._id;
 
     }
-    const fields = [
+    const fields: Array<keyof INarrative> = [
       'name',
       'description',
       'customer_id',

@@ -5,14 +5,14 @@
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
 import { AssetUploader } from './ittAssetUploader';
-import ittClipboard from './ittClipboard';
+import { Clipboard } from './ittClipboard';
 import ittColorSelect from './ittColorSelect';
 import { Container } from './ittContainer';
 import { ContainerEpisodes } from './ittContainerEpisodes';
 import ittDescriptionField from './ittDescriptionField';
 import ittDisplaySelect from './ittDisplaySelect';
 import ittDynamicModel from './ittDynamicModel';
-import ittEditPencil from './ittEditPencil';
+import { EditPencil } from './ittEditPencil';
 import ittEpisode from './ittEpisode';
 import ittEpisodeEditor from './ittEpisodeEditor';
 import { EpisodeList } from './ittEpisodeList';
@@ -29,19 +29,19 @@ import ittItemDetailModal from './ittItemDetailModal';
 import ittItemEditor from './ittItemEditor';
 import ittLanguageFlags from './ittLanguageFlags';
 import ittLanguageSelect from './ittLanguageSelect';
-import ittLoading from './ittLoading';
+import { Loading } from './ittLoading';
 import ittLogin from './ittLogin';
 import ittMagnet from './magnet/ittMagnet';
 import ittMagnetized from './magnet/ittMagnetized';
 import ittMcQuestion from './ittMcQuestion';
-import ittModal from './ittModal';
+import { Modal } from './ittModal';
 import { NarrativeDetail } from './npNarrativeDetail';
 import { NarrativeEditor } from './npNarrativeEditor';
 import { NarrativeList } from './npNarrativeList';
 import { NarrativesContainer } from './npNarrativesContainer';
 import { NarrativeContainer } from './npNarrativeContainer';
 import ittNarrativeTimeline from './ittNarrativeTimeline';
-import ittNav from './ittNav';
+import { Nav } from './ittNav';
 import ittOptionsDisabled from './ittOptionsDisabled';
 import ittQuestionOptions from './ittQuestionOptions';
 import ittQuestionTextField from './ittQuestionTextField';
@@ -63,7 +63,7 @@ import { TimelineEditor } from './npTimelineEditor';
 import ittTimestampSelect from './ittTimestampSelect';
 import ittTitleField from './ittTitleField';
 import ittToolbarStory from './ittToolbarStory';
-import ittTooltip from './ittTooltip';
+import { Tooltip } from './ittTooltip';
 import ittTranscriptField from './ittTranscriptField';
 import ittTransitionSelect from './ittTransitionSelect';
 import ittTypographySelect from './ittTypographySelect';
@@ -89,18 +89,19 @@ import { EnableSocialshare, IttSocialShare } from './socialshare/index';
 import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
 import { ittPlayerContainer } from './ittPlayerContainer';
+import { ProjectsContainer } from './npProjectsContainer';
 
 const directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
   .component(AssetUploader.Name, new AssetUploader())
-  .directive('ittClipboard', ittClipboard)
+  .component(Clipboard.Name, new Clipboard())
   .directive('ittColorSelect', ittColorSelect)
   .component(Container.Name, new Container())
   .component(ContainerEpisodes.Name,  new ContainerEpisodes())
   .directive('ittDescriptionField', ittDescriptionField)
   .directive('ittDisplaySelect', ittDisplaySelect)
   .directive('ittDynamicModel', ittDynamicModel)
-  .directive('ittEditPencil', ittEditPencil)
+  .component(EditPencil.Name, new EditPencil())
   .directive('ittEpisode', ittEpisode)
   .directive('ittEpisodeEditor', ittEpisodeEditor)
   .component(EpisodeList.Name, new EpisodeList())
@@ -117,16 +118,16 @@ const directivesModule = angular.module('itt.directives', [])
   .directive('ittItemEditor', ittItemEditor)
   .directive('ittLanguageFlags', ittLanguageFlags)
   .directive('ittLanguageSelect', ittLanguageSelect)
-  .directive('ittLoading', ittLoading)
+  .component(Loading.Name, new Loading())
   .directive('ittLogin', ittLogin)
   .directive('ittMagnet', ittMagnet)
   .directive('ittMagnetized', ittMagnetized)
   .directive('ittMcQuestion', ittMcQuestion)
-  .directive('ittModal', ittModal)
+  .component(Modal.Name, new Modal())
   .component(NarrativeEditor.Name, new NarrativeEditor())
   .component(NarrativeList.Name, new NarrativeList())
   .directive('ittNarrativeTimeline', ittNarrativeTimeline)
-  .directive('ittNav', ittNav)
+  .component(Nav.Name, new Nav())
   .directive('ittOptionsDisabled', ittOptionsDisabled)
   .directive('ittQuestionOptions', ittQuestionOptions)
   .directive('ittQuestionTextField', ittQuestionTextField)
@@ -149,7 +150,7 @@ const directivesModule = angular.module('itt.directives', [])
   .directive('ittTimestampSelect', ittTimestampSelect)
   .directive('ittTitleField', ittTitleField)
   .directive('ittToolbarStory', ittToolbarStory)
-  .directive('ittTooltip', ittTooltip)
+  .component(Tooltip.Name,  new Tooltip())
   .directive('ittTranscriptField', ittTranscriptField)
   .directive('ittTransitionSelect', ittTransitionSelect)
   .directive('ittTypographySelect', ittTypographySelect)
@@ -179,6 +180,7 @@ const directivesModule = angular.module('itt.directives', [])
   .directive('ittPlayerContainer', ittPlayerContainer)
   .component(NarrativeDetail.Name, new NarrativeDetail())
   .component(NarrativeContainer.Name, new NarrativeContainer())
+  .component(ProjectsContainer.Name, new ProjectsContainer())
   .component(NarrativesContainer.Name, new NarrativesContainer());
 
 export default directivesModule;

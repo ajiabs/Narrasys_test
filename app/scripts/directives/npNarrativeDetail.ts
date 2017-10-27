@@ -56,9 +56,8 @@ class NarrativeDetailController implements INarrativeDetailBindings {
 
     }
   };
-  static $inject = ['$q', '$routeParams', 'authSvc', 'appState', 'dataSvc', 'modelSvc'];
+  static $inject = ['$routeParams', 'authSvc', 'appState', 'dataSvc', 'modelSvc'];
   constructor(
-    private $q: ng.IQService,
     private $routeParams,
     private authSvc,
     private appState,

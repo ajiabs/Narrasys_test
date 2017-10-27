@@ -107,7 +107,7 @@ function routerConfig($routeProvider) {
     .when('/account', {
       template: [
         '<div class="standaloneAncillaryPage">',
-        '	<itt-nav on-logout="logout()"></itt-nav>',
+        '	<np-nav on-logout="logout()"></np-nav>',
         '	<h1>My Account</h1>',
         '	<div itt-user></div>',
         '</div>'
@@ -136,7 +136,7 @@ function routerConfig($routeProvider) {
     })
     .when('/projects', {
       title: 'Available projects',
-      templateUrl: 'templates/producer/episodelist.html'
+      template: '<np-projects-container></np-projects-container>'
     })
     .when('/episode/:epId', {
       title: 'Narrative Producer',
@@ -199,7 +199,7 @@ function routerConfig($routeProvider) {
       controller: 'ContainerAssetsTestController',
       template: [
         '<div class="standaloneAncillaryPage">',
-        '	<itt-nav on-logout="logout()"></itt-nav>',
+        '	<np-nav on-logout="logout()"></np-nav>',
         '	<div>',
         '		<sxs-container-assets container-id="{{containerId}}" mime-key="assetLib"></sxs-container-assets>',
         '	</div>',

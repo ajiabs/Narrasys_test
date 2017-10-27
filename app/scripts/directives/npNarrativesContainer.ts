@@ -3,9 +3,9 @@ import { ICustomer } from '../models';
 
 const TEMPLATE = `
 <div class="standaloneAncillaryPage">
-	<itt-nav on-logout="$ctrl.logout()"></itt-nav>
+	<np-nav on-logout="$ctrl.logout()"></np-nav>
 	<h1>Narratives</h1>
-	<itt-loading ng-if="$ctrl.customersData == null"></itt-loading>
+	<np-loading ng-if="$ctrl.customersData == null"></np-loading>
 	<np-narrative-list
 	  ng-if="$ctrl.customersData"
 	  class="np-narrative-container"

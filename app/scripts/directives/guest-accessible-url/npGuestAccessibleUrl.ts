@@ -25,12 +25,11 @@ const TEMPLATE = `
       ng-model="$ctrl[$ctrl.type].path_slug.en">
   </div>
 </div>
-<a
+<np-clipboard
   ng-if="$ctrl.clipboardMode"
-  itt-clipboard
   source-text="{{$ctrl.formatUrlToCopy()}}"
   on-copy="$event.stopPropagation()">
-</a>
+</np-clipboard>
 `;
 
 interface IGuestAccessibleUrlBindings extends ng.IComponentController {

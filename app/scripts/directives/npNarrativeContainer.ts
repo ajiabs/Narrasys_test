@@ -3,8 +3,8 @@ import { existy } from '../services/ittUtils';
 import { IDataSvc, IModelSvc } from '../interfaces';
 const TEMPLATE = `
 <div class="standaloneAncillaryPage">
-	<itt-nav on-logout="$ctrl.logout()"></itt-nav>
-  <itt-loading ng-if="$ctrl.narrative == null && $ctrl.customers == null"></itt-loading>
+	<np-nav on-logout="$ctrl.logout()"></np-nav>
+  <np-loading ng-if="$ctrl.narrative == null && $ctrl.customers == null"></np-loading>
   <np-narrative-detail
     ng-if="$ctrl.narrative && $ctrl.customers"
     class="np-narrative-container"

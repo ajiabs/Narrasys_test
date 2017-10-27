@@ -35,13 +35,13 @@ const TEMPLATE = `
     </div>
   </form>
 </div>
-<itt-modal modal-class="timeline__delete" ng-if="$ctrl.underDelete">
+<np-modal modal-class="timeline__delete" ng-if="$ctrl.underDelete">
   <h2>Are you sure?</h2>
   <p>delete: </p>
   <p class="under__delete"><strong>{{$ctrl._timeline.name.en}}?</strong></p>
   <button ng-click="$ctrl.onDelete({ t: $ctrl._timeline })">yes</button>
   <button ng-click="$ctrl.underDelete = false">no</button>
-</itt-modal>
+</np-modal>
 `;
 
 interface ITimelineEditorBindings extends ng.IComponentController {
@@ -84,7 +84,7 @@ class TimelineEditorController implements ITimelineEditorBindings {
   }
 
   handleUpdate(t: ITempTimeline) {
-    const tlFileds = [
+    const tlFileds: Array<keyof ITempTimeline> = [
       '_id',
       'name',
       'description',

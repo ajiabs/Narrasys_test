@@ -2,9 +2,9 @@
 
   <!-- begin display -->
   <div>
-    <itt-edit-pencil can-access="$ctrl.canAccess" on-edit="$ctrl.toggleEditNarrativeModal()">
+    <np-edit-pencil can-access="$ctrl.canAccess" on-edit="$ctrl.toggleEditNarrativeModal()">
       <h2 ng-bind-html="$ctrl.narrative.name.en"></h2>
-    </itt-edit-pencil>
+    </np-edit-pencil>
     <p ng-bind-html="$ctrl.narrative.description.en"></p>
     <p>Total Duration: {{$ctrl.totalNarrativeDuration | asTime}}</p>
   </div>
@@ -16,15 +16,15 @@
   <div class="episode__button-row">
     <div ng-if="$ctrl.canAccess">
       <!--overlay class is pointer-events: none, to disable clicks while editing.-->
-      <itt-tooltip tip-text="Add Timeline" ng-class="{overlay: $ctrl.timelineUnderEdit || $ctrl.tmpTimeline}">
+      <np-tooltip tip-text="Add Timeline" ng-class="{overlay: $ctrl.timelineUnderEdit || $ctrl.tmpTimeline}">
         <a class="icon__button button__add-inverted"
            ng-click="$ctrl.addTmpTimeline(null, $ctrl.narrative.timelines)"></a>
-      </itt-tooltip>
-      <itt-tooltip tip-text="Export links to spreadsheet">
+      </np-tooltip>
+      <np-tooltip tip-text="Export links to spreadsheet">
         <a class="icon__button button__export-spreadsheet"
            ng-click="$ctrl.exportToSpreadsheet(narrative._id)">
         </a>
-      </itt-tooltip>
+      </np-tooltip>
       <np-guest-accessible-url
         narrative="$ctrl.narrative"
         sub-domain="{{$ctrl.narrative.narrative_subdomain}}"
@@ -36,7 +36,7 @@
   <!--modals-->
 
   <!--add narrative modal top level-->
-  <itt-modal ng-if="$ctrl.showEpisodeList">
+  <np-modal ng-if="$ctrl.showEpisodeList">
     <np-episode-list
       depth="0"
       context="narrative"
@@ -44,26 +44,10 @@
       on-episode-select="$ctrl.onEpisodeSelect(node)"
       on-cancel="$ctrl.toggleEpisodeList(); $ctrl.doneEditingTimeline()">
     </np-episode-list>
-    <!--<np-episode-list class="admin episodePicker">-->
-      <!--&lt;!&ndash;Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>&ndash;&gt;-->
-      <!--Choose an episode:-->
-      <!--<button ng-click="$ctrl.toggleEpisodeList(); $ctrl.doneEditingTimeline()">cancel</button>-->
-      <!--<ul>-->
-
-        <!--<li ng-repeat="child in $parent.$episodeListCtrl.root.children">-->
-          <!--<np-container-episodes-->
-            <!--on-node-click="$ctrl.onEpisodeSelect(node)"-->
-            <!--root-context="$ctrl.onEpisodeSelect"-->
-            <!--for-admin="true"-->
-            <!--container="$ctrl.containers[child._id]">-->
-          <!--</np-container-episodes>-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</np-episode-list>-->
-  </itt-modal>
+  </np-modal>
 
   <!--edit narrative or timeline modal-->
-  <itt-modal wrapper-class="responsive-modal__wrapper" modal-class="narrative__modal"
+  <np-modal wrapper-class="responsive-modal__wrapper" modal-class="narrative__modal"
              ng-if="$ctrl.editingNarrative || $ctrl.timelineUnderEdit != null">
 
     <div ng-if="$ctrl.editingNarrative">
@@ -88,7 +72,7 @@
       </np-timeline-editor>
     </div>
 
-  </itt-modal>
+  </np-modal>
 
   <!--end modals-->
 
@@ -112,13 +96,13 @@
 								<i class="fa fa-arrows"></i>
 							</span>
           <div class="tl__wrapper">
-            <itt-edit-pencil can-access="$ctrl.canAccess" force="rowHover && $ctrl.canAccess"
+            <np-edit-pencil can-access="$ctrl.canAccess" force="rowHover && $ctrl.canAccess"
                              on-edit="$ctrl.toggleEditingTimeline(timeline)">
               <h3>
                 <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
                 <a href="/#/story/{{$ctrl.narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
               </h3>
-            </itt-edit-pencil>
+            </np-edit-pencil>
             <p>{{timeline.episode_segments[0].end_time | asTime}}</p>
             <p>{{timeline.description.en}}</p>
 
@@ -126,10 +110,10 @@
             <div class="tl__addButton">
               <div ng-if="rowHover && $ctrl.canAccess" class="episode__button-row">
                 <div>
-                  <itt-tooltip tip-text="Insert Timeline">
+                  <np-tooltip tip-text="Insert Timeline">
                     <a class="icon__button button__add-inverted"
                        ng-click="$ctrl.addTmpTimeline(timeline, $ctrl.narrative.timelines)"></a>
-                  </itt-tooltip>
+                  </np-tooltip>
                   <np-guest-accessible-url
                     narrative="$ctrl.narrative"
                     timeline="timeline"
