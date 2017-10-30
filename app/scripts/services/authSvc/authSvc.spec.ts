@@ -1,10 +1,15 @@
+import { IRole } from './authSvc';
+import { Partial } from '../../interfaces';
+
 describe('Service: authSvc', () => {
 
   beforeEach(angular.mock.module('iTT'));
 
-  var authSvc;
-  beforeEach(angular.mock.inject((_authSvc_) => {
+  let authSvc;
+  let appState;
+  beforeEach(angular.mock.inject((_authSvc_, _appState_) => {
     authSvc = _authSvc_;
+    appState = _appState_;
   }));
 
   it('should return admin from getRoleForNarrative when admin is included with no scoping', () => {
@@ -114,9 +119,44 @@ describe('Service: authSvc', () => {
     expect(role).toEqual('admin');
   });
 
-  it('should return empty string when roles array is empty', () => {
+  it('should return undefined when roles array is empty', () => {
     var roles = [];
     var role = authSvc.getRoleForNarrative('1111', roles);
-    expect(role).toEqual('');
+    expect(role).not.toBeDefined();
   });
+
+  it('should determine if a user is a "true guest"', () => {
+    const roles: IRole[] = [
+      {
+        role: 'guest',
+        resource_id: '1111',
+        resource_type: ''
+      }
+    ];
+
+    appState.user.roles = roles;
+    expect(authSvc.isTrueGuest()).toBe(true);
+  });
+
+  it('should determine if a user is not a "true guest"', () => {
+    const roles: Partial<IRole>[] = [
+      {
+        role: 'instructor'
+      },
+      {
+        role: 'admin',
+        resource_id: '1111'
+      },
+      {
+        role: 'student'
+      },
+      {
+        role: 'guest'
+      }
+    ];
+
+    appState.user.roles = roles;
+    expect(authSvc.isTrueGuest()).toBe(false);
+  });
+
 });

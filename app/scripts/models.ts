@@ -1,10 +1,24 @@
-import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
+import { IAnnotators, ILangForm, ILangformKeys, IRole } from './interfaces';
 
 
 import { TSocialTagTypes } from './constants';
 /**
  * Created by githop on 5/1/17.
  */
+
+export class IUser {
+  access_token: string;
+  avatar: string;
+  avatar_id: string;
+  customer: string;
+  email: string;
+  name: string;
+  role_description: string;
+  roles: IRole[];
+  track_episode_metrics: boolean;
+  track_event_metrics: boolean;
+  _id: string;
+}
 
 export class IEpisode {
   _id: string;

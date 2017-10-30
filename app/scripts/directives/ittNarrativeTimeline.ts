@@ -32,7 +32,7 @@ class NarrativeTimelineCtrl {
         this.appState.narrativeId = narrative._id;
         this.$scope.narrative = narrative;
 
-        const narrativeRole = this.authSvc.getRoleForNarrative(narrative._id);
+        const narrativeRole = this.authSvc.getRoleForNarrative(narrative._id) || '';
         const defaultProduct = this.authSvc.getDefaultProductForRole(narrativeRole);
         let currentTl = Object.create(null);
         let tlTitle = '';

@@ -4,14 +4,14 @@
 
 import 'angular';
 
-import {AppState} from './appState';
-import authSvc from './authSvc/authSvc';
+import { AppState } from './appState';
+import { AuthSvc } from './authSvc/authSvc';
 import awsSvc from './awsSvc';
 import config from './config';
 import dataSvc from './dataSvc/dataSvc';
 import errorSvc from './errorSvc';
 import imageResize from './imageResizeSvc';
-import {ittUtils} from './ittUtils';
+import { ittUtils } from './ittUtils';
 import mockSvc from './mockSvc';
 import modelSvc from './modelSvc/modelSvc';
 import playbackService from './playbackService/playbackService';
@@ -35,13 +35,13 @@ import {
   WistiaUrlService
 } from './wistia/index';
 
-import {UploadsService} from './uploadsService';
-import {ValidationService} from './validation.svc';
-import {AnalyticsSvc} from './analyticsSvc/analyticsSvc';
+import { UploadsService } from './uploadsService';
+import { ValidationService } from './validation.svc';
+import { AnalyticsSvc } from './analyticsSvc/analyticsSvc';
 
 let servicesModule = angular.module('itt.services', [])
   .service('appState', AppState)
-  .factory('authSvc', authSvc)
+  .service(AuthSvc.Name, AuthSvc)
   .factory('awsSvc', awsSvc)
   .factory('config', config)
   .factory('dataSvc', dataSvc)

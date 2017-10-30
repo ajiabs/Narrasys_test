@@ -87,7 +87,7 @@ let itt = angular.module('iTT', [
   // Configure x-domain resource whitelist (TODO: do we actually need this?)
   .config(['$sceDelegateProvider', xDomainConfig])
   // Configure http headers and intercept http errors
-  .config(['$httpProvider', authInterceptorConfig])
+  .config(['$httpProvider', errorInterceptorConfig])
   // Configuration for textAngular toolbar
   .config(['$provide', textAngularConfig])
   //config for debug info disable
@@ -113,7 +113,7 @@ function routerConfig($routeProvider) {
         '</div>'
       ].join(''),
       controller: ['$scope', 'authSvc', function ($scope, authSvc) {
-        $scope.logout = authSvc.logout;
+        $scope.logout = authSvc.logout.bind(authSvc);
       }]
     })
     .when('/stories', {
@@ -300,7 +300,7 @@ function xDomainConfig($sceDelegateProvider) {
   ]);
 }
 
-function authInterceptorConfig($httpProvider) {
+function errorInterceptorConfig($httpProvider) {
   $httpProvider.defaults.useXDomain = true;
   $httpProvider.defaults.withCredentials = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
