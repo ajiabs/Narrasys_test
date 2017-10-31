@@ -13,7 +13,7 @@ export { IWistiaMetaProps, IWistiaPlayerManager } from './services/wistia/wistia
 export { IWistiaUrlservice } from './services/wistia/wistiaUrlService';
 export { IUploadData } from './services/uploadsService';
 export { IEmailFields } from './directives/socialshare/ittSocialShare';
-export { IimageResize } from './services/imageResizeSvc';
+export { IImageResize } from './services/imageResizeSvc';
 /*
  it's nice to have the interface close to the method / object it is annotating. It's also nice to have a common
  point from where to import interfaces from.

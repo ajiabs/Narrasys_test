@@ -1,12 +1,10 @@
 /**
  * Created by githop on 5/26/17.
  */
-import {IAsset, INarrative, ITimeline} from '../../models';
-
-import {IDataSvc, IimageResize} from '../../interfaces';
-import {IModelSvc} from '../../services/modelSvc/modelSvc';
-
-import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE, TSocialTagTypes} from '../../constants';
+import { IAsset, INarrative, ITimeline } from '../../models';
+import { IDataSvc, IImageResize } from '../../interfaces';
+import { IModelSvc } from '../../services/modelSvc/modelSvc';
+import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE, TSocialTagTypes } from '../../constants';
 /**
  * Created by githop on 5/22/17.
  */
@@ -74,6 +72,7 @@ const TEMPLATE = `
   <!--end browse uploaded-->
 </div>
 `;
+
 /* tslint:enable */
 
 interface IEnableSocialShareBindings {
@@ -105,14 +104,15 @@ interface IImages {
   social_image_square: ITagPayload;
   social_image_wide: ITagPayload;
 }
+
 const DEFAULT_DISPLAY_TEXT = {
   social_image_square: 'Recommend 576 x 576',
   social_image_wide: 'Recommend 1200 x 630'
 };
 
 const initialImages = {
-  social_image_square: {file: null, path: null},
-  social_image_wide: {file: null, path: null}
+  social_image_square: { file: null, path: null },
+  social_image_wide: { file: null, path: null }
 };
 
 const initialDisplay = {
@@ -139,8 +139,8 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   display: ITagDisplay;
   model: any;
   private files = {
-    social_image_square: {file: null},
-    social_image_wide: {file: null}
+    social_image_square: { file: null },
+    social_image_wide: { file: null }
   };
   private type: 'narrative' | 'timeline';
 
@@ -149,7 +149,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   constructor(private $q: ng.IQService,
               private $timeout: ng.ITimeoutService,
               public uploadsService,
-              private imageResize: IimageResize,
+              private imageResize: IImageResize,
               private dataSvc: IDataSvc,
               private modelSvc: IModelSvc) {
   }
@@ -172,7 +172,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
         this.narrative.narrative_image_ids.forEach((nAssedId: string) => {
           const asset = this.modelSvc.assets[nAssedId];
           const tagType = asset.tags[0];
-          this.images[tagType] = {assetId: asset._id, path: asset.url} as ITagPayload;
+          this.images[tagType] = { assetId: asset._id, path: asset.url } as ITagPayload;
           this.display[tagType].defaultFromNarrative = true;
         });
       } else {
@@ -209,15 +209,15 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
 
   handleImage(data, currTag: TSocialTagTypes): void {
     this.checkAspectRatio(data[0])
-      .then(({images, tag}) => {
+      .then(({ images, tag }) => {
 
         if (currTag !== tag) {
-          return this.$q.reject({errorType: 'TAG_MISMATCH', currTag, tag});
+          return this.$q.reject({ currTag, tag, errorType: 'TAG_MISMATCH' });
         }
         this.files[tag].file = data;
         this.images = Object.assign({}, this.images, images);
         //set a reference to the uploaded file
-        this.model[tag] = {file: data};
+        this.model[tag] = { file: data };
         this.setValidity();
       })
       .catch(e => this.handleTagmismatchError(e.errorType, e.currTag, e.tag));
@@ -274,12 +274,14 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
     const allIds = [...loadStatus.narrative, ...loadStatus.timeline];
     // the above assets need to be retrieved either from teh API or the cache
     // only fetch the necessary ids that aren't already cached
-    const idsToFetch = allIds.reduce((toFetch: string[], id: string) => {
-      if (!this.modelSvc.assets[id]) {
-        toFetch.push(id);
-      }
-      return toFetch;
-    }, []);
+    const idsToFetch = allIds.reduce(
+      (toFetch: string[], id: string) => {
+        if (!this.modelSvc.assets[id]) {
+          toFetch.push(id);
+        }
+        return toFetch;
+      },
+      []);
 
     const setCorrectImagesFromAssets = () => {
       loadStatus[loadStatus.use].forEach((id: string) => {
@@ -300,7 +302,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   private getImageAssets(type: 'narrative' | 'timeline', skipImgIdArray: boolean = false) {
     return this.$q((resolve) => {
       const assetsToFetch = [];
-      this[type][type + '_image_ids'].forEach(assetId => {
+      this[type][type + '_image_ids'].forEach((assetId: string) => {
         if (assetId && this.modelSvc.assets[assetId]) {
           this.setImageFromAsset(this.modelSvc.assets[assetId], skipImgIdArray);
         } else {
@@ -311,7 +313,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
       if (assetsToFetch.length > 0) {
         this.dataSvc.fetchAndCacheAssetsByIds(assetsToFetch)
           .then((assets: IAsset[]) => {
-            assets.forEach((asset) => this.setImageFromAsset(asset, skipImgIdArray));
+            assets.forEach((asset: IAsset) => this.setImageFromAsset(asset, skipImgIdArray));
             return resolve();
           });
       }
@@ -323,18 +325,20 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   private handleTagmismatchError(errorType: string, currentTag: TSocialTagTypes, newTag: TSocialTagTypes) {
     this.display[currentTag].error = true;
     this.display[currentTag].text = 'The aspect ratio is not correct.';
-    this.$timeout(() => {
-      this.display[currentTag].error = false;
-      this.display[currentTag].text = DEFAULT_DISPLAY_TEXT[currentTag];
-    }, 3 * 1000);
+    this.$timeout(
+      () => {
+        this.display[currentTag].error = false;
+        this.display[currentTag].text = DEFAULT_DISPLAY_TEXT[currentTag];
+      },
+      3 * 1000);
   }
 
   private checkAspectRatio(file: File) {
     return this.imageResize.readFileToImg(file)
       .then((img: HTMLImageElement) => {
         const tag: TSocialTagTypes = this.imageResize.getImageTagType(img.width, img.height);
-        const images = { [tag]: {name: file.name, path: img.src } };
-        return {images, tag};
+        const images = { [tag]: { name: file.name, path: img.src } };
+        return { images, tag };
       });
   }
 
@@ -342,7 +346,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
     const tagType = asset.tags[0];
     const currentImage = this.images[tagType];
 
-    this.images[tagType] = {assetId: asset._id, path: asset.url} as ITagPayload;
+    this.images[tagType] = { assetId: asset._id, path: asset.url } as ITagPayload;
     this.display[tagType].defaultFromNarrative = false;
     if (skipImgIdArray) {
       this.display[tagType].defaultFromNarrative = true;
@@ -359,7 +363,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
   }
 
   private setValidity() {
-    const {social_image_square, social_image_wide} = this.images;
+    const { social_image_square, social_image_wide } = this.images;
     const isMixedDefault = this.display[SOCIAL_IMAGE_SQUARE].defaultFromNarrative !==
       this.display[SOCIAL_IMAGE_WIDE].defaultFromNarrative;
 
@@ -371,7 +375,7 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
     this.editorForm.$setValidity(this.editorForm.$name, isValid, this.editorForm);
   }
 
-   private removeImageId(targetId: string): void {
+  private removeImageId(targetId: string): void {
     this.model[this.type + '_image_ids'] = this.model[this.type + '_image_ids'].filter(id => targetId !== id);
   }
 
