@@ -1,7 +1,8 @@
-import { IAnnotators, ILangForm, ILangformKeys, IRole } from './interfaces';
+import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
 
 
 import { TSocialTagTypes } from './constants';
+import { RoleType } from './services/authSvc/authSvc';
 /**
  * Created by githop on 5/1/17.
  */
@@ -18,6 +19,12 @@ export class IUser {
   track_episode_metrics: boolean;
   track_event_metrics: boolean;
   _id: string;
+}
+
+export class IRole {
+  role: RoleType;
+  resource_type: string;
+  resource_id: string;
 }
 
 export class IEpisode {
@@ -311,7 +318,8 @@ type TInstance =
   | 'Customer'
   | 'Timeline'
   | 'Episode'
-  | 'Container';
+  | 'Container'
+  | 'User';
 export function createInstance<T>(type: TInstance, data: any): T {
   let model;
   switch (type) {
@@ -360,6 +368,12 @@ export function createInstance<T>(type: TInstance, data: any): T {
     case 'Container':
       model = new IContainer();
       break;
+    case 'User':
+      model = Object.assign(new IUser(), data);
+      if (model.roles && model.roles.length) {
+        model.roles = model.roles.map(r => Object.assign(new IRole(), r));
+      }
+      return model;
   }
   Object.assign(model, data);
   return model;

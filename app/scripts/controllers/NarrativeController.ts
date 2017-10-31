@@ -10,6 +10,6 @@ export  default function NarrativeCtrl($scope, narrativeResolve, authSvc) {
   $scope.narrativeResolve = narrativeResolve.n;
   $scope.customerResolve = narrativeResolve.c;
 
-  $scope.logout = authSvc.logout;
+  $scope.logout = authSvc.logout.bind(authSvc);
 }
 

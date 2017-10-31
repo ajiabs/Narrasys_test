@@ -1,8 +1,8 @@
 import { IModelSvc, Partial } from '../../interfaces';
 import { existy, pick } from '../ittUtils';
-import { IUser } from '../../models';
+import { createInstance, IRole, IUser } from '../../models';
 
-type RoleType = 'admin' | 'instructor' | 'student' | 'guest' | 'customer admin';
+export type RoleType = 'admin' | 'instructor' | 'student' | 'guest' | 'customer admin';
 
 enum Roles {
   ADMINISTRATOR = 'admin',
@@ -11,15 +11,8 @@ enum Roles {
   GUEST = 'guest',
   CUSTOMER_ADMINISTRATOR = 'customer admin'
 }
-
 enum Resources {
   CUSTOMER = 'Customer'
-}
-
-export interface IRole {
-  role: RoleType;
-  resource_type: string;
-  resource_id: string;
 }
 
 interface ILocalStoragePayload {
@@ -72,10 +65,12 @@ export class AuthSvc implements IAuthSvc {
 
   isTrueGuest() {
     if (this.appState.user && this.appState.user.roles) {
-      return this.appState.user.roles.some((r: IRole) => {
-        return r.role !== Roles.GUEST;
+      // every role for this user is the guest role
+      return this.appState.user.roles.every((r: IRole) => {
+        return r.role === Roles.GUEST;
       });
     }
+    return false;
   }
 
   userHasRole(role: RoleType) {
@@ -317,7 +312,6 @@ export class AuthSvc implements IAuthSvc {
   }
 
   getCurrentUser() {
-    console.trace('get curent user');
     return this.$http({
       method: 'GET',
       url: this.config.apiDataBaseUrl + '/show_user'
@@ -450,7 +444,7 @@ export class AuthSvc implements IAuthSvc {
       user.email = data.emails[0];
     }
 
-    this.appState.user = user;
+    this.appState.user = createInstance<IUser>('User', user);
     try {
       localStorage.setItem(this.config.localStorageKey, JSON.stringify({
         token: user.access_token,

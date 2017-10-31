@@ -5,7 +5,7 @@ export default function ErrorController($scope, errorSvc, appState, authSvc) {
   // console.log("errorController", $scope);
 
   $scope.errorSvc = errorSvc;
-  $scope.logout = authSvc.logout;
+  $scope.logout = authSvc.logout.bind(authSvc);
   $scope.user = appState.user;
 
   // probably should split this into separate functions for errors and notifications, but good enough for now

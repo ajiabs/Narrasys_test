@@ -24,7 +24,7 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
       //scope.user = appState.user;
 
       scope.appState = appState; // to get searchText
-      scope.userHasRole = authSvc.userHasRole;
+      scope.userHasRole = authSvc.userHasRole.bind(authSvc);
 
       if (scope.item.avatar_id) {
         scope.item.avatar = modelSvc.assets[scope.item.avatar_id];

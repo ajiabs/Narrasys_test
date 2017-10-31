@@ -10,7 +10,7 @@ NarrativesCtrl.$inject = ['$scope', 'authSvc', 'narrativesResolve'];
 
 export default function NarrativesCtrl($scope, authSvc, narrativesResolve) {
   $scope.customersResolve = narrativesResolve.c;
-  $scope.logout = authSvc.logout;
+  $scope.logout = authSvc.logout.bind(authSvc);
 }
 
 

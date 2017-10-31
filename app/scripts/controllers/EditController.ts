@@ -8,7 +8,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
 
   // HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
   // Poor encapsulation of the upload controls. Sorry about that.
-  $scope.userHasRole = authSvc.userHasRole;
+  $scope.userHasRole = authSvc.userHasRole.bind(authSvc);
   $scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
   $scope.selectService = selectService;
 

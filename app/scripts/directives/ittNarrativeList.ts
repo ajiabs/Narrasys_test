@@ -16,7 +16,7 @@ export default function ittNarrativeList() {
           narrativeSelect: false,
           narrativeRow: null,
           //methods
-          logout: authSvc.logout,
+          logout: authSvc.logout.bind(authSvc),
           user: appState.user,
           setSelectedNarrative: setSelectedNarrative,
           customerRowClick: customerRowClick,

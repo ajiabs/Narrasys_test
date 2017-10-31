@@ -4,7 +4,7 @@
 selectService.$inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
 
 export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
-  var _userHasRole = authSvc.userHasRole;
+  var _userHasRole = authSvc.userHasRole.bind(authSvc);
   var _existy = ittUtils.existy;
 
   var _langOpts = [

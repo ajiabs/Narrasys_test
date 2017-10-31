@@ -104,7 +104,7 @@ export default function ittNarrative() {
         //set up scope and bindings
         function onInit() {
           $scope.loading = true;
-          $scope.logout = authSvc.logout;
+          $scope.logout = authSvc.logout.bind(authSvc);
           $scope.isOwner = false;
           $scope.narrative = $scope.narrativeData;
           $scope.customers = $scope.customerData;

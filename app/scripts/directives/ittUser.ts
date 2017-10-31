@@ -15,13 +15,13 @@ export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc
       scope.inPlayer = attrs.inPlayer;
       scope.appState = appState;
       scope.loading = true;
-      scope.logout = authSvc.logout;
+      scope.logout = authSvc.logout.bind(authSvc);
       scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 
       authSvc.authenticate().then(function () {
         scope.loading = false;
         scope.user = appState.user;
-        scope.userHasRole = authSvc.userHasRole;
+        scope.userHasRole = authSvc.userHasRole.bind(authSvc);
 
         //TS-1120 - remove purchases
         // if (!scope.inPlayer && !authSvc.isGuest()) {

@@ -11,7 +11,7 @@ export default function ittLogin($location, $routeParams, config, authSvc, appSt
 
     link: function (scope) {
 
-      scope.userHasRole = authSvc.userHasRole;
+      scope.userHasRole = authSvc.userHasRole.bind(authSvc);
 
       scope.appState = appState;
       scope.loginForm = {

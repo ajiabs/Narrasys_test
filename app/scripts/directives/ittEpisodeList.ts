@@ -10,7 +10,7 @@ export default function ittEpisodeList() {
         $scope.appState = appState;
         $scope.loading = true;
         $scope.containers = modelSvc.containers;
-        $scope.userHasRole = authSvc.userHasRole;
+        $scope.userHasRole = authSvc.userHasRole.bind(authSvc);
         dataSvc.getCustomerList();
         dataSvc.getContainerRoot().then(function (rootIDs) {
           $scope.root = {

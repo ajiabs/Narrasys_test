@@ -5,6 +5,6 @@
 ContainerAssetsTestController.$inject = ['$scope', '$routeParams', 'authSvc'];
 
 export default function ContainerAssetsTestController($scope, $routeParams, authSvc) {
-  $scope.logout = authSvc.logout;
+  $scope.logout = authSvc.logout.bind(authSvc);
   $scope.containerId = $routeParams.containerId;
 }

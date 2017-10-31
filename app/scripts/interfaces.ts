@@ -1,5 +1,4 @@
 export { IAuthSvc } from './services/authSvc/authSvc';
-export { IRole } from './services/authSvc/authSvc';
 export { ILinkValidationMessage, ILinkValidFields } from './services/validation.svc';
 export { IAnalyticsSvc } from './services/analyticsSvc/analyticsSvc';
 export { IAnnotator, IAnnotators } from './directives/sxsAnnotatorAutocomplete';

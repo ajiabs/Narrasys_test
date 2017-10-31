@@ -361,9 +361,9 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
     }
   };
 
-  $scope.userHasRole = authSvc.userHasRole;
-  $scope.logout = authSvc.logout;
-  $scope.isTrueGuest = authSvc.isTrueGuest;
+  $scope.userHasRole = authSvc.userHasRole.bind(authSvc);
+  $scope.logout = authSvc.logout.bind(authSvc);
+  $scope.isTrueGuest = authSvc.isTrueGuest.bind(authSvc);
 
   // - - - - - - - - -  - - - - - - - - - - - - - - -
   // Autoscroll
