@@ -2,7 +2,7 @@
  *
  * Created by githop on 3/23/16.
  */
-import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants'
+import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE, TSocialTagTypes } from '../constants'
 
 /**
  * @ngdoc service
@@ -22,7 +22,7 @@ export interface IimageResize {
   readFileToImg(file: File): ng.IPromise<HTMLImageElement>;
   resizeImg(img: HTMLImageElement, maxWidth: number, maxHeight: number, center:boolean): ng.IPromise<string>;
   calcAspectRatio(w: number, h: number): number;
-  getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide';
+  getImageTagType(w: number, h: number): TSocialTagTypes;
 }
 
 
@@ -179,7 +179,7 @@ export default function imageResize($q): IimageResize {
     return w / h;
   }
 
-  function getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide' {
+  function getImageTagType(w: number, h: number): TSocialTagTypes {
     const aspectRatio = calcAspectRatio(w, h);
     if (aspectRatio > 1.25) {
       return SOCIAL_IMAGE_WIDE;
