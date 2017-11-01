@@ -41,7 +41,8 @@ function configWp(env) {
       path: env.dev || env.prod === 'local' || env.prod === 'analyze' ? resolve(__dirname, 'tmp') : resolve(__dirname, 'dist')
     },
     externals: {
-      'angular': 'angular'
+      angular: 'angular',
+      'aws-sdk': 'aws-sdk'
     },
     devtool: env.dev ? 'cheap-module-source-map' : false,
     module: {

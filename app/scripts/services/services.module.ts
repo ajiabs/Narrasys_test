@@ -6,7 +6,7 @@ import 'angular';
 
 import {AppState} from './appState';
 import authSvc from './authSvc/authSvc';
-import awsSvc from './awsSvc';
+import { AwsService } from './awsSvc';
 import config from './config';
 import dataSvc from './dataSvc/dataSvc';
 import errorSvc from './errorSvc';
@@ -42,7 +42,7 @@ import {AnalyticsSvc} from './analyticsSvc/analyticsSvc';
 let servicesModule = angular.module('itt.services', [])
   .service('appState', AppState)
   .factory('authSvc', authSvc)
-  .factory('awsSvc', awsSvc)
+  .service(AwsService.Name, AwsService)
   .factory('config', config)
   .factory('dataSvc', dataSvc)
   .factory('errorSvc', errorSvc)

@@ -24,6 +24,7 @@
     "angular-route": "1.5.11",
     "angular-socialshare": "^2.3.8",
     "angular-ui-tree": "^2.22.5",
+    "aws-sdk": "^2.141.0",
     "core-js": "^2.4.1",
     "jquery": "3.2.1",
     "karma-safari-launcher": "^1.0.0",
