@@ -1,4 +1,4 @@
-import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../interfaces';
+import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../../../scripts/interfaces';
 class EpisodeController {
   static $inject = ['$scope', '$interval', 'analyticsSvc', 'modelSvc', 'appState', 'dataSvc', 'timelineSvc'];
 
