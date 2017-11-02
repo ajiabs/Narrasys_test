@@ -16,6 +16,7 @@
 
 const templates = (require as any).context('../templates', true, /\.html$/);
 const componentTemplates = (require as any).context('./directives', true, /\.html$/);
+const viewModeTemplates = (require as any).context('../view-modes', true, /\.html$/);
 
 [templates, componentTemplates].forEach((templateSource) => {
   templateSource.keys().forEach(path => templateSource(path));
