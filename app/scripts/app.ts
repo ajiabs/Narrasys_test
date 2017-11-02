@@ -42,7 +42,7 @@ import './controllers/controllers.module';
 import './filters/filters';
 import './services/services.module';
 import './directives/directives.module';
-
+import '../episode/episode.module';
 let itt = angular.module('iTT', [
     'ngRoute',
     'ngAnimate',
@@ -50,6 +50,7 @@ let itt = angular.module('iTT', [
     'textAngular',
     'ui.tree',
     '720kb.socialshare',
+    'npEpisode',
     'itt.controllers',
     'itt.filters',
     'itt.services',

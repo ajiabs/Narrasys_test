@@ -1,7 +1,6 @@
 /**
  * Created by githop on 3/30/17.
  */
-
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
 import { AssetUploader } from './ittAssetUploader';
@@ -13,9 +12,6 @@ import ittDescriptionField from './ittDescriptionField';
 import ittDisplaySelect from './ittDisplaySelect';
 import ittDynamicModel from './ittDynamicModel';
 import { EditPencil } from './ittEditPencil';
-import ittEpisode from '../../episode/components/np-episode/ittEpisode';
-import ittEpisodeEditor from '../../episode/components/np-episode-editor/ittEpisodeEditor';
-import { EpisodeList } from './ittEpisodeList';
 import ittFileField from './ittFileField';
 import ittFilesHandler from './ittFilesHandler';
 import ittFlags from './ittFlags';
@@ -102,9 +98,6 @@ const directivesModule = angular.module('itt.directives', [])
   .directive('ittDisplaySelect', ittDisplaySelect)
   .directive('ittDynamicModel', ittDynamicModel)
   .component(EditPencil.Name, new EditPencil())
-  .directive('ittEpisode', ittEpisode)
-  .directive('ittEpisodeEditor', ittEpisodeEditor)
-  .component(EpisodeList.Name, new EpisodeList())
   .directive('ittFileField', ittFileField)
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittFlags', ittFlags)

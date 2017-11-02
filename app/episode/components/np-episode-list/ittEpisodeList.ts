@@ -1,5 +1,6 @@
-import { IContainer } from '../models';
-import { existy } from '../services/ittUtils';
+
+import { IContainer } from '../../../scripts/models';
+import { existy } from '../../../scripts/services/ittUtils';
 
 const TEMPLATE = `
 <div ng-if="$ctrl.context === 'episode' && $ctrl.userHasRole('admin') || $ctrl.userHasRole('customer admin')">
