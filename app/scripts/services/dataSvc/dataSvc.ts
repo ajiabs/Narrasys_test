@@ -1309,7 +1309,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
     return svc.getTemplates()
       .reduce(
-        (ts: ITemplateSelect[], t: IEpisodeTemplate) => {
+        (ts: ITemplateSelect[], t: ITemplate) => {
           if (t instanceof IEpisodeTemplate) {
             ts.push({
               id: t.id,
@@ -1327,7 +1327,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   function getEpisodeTemplatesByCustomerIds(custIds: string[]): ITemplateSelect[] {
     return svc.getTemplates()
       .reduce(
-        (ts: ITemplateSelect[], t: IEpisodeTemplate) => {
+        (ts: ITemplateSelect[], t: ITemplate) => {
           if (t instanceof IEpisodeTemplate) {
             const hasCustomer = intersection(custIds, t.customer_ids);
             if (hasCustomer.length > 0 || t.customer_ids.length === 0) {
