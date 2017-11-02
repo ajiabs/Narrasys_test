@@ -151,9 +151,8 @@
 		<!--recur-->
 
     <div></div>
-    <np-container></np-container>
 		<div ng-if="depth < 3" ng-repeat="child in container.children"
-			 np-container="containers[child._id]"
+			 itt-container="containers[child._id]"
 			 depth="depth+1"
 			 ng-class="{'container__row--odd': containers[child._id].evenOdd === false, 'container__row--even': containers[child._id].evenOdd === true }"
 			 on-container-click="clickRootContext($container)"
