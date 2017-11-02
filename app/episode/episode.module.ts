@@ -1,8 +1,8 @@
-import ittEpisode from './ittEpisode';
-import ittEpisodeEditor from './ittEpisodeEditor';
-import ittEpisodeList from './ittEpisodeList';
-import { EpisodeTheme } from './episodeTheme.service';
-import { EpisodeEditService } from './episodeEdit.service';
+import ittEpisode from './components/np-episode/ittEpisode';
+import ittEpisodeEditor from './components/np-episode-editor/ittEpisodeEditor';
+import ittEpisodeList from './components/np-episode-list/ittEpisodeList';
+import { EpisodeTheme } from './services/episodeTheme.service';
+import { EpisodeEditService } from './services/episodeEdit.service';
 
 const npEpisodeModule = angular.module('npEpisode', []);
 const services = [

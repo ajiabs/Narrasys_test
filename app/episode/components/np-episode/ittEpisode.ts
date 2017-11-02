@@ -1,5 +1,4 @@
-import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../../interfaces';
-
+import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../../../scripts/interfaces';
 const TEMPLATE = `
 <div class="episode episode-template" ng-class="episode.templateCss" ng-hide="episodeTheme.sheetLoading">
 
@@ -10,16 +9,15 @@ const TEMPLATE = `
     
     <div ng-if="episode.template.css_configuration.fill_class === 'gwsb-seal'" class="fill"></div>
   </div>
-
-  <span ng-include="'templates/episode/components/reviewmode.html'"></span>
-  <span ng-include="'templates/episode/components/watchmode.html'"></span>
+  <span ng-include="'view-modes/review-mode/reviewmode.html'"></span>
+  <span ng-include="'view-modes/watch-mode/watchmode.html'"></span>
   <span
     ng-class="{'colorInvert DiscoverModeOnly': episode.template.displayName === 'Middlebury'}"
     ng-repeat="scene in episode.scenes | isCurrent"
-    ng-include="'templates/episode/components/discovermode.html'">
+    ng-include="'view-modes/discover-mode/discovermode.html'">
   </span>
-  <span ng-include="'templates/episode/components/video.html'"></span>
-  <span ng-include="'templates/episode/components/windowfg.html'"></span>
+  <span ng-include="'view-modes/video/video.html'"></span>
+  <span ng-include="'view-modes/windowfg/windowfg.html'"></span>
   
   <np-episode-footer template-data="episode.template"></np-episode-footer>
 </div>

@@ -16,6 +16,7 @@
 
 const templates = (<any>require).context('../templates', true, /\.html$/);
 const componentTemplates = (<any>require).context('./directives', true, /\.html$/);
+const viewModeTemplates = (require as any).context('../view-modes', true, /\.html$/);
 
 [templates, componentTemplates].forEach((templateSource) => {
   templateSource.keys().forEach(path => templateSource(path));
@@ -41,7 +42,7 @@ import './controllers/controllers.module';
 import './filters/filters';
 import './services/services.module';
 import './directives/directives.module';
-import './directives/episode/episode.module';
+import '../episode/episode.module';
 
 let itt = angular.module('iTT', [
     'npEpisode',

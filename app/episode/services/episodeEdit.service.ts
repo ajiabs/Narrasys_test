@@ -1,6 +1,6 @@
 
-import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IEvent, IScene, ITemplate } from '../../models';
-import { IDataSvc, IEpisodeTheme, IModelSvc, Partial } from '../../interfaces';
+import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IEvent, IScene, ITemplate } from '../../scripts/models';
+import { IDataSvc, IEpisodeTheme, IModelSvc, Partial } from '../../scripts/interfaces';
 
 export interface IEpisodeEditService {
   updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode>;
