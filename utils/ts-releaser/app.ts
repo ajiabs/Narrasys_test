@@ -43,6 +43,23 @@ export function handleBuildAnswer(
   }
 }
 
+export function tryWebpackTest(releaseType: string): Promise<void> {
+  if (releaseType !== 'DEVELOPMENT') {
+    return pSpawn('yarn', ['test'])
+      .catch((e: any) => Promise.reject('Unit Test Suite Failed!'));
+  }
+  return prompt(questions.unitTests[0])
+    .then((answer: { runTests: boolean }) => answer.runTests)
+    .then((confirm: boolean) => {
+      if (!confirm) {
+        return void 0;
+      } else {
+        return pSpawn('yarn', ['test']);
+      }
+    })
+    .catch((e: any) => Promise.reject('Unit Test Suite Failed!'));
+}
+
 /* attempt a webpack build */
 export function tryWebpackBuild(): Promise<void> {
   inform('attempting webpack build');

@@ -1,0 +1,18 @@
+<div class="episode professional career-playbook" ng-class="episode.styleCss" ng-style="episode.platformSpecificCss">
+
+	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
+	<span ng-include="'templates/episode/components/watchmode.html'"></span>
+	<span ng-repeat="scene in episode.scenes | isCurrent"
+		  ng-include="'templates/episode/components/discovermode.html'"></span>
+	<span ng-include="'templates/episode/components/video.html'"></span>
+	<span ng-include="'templates/episode/components/windowfg.html'"></span>
+
+	<div ng-if="appState.viewMode != 'watch'" class="professional__branding">
+		<div class="branding--content">
+			<np-copyright org="np" class="professional__copyright"></np-copyright>
+      <a class="professional__logo" href="" target="_blank">
+        <img src="/images/customer/CPB_Logo-01-2.svg"/>
+      </a>
+		</div>
+	</div>
+</div>

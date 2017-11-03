@@ -6,6 +6,67 @@ import { TSocialTagTypes } from './constants';
  * Created by githop on 5/1/17.
  */
 
+abstract class UIAsset {
+  id: string;
+  css_name: string;
+  display_name: string;
+  description?: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
+export class IStyle extends UIAsset { }
+export class ILayout extends UIAsset { }
+
+export class ITemplateImage {
+  src: string;
+  alt_text?: string;
+  css_class?: string;
+  url?: string;
+}
+
+export class ICssConfiguration {
+  _id: string;
+  fill_class?: string;
+  font_configurations: { fallback: string, font_id: string, variant: string, _id: string }[];
+  legacy_logos: ITemplateImage[];
+  legacy_banner_logo: ITemplateImage;
+}
+
+export class IFont {
+  _id: string;
+  google: { families: string[] };
+}
+
+export abstract class ITemplate {
+  id: string;
+  name: string;
+  displayName: string;
+  event_types: string[];
+  pro_episode_template?: boolean;
+  applies_to_episodes?: boolean;
+  applies_to_narratives?: boolean;
+  created_at: Date;
+}
+
+export class IEpisodeTemplate extends ITemplate {
+  type: 'Episode';
+  css?: string;
+  css_configuration?: ICssConfiguration;
+  customer_ids?: string[];
+  fonts?: IFont;
+}
+
+export class IItemTemplate extends ITemplate {
+  type: 'Annotation' | 'Upload' | 'Link' | 'Plugin';
+  url: string;
+}
+
+export class ILayoutTemplate extends ITemplate {
+  type: 'Scene';
+  url: string;
+}
+
 export class IEpisode {
   _id: string;
   annotators: IAnnotators;
@@ -25,9 +86,12 @@ export class IEpisode {
   scenes: IScene[];
   status: string;
   styleCss: string;
+  templateCss?: string;
   style_id: string[];
   styles: string[];
-  templateUrl: string;
+  // templateUrl: string;
+  template_id: string;
+  template?: IEpisodeTemplate;
   title: ILangForm;
   updated_at: Date;
   producerItemType?: string;
@@ -148,11 +212,22 @@ export class IAsset {
   user_id: string;
 }
 
+type TEventTypes = 'Annotation'
+  | 'Bookmark'
+  | 'File'
+  | 'Image'
+  | 'Link'
+  | 'Plugin'
+  | 'Scene'
+  | 'Chapter'
+  | 'Text'
+  | 'Upload';
+
 export class IEvent {
   //props
   _id: string;
   start_time: number;
-  type: 'Annotation' | 'Bookmark' | 'File' | 'Image' | 'Link' | 'Plugin' | 'Scene' | 'Chapter' | 'Text' | 'Upload';
+  type: TEventTypes;
   _type: string;
   end_time: number;
   title: ILangForm;
@@ -282,6 +357,7 @@ export class IUpload extends IEvent {
   _type: 'Upload';
   asset_id: string;
 }
+
 type TInstance =
   'Link'
   | 'Annotation'
@@ -297,7 +373,12 @@ type TInstance =
   | 'Customer'
   | 'Timeline'
   | 'Episode'
-  | 'Container';
+  | 'Container'
+  | 'EpisodeTemplate'
+  | 'LayoutTemplate'
+  | 'ItemTemplate'
+  | 'Layout'
+  | 'Style';
 export function createInstance<T>(type: TInstance, data: any): T {
   let model;
   switch (type) {
@@ -345,6 +426,30 @@ export function createInstance<T>(type: TInstance, data: any): T {
       break;
     case 'Container':
       model = new IContainer();
+      break;
+    case 'LayoutTemplate':
+      model = new ILayoutTemplate();
+      break;
+    case 'ItemTemplate':
+      model = new IItemTemplate();
+      break;
+    case 'EpisodeTemplate':
+      model = new IEpisodeTemplate();
+      Object.assign(model, data);
+      //handle any 'relations'
+      if (data.css_configuration) {
+        model.css_configuration = Object.assign(new ICssConfiguration(), data.css_configuration);
+      }
+
+      if (data.fonts) {
+        model.fonts = Object.assign(new IFont(), data.fonts);
+      }
+      return model;
+    case 'Layout':
+      model = new ILayout();
+      break;
+    case 'Style':
+      model = new IStyle();
       break;
   }
   Object.assign(model, data);

@@ -1,0 +1,112 @@
+
+.episode-wiley {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300;
+}
+
+.episode-wiley a,
+.episode-wiley .fakeLink {
+  color: #00A8FF;
+}
+
+.episode-wiley h1,
+.episode-wiley h2,
+.episode-wiley h3,
+.episode-wiley h4,
+.episode-wiley .pullquote {
+  font-weight: 200;
+  color: #808080;
+}
+
+.episode-wiley h1 {
+  font-size: 2.3em;
+  line-height: 1.2em;
+  color: #808080;
+}
+
+.episode-wiley h2 {
+  color: #B22222;
+}
+
+.episode-wiley .landingscreen {
+  padding: 0;
+}
+
+.episode-wiley .landingscreen .introtext,
+.episode-wiley .endingscreen .introtext {
+  display: none;
+}
+
+.episode-wiley .landingscreen .videoMagnet {
+  float: none;
+  width: 100%;
+}
+
+.episode-wiley .endingscreen .videoMagnet {
+  margin: 0 10%;
+}
+
+.episode-wiley.wiley-endscreentext .endingscreen:after {
+  content: 'Learn more: Check out the etext and its resources to learn more about the topics discussed in this episode.';
+  display: block;
+  font-size: 120%;
+  font-style: italic;
+  margin: 1em 0;
+  font-weight: 300;
+}
+
+.episode-wiley .colorInvert {
+  background-color: #808080;
+  color: #FFF;
+}
+
+.episode-wiley .colorInvert h1,
+.episode-wiley .colorInvert h2,
+.episode-wiley .colorInvert h3,
+.episode-wiley .colorInvert .pullquote {
+  color: #FFF;
+}
+
+.episode-wiley .item .startTime {
+  border: 2px solid #CCC;
+  padding: 3px;
+  font-size: 80%;
+  font-weight: bold;
+  opacity: 0.5;
+}
+
+@media screen and (min-width: 700px) {
+  .episode-wiley {
+    font-size: 105%;
+
+    .searchMode {
+      .searchResults {
+        margin: 0;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .episode-wiley {
+    font-size: 105%;
+
+    .searchMode {
+      .searchResults {
+        margin-right: 315px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .episode-wiley {
+    font-size: 110%;
+
+    .searchMode {
+      .searchResults {
+        margin-right: 315px;
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+
+.episode-columbia {
+  font-family: 'EB Garamond', 'Adobe Garamond', Garamond, serif;
+
+  h1, h2, h3 {
+    // falls back to EB Garamond mac
+    font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
+    font-weight: normal;
+    color: #5892C1;
+  }
+
+  //color
+  .startTime {
+    border-radius: 3px;
+    padding: 3px;
+    margin-left: 3px;
+  }
+
+  a, .fakeLink {
+    color: #0F4082
+  }
+
+  .colorInvert {
+    color: #FFF;
+    background-color: #0F4082;
+
+    h1, h2, h3 {
+      color: #5892C1;
+    }
+
+  }
+
+}
