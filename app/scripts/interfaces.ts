@@ -1,3 +1,5 @@
+export { IEpisodeEditService } from '../episode/services/episodeEdit.service';
+export { IEpisodeTheme } from '../episode/services/episodeTheme.service';
 export { ILinkValidationMessage, ILinkValidFields } from './services/validation.svc';
 export { IAnalyticsSvc } from './services/analyticsSvc/analyticsSvc';
 export { IAnnotator, IAnnotators } from './directives/sxsAnnotatorAutocomplete';

@@ -1,9 +1,39 @@
 'use strict';
-import {createInstance, } from '../models';
+import { createInstance, IEpisode } from '../models';
+import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../interfaces';
 
-EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
+EditController.$inject = [
+  '$scope',
+  '$rootScope',
+  '$timeout',
+  '$window',
+  'selectService',
+  'appState',
+  'dataSvc',
+  'modelSvc',
+  'timelineSvc',
+  'authSvc',
+  'MIMES',
+  'playbackService',
+  'episodeTheme',
+  'episodeEdit'
+];
 
-export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackService) {
+export default function EditController(
+  $scope: ng.IScope,
+  $rootScope: ng.IRootScopeService,
+  $timeout: ng.ITimeoutService,
+  $window,
+  selectService,
+  appState,
+  dataSvc: IDataSvc,
+  modelSvc: IModelSvc,
+  timelineSvc: ITimelineSvc,
+  authSvc,
+  MIMES,
+  playbackService,
+  episodeTheme: IEpisodeTheme,
+  episodeEdit: IEpisodeEditService) {
   $scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
   // HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -477,10 +507,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
   };
 
   $scope.editEpisode = function () {
-    appState.editEpisode = modelSvc.episodes[appState.episodeId];
-    appState.editEpisode.templateOpts = selectService.getTemplates('episode');
-    appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-    appState.videoControlsLocked = true;
+    episodeEdit.setEpisodeToEdit();
   };
 
   $scope.deleteEvent = function (eventId) {
@@ -542,7 +569,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
     appState.videoControlsLocked = false;
   };
 
-  $scope.cancelEpisodeEdit = function (originalEvent) {
+  $scope.cancelEpisodeEdit = function (originalEvent: IEpisode) {
 
     modelSvc.episodes[appState.episodeId] = originalEvent;
 
@@ -550,6 +577,7 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
     modelSvc.resolveEpisodeContainers(originalEvent._id); // only needed for navigation_depth changes
     modelSvc.resolveEpisodeEvents(originalEvent._id); // needed for template or style changes
     // console.log("Episode StyleCss is now ", modelSvc.episodes[originalEvent._id].styleCss);
+    episodeTheme.setTheme(originalEvent.template);
     appState.editEpisode = false;
     appState.videoControlsLocked = false;
   };
@@ -701,5 +729,11 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
     angular.extend(base, stub);
     return createInstance(stub._type, base);
   };
+
+  $scope.updateEpisodeTemplate = updateEpisodeTemplate;
+  function updateEpisodeTemplate($data: { episode: IEpisode, templateId: string }) {
+    episodeEdit.updateEpisodeTemplate($data.episode, $data.templateId)
+      .then((episode: IEpisode) => $scope.episode = episode);
+  }
 
 }

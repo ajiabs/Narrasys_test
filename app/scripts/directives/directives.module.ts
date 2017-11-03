@@ -13,12 +13,9 @@ import ittDescriptionField from './ittDescriptionField';
 import ittDisplaySelect from './ittDisplaySelect';
 import ittDynamicModel from './ittDynamicModel';
 import ittEditPencil from './ittEditPencil';
-import ittEpisode from './ittEpisode';
-import ittEpisodeEditor from './ittEpisodeEditor';
-import ittEpisodeList from './ittEpisodeList';
 import ittFileField from './ittFileField';
 import ittFilesHandler from './ittFilesHandler';
-import ittFlags from './ittFlags';
+import { Flags } from './ittFlags';
 import ittFlotr2Chart from './ittFlotChart';
 import ittGuestAccessibleUrl from './ittGuestAccessibleUrl';
 import ittHighlightSelect from './ittHighlightSelect';
@@ -54,7 +51,7 @@ import ittSpeakerField from './ittSpeakerField';
 import ittSpeakerThumbField from './ittSpeakerThumbField';
 import ittTabs from './ittTabs';
 import ittTab from './ittTab';
-import ittTemplateSelect from './ittTemplateSelect';
+import { TemplateSelect } from './ittTemplateSelect';
 import ittTimeField from './ittTimeField';
 import ittTimeline from './ittTimeline';
 import { TimelineEditor } from './npTimelineEditor';
@@ -87,6 +84,8 @@ import { EnableSocialshare, IttSocialShare } from './socialshare/index';
 import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
 import { ittPlayerContainer } from './ittPlayerContainer';
+import { Copyright } from './copyright/npCopyright';
+import { EpisodeFooter } from './npEpisodeFooter';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -99,12 +98,9 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittDisplaySelect', ittDisplaySelect)
   .directive('ittDynamicModel', ittDynamicModel)
   .directive('ittEditPencil', ittEditPencil)
-  .directive('ittEpisode', ittEpisode)
-  .directive('ittEpisodeEditor', ittEpisodeEditor)
-  .directive('ittEpisodeList', ittEpisodeList)
   .directive('ittFileField', ittFileField)
   .directive('ittFilesHandler', ittFilesHandler)
-  .directive('ittFlags', ittFlags)
+  .component(Flags.Name, new Flags())
   .directive('ittFlotr2Chart', ittFlotr2Chart)
   .directive('ittGuestAccessibleUrl', ittGuestAccessibleUrl)
   .directive('ittHighlightSelect', ittHighlightSelect)
@@ -141,7 +137,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittSpeakerThumbField', ittSpeakerThumbField)
   .directive('ittTabs', ittTabs)
   .directive('ittTab', ittTab)
-  .directive('ittTemplateSelect', ittTemplateSelect)
+  .component(TemplateSelect.Name, new TemplateSelect())
   .directive('ittTimeField', ittTimeField)
   .directive('ittTimeline', ittTimeline)
   .component(TimelineEditor.Name, new TimelineEditor())
@@ -175,6 +171,8 @@ let directivesModule = angular.module('itt.directives', [])
   .component(EnableSocialshare.Name, new EnableSocialshare())
   .component(Filedrop.Name, new Filedrop())
   .component(UploadProgress.Name, new UploadProgress())
-  .directive('ittPlayerContainer', ittPlayerContainer);
+  .directive('ittPlayerContainer', ittPlayerContainer)
+  .component(Copyright.Name, new Copyright())
+  .component(EpisodeFooter.Name, new EpisodeFooter());
 
 export default directivesModule;

@@ -30,7 +30,6 @@ export default function ittValidAsset(ittUtils) {
         switch (tmplUrl) {
           case 'templates/item/file.html':
           case 'templates/item/image-plain.html':
-          case 'templates/item/image-inline.html':
           case 'templates/item/image-inline-withtext.html':
           case 'templates/item/image-caption-sliding.html':
           case 'templates/item/image.html':
@@ -43,7 +42,6 @@ export default function ittValidAsset(ittUtils) {
             }
             break;
           case 'templates/item/link.html':
-          case 'templates/item/link-withimage.html':
           case 'templates/item/link-modal-thumb.html':
           case 'templates/item/link-descriptionfirst.html':
           case 'templates/item/link-embed.html':

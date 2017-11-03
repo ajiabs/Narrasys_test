@@ -1,8 +1,9 @@
 /* For admin screen episode list */
-import {INarrative} from '../models';
-ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils'];
+import { IContainer } from '../models';
+import { IEpisodeEditService } from './episode/episodeEdit.service';
+ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils', 'episodeEdit'];
 
-export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils) {
+export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils, episodeEdit: IEpisodeEditService) {
   return {
     restrict: 'A',
     replace: false,
@@ -17,31 +18,31 @@ export default function ittContainer($timeout, $location, appState, modelSvc, re
     templateUrl: 'templates/container.html',
     controller: ['$scope', '$location', 'modelSvc', 'authSvc', 'dataSvc',
       function ($scope, $location, modelSvc, authSvc, dataSvc) {
-      $scope.toggleNarrativeModal = toggleNarrativeModal;
-      $scope.postNewNarrative = postNewNarrative;
-      $scope.showNarrativeModal = false;
-      $scope.resolvingNarrative = false;
-      $scope.isAdmin = authSvc.userHasRole('admin');
-      $scope.canAccess = $scope.isAdmin || authSvc.userHasRole('customer admin');
-      $scope.getLinkStatusReport = dataSvc.getCustomerLinkStatusReportSpreadsheet;
-      //needs to be an array, not a k/v store
-      $scope.customers = modelSvc.getCustomersAsArray();
+        $scope.toggleNarrativeModal = toggleNarrativeModal;
+        $scope.postNewNarrative = postNewNarrative;
+        $scope.showNarrativeModal = false;
+        $scope.resolvingNarrative = false;
+        $scope.isAdmin = authSvc.userHasRole('admin');
+        $scope.canAccess = $scope.isAdmin || authSvc.userHasRole('customer admin');
+        $scope.getLinkStatusReport = dataSvc.getCustomerLinkStatusReportSpreadsheet;
+        //needs to be an array, not a k/v store
+        $scope.customers = modelSvc.getCustomersAsArray();
 
-      function toggleNarrativeModal() {
-        $scope.showNarrativeModal = !$scope.showNarrativeModal;
-      }
+        function toggleNarrativeModal() {
+          $scope.showNarrativeModal = !$scope.showNarrativeModal;
+        }
 
-      function postNewNarrative(narrativeData) {
-        $scope.resolvingNarrative = true;
-        dataSvc.generateNewNarrative(narrativeData.c, narrativeData.n).then(function (narrative) {
-          modelSvc.cache('narrative', narrative);
-          $location.path('/story/' + narrative._id);
-          $scope.resolvingNarrative = false;
-        });
-      }
+        function postNewNarrative(narrativeData) {
+          $scope.resolvingNarrative = true;
+          dataSvc.generateNewNarrative(narrativeData.c, narrativeData.n).then(function (narrative) {
+            modelSvc.cache('narrative', narrative);
+            $location.path('/story/' + narrative._id);
+            $scope.resolvingNarrative = false;
+          });
+        }
 
 
-    }],
+      }],
     compile: function (element) {
 
       // Use the compile function from the recursionHelper,
@@ -80,41 +81,22 @@ export default function ittContainer($timeout, $location, appState, modelSvc, re
         };
 
         scope.addContainer = function (container) {
-          var newContainer = {
+          const newContainer = {
             'customer_id': scope.container.customer_id,
             'parent_id': scope.container._id,
             'name': {
               en: angular.copy(scope.container.newContainerTitle)
             }
           };
-          dataSvc.createContainer(newContainer).then(function (newContainer) {
+          dataSvc.createContainer(newContainer).then((newContainer) => {
             console.log('Created container:', newContainer);
             if (scope.depth === 2) {
-              var newEpisode = {
-                'container_id': newContainer._id,
-                'title': angular.copy(newContainer.name)
-              };
-              dataSvc.getCommon().then(function () {
-                dataSvc.createEpisode(newEpisode).then(function (episode) {
-                  console.log('Created episode: ', episode);
-                  var newScene = {
-                    '_type': 'Scene',
-                    'title': {},
-                    'description': {},
-                    'templateUrl': 'templates/scene/1col.html',
-                    'start_time': 0,
-                    'end_time': 0,
-                    'episode_id': episode._id
-                  };
-
-                  dataSvc.storeItem(newScene);
-                  //will force a sort
-                }).then(function () {
-                  scope.onContainerAdd({$container: container});
-                });
-              });
+              return episodeEdit.addEpisodeToContainer(newContainer)
+              // onContainerAdd will force a sort
+                .then((container: IContainer) => scope.onContainerAdd({ $container: container }))
+                .catch(e => console.log('error adding episode to container!'));
             } else {
-              scope.onContainerAdd({$container: container});
+              scope.onContainerAdd({ $container: container });
             }
           });
           scope.container.newContainerTitle = '';

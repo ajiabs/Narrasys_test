@@ -101,7 +101,7 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
     let protocol = 'https://';
     let rootDomain = '.narrasys.com/narratives/';
     return `${protocol}${subDomain}${rootDomain}${narrativePath}/${timelinePath}`;
-  };
+  }
 
   private closeAll() {
     this.expanded = false;

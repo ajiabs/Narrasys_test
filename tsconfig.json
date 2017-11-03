@@ -5,17 +5,7 @@
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"strictNullChecks": false,
-    "lib": ["es6", "dom"],
-    "types": [
-      "angular",
-      "angular-mocks",
-      "webpack",
-      "jasmine",
-      "angular-animate",
-      "jquery",
-      "node",
-      "angular-ui-tree"
-    ]
+    "lib": ["es6", "dom"]
 	},
 	"exclude": [
 		"node_modules"

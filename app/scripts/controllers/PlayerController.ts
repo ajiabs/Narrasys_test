@@ -2,11 +2,12 @@
 
 import {IModelSvc, IDataSvc} from '../interfaces';
 import { UPDATE_MAGNET } from '../constants';
-PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService'];
+PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService', 'episodeTheme'];
 
-export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService) {
+export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService, episodeTheme) {
   // console.log("playerController", $scope);
 
+  $scope.episodeTheme = episodeTheme;
   $scope.viewMode = function (newMode) {
     appState.viewMode = newMode;
     analyticsSvc.captureEpisodeActivity("modeChange", {
@@ -86,7 +87,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   var wileyNag = function () {
     // HACK design-by-committee TS-829 for framed Wiley episodes.
     // (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
-    if (!appState.isFramed || (modelSvc.episodes[appState.episodeId].templateUrl.indexOf('wiley') === -1)) {
+    if (!appState.isFramed || (modelSvc.episodes[appState.episodeId].template.displayName.indexOf('Wiley') === -1)) {
       return;
     }
     var localStorageAllowed = true;

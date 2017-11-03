@@ -1,0 +1,281 @@
+
+$career-playbookPrimary: #4D4D4D;
+$career-playbookAccent: #00ACEE;
+$career-playbookSecondary: #FFFFFF;
+$career-playbookLink: #00ACEE;
+$career-playbookHighlight: rgba(0,172,238, 0.6);
+@import "../../../app/styles/helpers";
+
+@mixin career-playbook-header {
+  font-family: 'Lato',  sans-serif;
+  font-weight:  700;
+  color: $career-playbookPrimary;
+}
+
+@mixin career-playbook-body {
+  font-family: 'Lato',  sans-serif;
+  font-weight:  300;
+  color: $career-playbookPrimary;
+}
+@mixin career-playbook-pq {
+  font-family: 'Lato',  sans-serif;
+  font-weight:  300;
+  font-style:  italic;
+  color: $career-playbookPrimary;
+}
+
+.career-playbook {
+  background-image: url('/images/customer/CPB_Window_BG_720.png');
+
+
+ .landingscreen {
+   h1 {
+     @include banner-pq('Lato', $career-playbookAccent, 2.5vw);
+   }
+
+   .introtext {
+     padding-bottom: 2em;
+   }
+
+   #episode--description {
+     display: none;
+	 }
+ }
+
+  //custom altPane BG, landingscreen
+
+
+  .endingscreen {
+    p {
+      @include banner-pq('Lato', $career-playbookAccent, 2.5vw);
+    }
+  }
+  //search view
+  .searchPanel__wrapper {
+    @include career-playbook-body;
+    color: $career-playbookPrimary;
+    // 'sorted by' button
+    .fake-link--search-results {
+      color: $career-playbookLink;
+    }
+  }
+
+  .searchResults {
+    @include career-playbook-header;
+    .item__title--link, .item__link--fake-link, .item__link--escape-link {
+      @include career-playbook-body;
+      color: $career-playbookLink;
+      &:before {
+        color: $career-playbookPrimary;
+      }
+    }
+  }
+
+  //item overrides
+  .item__title {
+    @include career-playbook-header;
+  }
+
+  .item__title--link, .item__title--file {
+    a {
+      color: $career-playbookLink;
+    }
+  }
+
+  .item__link--fake-link {
+    @include career-playbook-body;
+    color: $career-playbookLink;
+  }
+
+  .item__text {
+    @include career-playbook-body;
+  }
+
+  .item__text--h2 {
+    @include career-playbook-header;
+  }
+
+  .item__text--transmedia, .item__text--definition {
+    h1, h2, h3 {
+      @include career-playbook-header;
+    }
+  }
+
+  .item .item__text--pullquote {
+    @include career-playbook-pq;
+    &:before {
+      @include career-playbook-header;
+      //override color set on mixin
+      color: $career-playbookAccent;
+    }
+  }
+
+  .item__title--image-caption, .item__title--image-caption-sliding,
+  .item__text--image-caption, .item__text--image-caption-sliding {
+    color: $career-playbookSecondary;
+  }
+
+  .item__link--escape-link {
+    @include career-playbook-body;
+    color: $career-playbookLink;
+    &:before {
+    color: $career-playbookPrimary;
+    }
+  }
+
+  //timestamp
+  .item {
+    .displayTime, .startTime {
+      @include career-playbook-header;
+      color: $career-playbookLink;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  //invert
+  .item {
+    &.colorInvert {
+      background-color: $career-playbookPrimary !important;
+      .item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
+        color: $career-playbookSecondary !important;
+        &:before {
+          color: $career-playbookSecondary !important;
+        }
+      }
+
+      h1, h2, h3 {
+        color: $career-playbookSecondary !important;
+      }
+    }
+  }
+  //highlights
+  .content.allowHighlights {
+    .highlightSolid.item.isCurrent {
+      background-color: $career-playbookHighlight;
+    }
+
+    .highlightSide.item.isCurrent {
+      border-left: 10px solid $career-playbookHighlight;
+    }
+
+    .highlightBorder.item.isCurrent {
+      border: 2px solid $career-playbookHighlight;
+    }
+    //hard code alpha to be 0.3 or half of default
+    //aka translucent
+    .highlightBloom.item.isCurrent {
+      background-color: rgba(0,172,238, 0.3);
+      box-shadow: 0 0 8px rgba(0,172,238, 0.3);
+    }
+  }
+
+  //layout specific overrides
+  .centered-pro {
+    .banner-pull-quote {
+      h1 {
+        @include banner-pq('Lato', $career-playbookAccent, 2.5vw);
+      }
+    }
+  }
+
+  //pro two col: centerVV
+  //non-pro two col: pip, cornerH, cornerV, twocol
+  //non-pro one col: centered, onecol
+  .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
+    .static-bg__main {
+      background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
+    }
+    .static-bg__alt {
+      background-image: url('/images/customer/CPB_Textured_BG_v3.png');
+    }
+
+    .item__title--link, .item__title--file {
+      @include career-playbook-body;
+    }
+
+    .item__title--link.title--link-embed {
+      @include career-playbook-body;
+    }
+  }
+
+  .centerVV-mondrian {
+    .static-bg__main {
+      border: 4px solid $career-playbookPrimary;
+      background-color: $career-playbookAccent;
+    }
+
+    .static-bg__alt {
+
+    }
+    .altPane {
+      background-color: transparent;
+    }
+
+    .mainPane {
+      .item {
+        background-color:  $career-playbookPrimary;
+      }
+
+      .item__text, .item__title, .item__title a {
+        color: $career-playbookSecondary;
+      }
+      //override from general item level,
+      //mondrian BG is solid color, so we need to use
+      //the Secondary
+      .item__text--transmedia, .item__text--definition {
+        h1, h2, h3 {
+          color: $career-playbookSecondary;
+        }
+      }
+
+      .item {
+        &.colorInvert {
+          background-color: $career-playbookSecondary !important;
+          .item__text, .item__title, .item__title a {
+            color: $career-playbookPrimary !important;
+            &:before {
+              color: $career-playbookPrimary !important;
+            }
+          }
+
+          h1, h2, h3 {
+            color: $career-playbookPrimary !important;
+          }
+        }
+      }
+    }
+    //item__<entity> for non URL titles
+    // item__<entity> a covers both escape and fakeLinks
+    .item__title--link,
+    .item__title--image,
+    .item__title--image-thumbnail,
+    .item__title--link a,
+    .item__title--image a,
+    .item__title--image-thumbnail a {
+      @include career-playbook-header;
+    }
+
+    .item__link--fake-link {
+      color: $career-playbookSecondary;
+    }
+
+    .item__link--escape-link {
+      @include career-playbook-header;
+      color: $career-playbookSecondary;
+      &:before {
+        color: $career-playbookAccent;
+      }
+    }
+
+    .item {
+      .displayTime, .startTime {
+        @include career-playbook-header;
+        color: $career-playbookSecondary;
+        a {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

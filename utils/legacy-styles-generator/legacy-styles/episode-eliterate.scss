@@ -1,0 +1,39 @@
+.episode-eliterate {
+  background-image: url("/images/customer/eliterate-bg.svg");
+  background-size: 90%;
+  background-position: 0 30%;
+  background-repeat: no-repeat;
+  font-family: Arial, Helvetica, Tahoma, sans-serif;
+  font-size: 15px;
+  color: #6F7D8B;
+
+  .branding a.eliterate {
+    left: 5%;
+  }
+
+  .startTime {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    padding: 3px;
+  }
+
+  a, .fakeLink {
+    color: #1376bb
+  }
+
+  h1, h2, h3 {
+    font-weight: normal;
+    color: #384d62;
+  }
+
+  .colorInvert {
+    color: #FFF;
+    background-color: #6F7D8B;
+
+    h1, h2, h3 {
+      color: #FFF
+    }
+
+  }
+
+}

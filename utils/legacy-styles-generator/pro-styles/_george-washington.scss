@@ -1,0 +1,280 @@
+
+$george-washingtonPrimary: #000000;
+$george-washingtonAccent: #004065;
+$george-washingtonSecondary: #FFFFFF;
+$george-washingtonLink: #004065;
+$george-washingtonHighlight: rgba(200,177,139, 0.6);
+@import "../../../app/styles/helpers";
+
+@mixin george-washington-header {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight:  700;
+  color: $george-washingtonPrimary;
+}
+
+@mixin george-washington-body {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight:  300;
+  color: $george-washingtonPrimary;
+}
+@mixin george-washington-pq {
+  font-family: 'Cardo',  serif;
+  font-weight:  300;
+  color: $george-washingtonPrimary;
+}
+
+.george-washington {
+
+
+
+ .landingscreen {
+   h1 {
+     @include banner-pq('Helvetica', $george-washingtonAccent, 2.5vw);
+   }
+
+   .introtext {
+     padding-bottom: 2em;
+   }
+
+   #episode--description {
+     display: none;
+	 }
+ }
+
+  //custom altPane BG, landingscreen
+
+
+  .endingscreen {
+    p {
+      @include banner-pq('Helvetica', $george-washingtonAccent, 2.5vw);
+    }
+  }
+  //search view
+  .searchPanel__wrapper {
+    @include george-washington-body;
+    color: $george-washingtonPrimary;
+    // 'sorted by' button
+    .fake-link--search-results {
+      color: $george-washingtonLink;
+    }
+  }
+
+  .searchResults {
+    @include george-washington-header;
+    .item__title--link, .item__link--fake-link, .item__link--escape-link {
+      @include george-washington-body;
+      color: $george-washingtonLink;
+      &:before {
+        color: $george-washingtonPrimary;
+      }
+    }
+  }
+
+  //item overrides
+  .item__title {
+    @include george-washington-header;
+  }
+
+  .item__title--link, .item__title--file {
+    a {
+      color: $george-washingtonLink;
+    }
+  }
+
+  .item__link--fake-link {
+    @include george-washington-body;
+    color: $george-washingtonLink;
+  }
+
+  .item__text {
+    @include george-washington-body;
+  }
+
+  .item__text--h2 {
+    @include george-washington-header;
+  }
+
+  .item__text--transmedia, .item__text--definition {
+    h1, h2, h3 {
+      @include george-washington-header;
+    }
+  }
+
+  .item .item__text--pullquote {
+    @include george-washington-pq;
+    &:before {
+      @include george-washington-header;
+      //override color set on mixin
+      color: $george-washingtonAccent;
+    }
+  }
+
+  .item__title--image-caption, .item__title--image-caption-sliding,
+  .item__text--image-caption, .item__text--image-caption-sliding {
+    color: $george-washingtonSecondary;
+  }
+
+  .item__link--escape-link {
+    @include george-washington-body;
+    color: $george-washingtonLink;
+    &:before {
+    color: $george-washingtonPrimary;
+    }
+  }
+
+  //timestamp
+  .item {
+    .displayTime, .startTime {
+      @include george-washington-header;
+      color: $george-washingtonLink;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  //invert
+  .item {
+    &.colorInvert {
+      background-color: $george-washingtonPrimary !important;
+      .item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
+        color: $george-washingtonSecondary !important;
+        &:before {
+          color: $george-washingtonSecondary !important;
+        }
+      }
+
+      h1, h2, h3 {
+        color: $george-washingtonSecondary !important;
+      }
+    }
+  }
+  //highlights
+  .content.allowHighlights {
+    .highlightSolid.item.isCurrent {
+      background-color: $george-washingtonHighlight;
+    }
+
+    .highlightSide.item.isCurrent {
+      border-left: 10px solid $george-washingtonHighlight;
+    }
+
+    .highlightBorder.item.isCurrent {
+      border: 2px solid $george-washingtonHighlight;
+    }
+    //hard code alpha to be 0.3 or half of default
+    //aka translucent
+    .highlightBloom.item.isCurrent {
+      background-color: rgba(200,177,139, 0.3);
+      box-shadow: 0 0 8px rgba(200,177,139, 0.3);
+    }
+  }
+
+  //layout specific overrides
+  .centered-pro {
+    .banner-pull-quote {
+      h1 {
+        @include banner-pq('Helvetica', $george-washingtonAccent, 2.5vw);
+      }
+    }
+  }
+
+  //pro two col: centerVV
+  //non-pro two col: pip, cornerH, cornerV, twocol
+  //non-pro one col: centered, onecol
+  .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
+    .static-bg__main {
+
+    }
+    .static-bg__alt {
+
+    }
+
+    .item__title--link, .item__title--file {
+      @include george-washington-body;
+    }
+
+    .item__title--link.title--link-embed {
+      @include george-washington-body;
+    }
+  }
+
+  .centerVV-mondrian {
+    .static-bg__main {
+      border: 4px solid $george-washingtonPrimary;
+      background-color: $george-washingtonAccent;
+    }
+
+    .static-bg__alt {
+
+    }
+    .altPane {
+      background-color: transparent;
+    }
+
+    .mainPane {
+      .item {
+        background-color:  $george-washingtonPrimary;
+      }
+
+      .item__text, .item__title, .item__title a {
+        color: $george-washingtonSecondary;
+      }
+      //override from general item level,
+      //mondrian BG is solid color, so we need to use
+      //the Secondary
+      .item__text--transmedia, .item__text--definition {
+        h1, h2, h3 {
+          color: $george-washingtonSecondary;
+        }
+      }
+
+      .item {
+        &.colorInvert {
+          background-color: $george-washingtonSecondary !important;
+          .item__text, .item__title, .item__title a {
+            color: $george-washingtonPrimary !important;
+            &:before {
+              color: $george-washingtonPrimary !important;
+            }
+          }
+
+          h1, h2, h3 {
+            color: $george-washingtonPrimary !important;
+          }
+        }
+      }
+    }
+    //item__<entity> for non URL titles
+    // item__<entity> a covers both escape and fakeLinks
+    .item__title--link,
+    .item__title--image,
+    .item__title--image-thumbnail,
+    .item__title--link a,
+    .item__title--image a,
+    .item__title--image-thumbnail a {
+      @include george-washington-header;
+    }
+
+    .item__link--fake-link {
+      color: $george-washingtonSecondary;
+    }
+
+    .item__link--escape-link {
+      @include george-washington-header;
+      color: $george-washingtonSecondary;
+      &:before {
+        color: $george-washingtonAccent;
+      }
+    }
+
+    .item {
+      .displayTime, .startTime {
+        @include george-washington-header;
+        color: $george-washingtonSecondary;
+        a {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
