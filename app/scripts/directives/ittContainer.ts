@@ -1,8 +1,7 @@
 /* For admin screen episode list */
-import { createInstance, IContainer, ICustomer, IEpisode, INarrative } from '../models';
-import { IDataSvc, IModelSvc } from '../interfaces';
+import { createInstance, IContainer, ICustomer, INarrative } from '../models';
+import { IDataSvc, IModelSvc, IEpisodeEditService } from '../interfaces';
 import { existy, pick } from '../services/ittUtils';
-import { IEpisodeEditService } from './episode/episodeEdit.service';
 
 interface IContainerBindings extends ng.IComponentController {
   container: IContainer;
@@ -28,14 +27,15 @@ class ContainerController implements IContainerBindings {
   containers: { [containerId: string]: IContainer };
   isDemoServer: boolean;
   containerTypes: string[] = ['customer', 'project', 'module', 'episode'];
-  static $inject = ['$timeout', '$location', 'appState', 'modelSvc', 'dataSvc', 'authSvc'];
+  static $inject = ['$timeout', '$location', 'appState', 'modelSvc', 'dataSvc', 'authSvc', 'episodeEdit'];
   constructor(
     private $timeout: ng.ITimeoutService,
     private $location: ng.ILocationService,
     public appState,
     private modelSvc: IModelSvc,
     private dataSvc: IDataSvc,
-    private authSvc) {
+    private authSvc,
+    private episodeEdit: IEpisodeEditService) {
 
   }
 
@@ -103,29 +103,10 @@ class ContainerController implements IContainerBindings {
     this.dataSvc.createContainer(newContainer).then((newContainer: IContainer) => {
       console.log('Created container:', newContainer);
       if (this.depth === 2) {
-        const newEpisode = {
-          'container_id': newContainer._id,
-          'title': angular.copy(newContainer.name)
-        };
-        this.dataSvc.getCommon().then(() => {
-          this.dataSvc.createEpisode(newEpisode).then((episode: IEpisode) => {
-            console.log('Created episode: ', episode);
-            const newScene = {
-              '_type': 'Scene',
-              'title': {},
-              'description': {},
-              'templateUrl': 'templates/scene/1col.html',
-              'start_time': 0,
-              'end_time': 0,
-              'episode_id': episode._id
-            };
-
-            this.dataSvc.storeItem(newScene);
-            //will force a sort
-          }).then(() => {
-            this.onContainerAdd({ $container: container });
-          });
-        });
+        return this.episodeEdit.addEpisodeToContainer(newContainer)
+        // onContainerAdd will force a sort
+          .then((container: IContainer) => this.onContainerAdd({ $container: container }))
+          .catch((e: any) => console.log('error adding episode to container'));
       } else {
         this.onContainerAdd({ $container: container });
       }

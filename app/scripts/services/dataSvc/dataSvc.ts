@@ -40,11 +40,11 @@ interface ITemplateSelect {
 export interface IDataSvc {
   beginBackgroundTranslations(episodeId: string): any;
   batchUploadTranscripts(episodeId: string, formData: any, params: any): ng.IPromise<{}>;
-  generateNewNarrative(containerId: string, postData: any): ng.IPromise<{}>;
+  generateNewNarrative(containerId, postData): ng.IPromise<{}>;
   getNarrative(narrativeId): ng.IPromise<{}>;
   getNarrativeOverview(narrativeId): ng.IPromise<{}>;
   getNarrativeExportAsSpreadsheet(nId: string): void;
-  getCustomerLinkStatusReportSpreadsheet(customerId: string): void;
+  getCustomerLinkStatusReportSpreadsheet(customerId): void;
   getUserNarratives(userId): ng.IPromise<{}>;
   getCustomerList(): any;
   getCustomer(customerId: string, retrieve: boolean): ng.IPromise<any>;
@@ -123,7 +123,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   //used in ittContainer
   svc.generateNewNarrative = generateNewNarrative;
-  function generateNewNarrative(containerId: string, postData: any) {
+  function generateNewNarrative(containerId, postData) {
     return SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
       .then(function (resp) {
         return resp.data;
@@ -169,7 +169,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.getCustomerLinkStatusReportSpreadsheet = getCustomerLinkStatusReportSpreadsheet;
-  function getCustomerLinkStatusReportSpreadsheet(customerId: string) {
+  function getCustomerLinkStatusReportSpreadsheet(customerId) {
     var url = '/v3/customers/' + customerId + '/link_status.xlsx';
     window.open(url);
   }
