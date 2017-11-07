@@ -1,0 +1,114 @@
+
+.episode-kellogg .banner-logo {
+  top: 0;
+  left: 150px;
+  right: 150px;
+  height: 45px;
+  pointer-events: none;
+}
+
+@media screen and (min-width: 999px) {
+  .episode-kellogg .banner-logo {
+    background: url('/images/customer/kellogg-banner-wide.svg') 50% 50% no-repeat;
+  }
+}
+
+@media screen and (min-width: 675px) and (max-width: 1000px) {
+  .episode-kellogg .banner-logo {
+    background: url('/images/customer/kellogg-banner.svg') 50% 50% no-repeat;
+  }
+}
+
+@media screen and (max-width: 674px) {
+  .episode-kellogg .banner-logo {
+    background: url('/images/customer/kellogg-banner-sm.svg') 50% 50% no-repeat;
+  }
+}
+
+.episode-kellogg .branding {
+  background: url('/images/customer/kellogg-hexes.png') top left repeat-x;
+  border-top: 40px solid #00AC9E;
+}
+
+.episode-kellogg .branding img {
+  float: right;
+  margin-top: 85px;
+  margin-right: 20px;
+}
+
+.episode-kellogg .copyright {
+  top: 85px;
+}
+
+.episode-kellogg .copyright,
+.episode-kellogg .copyright a {
+  color: #666 !important;
+  text-shadow: none;
+}
+
+.episode-kellogg a,
+.episode-kellogg .fakeLink {
+  color: #00AC9E;
+}
+
+.episode-kellogg .item a {
+  /* time to party like it's 1996: */
+  text-decoration: underline;
+  font-size: 90%;
+}
+
+// from item.scss, which used to be under episode.scss in the cascade.
+// styles from the server are appended as the last link tag in the document <head>
+a.startTime.displayTime {
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.episode-kellogg .item a:hover {
+  /* time to party like it's 1996: */
+  text-decoration: none;
+  border-bottom: 2px solid;
+}
+
+.episode-kellogg .colorInvert {
+  color: #FFF;
+  background-color: #00AC9E;
+}
+
+.episode-kellogg .item .startTime {
+  background-color: #CCC;
+  padding: 4px;
+}
+
+.episode-kellogg .item.isCurrent .startTime,
+.episode-kellogg .content.allowHighlights .highlightSolid.item.isCurrent {
+  background-color: #C4D760;
+}
+
+.episode-kellogg .reviewMode .item.isCurrent {
+  background: none;
+}
+
+.episode-kellogg {
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  background-color: #e9e9e9;
+
+  h1 {
+    font-family: 'Gotham', 'Arial', 'Helvetica', sans-serif;
+  }
+
+  h2, h3, .item a, .navPanel a {
+    // Georgia - system font
+    font-family: 'Georgia', serif;
+    font-style: italic;
+  }
+
+  .escapelink:before {
+    font-style: normal !important;
+  }
+
+  .item a.startTime {
+    font-family: 'Gotham', 'Arial', 'Helvetica', sans-serif;
+    font-style: normal;
+  }
+}

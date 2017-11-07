@@ -1,6 +1,39 @@
 import { IAnalyticsSvc, IDataSvc, IModelSvc } from '../../../scripts/interfaces';
+const TEMPLATE = `
+<div class="episode episode-template" ng-class="episode.templateCss" ng-hide="episodeTheme.sheetLoading">
+
+  <div
+    class="fill"
+    ng-if="episode.template.css_configuration.fill_class != null"
+    ng-class="episode.template.css_configuration.fill_class">
+    
+    <div ng-if="episode.template.css_configuration.fill_class === 'gwsb-seal'" class="fill"></div>
+  </div>
+  <span ng-include="'view-modes/review-mode/reviewmode.html'"></span>
+  <span ng-include="'view-modes/watch-mode/watchmode.html'"></span>
+  <span
+    ng-class="{'colorInvert DiscoverModeOnly': episode.template.displayName === 'Middlebury'}"
+    ng-repeat="scene in episode.scenes | isCurrent"
+    ng-include="'view-modes/discover-mode/discovermode.html'">
+  </span>
+  <span ng-include="'view-modes/video/video.html'"></span>
+  <span ng-include="'view-modes/windowfg/windowfg.html'"></span>
+  
+  <np-episode-footer template-data="episode.template"></np-episode-footer>
+</div>
+`;
+
+
 class EpisodeController {
-  static $inject = ['$scope', '$interval', 'analyticsSvc', 'modelSvc', 'appState', 'dataSvc', 'timelineSvc'];
+  static $inject = [
+    '$scope',
+    '$interval',
+    'analyticsSvc',
+    'modelSvc',
+    'appState',
+    'dataSvc',
+    'timelineSvc'
+  ];
 
   constructor(
     public $scope: ng.IScope,
@@ -28,13 +61,9 @@ class EpisodeController {
 
     const scopeHack = () => {
       this.$scope.episode = this.modelSvc.episodes[this.appState.episodeId];
-      if (this.$scope.episode != null) {
-        this.appState.playerTemplate = this.$scope.episode.templateUrl;
-      }
     };
 
     this.$interval(scopeHack, 457);
-    this.$scope.episode.platformSpecificCss = this._platformSpecificCss();
   }
 
   $onDestroy() {
@@ -46,24 +75,12 @@ class EpisodeController {
     this.analyticsSvc.startPolling();
     this.analyticsSvc.captureEpisodeActivity('episodeLoad');
   }
-
-  private _platformSpecificCss() {
-    if (this.appState.isIframedIOS()) {
-      return {
-        'position': 'relative',
-        'max-height': window.innerHeight,
-        '-webkit-overflow-scrolling': 'touch',
-        'overflow-y': 'scroll'
-      };
-    }
-  }
 }
-ittEpisode.$inject = ['$timeout', 'appState'];
-export default function ittEpisode($timeout, appState) {
+export default function ittEpisode() {
   return {
-    restrict: 'A',
-    replace: true,
-    template: `<span ng-include="episode.templateUrl"></span>`,
+    restrict: 'EA',
+    replace: false,
+    template: TEMPLATE,
     controller: EpisodeController
   };
 }

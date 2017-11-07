@@ -1,0 +1,28 @@
+<div class="episode episode-wsbctc" ng-class="episode.styleCss" ng-style="episode.platformSpecificCss">
+	<div class="fill bigwsbctc"></div>
+	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
+	<span ng-include="'templates/episode/components/watchmode.html'"></span>
+	<span ng-repeat="scene in episode.scenes | isCurrent"
+		  ng-include="'templates/episode/components/discovermode.html'"></span>
+	<span ng-include="'templates/episode/components/video.html'"></span>
+	<span ng-include="'templates/episode/components/windowfg.html'"></span>
+
+	<div ng-if="appState.viewMode != 'watch'" class="branding footer">
+
+    <a class="wsbctc-logo">
+      <img src="/images/customer/WSBCTC_Logo.svg" alt="Washington SBCTC logo">
+    </a>
+
+    <a class="itt-logo" href="//inthetelling.com" target="_blank">
+      <img src="/images/itt-incolor.svg" alt="In The Telling logo">
+    </a>
+
+		<!--<div id="branding-wrapper">-->
+			<!--<img src="/images/customer/WSBCTC_Logo.svg" id="sbctc-logo" alt="Washington SBCTC logo"/>-->
+			<!--<a id="itt-logo" href="//inthetelling.com" target="_blank">-->
+				<!--<img src="/images/itt-incolor.svg" alt="In The Telling logo">-->
+			<!--</a>-->
+		<!--</div>-->
+    <np-copyright class="copyright" org="itt"></np-copyright>
+	</div>
+</div>

@@ -1,8 +1,8 @@
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
-import {IAnnotators, Partial} from '../../interfaces';
-import {createInstance, IAsset, ICustomer, INarrative, IScene, NEvent} from '../../models';
+import { IAnnotators, Partial } from '../../interfaces';
+import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent } from '../../models';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
@@ -17,12 +17,12 @@ export interface IModelSvc {
   getCustomersAsArray(): any[];
   getNarrativesAsArray(): any[];
   cache(cacheType: string, item: any): void;
-  deriveEpisode(episode: any): void;
+  deriveEpisode(episode: any): IEpisode;
   deriveAsset(asset: any): any;
   deriveContainer(container: any): any;
   deriveEvent(event: Partial<NEvent>): NEvent;
   setLanguageStrings(): void;
-  resolveEpisodeEvents(epId: string): void;
+  resolveEpisodeEvents(epId: string): IEpisode;
   resolveEpisodeContainers(epId: string): void;
   episode(epId: string): any;
   episodeEvents(epId: string): NEvent[];
@@ -45,9 +45,8 @@ export interface IModelSvc {
 }
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
-
 export default function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
-  const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
+  // const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
   var svc: IModelSvc = Object.create(null);
 
   svc.episodes = {};
@@ -217,67 +216,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
   };
 
-  // update template paths from v1.  This is temporary until I have the set of new templates nailed down
-  // and have figured out which can be merged or etc; then we can update the values in the database
-  var updateTemplates = {
-    'templates/episode-default.html': 'templates/episode/episode.html',
-    'templates/episode-eliterate.html': 'templates/episode/eliterate.html',
-    'templates/episode-ewb.html': 'templates/episode/ewb.html',
-    'templates/episode-gw.html': 'templates/episode/gw.html',
-    'templates/episode-purdue.html': 'templates/episode/purdue.html',
-    'templates/episode-tellingstory.html': 'templates/episode/story.html',
-
-    'templates/scene-1col.html': 'templates/scene/1col.html',
-    'templates/scene-2colL.html': 'templates/scene/2colL.html',
-    'templates/scene-2colR.html': 'templates/scene/2colR.html',
-    'templates/scene-centered.html': 'templates/scene/centered.html',
-    'templates/scene-cornerH.html': 'templates/scene/cornerH.html',
-    'templates/scene-cornerV.html': 'templates/scene/cornerV.html',
-
-    //annotation:
-    'templates/transcript-default.html': 'templates/item/transcript.html',
-    'templates/transcript-withthumbnail.html': 'templates/item/transcript-withthumbnail.html',
-    'templates/transcript-withthumbnail-alt.html': 'templates/item/transcript-withthumbnail-alt.html',
-    'templates/text-h1.html': 'templates/item/text-h1.html',
-    'templates/text-h2.html': 'templates/item/text-h2.html',
-    'templates/text-pullquote-noattrib.html': 'templates/item/pullquote-noattrib.html',
-    'templates/text-pullquote.html': 'templates/item/pullquote.html',
-
-    // upload
-    'templates/transmedia-caption.html': 'templates/item/image-caption.html',
-    'templates/transmedia-image-default.html': 'templates/item/image.html',
-    'templates/transmedia-slidingcaption.html': 'templates/item/image-caption-sliding.html',
-    'templates/transmedia-image-fill.html': 'templates/item/image-fill.html',
-    'templates/transmedia-image-plain.html': 'templates/item/image-plain.html',
-    'templates/transmedia-linkonly.html': 'templates/item/image-linkonly.html',
-    'templates/transmedia-thumbnail.html': 'templates/item/image-thumbnail.html',
-
-    //link
-    'templates/transmedia-link-default.html': 'templates/item/link.html',
-    'templates/transmedia-link-frameicide.html': 'templates/item/link.html',
-    'templates/transmedia-link-noembed.html': 'templates/item/link.html',
-    'templates/transmedia-link-embed.html': 'templates/item/link-embed.html',
-    'templates/transmedia-link-youtube.html': 'templates/item/link.html',
-    'templates/transmedia-embed-youtube.html': 'templates/item/link-embed.html',
-
-    // was used internally in v3 player, never exposed to authors so shouldn't appear BUT YOU NEVER KNOW:
-    'templates/transmedia-link-icon.html': 'templates/item/link.html',
-
-    // (from old sxs demo; can delete later)
-    // "templates/upload-demo-inline.html": "templates/item/debug.html",
-    // "templates/upload-demo.html": "templates/item/debug.html",
-
-    //questions
-    'templates/question-mc-formative.html': 'templates/item/question-mc-formative.html',
-    'templates/question-mc-poll.html': 'templates/item/question-mc-poll.html',
-
-    'templates/question-mc.html': 'templates/item/question-mc.html',
-    'templates/question-mc-image-left.html': 'templates/item/question-mc-image-left.html',
-    'templates/question-mc-image-right.html': 'templates/item/question-mc-image-right.html',
-
-    'templates/sxs-question.html': 'templates/item/sxs-question.html'
-  };
-
   // svc.deriveFoo() are for efficiency precalculations.
   // Input API data, output API data plus clientside-only convenience variables.
   // Should call this after making any changes to the underlying data.
@@ -285,17 +223,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   svc.deriveEpisode = function (episode) {
     // console.log("deriveEpisode:", episode);
 
-    //If the episode doesn't have a template then assign it the default template
-    if (!episode.templateUrl) {
-      episode.templateUrl = DEFAULT_EPISODE_TEMPLATE_URL;
-    }
-
-    if (updateTemplates[episode.templateUrl]) {
-      episode.origTemplateUrl = episode.templateUrl;
-      episode.templateUrl = updateTemplates[episode.templateUrl];
-    }
-
-    // unpack languages
     angular.forEach(episode.languages, function (lang) {
       if (lang.default) {
         // console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
@@ -312,26 +239,19 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     if (!episode.styles) {
       episode.styles = [];
     }
-    angular.forEach(['eliterate', 'gw', 'gwsb', 'purdue', 'usc', 'columbia', 'columbiabusiness'], function (customer) {
-      if (episode.templateUrl === 'templates/episode/' + customer + '.html') {
-        angular.forEach(['color', 'typography'], function (styleType) {
-          // if the episode doesn't already have styletypeFoo, add styletypeCustomer
-          var found = false;
-          angular.forEach(episode.styles, function (style) {
-            if (style.match(styleType)) {
-              found = true;
-            }
-          });
-          if (!found) {
-            episode.styles.push(styleType + customer[0].toUpperCase() + customer.substring(1));
-          }
-        });
-      }
-    });
 
     if (episode.title && svc.events['internal:landingscreen:' + episode._id]) {
       svc.events['internal:landingscreen:' + episode._id].title = episode.title;
       svc.events['internal:landingscreen:' + episode._id] = setLang(svc.events['internal:landingscreen:' + episode._id]);
+    }
+    if (episode.template) {
+      const doResizeIframe =
+        episode.template.displayName === 'Career Playbook'
+        || episode.template.displayName === 'Narrasys Professional';
+
+      if (episode.template && doResizeIframe) {
+        appState.resizeIframeReviewMode = true;
+      }
     }
 
     episode = setLang(episode);
@@ -444,7 +364,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         event.avatar = svc.assets[event.avatar_id];
       }
 
-      if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].templateUrl === 'templates/episode/usc.html') {
+
+      if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].template.displayName === 'University of Southern California') {
         // HACKS AHOY
         // USC made a bunch of change requests post-release; this was the most expedient way
         // to deal with them. Sorry!
@@ -533,29 +454,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       }
     }
 
-    // both scenes and items.  Do this last for now, since we're doing some ugly string matching against the old templateUrl:
-    if (updateTemplates[event.templateUrl]) {
-      event.origTemplateUrl = event.templateUrl;
-      event.templateUrl = updateTemplates[event.templateUrl];
-
-      // coerce old image-plain background images into image-fill:
-      if (!event.isContent && event.templateUrl === 'templates/item/image-plain.html') {
-        event.templateUrl = 'templates/item/image-fill.html';
-      }
-      // hack for old authoring tool quirk:
-      // if (event.templateUrl === "templates/item/image-plain.html") {
-      // 	console.log('adding timestamp none!!');
-      // 	if (event.styles) {
-      // 		event.styles.push("timestampNone");
-      // 	} else {
-      // 		event.styles = ["timestampNone"];
-      // 	}
-      // }
-    } else {
-      // console.log("Keeping same templateUrl:", event.templateUrl);
-      event.origTemplateUrl = event.templateUrl;
-    }
-
     // Finally one more super-fragile HACK for producer:
     if (!event.producerItemType) {
       if (event._type === 'Scene') {
@@ -606,7 +504,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           event.isPq = true;
         }
         if (/text-h1|text-h2/.test(event.templateUrl)) {
-          console.log('setting header!!');
           event.isHeader = true;
         }
 
@@ -727,7 +624,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
    startingscreen extends from below zero to 0.01s
 
    */
-  svc.resolveEpisodeEvents = function (epId) {
+  svc.resolveEpisodeEvents = function (epId: string): IEpisode {
     // console.log("resolveEpisodeEvents");
     //Build up child arrays: episode->scene->item
     var scenes = [];
@@ -938,6 +835,16 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
     // Now that we have the structure, calculate event styles (for scenes and items:)
     episode.styleCss = cascadeStyles(episode);
+    // the professional css class only should be applied on the ittEpisode template div
+    // episode.styleCss is used elsewhere and with the professional class it causes issues in some cases
+    episode.templateCss = episode.styleCss;
+    if (episode instanceof IEpisode && episode.template.pro_episode_template) {
+      episode.templateCss = 'professional ' + episode.templateCss;
+    }
+
+    if (episode.template && episode.template.displayName === 'Wiley') {
+      episode.templateCss += ' wiley-endscreentext ';
+    }
     angular.forEach(svc.events, function (event) {
       if (event.cur_episode_id !== epId) {
         return;
@@ -1001,6 +908,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
       event.styleCss = event.styleCss.replace(/timestampInline/, '');
     });
+
+    return episode;
   };
 
   svc.resolveEpisodeContainers = function (epId) {
@@ -1069,7 +978,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
   svc.episode = function (epId) {
     if (!svc.episodes[epId]) {
-      console.warn('called modelSvc.episode for a nonexistent ID', epId);
+      // console.warn('called modelSvc.episode for a nonexistent ID', epId);
     }
     return svc.episodes[epId];
   };
@@ -1118,7 +1027,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   svc.scene = function (sceneId) {
     // console.log("modelsvc.scene: ", sceneId);
     if (!svc.events[sceneId]) {
-      console.warn('called modelSvc.scene for a nonexistent ID', sceneId);
+      // console.warn('called modelSvc.scene for a nonexistent ID', sceneId);
     }
     return svc.events[sceneId];
   };
@@ -1160,6 +1069,12 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         });
       });
     }
+
+
+    // if (thing instanceof IEpisode) {
+    //   // TODO: add episode namespace until db work is implemented
+    //   cssArr.push(thing.template_data.cssClass);
+    // }
 
     // add each episodeStyle, only if it is in a styleCategory the thing isn't already using
     if (thing.cur_episode_id) {
@@ -1247,7 +1162,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     var episode = svc.episodes[episodeId];
 
     if (!episode || !episode.scenes) {
-      console.warn('addEndingScreen called on an episode without scenes');
+      // console.warn('addEndingScreen called on an episode without scenes');
       return;
     }
 
@@ -1262,7 +1177,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     });
     var lastScene = episode.scenes[episode.scenes.length - 1];
     if (lastScene._id.match(/internal:endingscreen/)) {
-      console.error('Attempted to add an ending screen twice');
+      // console.error('Attempted to add an ending screen twice');
       return;
     }
 

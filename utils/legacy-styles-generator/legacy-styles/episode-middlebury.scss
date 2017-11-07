@@ -1,0 +1,71 @@
+/* Middlebury */
+
+.episode-middlebury .DiscoverModeOnly {
+  background-color: #06132D;
+  display: block;
+}
+
+.episode-middlebury .DiscoverModeOnly .startTime {
+  color: #73A3E7 !important;
+}
+
+.episode-middlebury .branding {
+  background: url("/images/customer/middlebury-footer.svg") repeat-x 50% 0;
+  color: #5e5e5e;
+}
+
+.episode-middlebury .branding .logo {
+  top: 120px;
+  right: 100px;
+  width: 100px;
+}
+
+.episode-middlebury .branding .logo.itt {
+  right: 20px;
+}
+
+.episode-middlebury .copyright {
+  text-shadow: none !important;
+  margin-right: 210px;
+  bottom: auto;
+  top: 120px;
+}
+
+.episode-middlebury .copyright a {
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+.episode-middlebury .colorInvert .colorInvert {
+  background-color: #73A3E7;
+  color: #06132D;
+}
+
+.episode-middlebury .reviewMode {
+  border-bottom: 130px solid #06132D;
+}
+
+.episode-middlebury a,
+.episode-middlebury .fakeLink {
+  color: #73A3E7;
+  text-shadow: 1px 1px 0px #06132d;
+}
+
+.episode-middlebury .colorInvert a {
+  color: #73A3E7;
+  text-shadow: none !important;
+}
+
+.episode-middlebury .colorInvert .colorInvert a {
+  color: #06132D;
+  text-decoration: underline;
+}
+
+.episode-middlebury .colorInvert .colorInvert .startTime {
+  color: #06132D;
+}
+
+.episode-middlebury {
+  font-family: Garamond, 'Droid Serif', serif;
+  font-size: 110%;
+}

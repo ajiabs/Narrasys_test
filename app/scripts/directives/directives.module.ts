@@ -1,6 +1,7 @@
 /**
  * Created by githop on 3/30/17.
  */
+
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
 import { AssetUploader } from './ittAssetUploader';
@@ -14,7 +15,7 @@ import ittDynamicModel from './ittDynamicModel';
 import { EditPencil } from './ittEditPencil';
 import ittFileField from './ittFileField';
 import ittFilesHandler from './ittFilesHandler';
-import ittFlags from './ittFlags';
+import { Flags } from './ittFlags';
 import ittFlotr2Chart from './ittFlotChart';
 import { GuestAccessibleUrl } from './guest-accessible-url/npGuestAccessibleUrl';
 import ittHighlightSelect from './ittHighlightSelect';
@@ -52,7 +53,7 @@ import ittSpeakerField from './ittSpeakerField';
 import ittSpeakerThumbField from './ittSpeakerThumbField';
 import ittTabs from './ittTabs';
 import ittTab from './ittTab';
-import ittTemplateSelect from './ittTemplateSelect';
+import { TemplateSelect } from './ittTemplateSelect';
 import ittTimeField from './ittTimeField';
 import ittTimeline from './ittTimeline';
 import { TimelineEditor } from './npTimelineEditor';
@@ -86,6 +87,8 @@ import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
 import { ittPlayerContainer } from './ittPlayerContainer';
 import { ProjectsContainer } from './npProjectsContainer';
+import { Copyright } from './copyright/npCopyright';
+import { EpisodeFooter } from './npEpisodeFooter';
 
 const directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -100,7 +103,7 @@ const directivesModule = angular.module('itt.directives', [])
   .component(EditPencil.Name, new EditPencil())
   .directive('ittFileField', ittFileField)
   .directive('ittFilesHandler', ittFilesHandler)
-  .directive('ittFlags', ittFlags)
+  .component(Flags.Name, new Flags())
   .directive('ittFlotr2Chart', ittFlotr2Chart)
   .component(GuestAccessibleUrl.Name, new GuestAccessibleUrl())
   .directive('ittHighlightSelect', ittHighlightSelect)
@@ -136,7 +139,7 @@ const directivesModule = angular.module('itt.directives', [])
   .directive('ittSpeakerThumbField', ittSpeakerThumbField)
   .directive('ittTabs', ittTabs)
   .directive('ittTab', ittTab)
-  .directive('ittTemplateSelect', ittTemplateSelect)
+  .component(TemplateSelect.Name, new TemplateSelect())
   .directive('ittTimeField', ittTimeField)
   .directive('ittTimeline', ittTimeline)
   .component(TimelineEditor.Name, new TimelineEditor())
@@ -174,6 +177,8 @@ const directivesModule = angular.module('itt.directives', [])
   .component(NarrativeDetail.Name, new NarrativeDetail())
   .component(NarrativeContainer.Name, new NarrativeContainer())
   .component(ProjectsContainer.Name, new ProjectsContainer())
-  .component(NarrativesContainer.Name, new NarrativesContainer());
+  .component(NarrativesContainer.Name, new NarrativesContainer())
+  .component(Copyright.Name, new Copyright())
+  .component(EpisodeFooter.Name, new EpisodeFooter());
 
 export default directivesModule;

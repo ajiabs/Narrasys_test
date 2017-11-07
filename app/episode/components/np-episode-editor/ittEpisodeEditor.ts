@@ -1,21 +1,46 @@
 /*
- TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
+ TODO: right now we're re-building the episode structure on every keystroke.
+ That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 
- TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
+ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.
+ I expect the episode styling to drift away from the event styling,
+ though, so letting myself repeat myself repeat myself for now
  */
-ittEpisodeEditor.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'dataSvc', 'authSvc', 'selectService', 'playbackService', 'urlService'];
+import { IModelSvc, IDataSvc } from '../../../scripts/interfaces';
+
+ittEpisodeEditor.$inject = [
+  '$rootScope',
+  '$timeout',
+  'appState',
+  'modelSvc',
+  'dataSvc',
+  'authSvc',
+  'selectService',
+  'playbackService',
+  'urlService',
+  'episodeTheme'
+];
 
 export interface ILangformFlags {
-  en: boolean
-  es?: boolean
-  zh?: boolean
-  pt?: boolean
-  fr?: boolean
-  de?: boolean
-  it?: boolean
+  en: boolean;
+  es?: boolean;
+  zh?: boolean;
+  pt?: boolean;
+  fr?: boolean;
+  de?: boolean;
+  it?: boolean;
 }
 
-export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSvc, dataSvc, authSvc, selectService, playbackService, urlService) {
+export default function ittEpisodeEditor(
+  $rootScope,
+  $timeout,
+  appState,
+  modelSvc: IModelSvc,
+  dataSvc: IDataSvc,
+  authSvc,
+  selectService,
+  playbackService,
+  urlService) {
   return {
     restrict: 'A',
     replace: true,
@@ -149,48 +174,13 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
       scope.watchEdits = scope.$watchGroup(
         // I am kind of amazed that using appState.lang works here, these strings must get recalculated every tick
         [
-          'episode.templateUrl',
           'episode.title[appState.lang]',
           'episode.description[appState.lang]'
-          // 'episode.navigation_depth'
         ],
-        function (newVal, oldVal) {
-          // console.log("DETECTED CHANGE", newVal, oldVal);
-          if (newVal[0] !== oldVal[0]) { // templateUrl
-            // Some templates have built-in color and typography selections; need to update them along with the template.
-            // TODO This would be a lot simpler if I hadn't chosen such a dumb structure for style info...
-            // console.log("Template changed from ", oldVal[0], " to ", newVal[0]);
-            // console.log(scope.episode.styles);
-            var fixStyles = [];
-
-            //oldVal may be empty if newly created episode
-            if (oldVal[0]) {
-              var oldCustomer = oldVal[0].match('templates/episode/(.*).html')[1];
-              // remove color-oldVal and typography-oldVal.
-              angular.forEach(scope.episode.styles, function (style) {
-                if (style.toLowerCase() !== "color" + oldCustomer && style.toLowerCase() !== "typography" + oldCustomer) {
-                  fixStyles.push(style);
-                }
-              });
-            }
-
-            var newCustomer = newVal[0].match('templates/episode/(.*).html')[1];
-            // add color-newVal and typography-newVal (only for ep templates that use this:)
-            angular.forEach(["eliterate", "gw", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
-              if (newCustomer === customer) {
-                fixStyles.push("color" + customer[0].toUpperCase() + customer.substring(1));
-                fixStyles.push("typography" + customer[0].toUpperCase() + customer.substring(1));
-              }
-            });
-            scope.episode.styles = angular.copy(fixStyles);
-            // console.log("Updated styles:", scope.episode.styles);
-
-          }
-
+        () => {
           modelSvc.deriveEpisode(scope.episode);
           // modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
           modelSvc.resolveEpisodeEvents(scope.episode._id); // needed for template or style changes
-
         }
       );
 

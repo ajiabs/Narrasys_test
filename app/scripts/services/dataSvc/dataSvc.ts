@@ -1,8 +1,12 @@
 // TODO: load and resolve categories
 
 
-import {createInstance, IAsset, IEvent} from '../../models';
-import {IEmailFields} from '../../interfaces';
+import {
+  createInstance, IAsset, IEpisode, IEpisodeTemplate, IEvent, IItemTemplate, ILayout, ILayoutTemplate, IStyle,
+  ITemplate
+} from '../../models';
+import { IEmailFields, IEpisodeTheme, Partial } from '../../interfaces';
+import { existy, intersection, pick } from '../ittUtils';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -26,6 +30,12 @@ import {IEmailFields} from '../../interfaces';
  * @requires mockSvc
  * @requires questionAnswersSvc
  */
+
+interface ITemplateSelect {
+  id: string;
+  name: string;
+  customer_ids: string[];
+}
 
 export interface IDataSvc {
   beginBackgroundTranslations(episodeId: string): any;
@@ -68,16 +78,20 @@ export interface IDataSvc {
   deleteItem(evtId): ng.IPromise<{}>;
   createAsset(containerId, asset): ng.IPromise<{}>;
   deleteAsset(assetId): ng.IPromise<{}>;
-  storeItem(evt): ng.IPromise<IEvent | boolean>;
+  storeItem(evt: IEvent): ng.IPromise<IEvent | boolean>;
   prepItemForStorage(evt): any;
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
   readCache(cache, field, val): object | boolean;
-  getTemplates(): any;
+  getTemplates(): ITemplate[];
+  getTemplate(id: string): ITemplate;
   sendSocialshareEmail(tlId:string, email: IEmailFields): ng.IPromise<void>;
+  fetchTemplates(): ng.IPromise<ITemplate[]>;
+  getEpisodeTemplatesAdmin(): ITemplateSelect[];
+  getEpisodeTemplatesByCustomerIds(custids: string[]): ITemplateSelect[];
 }
 
-dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
-export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
+export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, episodeTheme: IEpisodeTheme) {
   var svc: IDataSvc = Object.create(null);
 
   /* ------------------------------------------------------------------------------ */
@@ -399,14 +413,36 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          name								"Scene 2 columns right"
          updated_at					"2013-11-20T20:13:31Z"
          url									"templates/scene-centered.html"
+         type: string
          */
-        dataCache.template[item._id] = {
-          id: item._id,
-          url: item.url,
-          type: (item.applies_to_episodes ? 'Episode' : item.event_types ? item.event_types[0] : undefined),
-          displayName: item.name,
-          customerIds: item.customer_ids
-        };
+
+        if (item.applies_to_episodes) {
+          dataCache.template[item._id] = createInstance('EpisodeTemplate', {
+            id: item._id,
+            url: item.url,
+            type: 'Episode',
+            displayName: item.name,
+            customer_ids: item.customer_ids,
+            css_configuration: item.css_configuration,
+            fonts: item.fonts,
+            pro_episode_template: item.pro_episode_template
+          });
+        } else if (item.event_types && item.event_types && item.event_types[0] === 'Scene') {
+          dataCache.template[item._id] = createInstance('LayoutTemplate', {
+            id: item._id,
+            url: item.url,
+            type: 'Scene',
+            displayName: item.name
+          });
+        } else {
+          dataCache.template[item._id] = createInstance('ItemTemplate', {
+            id: item._id,
+            url: item.url,
+            type: item.event_types && item.event_types[0],
+            displayName: item.name
+          });
+        }
+        // console.log('template?', dataCache.template[item._id]);
       } else if (cacheType === 'layouts') {
         /* API format:
          _id									"528d17ebba4f65e57800000a"
@@ -416,11 +452,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          display_name				"Video Left"
          updated_at					"2013-11-20T20:13:31Z"
          */
-        dataCache.layout[item._id] = {
+        dataCache.layout[item._id] = createInstance('Layout', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
-        };
+        });
 
       } else if (cacheType === 'styles') {
         /* API format:
@@ -431,11 +467,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          display_name	"Typography Serif"
          updated_at		"2013-11-20T20:13:37Z"
          */
-        dataCache.style[item._id] = {
+        dataCache.style[item._id] = createInstance('Style', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
-        };
+        });
       }
     });
   };
@@ -464,14 +500,14 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // console.log("resolving IDs", obj);
 
     // temporary:
-    if (obj.everyone_group && !obj.template_id) {
-      obj.templateUrl = 'templates/narrative/default.html';
-    }
-
+    // if (obj.everyone_group && !obj.template_id) {
+    //   obj.templateUrl = 'templates/narrative/default.html';
+    // }
     if (obj.template_id) {
       if (dataCache.template[obj.template_id]) {
-        obj.templateUrl = dataCache.template[obj.template_id].url;
-        delete obj.template_id;
+        if (obj.master_asset_id == null) {
+          obj.templateUrl = dataCache.template[obj.template_id].url;
+        }
       } else {
         errorSvc.error({
           data: 'Couldn\'t get templateUrl for id ' + obj.template_id
@@ -599,12 +635,18 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     var url = (segmentId) ? '/v3/episode_segments/' + segmentId + '/resolve' : '/v3/episodes/' + epId;
     $http.get(config.apiDataBaseUrl + url)
       .success(function (ret) {
-        var episodeData = {};
+        var episodeData = Object.create(null);
         if (ret) {
           episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
         }
         if (episodeData.status === 'Published' || authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
+          const episodeTemplate = dataCache.template[episodeData.template_id];
+          episodeData.template = episodeTemplate;
           modelSvc.cache('episode', svc.resolveIDs(episodeData));
+          if (episodeTemplate) {
+            episodeTheme.setTheme(episodeTemplate);
+          }
+
           getEvents(epId, segmentId)
             .success(function (events) {
               events = events || [];
@@ -614,14 +656,22 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
                 modelSvc.cache('event', svc.resolveIDs(eventData));
               });
               modelSvc.resolveEpisodeEvents(epId);
-              var assetIds = getAssetIdsFromEvents(events);
+              const assetIds = getAssetIdsFromEvents(events);
               assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
               // we need to also get the master asset and poster, while we are at it
               assetIds.push(episodeData.master_asset_id);
+              //add template assets - more to come.
 
               if (episodeData.poster_frame_id) {
                 assetIds.push(episodeData.poster_frame_id);
               }
+
+              //add template assets
+              // if (episodeTemplate.css_configuration) {
+              //   const templateLogoImgId = episodeTemplate.css_configuration.image_logo_bottom_right_id;
+              //   assetIds.push(templateLogoImgId);
+              // }
+
               //batch get assets
               getAssetsByAssetIds(assetIds)
                 .then((assets: IAsset[]) => {
@@ -971,7 +1021,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   svc.storeEpisode = function (epData) {
     var preppedData = prepEpisodeForStorage(epData);
     console.log('prepped for storage:', preppedData);
-    if (preppedData) {
+    if (preppedData != null) {
       return PUT('/v3/episodes/' + preppedData._id, preppedData);
     } else {
       return false;
@@ -1139,11 +1189,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     if (evt._type === 'Chapter') {
       return prepped;
     }
-    var template = svc.readCache('template', 'url', evt.templateUrl);
+    const template = svc.readCache('template', 'url', evt.templateUrl) as ILayoutTemplate | IItemTemplate;
     if (template) {
       prepped.template_id = template.id;
-    } else {
-      prepped.template_id = reverseTemplateUpdate(evt.templateUrl);
     }
     if (prepped.template_id) {
       return prepped;
@@ -1194,13 +1242,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
   };
 
-  var prepEpisodeForStorage = function (epData) {
-    var prepped = {};
+  const prepEpisodeForStorage = function (epData): Partial<IEpisode> {
+
     if (epData._id && epData._id.match(/internal/)) {
       delete epData._id;
     }
 
-    var fields = [
+    const fields = [
       '_id',
       'title',
       'description',
@@ -1209,92 +1257,24 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'master_asset_id',
       'poster_frame_id',
       'status',
-      'languages'
-      // "navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
+      'languages',
+      'template_id'
+      // "navigation_depth"
+      // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
     ];
 
-    for (var i = 0; i < fields.length; i++) {
-      if (epData[fields[i]] || epData[fields[i]] === 0) {
-        prepped[fields[i]] = angular.copy(epData[fields[i]]);
-      }
-    }
-
+    const prepped: Partial<IEpisode> = pick(epData, fields);
     prepped.style_id = get_id_values('style', epData.styles);
 
-    var template = svc.readCache('template', 'url', epData.templateUrl);
-    if (template) {
+    const template = svc.readCache('template', 'id', epData.template_id) as ITemplate;
+    if (template && template.id) {
       prepped.template_id = template.id;
-    } else {
-      prepped.template_id = reverseTemplateUpdate(epData.templateUrl);
-    }
-    if (prepped.template_id) {
       return prepped;
     } else {
       errorSvc.error({
-        data: 'Tried to store a template with no ID: ' + epData.templateUrl
+        data: 'Tried to store a template with no ID: ' + epData.template_id
       });
-      return false;
-    }
-  };
-
-  var reverseTemplateUpdate = function (templateUrl) {
-    // HACK: this reverses the template versioning done in modelSvc
-    // TODO: can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
-    var reverseTemplates = {
-      // episodes
-      'templates/episode/episode.html': 'templates/episode-default.html',
-      'templates/episode/eliterate.html': 'templates/episode-eliterate.html',
-      'templates/episode/ewb.html': 'templates/episode-ewb.html',
-      'templates/episode/gw.html': 'templates/episode-gw.html',
-      'templates/episode/purdue.html': 'templates/episode-purdue.html',
-      'templates/episode/story.html': 'templates/episode-tellingstory.html',
-
-      // annotation
-      'templates/item/transcript.html': 'templates/transcript-default.html',
-      'templates/item/transcript-withthumbnail.html': 'templates/transcript-withthumbnail.html',
-      'templates/item/transcript-withthumbnail-alt.html': 'templates/transcript-withthumbnail-alt.html',
-      'templates/item/text-h1.html': 'templates/text-h1.html',
-      'templates/item/text-h2.html': 'templates/text-h2.html',
-      'templates/item/pullquote-noattrib.html': 'templates/text-pullquote-noattrib.html',
-      'templates/item/pullquote.html': 'templates/text-pullquote.html',
-
-      // upload
-      'templates/item/image.html': 'templates/transmedia-image-default.html',
-      'templates/item/image-caption.html': 'templates/transmedia-caption.html',
-      'templates/item/image-caption-sliding.html': 'templates/transmedia-slidingcaption.html',
-      'templates/item/image-fill.html': 'templates/transmedia-image-fill.html',
-      'templates/item/image-plain.html': 'templates/transmedia-image-plain.html',
-      'templates/item/image-linkonly.html': 'templates/transmedia-linkonly.html',
-      'templates/item/image-thumbnail.html': 'templates/transmedia-thumbnail.html',
-
-      //link
-      'templates/item/link.html': 'templates/transmedia-link-default.html',
-      'templates/item/link-embed.html': 'templates/transmedia-link-embed.html',
-
-      //scene
-      'templates/scene/1col.html': 'templates/scene-1col.html',
-      'templates/scene/2colL.html': 'templates/scene-2colL.html',
-      'templates/scene/2colR.html': 'templates/scene-2colR.html',
-      'templates/scene/centered.html': 'templates/scene-centered.html',
-      'templates/scene/cornerH.html': 'templates/scene-cornerH.html',
-      'templates/scene/cornerV.html': 'templates/scene-cornerV.html',
-
-      //question
-      'templates/item/question-mc-formative.html': 'templates/question-mc-formative.html',
-      'templates/item/question-mc-poll.html': 'templates/question-mc-poll.html',
-
-      'templates/item/question-mc.html': 'templates/question-mc.html',
-      'templates/item/question-mc-image-left.html': 'templates/question-mc-image-left.html',
-      'templates/item/question-mc-image-right.html': 'templates/question-mc-image-right.html',
-
-      'templates/item/sxs-question.html': 'templates/sxs-question.html',
-      'templates/item/sxs-link.html': 'templates/sxs-link.html'
-    };
-    if (reverseTemplates[templateUrl]) {
-      var template = svc.readCache('template', 'url', reverseTemplates[templateUrl]);
-      return template.id;
-    } else {
-      return false;
+      return null;
     }
   };
 
@@ -1322,50 +1302,81 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     });
   };
 
+  svc.getEpisodeTemplatesAdmin = getEpisodeTemplatesAdmin;
+  function getEpisodeTemplatesAdmin(): ITemplateSelect[] {
+    if (!authSvc.userHasRole('admin')) {
+      return;
+    }
+    return svc.getTemplates()
+      .reduce(
+        (ts: ITemplateSelect[], t: ITemplate) => {
+          if (t instanceof IEpisodeTemplate) {
+            ts.push({
+              id: t.id,
+              name: t.displayName,
+              customer_ids: t.customer_ids
+            });
+          }
+          return ts;
+        },
+        []
+      );
+  }
+
+  svc.getEpisodeTemplatesByCustomerIds = getEpisodeTemplatesByCustomerIds;
+  function getEpisodeTemplatesByCustomerIds(custIds: string[]): ITemplateSelect[] {
+    return svc.getTemplates()
+      .reduce(
+        (ts: ITemplateSelect[], t: ITemplate) => {
+          if (t instanceof IEpisodeTemplate) {
+            const hasCustomer = intersection(custIds, t.customer_ids);
+            if (hasCustomer.length > 0 || t.customer_ids.length === 0) {
+              ts.push({
+                id: t.id,
+                name: t.displayName,
+                customer_ids: t.customer_ids
+              });
+            }
+          }
+          return ts;
+        },
+        []
+      );
+  }
+
+  svc.fetchTemplates = fetchTemplates;
+  function fetchTemplates(): ng.IPromise<ITemplate[]> {
+    return SANE_GET('/v1/templates')
+      .then((templates: ITemplate[]) => svc.cache('templates', templates))
+      .then(() => svc.getTemplates());
+  }
+
+
+  svc.getTemplate = getTemplate;
+  function getTemplate(id: string): ITemplate {
+    return dataCache.template[id];
+  }
+
   /*
    gets ID of Style Class when given the 'css_name'. 'css_name' is a attribute on the Style Class.
    for example:
    get_id_values('style', ['cover', '']) -> ['532708d8ed245331bd000007', '52e15b47c9b715cfbb00003f']
    */
-  var get_id_values = function (cache, realNames) {
-
-    // HACK These values won't have IDs, they're generated inside modelSvc.
-    // Can remove this after template config is updated
-    var pseudos = [
-      'colorEliterate',
-      'colorGw',
-      'colorGwsb',
-      'colorPurdue',
-      'colorUsc',
-      'colorColumbia',
-      'colorColumbiabusiness',
-      'typographyEliterate',
-      'typographyGw',
-      'typographyGwsb',
-      'typographyPurdue',
-      'typographyUsc',
-      'typographyColumbia',
-      'typographyColumbiabusiness'
-    ];
+  const get_id_values = function (cache, realNames): string[] {
 
     // convert real styles and layouts back into id arrays. Not for templateUrls!
-    var ids = [];
+    const ids = [];
 
-    angular.forEach(realNames, function (realName) {
+    angular.forEach(realNames, (realName) => {
       if (realName) {
-        var cachedValue = svc.readCache(cache, 'css_name', realName);
+        const cachedValue = svc.readCache(cache, 'css_name', realName) as IStyle | ILayout;
         if (cachedValue) {
           ids.push(cachedValue.id);
         } else {
-          // HACK ignore pseudo-styles generated within modelSvc:
-          if (pseudos.indexOf(realName) === -1) {
-            errorSvc.error({
-              data: 'Tried to store a ' + cache + ' with no ID: ' + realName
-            });
-            return false;
-          } else {
-            console.log('Ignoring ', realName);
-          }
+          errorSvc.error({
+            data: 'Tried to store a ' + cache + ' with no ID: ' + realName
+          });
+          return false;
         }
       }
     });

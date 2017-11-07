@@ -18,7 +18,7 @@ const templates = (require as any).context('../templates', true, /\.html$/);
 const componentTemplates = (require as any).context('./directives', true, /\.html$/);
 const viewModeTemplates = (require as any).context('../view-modes', true, /\.html$/);
 
-[templates, componentTemplates].forEach((templateSource) => {
+[templates, componentTemplates, viewModeTemplates].forEach((templateSource) => {
   templateSource.keys().forEach(path => templateSource(path));
 });
 
@@ -213,11 +213,11 @@ function routerConfig($routeProvider) {
         }]
       }
     })
-    .when('/event/:eventId', {
-      title: 'Event test',
-      controller: 'EventTestController',
-      templateUrl: 'templates/testbed-event.html'
-    })
+    // .when('/event/:eventId', {
+    //   title: 'Event test',
+    //   controller: 'EventTestController',
+    //   templateUrl: 'templates/testbed-event.html'
+    // })
     .otherwise({
       title: 'Narrative Producer: Error',
       controller: 'ErrorController',

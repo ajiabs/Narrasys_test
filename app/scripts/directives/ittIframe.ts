@@ -163,13 +163,10 @@ export default function ittIframe(appState) {
 
 
       function resizeIframeReviewMode() {
-        var narrasys = 'templates/episode/narrasys-pro.html';
-        var cpb = 'templates/episode/career-playbook.html';
-
-        //only resize iframe in discover mode for the narrasys pro template (at the moment)
-        if (appState.viewMode === 'discover' &&
-          (appState.playerTemplate === narrasys || appState.playerTemplate === cpb) &&
-          !appState.isTouchDevice) {
+        //only resize iframe in discover mode for the narrasys pro template, career playbook (at the moment)
+        if (appState.viewMode === 'discover'
+          && appState.resizeIframeReviewMode
+          && !appState.isTouchDevice) {
           elm.css('height', _frameBottom);
         }
       }

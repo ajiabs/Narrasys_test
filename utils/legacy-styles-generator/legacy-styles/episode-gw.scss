@@ -1,0 +1,108 @@
+
+.episode-gw {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-weight: 300;
+
+  h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700
+  }
+
+  h1, h2, h3, h4, h5,
+  .item a,
+  .navPanel a {
+    color: #003A5C;
+  }
+
+  .colorInvert {
+    background-color: #003A5C;
+    * {
+      color: #FFF;
+    }
+
+    &.item .pullquote:before {
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  .escapelink:before {
+    color: #AB9767;
+  }
+
+  .content.allowHighlights .item.isCurrent.highlightSolid,
+  .reviewMode .content.allowHighlights .item.isCurrent {
+    background-color: rgba(171, 151, 103, 0.3);
+  }
+
+  .altPane {
+    background-color: rgba(0, 58, 92, 0.05);
+  }
+
+  .item {
+    a {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 1em;
+      line-height: 1.2em;
+    }
+
+    .pullquote, .pullquoteSpeaker {
+      font-family: 'Cardo', serif;
+    }
+
+    .pullquote {
+
+      &:before {
+        font-family: 'Cardo', serif;
+        color: rgba(0, 58, 92, 0.5);
+      }
+    }
+
+  }
+
+  .navPanel a {
+    font-family: 'Montserrat', sans-serif;
+  }
+}
+
+.episode-gw .videoMask.firstplay {
+  /* GW doesn't want our logo here */
+  background-image: url('/images/play-overlay.png');
+}
+
+.episode-gw .videoMask.rewind {
+  background-image: url('/images/rewind-nologo-overlay.png');
+}
+
+.episode-gw .landingscreen {
+  width: 400px;
+  margin: 0 auto 50px auto;
+  background-image: url('/images/customer/gw-logo-big.svg');
+  background-size: 60%;
+  background-position: 50% 40px;
+  background-repeat: no-repeat;
+  padding: 150px 0 0 0;
+}
+
+.episode-gw .landingscreen .introtext,
+.episode-gw .landingscreen .videoMagnet {
+  float: none;
+  width: 100%;
+  clear: both;
+}
+
+.episode-gw .landingscreen .introtext h1 {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 25px;
+}
+
+@media screen and (max-width: 500px) {
+  .episode-gw .landingscreen {
+    width: 90%;
+    padding-top: 45%;
+  }
+}

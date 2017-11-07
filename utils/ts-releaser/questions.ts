@@ -17,6 +17,15 @@ export const versionQuestions: Question[] = [
   }
 ];
 
+export const unitTests: Question[] = [
+  {
+    type: 'confirm',
+    name: 'runTests',
+    message: 'Run the unit test suite?',
+    default: false
+  }
+];
+
 export const finalVersionQuestions: Question[] = [
   {
     type: 'confirm',
@@ -31,36 +40,39 @@ export const gitQuestions: Question[] = [
     type: 'confirm',
     name: 'add',
     message: 'stage changes?',
-    default: false
+    default: true
   },
   {
     type: 'confirm',
     name: 'commitChanges',
     // message: 'commit, tag, and release build: ',
     message: 'commit changes?',
-    default: false
+    default: true
   },
   {
     type: 'confirm',
     name: 'pushChanges',
     // message: 'commit, tag, and release build: ',
     message: 'push changes?',
-    default: false
+    default: true
   },
   {
     type: 'confirm',
     name: 'addTag',
-    message: 'add tag?'
+    message: 'add tag?',
+    default: true
   },
   {
     type: 'confirm',
     name: 'pushTag',
-    message: 'push tag?'
+    message: 'push tag?',
+    default: true
   },
   {
     type: 'confirm',
     name: 'confirmOnMaster',
     message: 'You are not on the master branch, are you certain you want to continue?' +
-    ' (typically prod releases are off master)'
+    ' (typically prod releases are off master)',
+    default: true
   }
 ];

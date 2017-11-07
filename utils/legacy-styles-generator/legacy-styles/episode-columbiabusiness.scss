@@ -1,0 +1,58 @@
+
+/* CBS */
+
+.episode-columbiabusiness {
+  background: linear-gradient(#A9B8D3, #FEFCFC);
+  font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+
+  .startTime, .title, .authorName {
+    font-size: 22px !important;
+    line-height: 26px !important;
+    font-weight: 300 !important;
+  }
+
+  .pullquote {
+    min-height: 60px;
+    font-size: 30px;
+    line-height: 35px;
+    font-weight: 300;
+    color: #205F9C;
+    padding-left: 60px;
+    background: url('/images/quote-white.svg') top left no-repeat;
+
+    &:before {
+      display: none !important;
+    }
+  }
+
+  a, .fakeLink {
+    color: #205F9C;
+  }
+
+  .colorInvert {
+    color: #FFF;
+    background-color: #0F4082;
+  }
+
+  .category span {
+    color: #FFF;
+    font-weight: 400 !important;
+    background-color: #205F9C;
+    padding: 2px;
+    text-transform: uppercase;
+    margin-left: -0.5em;
+  }
+}
+
+.episode-columbiabusiness .trident {
+  background: url('/images/customer/cbs-trident-white.svg') 50% 50%;
+  background-size: 250%;
+  position: fixed !important;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.episode-columbiabusiness .DiscoverModeOnly .item {
+  background-color: rgba(221, 224, 234, 0.5);
+}
+
