@@ -1,8 +1,10 @@
-import ittEpisode from './components/np-episode/ittEpisode';
-import ittEpisodeEditor from './components/np-episode-editor/ittEpisodeEditor';
-import ittEpisodeList from './components/np-episode-list/ittEpisodeList';
+import ittEpisode from './components/episode/ittEpisode';
+import ittEpisodeEditor from './components/episode-editor/ittEpisodeEditor';
+import { EpisodeList } from './components/episode-list/ittEpisodeList';
 import { EpisodeTheme } from './services/episodeTheme.service';
 import { EpisodeEditService } from './services/episodeEdit.service';
+import { Copyright } from './components/copyright/npCopyright';
+import { EpisodeFooter } from './components/episode-footer/npEpisodeFooter';
 
 const npEpisodeModule = angular.module('npEpisode', []);
 const services = [
@@ -10,13 +12,22 @@ const services = [
   EpisodeEditService
 ];
 
+const components = [
+  EpisodeList,
+  Copyright,
+  EpisodeFooter
+];
+
 services.forEach((service) => {
   npEpisodeModule.service(service.Name, service);
 });
 
+components.forEach((cmp) => {
+  npEpisodeModule.component(cmp.Name, new cmp);
+});
+
 npEpisodeModule
   .directive('ittEpisode', ittEpisode)
-  .directive('ittEpisodeEditor', ittEpisodeEditor)
-  .directive('ittEpisodeList', ittEpisodeList);
+  .directive('ittEpisodeEditor', ittEpisodeEditor);
 
 export default npEpisodeModule;

@@ -76,7 +76,6 @@ import ittVideo from './ittVideo';
 import { VideoPositionSelect } from './ittVideoPositionSelect';
 import ittVolumeSlider from './ittVolumeSlider';
 import ittWidthWatch from './ittWidthWatch';
-import nysCopyright from './nys-copyright';
 import sxsAddContent from './sxsAddContent';
 import sxsAnnotatorAutocomplete from './sxsAnnotatorAutocomplete';
 import { SxsContainerAssets } from './sxsContainerAssets';
@@ -87,8 +86,6 @@ import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
 import { ittPlayerContainer } from './ittPlayerContainer';
 import { ProjectsContainer } from './npProjectsContainer';
-import { Copyright } from './copyright/npCopyright';
-import { EpisodeFooter } from './npEpisodeFooter';
 
 const directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -162,7 +159,6 @@ const directivesModule = angular.module('itt.directives', [])
   .component(VideoPositionSelect.Name, new VideoPositionSelect())
   .directive('ittVolumeSlider', ittVolumeSlider)
   .directive('ittWidthWatch', ittWidthWatch)
-  .directive('nysCopyright', nysCopyright)
   .directive('sxsAddContent', sxsAddContent)
   .directive('sxsAnnotatorAutocomplete', sxsAnnotatorAutocomplete)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())
@@ -177,8 +173,6 @@ const directivesModule = angular.module('itt.directives', [])
   .component(NarrativeDetail.Name, new NarrativeDetail())
   .component(NarrativeContainer.Name, new NarrativeContainer())
   .component(ProjectsContainer.Name, new ProjectsContainer())
-  .component(NarrativesContainer.Name, new NarrativesContainer())
-  .component(Copyright.Name, new Copyright())
-  .component(EpisodeFooter.Name, new EpisodeFooter());
+  .component(NarrativesContainer.Name, new NarrativesContainer());
 
 export default directivesModule;
