@@ -280,11 +280,11 @@ function routerConfig($routeProvider) {
         }]
       }
     })
-    .when('/event/:eventId', {
-      title: 'Event test',
-      controller: 'EventTestController',
-      templateUrl: 'templates/testbed-event.html'
-    })
+    // .when('/event/:eventId', {
+    //   title: 'Event test',
+    //   controller: 'EventTestController',
+    //   templateUrl: 'templates/testbed-event.html'
+    // })
     .otherwise({
       title: 'Narrative Producer: Error',
       controller: 'ErrorController',
