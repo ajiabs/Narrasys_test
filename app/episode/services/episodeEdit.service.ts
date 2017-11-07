@@ -47,7 +47,7 @@ export class EpisodeEditService implements IEpisodeEditService{
         } else {
           // if they have a custom template, use the first template (by their customer id) that
           // is not the unbranded one
-          const customerTemplate = templates.filter(t => t.name !== '(Unbranded)');
+          const customerTemplate = templates.filter(t => t.name !== 'Unbranded');
           newEpisode.template_id = customerTemplate[0].id;
         }
       })
