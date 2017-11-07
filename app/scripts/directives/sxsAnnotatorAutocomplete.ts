@@ -3,7 +3,7 @@
  TODO: disentangle annotator_image_id from this, move it into parent template
  */
 
-import {ILangForm} from '../interfaces';
+import { ILangForm } from '../interfaces';
 
 export interface IAnnotator {
   name: ILangForm;
@@ -21,16 +21,18 @@ sxsAnnotatorAutocomplete.$inject = ['$timeout', 'modelSvc', 'appState'];
 export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
   return {
     require: 'ngModel',
-    templateUrl: "templates/producer/annotator-autocomplete.html",
+    templateUrl: 'templates/producer/annotator-autocomplete.html',
     scope: {
-      annotators: "=sxsAnnotatorAutocomplete",
-      item: "=item"
+      annotators: '=sxsAnnotatorAutocomplete',
+      item: '=item'
     },
     link: function (scope, element, attrs, ngModelController) {
 
       scope.appState = appState;
       scope.hasAnnotator = function () {
-        return Object.keys(scope.item.annotator).length > 0;
+        if (scope.item.annotator) {
+          return Object.keys(scope.item.annotator).length > 0;
+        }
       };
 
       // look up the annotator images

@@ -70,9 +70,7 @@ class FlagsController implements IFlagsBindings {
   $onChanges(changesObj) {
     if (changesObj.templateUrl) {
       const { previousValue, currentValue } = changesObj.templateUrl;
-      if (!changesObj.templateUrl.isFirstChange()) {
-        this.$timeout(() => this.setFlags(currentValue, previousValue));
-      }
+      this.$timeout(() => this.setFlags(currentValue, previousValue));
     }
   }
 
@@ -84,7 +82,9 @@ class FlagsController implements IFlagsBindings {
 
   setFlags(newVal, oldVal) {
     //reset invert color when switching between templates.
-    if (newVal !== oldVal) {
+    // only reset if we are the right type and the value changes
+    // e.g. ignore undefined -> string
+    if (newVal !== oldVal && typeof newVal === typeof oldVal) {
       this.itemForm.color = '';
     }
 
@@ -115,12 +115,12 @@ class FlagsController implements IFlagsBindings {
     }
   }
 
-  private _isEditingItemForm() {
-    return existy(this.itemForm) && this.data._id === 'internal:editing';
-  }
-
   private static _h1OrH2(url) {
     return (url === 'templates/item/text-h1.html' || url === 'templates/item/text-h2.html');
+  }
+
+  private _isEditingItemForm() {
+    return existy(this.itemForm) && this.data._id === 'internal:editing';
   }
 }
 
