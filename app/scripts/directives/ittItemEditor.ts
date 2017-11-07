@@ -126,7 +126,7 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         // TODO BUG items moved from one scene to another aren't being included in the new scene until the user hits save,
         // only in discover mode (review mode has no problem.)   This was also the case when we ran resolveEpisodeEvents on every edit, it's an older bug.
         // This _should_ be setting it, and it _is_ triggering sceneController precalculateSceneValues...  IT IS A MYSTERY
-        if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
+        if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time || newItem.stop === true) {
           modelSvc.resolveEpisodeEvents(appState.episodeId);
         }
         // console.count('$watch turn');
