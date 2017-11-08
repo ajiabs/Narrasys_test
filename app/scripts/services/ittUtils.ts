@@ -1,7 +1,7 @@
 /**
  * Created by githop on 4/22/16.
  */
-import { Pick } from '../interfaces';
+import { Pick } from '../../interfaces';
 
 ittUtils.$inject = ['$timeout'];
 export function ittUtils($timeout) {

@@ -1,4 +1,4 @@
-import {IScriptLoader} from '../../interfaces';
+import {IScriptLoader} from '../../../interfaces';
 /**
  * Created by githop on 4/12/17.
  */

@@ -1,12 +1,12 @@
 /**
  * Created by githop on 5/26/17.
  */
-import { IAsset, INarrative, ITimeline } from '../../models';
+import { IAsset, INarrative, ITimeline } from '../../../models';
 
-import { IDataSvc, IimageResize } from '../../interfaces';
+import { IDataSvc, IimageResize } from '../../../interfaces';
 import { IModelSvc } from '../../services/modelSvc/modelSvc';
 
-import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE, TSocialTagTypes } from '../../constants';
+import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE, TSocialTagTypes } from '../../../constants';
 /**
  * Created by githop on 5/22/17.
  */

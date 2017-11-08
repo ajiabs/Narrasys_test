@@ -1,5 +1,5 @@
-import { IContainer } from '../models';
-import { IDataSvc, IModelSvc } from '../interfaces';
+import { IContainer } from '../../models';
+import { IDataSvc, IModelSvc } from '../../interfaces';
 
 const TEMPLATE = `
 <!-- consider breaking these into separate templates altogether, since they have different purposes -->

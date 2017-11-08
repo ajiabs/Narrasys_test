@@ -1,6 +1,6 @@
 /* For now this is just a thin wrapper around the playerController */
-import {IDataSvc} from '../interfaces';
-import {INarrative} from '../models';
+import {IDataSvc} from '../../interfaces';
+import {INarrative} from '../../models';
 
 class NarrativeTimelineCtrl {
   static $inject = [

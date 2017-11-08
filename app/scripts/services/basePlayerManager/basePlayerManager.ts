@@ -1,4 +1,4 @@
-import {IMetaProps, IWistiaMetaProps} from '../../interfaces';
+import {IMetaProps, IWistiaMetaProps} from '../../../interfaces';
 import {existy, renameKey} from '../ittUtils';
 import {commonMetaProps} from './index';
 

@@ -2,7 +2,7 @@
  * Created by githop on 1/16/17.
  */
 
-import {IMetaProps} from '../../interfaces';
+import {IMetaProps} from '../../../interfaces';
 import {commonMetaProps} from './index';
 /**
  * @ngdoc service

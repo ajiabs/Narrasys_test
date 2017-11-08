@@ -1,7 +1,7 @@
 
 
-import { createInstance, INarrative, ITimeline } from '../../models';
-import { Partial } from '../../interfaces';
+import { createInstance, INarrative, ITimeline } from '../../../models';
+import { Partial } from '../../../interfaces';
 
 const stubNarrativeGuestAccessible: Partial<INarrative> = createInstance('Narrative', {
   _id: 'testing',

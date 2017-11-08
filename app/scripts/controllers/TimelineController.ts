@@ -1,4 +1,4 @@
-import { IModelSvc, IAnalyticsSvc } from '../interfaces';
+import { IModelSvc, IAnalyticsSvc } from '../../interfaces';
 
 TimelineController.$inject = [
   '$scope',

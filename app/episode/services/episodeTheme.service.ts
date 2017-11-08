@@ -1,5 +1,5 @@
 import * as WebFont from 'webfontloader';
-import { IFont, IEpisodeTemplate } from '../../scripts/models';
+import { IFont, IEpisodeTemplate } from '../../models';
 
 export interface IEpisodeTheme {
   sheetLoading: boolean;

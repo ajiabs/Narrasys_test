@@ -1,8 +1,8 @@
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
 
-import {IDataSvc, IModelSvc} from '../interfaces';
+import {IDataSvc, IModelSvc} from '../../interfaces';
 
-import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../../constants';
 
 interface ISxsContainerAssetsBindings {
   containerId: string;

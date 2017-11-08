@@ -1,4 +1,4 @@
-import { IAnalyticsSvc, ITimelineSvc, IModelSvc, IDataSvc } from '../interfaces';
+import { IAnalyticsSvc, ITimelineSvc, IModelSvc, IDataSvc } from '../../interfaces';
 
 /* tslint:disable:prefer-const */
 export default function ittVideo() {

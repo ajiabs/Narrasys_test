@@ -1,6 +1,6 @@
 'use strict';
-import { createInstance, IEpisode } from '../models';
-import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../interfaces';
+import { createInstance, IEpisode } from '../../models';
+import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../../interfaces';
 
 EditController.$inject = [
   '$scope',

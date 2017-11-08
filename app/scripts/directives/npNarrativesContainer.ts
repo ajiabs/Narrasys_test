@@ -1,5 +1,5 @@
-import { IDataSvc, IModelSvc } from '../interfaces';
-import { ICustomer } from '../models';
+import { IDataSvc, IModelSvc } from '../../interfaces';
+import { ICustomer } from '../../models';
 
 const TEMPLATE = `
 <div class="standaloneAncillaryPage">

@@ -2,7 +2,7 @@
  * Created by githop on 10/24/16.
  */
 
-import {IPlayerManager, IUrlService, IWistiaPlayerManager} from '../../interfaces';
+import {IPlayerManager, IUrlService, IWistiaPlayerManager} from '../../../interfaces';
 
 /**
  * @ngdoc service

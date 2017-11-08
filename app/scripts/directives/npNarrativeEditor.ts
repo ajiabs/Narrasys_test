@@ -2,10 +2,10 @@
  * Created by githop on 6/16/16.
  */
 
-import { createInstance, ICustomer, INarrative } from '../models';
+import { createInstance, ICustomer, INarrative } from '../../models';
 
-import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../constants';
-import { IUploadsService, Partial } from '../interfaces';
+import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../constants';
+import { IUploadsService, Partial } from '../../interfaces';
 import { existy, pick } from '../services/ittUtils';
 /* tslint:disable */
 /**

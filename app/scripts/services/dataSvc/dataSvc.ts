@@ -4,8 +4,8 @@
 import {
   createInstance, IAsset, IEpisode, IEpisodeTemplate, IEvent, IItemTemplate, ILayout, ILayoutTemplate, IStyle,
   ITemplate
-} from '../../models';
-import { IEmailFields, IEpisodeTheme, Partial } from '../../interfaces';
+} from '../../../models';
+import { IEmailFields, IEpisodeTheme, Partial } from '../../../interfaces';
 import { existy, intersection, pick } from '../ittUtils';
 /**
  * @ngdoc service

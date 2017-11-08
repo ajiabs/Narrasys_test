@@ -1,4 +1,4 @@
-import { IEpisodeTemplate } from '../../../scripts/models';
+import { IEpisodeTemplate } from '../../../models';
 const TEMPLATE = `
 <div ng-if="$ctrl.appState.viewMode != 'watch'" ng-class="$ctrl.brandingDivClass">
 

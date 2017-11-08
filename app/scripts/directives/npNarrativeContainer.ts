@@ -1,6 +1,6 @@
-import { ICustomer, INarrative } from '../models';
+import { ICustomer, INarrative } from '../../models';
 import { existy } from '../services/ittUtils';
-import { IDataSvc, IModelSvc } from '../interfaces';
+import { IDataSvc, IModelSvc } from '../../interfaces';
 const TEMPLATE = `
 <div class="standaloneAncillaryPage">
 	<np-nav on-logout="$ctrl.logout()"></np-nav>

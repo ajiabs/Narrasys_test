@@ -1,5 +1,5 @@
-import { ICustomer, INarrative } from '../models';
-import { IDataSvc, IModelSvc } from '../interfaces';
+import { ICustomer, INarrative } from '../../models';
+import { IDataSvc, IModelSvc } from '../../interfaces';
 import { existy } from '../services/ittUtils';
 
 interface INarrativeListBindings extends ng.IComponentController {

@@ -2,7 +2,7 @@
  * Created by githop on 6/6/17.
  */
 
-import {IUploadData} from '../interfaces';
+import {IUploadData} from '../../interfaces';
 
 const TEMPLATE = `
 

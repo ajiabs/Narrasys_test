@@ -1,7 +1,7 @@
 /**
  * Created by githop on 6/7/16.
  */
-import { IDataSvc, IModelSvc } from '../interfaces';
+import { IDataSvc, IModelSvc } from '../../interfaces';
 
 selectService.$inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
 

@@ -1,5 +1,5 @@
-import {IModelSvc, IDataSvc} from '../interfaces';
-import {TRANSCRIPT_UPLOAD} from './ittUploadTranscriptsField';
+import {IModelSvc, IDataSvc} from '../../interfaces';
+import {TRANSCRIPT_UPLOAD} from '../../input-fields/components/ittUploadTranscriptsField';
 
 interface AssetUploaderBindings {
   containerId?: string;

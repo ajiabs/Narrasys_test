@@ -1,4 +1,4 @@
-import { IContainer } from '../../../scripts/models';
+import { IContainer } from '../../../models';
 import { existy } from '../../../scripts/services/ittUtils';
 
 const TEMPLATE = `

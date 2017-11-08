@@ -1,6 +1,6 @@
 'use strict';
 
-import { CHANGE_MAGNET, JUMP_TO_MAGNET } from '../../constants';
+import { CHANGE_MAGNET, JUMP_TO_MAGNET } from '../../../constants';
 
 // TODO: remove dependence on jQuery? (lots of it here)
 ittMagnetized.$inject = ['$rootScope', '$timeout', 'appState'];

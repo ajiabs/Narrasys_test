@@ -24,8 +24,8 @@
 
 
  */
-import { createInstance, IAsset, ICustomer, IEpisode, INarrative, ITempTimeline, ITimeline } from '../models';
-import { IDataSvc, IModelSvc } from '../interfaces';
+import { createInstance, IAsset, ICustomer, IEpisode, INarrative, ITempTimeline, ITimeline } from '../../models';
+import { IDataSvc, IModelSvc } from '../../interfaces';
 import { bitwiseCeil, existy, stripHtmlTags } from '../services/ittUtils';
 
 interface INarrativeDetailBindings extends ng.IComponentController {

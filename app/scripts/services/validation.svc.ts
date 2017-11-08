@@ -1,5 +1,5 @@
-import { ILinkStatus } from '../models';
-import { ILinkValidFields, Partial, TUrlFieldContexts } from '../interfaces';
+import { ILinkStatus } from '../../models';
+import { ILinkValidFields, Partial, TUrlFieldContexts } from '../../interfaces';
 
 /**
  * Created by githop on 5/2/17.

@@ -21,8 +21,6 @@ import selectService from './selectService';
 import timelineSvc from './timelineSvc/timelineSvc';
 import urlService from './urlService';
 import playerManagerCommons from './basePlayerManager/playerManagerCommons';
-import html5PlayerManager from './html5/html5PlayerManager.svc';
-import html5UrlService from './html5/html5UrlService';
 import kalturaPlayerManager from './kaltura/kalturaPlayerManager';
 import kalturaScriptLoader from './kaltura/kalturaScriptLoader';
 import kalturaUrlService from './kaltura/kalturaUrlService';
@@ -57,8 +55,6 @@ let servicesModule = angular.module('itt.services', [])
   .factory('timelineSvc', timelineSvc)
   .factory('urlService', urlService)
   .factory('playerManagerCommons', playerManagerCommons)
-  .factory('html5PlayerManager', html5PlayerManager)
-  .factory('html5UrlService', html5UrlService)
   .factory('kalturaPlayerManager', kalturaPlayerManager)
   .factory('kalturaScriptLoader', kalturaScriptLoader)
   .factory('kalturaUrlService', kalturaUrlService)

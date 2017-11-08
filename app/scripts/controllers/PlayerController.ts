@@ -1,7 +1,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
-import {IModelSvc, IDataSvc} from '../interfaces';
-import { UPDATE_MAGNET } from '../constants';
+import {IModelSvc, IDataSvc} from '../../interfaces';
+import { UPDATE_MAGNET } from '../../constants';
 PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService', 'episodeTheme'];
 
 export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService, episodeTheme) {

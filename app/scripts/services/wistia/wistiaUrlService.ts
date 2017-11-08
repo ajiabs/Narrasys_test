@@ -1,4 +1,4 @@
-import {IParsedMediaSrcObj, IUrlSubService} from '../../interfaces';
+import {IParsedMediaSrcObj, IUrlSubService} from '../../../interfaces';
 /**
  * Created by githop on 4/12/17.
  */
