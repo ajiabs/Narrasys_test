@@ -56,7 +56,7 @@
         narrative="$ctrl.narrative"
         customers="$ctrl.customers"
         on-done="$ctrl.toggleEditNarrativeModal($undo)"
-        on-update="$ctrl.updateNarrative(n)">
+        on-update="$ctrl.updateNarrative($narrative)">
       </np-narrative-editor>
     </div>
 
@@ -67,8 +67,8 @@
         narrative="$ctrl.narrative"
         container-id="{{$ctrl.customers[0].root_container_id}}"
         on-done="$ctrl.doneEditingTimeline()"
-        on-update="$ctrl.editorAction(t, timelineUnderEdit)"
-        on-delete="$ctrl.deleteTimeline(t)">
+        on-update="$ctrl.editorAction($timeline, $ctrl.timelineUnderEdit)"
+        on-delete="$ctrl.deleteTimeline($timeline)">
       </np-timeline-editor>
     </div>
 
