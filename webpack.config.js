@@ -29,10 +29,10 @@ function configWp(env) {
 
   const wpConfig =  {
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.js', '.html'],
     },
     entry: {
-      app: resolve(__dirname, 'app', 'scripts', 'app.ts')
+      app: resolve(__dirname, 'app', 'app.ts')
     },
     output: {
       filename: env.prod ? `[name].[chunkHash].min.js` : '[name].bundle.js',
@@ -62,14 +62,14 @@ function configWp(env) {
           test: /\.html$/,
           exclude:[resolve(__dirname, 'app', 'index.html'), resolve(__dirname, 'app', 'privacy.html')],
           use: [
+            // {
+            //   loader: 'ngtemplate-loader',
+            //   options: {
+            //     relativeTo: join(__dirname, './app/'),
+            //   },
+            // },
             {
-              loader: 'ngtemplate-loader',
-              options: {
-                relativeTo: join(__dirname, './app/'),
-              },
-            },
-            {
-              loader: 'html-loader',
+              loader: 'html-loader?exportAsEs6Default',
               options: {
                 minimize: !!env.prod
               }

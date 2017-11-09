@@ -44,7 +44,10 @@ const inputFieldsModule = angular.module('inputFields', []);
 
 
 const templates = (require as any).context('./components', true, /\.html$/);
-templates.keys().forEach(path => templates(path));
+templates.keys().forEach((path: any) => {
+  console.log('path??', path);
+  return templates(path);
+});
 inputFieldsModule
   .directive('autofocus', autofocus)
   .directive('ittAnnotationField', ittAnnotationField)

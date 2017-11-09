@@ -1,6 +1,3 @@
-'use strict';
-
-
 // Declare the top level application module and its dependencies
 /**
  * @ngdoc interface
@@ -14,18 +11,18 @@
  * @requires textAngular
  */
 
-const templates = (require as any).context('../templates', true, /\.html$/);
-const componentTemplates = (require as any).context('./directives', true, /\.html$/);
-const viewModeTemplates = (require as any).context('../view-modes', true, /\.html$/);
+const templates = (require as any).context('./templates', true, /\.html$/);
+const componentTemplates = (require as any).context('./scripts/directives', true, /\.html$/);
+const viewModeTemplates = (require as any).context('./view-modes', true, /\.html$/);
 
 [templates, componentTemplates, viewModeTemplates].forEach((templateSource) => {
   templateSource.keys().forEach(path => templateSource(path));
 });
 
 import './styles/app.scss';
-import '../styles/vendor.scss';
+import './styles/vendor.scss';
 
-import './plugin/plugins';
+import '../plugin/plugins';
 import 'core-js/client/shim';
 import 'angular';
 import 'angular-ui-tree';
@@ -36,14 +33,16 @@ import 'textAngular/dist/textAngular-sanitize.min';
 import 'textAngular/dist/textAngular.min';
 import 'angular-socialshare';
 //end text angular
-import '../config';
+import './config';
+// modules
 
-import './controllers/controllers.module';
+import './scripts/controllers/controllers.module';
 import './filters/filters';
-import './services/services.module';
-import './directives/directives.module';
-import '../episode/episode.module';
-let itt = angular.module('iTT', [
+import './scripts/services/services.module';
+import './scripts/directives/directives.module';
+import './episode/episode.module';
+
+const itt = angular.module('iTT', [
     'ngRoute',
     'ngAnimate',
     'ngSanitize',

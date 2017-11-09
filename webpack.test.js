@@ -7,7 +7,7 @@ const wpConfig =  {
     extensions: ['.ts', '.js'],
   },
   entry: {
-    app: resolve(__dirname, 'app', 'scripts', 'app.ts')
+    app: resolve(__dirname, 'app', 'app.ts')
   },
   output: {
     filename: '[name].bundle.js',
