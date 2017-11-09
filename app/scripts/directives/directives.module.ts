@@ -10,10 +10,6 @@ import { EditPencil } from './ittEditPencil';
 import ittFilesHandler from './ittFilesHandler';
 import ittFlotr2Chart from './ittFlotChart';
 import { GuestAccessibleUrl } from './guest-accessible-url/npGuestAccessibleUrl';
-import ittIframe from './ittIframe';
-import ittItem from './ittItem';
-import ittItemDetailModal from './ittItemDetailModal';
-import ittItemEditor from './ittItemEditor';
 import { Loading } from './ittLoading';
 import ittLogin from './ittLogin';
 import ittMagnet from './magnet/ittMagnet';
@@ -62,10 +58,6 @@ const directivesModule = angular.module('itt.directives', [])
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittFlotr2Chart', ittFlotr2Chart)
   .component(GuestAccessibleUrl.Name, new GuestAccessibleUrl())
-  .directive('ittIframe', ittIframe)
-  .directive('ittItem', ittItem)
-  .directive('ittItemDetailModal', ittItemDetailModal)
-  .directive('ittItemEditor', ittItemEditor)
   .component(Loading.Name, new Loading())
   .directive('ittLogin', ittLogin)
   .directive('ittMagnet', ittMagnet)

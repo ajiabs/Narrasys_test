@@ -1,9 +1,8 @@
-/*jshint sub:true*/
-
+// @npUpgrade-item-false
 /*
- TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
-
-
+ TODO: right now we're re-building the episode structure on every keystroke.
+ That's a tiny bit wasteful of cpu :)
+  At the very least, debounce input to a more reasonable interval
  */
 
 /**
@@ -23,7 +22,6 @@
  * @requires dataSvc
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
-
 
 ittItemEditor.$inject = ['$rootScope', 'errorSvc', 'appState', 'modelSvc', 'timelineSvc', 'selectService'];
 

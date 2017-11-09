@@ -1,8 +1,9 @@
+// @npUpgrade-item-false
 /*
  NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
  so they get logged properly: don't draw plain hrefs
  */
-import {IValidationSvc} from '../services/validation.svc';
+import {IValidationSvc} from '../../scripts/services/validation.svc';
 ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc'];
 
 export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService, validationSvc: IValidationSvc) {

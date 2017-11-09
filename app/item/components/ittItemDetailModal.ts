@@ -1,3 +1,4 @@
+// @npUpgrade-item-false
 /**
  * @ngdoc directive
  * @name iTT.directive:ittItemDetailModal

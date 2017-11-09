@@ -8,7 +8,6 @@ import ContainerAssetsTestController from './ContainerAssetsTestController';
 import EditController from './EditController';
 import ErrorController from './ErrorController';
 import EventTestController from './EventTestController';
-import ItemController from './ItemController';
 import PlayerController from './PlayerController';
 import SceneController from './SceneController';
 import SearchPanelController from './SearchPanelController';
@@ -18,7 +17,6 @@ const ittControllers = angular.module('itt.controllers', [])
   .controller('EditController', EditController)
   .controller('ErrorController', ErrorController)
   .controller('EventTestController', EventTestController)
-  .controller('ItemController', ItemController)
   .controller('PlayerController', PlayerController)
   .controller('SceneController', SceneController)
   .controller('SearchPanelController', SearchPanelController)
