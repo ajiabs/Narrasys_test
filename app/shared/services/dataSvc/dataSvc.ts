@@ -1330,7 +1330,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         (ts: ITemplateSelect[], t: ITemplate) => {
           if (t instanceof IEpisodeTemplate) {
             const hasCustomer = intersection(custIds, t.customer_ids);
-            if (hasCustomer.length > 0 || t.customer_ids.length === 0) {
+            if (hasCustomer.length > 0) {
               ts.push({
                 id: t.id,
                 name: t.displayName,
