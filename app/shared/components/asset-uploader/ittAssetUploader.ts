@@ -1,5 +1,7 @@
-import {IModelSvc, IDataSvc} from '../../interfaces';
-import {TRANSCRIPT_UPLOAD} from '../../input-fields/components/ittUploadTranscriptsField';
+// @npUpgrade-shred-true
+import { IModelSvc, IDataSvc } from '../../../interfaces';
+import { TRANSCRIPT_UPLOAD } from '../../../input-fields/components/ittUploadTranscriptsField';
+import assetUploaderHtml from './asset-uploader.html';
 
 interface AssetUploaderBindings {
   containerId?: string;
@@ -46,7 +48,8 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
 
   $onInit() {
     if (this.instructions === undefined) {
-      this.manPage = 'We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. ';
+      this.manPage = `We support uploads of most common file formats, 
+      including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip.`;
     } else {
       this.manPage = this.instructions;
     }
@@ -55,7 +58,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       //allow basically doc, image, or video.
       this.mimeTypesArr = ['application/*', 'image/*', 'video/*', 'text/*', 'audio/*', 'model/*'];
     } else {
-      this.mimeTypesArr = (<string>this.mimeTypes).split(',');
+      this.mimeTypesArr = this.mimeTypes.split(',');
     }
 
     if (this.errorText === undefined) {
@@ -71,10 +74,10 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       this.droptarget = this.$element.find('.uploadDropTarget');
       this.fileinput = this.$element.find('.uploadFileInput');
       this.uploadsinprogress = 0;
-      this.droptarget[0].addEventListener('drop', (ev) => this.handleDrop(ev));
-      this.droptarget[0].addEventListener('dragover', (ev) => this.handleDragOver(ev));
-      this.droptarget[0].addEventListener('dragenter', (ev) => this.handleDragEnter(ev));
-      this.droptarget[0].addEventListener('dragleave', (ev) => this.handleDragLeave(ev));
+      this.droptarget[0].addEventListener('drop', ev => this.handleDrop(ev));
+      this.droptarget[0].addEventListener('dragover', ev => this.handleDragOver(ev));
+      this.droptarget[0].addEventListener('dragenter', ev => this.handleDragEnter(ev));
+      this.droptarget[0].addEventListener('dragleave', ev => this.handleDragLeave(ev));
     });
   }
 
@@ -85,7 +88,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       if (payload != null) {
         switch (payload.type) {
           case TRANSCRIPT_UPLOAD:
-            const {promises, files} = payload;
+            const { promises, files } = payload;
             this.commenseUploads(files, promises);
             break;
         }
@@ -97,16 +100,24 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
   pauseUpload() {
     this.awsSvc.pauseUpload();
     this.paused = true;
-  };
+  }
 
   resumeUpload() {
     this.awsSvc.resumeUpload();
     this.paused = false;
-  };
+  }
 
   cancelUpload() {
     this.awsSvc.cancelUpload();
-  };
+  }
+
+  private static strStartsWith(str, prefix) {
+    return str.indexOf(prefix) === 0;
+  }
+
+  private static strEndsWith(str, match) {
+    return str.substring(str.length - match.length, str.length) === match;
+  }
 
   private handleUploads(files: FileList) {
     if (this.multiple) {
@@ -124,7 +135,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
     //if optional onFiledrop attr is used,
     //emit FileList to parent component and bail
     if (this.onFiledrop) {
-      this.onFiledrop({data: files});
+      this.onFiledrop({ data: files });
       return;
     }
 
@@ -132,13 +143,13 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
   }
 
   private commenseUploads(files, data?) {
-    const {oldstack, newstack} = this.setupUploadDisplay(files, data);
+    const { oldstack, newstack } = this.setupUploadDisplay(files, data);
     this.processUploads(oldstack, newstack, files);
   }
 
   private setupUploadDisplay(files, data?) {
-    let oldstack = this.uploads.length;
-    let newstack = this.uploads.length + files.length;
+    const oldstack = this.uploads.length;
+    const newstack = this.uploads.length + files.length;
     this.uploadsinprogress = this.uploadsinprogress + files.length;
 
     this.uploadStatus.push({
@@ -156,7 +167,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       this.uploads = this.uploads.concat(this.awsSvc.uploadUserFiles(this.appState.user._id, files));
     }
 
-    return {oldstack, newstack};
+    return { oldstack, newstack };
   }
 
   private checkMimeType(files): boolean {
@@ -166,7 +177,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       let fileType = file.type;
 
       if (this.episodeId) {
-        let ext = file.name.match(/(vtt|srt)/);
+        const ext = file.name.match(/(vtt|srt)/);
         if (ext && ext.length) {
           fileType = 'text/' + ext[0];
         }
@@ -192,7 +203,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
   }
 
   private processUploads(oldstack, newstack, files) {
-    for (let i = oldstack; i < newstack; i++) {
+    for (let i = oldstack; i < newstack; i += 1) {
       ((i) => { // closure for i
         this.uploadStatus[i] = {
           'bytesSent': 0,
@@ -204,7 +215,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
         this.uploads[i]
           .then((data) => {
             if (this.episodeId && this.callback) {
-              this.callback({data: data});
+              this.callback({ data });
               this.uploadStatus[i].done = true;
               this.oneDone();
               return;
@@ -212,20 +223,23 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
 
             this.modelSvc.cache('asset', data.file);
             if (this.callback) {
-              this.callback({data: data.file._id});
+              this.callback({ data: data.file._id });
             }
             this.uploadStatus[i].done = true;
             this.oneDone();
           })
-          .catch(error => {
+          .catch((error: any) => {
             this.uploadStatus[i].error = error;
           })
           //second arg $q finally is 'nofify' to handle updaing upload progress
-          .finally(null, update => {
-            this.uploadStatus[i].bytesSent = update.bytesSent;
-            this.uploadStatus[i].bytesTotal = update.bytesTotal;
-            this.uploadStatus[i].percent = Math.ceil(update.bytesSent / update.bytesTotal * 100);
-          });
+          .finally(
+            null,
+            (update: any) => {
+              this.uploadStatus[i].bytesSent = update.bytesSent;
+              this.uploadStatus[i].bytesTotal = update.bytesTotal;
+              this.uploadStatus[i].percent = Math.ceil(update.bytesSent / update.bytesTotal * 100);
+            }
+          );
       })(i);
     }
   }
@@ -236,42 +250,32 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       this.fileinput.value = '';
       this.paused = false;
     }
-  };
+  }
 
   private handleDrop(e) {
     e.preventDefault();
     e.stopPropagation();
     this.handleDragLeave(e);
     this.handleUploads(e.dataTransfer.files);
-  };
+  }
 
   private handleDragOver(e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     this.handleDragEnter(e);
     return false;
-  };
+  }
 
   private handleDragEnter(e) {
     this.droptarget.addClass('droppable');
-  };
+  }
 
   private handleDragLeave(e) {
     this.droptarget.removeClass('droppable');
-  };
-
-  private static strStartsWith(str, prefix) {
-    return str.indexOf(prefix) === 0;
   }
-
-  private static strEndsWith(str, match) {
-    return str.substring(str.length - match.length, str.length) === match;
-  }
-
 }
 
 export class AssetUploader implements ng.IComponentOptions {
-  static Name: string = 'ittAssetUploader';
   bindings: any = {
     containerId: '@?', // If no container ID is supplied, the uploaded asset(s) will be placed in user space instead.
     episodeId: '@?', //for uploading transcripts
@@ -283,6 +287,7 @@ export class AssetUploader implements ng.IComponentOptions {
     errorText: '@?',
     multiple: '<?'
   };
-  templateUrl: string = 'templates/producer/asset-uploader.html';
-  controller: ng.IComponentController = AssetUploaderController;
+  template = assetUploaderHtml;
+  controller = AssetUploaderController;
+  static Name: string = 'ittAssetUploader'; // tslint:disable-line
 }

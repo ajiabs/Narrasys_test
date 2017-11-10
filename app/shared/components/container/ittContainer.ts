@@ -1,7 +1,8 @@
 /* For admin screen episode list */
-import { createInstance, IContainer, ICustomer, INarrative } from '../../models';
-import { IDataSvc, IModelSvc, IEpisodeEditService } from '../../interfaces';
-import { existy, pick } from '../services/ittUtils';
+import { createInstance, IContainer, ICustomer, INarrative } from '../../../models';
+import { IDataSvc, IModelSvc, IEpisodeEditService } from '../../../interfaces';
+import { existy, pick } from '../../services/ittUtils';
+import containerHtml from './container.html';
 
 interface IContainerBindings extends ng.IComponentController {
   container: IContainer;
@@ -169,7 +170,7 @@ export class Container implements ng.IComponentOptions {
     onContainerClick: '&',
     onContainerAdd: '&'
   };
-  templateUrl: string = 'templates/container.html';
+  template: string = containerHtml;
   controller = ContainerController;
   static Name: string = 'npContainer'; // tslint:disable-line
 }

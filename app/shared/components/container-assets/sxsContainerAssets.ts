@@ -1,8 +1,8 @@
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
 
-import {IDataSvc, IModelSvc} from '../../interfaces';
-
-import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../../constants';
+import { IDataSvc, IModelSvc } from '../../../interfaces';
+import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../../constants';
+import containerAssetsHtml from './container-assets.html';
 
 interface ISxsContainerAssetsBindings {
   containerId: string;
@@ -27,15 +27,16 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
   onlyImages: boolean;
   gridView: boolean;
   static $inject = ['$rootScope', '$q', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'MIMES', 'authSvc'];
-  constructor(
-    public $rootScope: ng.IRootScopeService,
-    private $q: ng.IQService,
-    public dataSvc: IDataSvc,
-    public modelSvc: IModelSvc,
-    public awsSvc,
-    public appState,
-    public MIMES,
-    public authSvc) { }
+
+  constructor(public $rootScope: ng.IRootScopeService,
+              private $q: ng.IQService,
+              public dataSvc: IDataSvc,
+              public modelSvc: IModelSvc,
+              public awsSvc,
+              public appState,
+              public MIMES,
+              public authSvc) {
+  }
 
   $onInit() {
     this.$q((resolve, reject) => {
@@ -105,7 +106,7 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
     //when it comes time to emit data from a component
     //"isolate scope &" is a better fit than pubsub with $rootScope
     if (this.context && this.context === 'narrative') {
-      this.onAssetSelect({$assetId: assetId});
+      this.onAssetSelect({ $assetId: assetId });
       return;
     }
     this.$rootScope.$emit('UserSelectedAsset', assetId);
@@ -119,7 +120,7 @@ export class SxsContainerAssets implements ng.IComponentOptions {
     context: '@?',
     onAssetSelect: '&?'
   };
-  templateUrl: string = 'templates/producer/container-assets.html';
-  controller: ng.IComponentController = SxsContainerAssetsController;
+  template = containerAssetsHtml;
+  controller = SxsContainerAssetsController;
   static Name: string = 'sxsContainerAssets'; // tslint:disable-line
 }

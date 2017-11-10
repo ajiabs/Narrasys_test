@@ -1,5 +1,7 @@
 
-const noAvatarImg = require('../../images/no-avatar.gif');
+const noAvatarImg = require('../../../images/no-avatar.gif');
+
+import userHtml from './user.html';
 
 ittUser.$inject = ['$q', 'appState', 'authSvc', 'dataSvc', 'awsSvc', 'modelSvc', 'imageResize'];
 
@@ -8,8 +10,7 @@ export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc
     restrict: 'A',
     replace: true,
     scope: {},
-    templateUrl: 'templates/user.html',
-
+    template: userHtml,
     link: function (scope, element, attrs) {
 
       scope.inPlayer = attrs.inPlayer;
