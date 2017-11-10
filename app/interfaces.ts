@@ -1,14 +1,14 @@
 export { IEpisodeEditService } from './episode/services/episodeEdit.service';
 export { IEpisodeTheme } from './episode/services/episodeTheme.service';
 export { IUploadsService } from './scripts/services/uploadsService';
-export { ILinkValidationMessage, ILinkValidFields } from './scripts/services/validation.svc';
-export { IAnalyticsSvc } from './scripts/services/analyticsSvc/analyticsSvc';
+export { ILinkValidationMessage, ILinkValidFields } from './player/services/validation/validation.svc';
+export { IAnalyticsSvc } from './player/services/analytics/analyticsSvc';
 export { IAnnotator, IAnnotators } from './input-fields/components/annotator-autocomplete/sxsAnnotatorAutocomplete';
 export { ITimelineSvc } from './scripts/services/timelineSvc/timelineSvc';
 export { IMetaObj, IMetaProps } from './scripts/services/basePlayerManager/index';
 export { IPlayerManager } from './scripts/services/basePlayerManager/index';
 export { IDataSvc } from './scripts/services/dataSvc/dataSvc';
-export { IValidationDisplay, IValidationSvc, IXFrameOptsResult } from './scripts/services/validation.svc';
+export { IValidationDisplay, IValidationSvc, IXFrameOptsResult } from './player/services/validation/validation.svc';
 export { TUrlFieldContexts } from './input-fields/components/npUrlField';
 export { IModelSvc } from './scripts/services/modelSvc/modelSvc';
 export { IBasePlayerManager } from './playback/services/player-manager-commons/playerManagerCommons';

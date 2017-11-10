@@ -3,7 +3,7 @@
  NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
  so they get logged properly: don't draw plain hrefs
  */
-import {IValidationSvc} from '../../scripts/services/validation.svc';
+import {IValidationSvc} from '../../player/services/validation/validation.svc';
 ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc'];
 
 export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService, validationSvc: IValidationSvc) {

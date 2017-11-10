@@ -1,5 +1,6 @@
-import { ILinkStatus } from '../../models';
-import { ILinkValidFields, Partial, TUrlFieldContexts } from '../../interfaces';
+// @npUpgrade-player-true
+import { ILinkStatus } from '../../../models';
+import { ILinkValidFields, Partial, TUrlFieldContexts } from '../../../interfaces';
 
 /**
  * Created by githop on 5/2/17.
@@ -58,6 +59,7 @@ export interface IValidationSvc {
 }
 
 export class ValidationService implements IValidationSvc {
+  static Name = 'validationSvc'; // tslint:disable-line
   static $inject = ['$http', '$location', '$q', 'authSvc', 'config', 'ittUtils', 'urlService'];
 
   constructor(

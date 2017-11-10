@@ -1,3 +1,4 @@
+// @npUpgrade-player-false
 /*
 
  No sneaky changing the tab order or number of tabs after init allowed.

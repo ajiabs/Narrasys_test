@@ -1,3 +1,4 @@
+// @npUpgrade-player-false
 /* Attach this to content panes, so they can tell their items when to drop into inline timestamps. */
 export default function ittWidthWatch() {
   return {

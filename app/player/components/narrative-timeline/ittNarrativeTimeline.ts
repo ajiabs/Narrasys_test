@@ -1,6 +1,8 @@
+// @npUpgrade-player-false
 /* For now this is just a thin wrapper around the playerController */
-import {IDataSvc} from '../../interfaces';
-import {INarrative} from '../../models';
+import { IDataSvc } from '../../../interfaces';
+import { INarrative } from '../../../models';
+import playerTimelineHtml from './player-timeline.html';
 
 class NarrativeTimelineCtrl {
   static $inject = [
@@ -12,14 +14,14 @@ class NarrativeTimelineCtrl {
     'authSvc',
     'errorSvc'
   ];
-  constructor(
-    public $scope: ng.IScope,
-    private $routeParams,
-    private $location: ng.ILocationService,
-    private dataSvc: IDataSvc,
-    private appState,
-    private authSvc,
-    private errorSvc) {
+
+  constructor(public $scope: ng.IScope,
+              private $routeParams,
+              private $location: ng.ILocationService,
+              private dataSvc: IDataSvc,
+              private appState,
+              private authSvc,
+              private errorSvc) {
   }
 
   $onInit() {
@@ -57,14 +59,14 @@ class NarrativeTimelineCtrl {
 
         const narrativeUrl = narrative.path_slug.en;
         const timelineUrl = currentTl.path_slug.en;
-        const {narrative_subdomain:  subDomain} = narrative;
+        const { narrative_subdomain: subDomain } = narrative;
         if (narrative.enable_social_sharing === true && this.$scope.enableSocialSharing === true) {
 
           this.$scope.socialShareInfo = {
             subDomain,
             tlTitle,
             narrative: narrativeUrl,
-            timeline: {url: timelineUrl, id: tlId}
+            timeline: { url: timelineUrl, id: tlId }
           };
         }
 
@@ -88,7 +90,7 @@ export default function ittNarrativeTimeline() {
   return {
     restrict: 'A',
     replace: true,
-    templateUrl: 'templates/player-timeline.html',
+    template: playerTimelineHtml,
     controller: NarrativeTimelineCtrl
   };
 }

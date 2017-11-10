@@ -1,3 +1,4 @@
+// @npUpgrade-player-false
 ittShowHideVisualOnly.$inject = ['$animate'];
 
 export function ittShowHideVisualOnly($animate) {

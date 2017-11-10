@@ -1,7 +1,8 @@
+// @npUpgrade-player-false
 // Sends magnet signal whenever becomes visible.
 // In watch mode (only), also watches the window size and tries to keep the video from overflowing the window height
 
-import { CHANGE_MAGNET, JUMP_TO_MAGNET, UPDATE_MAGNET } from '../../../constants';
+import { CHANGE_MAGNET, JUMP_TO_MAGNET, UPDATE_MAGNET } from '../../constants';
 
 class MagnetStore {
   constructor(private _bcr: ClientRect) {}

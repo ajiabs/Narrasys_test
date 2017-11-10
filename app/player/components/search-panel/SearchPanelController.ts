@@ -1,3 +1,4 @@
+// @npUpgrade-player-false
 SearchPanelController.$inject = ['$scope', '$rootScope', '$timeout', 'appState'];
 
 export default function SearchPanelController($scope, $rootScope, $timeout, appState) {

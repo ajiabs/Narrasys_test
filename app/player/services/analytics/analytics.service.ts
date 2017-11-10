@@ -1,3 +1,4 @@
+// @npUpgrade-player-true
 /*
  There are two separate types of user activity to capture, which go to separate API endpoints.
  Some types must contain additional info in a "data" object:
@@ -39,7 +40,7 @@ export interface IAnalyticsSvc {
   stopPolling(): void;
 }
 
-import {AppState} from '../appState';
+import { AppState } from '../../../scripts/services/appState';
 
 type AnalyticType = 'episodeLoad' | 'episodeUnload' | 'play' | 'pause' | 'seek' | 'modeChange';
 
@@ -58,7 +59,7 @@ interface IAnalyticData {
   seekStart?: number;
 }
 
-export class AnalyticsSvc implements IAnalyticsSvc {
+export class AnalyticsService implements IAnalyticsSvc {
   private activityQueue: IAnalytic[] = [];
   private pollInterval: any;
   private pollLength: number = 10 * 1000;
@@ -228,197 +229,4 @@ export class AnalyticsSvc implements IAnalyticsSvc {
     return ret;
   }
 }
-/* tslint:disable */
-// analyticsSvc.$inject = ['$q', '$http', '$routeParams', '$interval', 'config', 'appState', 'playbackService'];
-// function analyticsSvc($q, $http, $routeParams, $interval, config, appState, playbackService) {
-//   // console.log('analyticsSvc factory');
-//   var svc = Object.create(null);
-//
-//   svc.activityQueue = []; // contains events not yet sent to the server.
-//
-//   var flusher = $interval(function () {
-//     svc.flushActivityQueue();
-//   }, 10000);
-//
-//   // don't try to capture when running from local data or if it's disabled in config:
-//   if ($routeParams.local || config.disableAnalytics) {
-//     // console.log("No analytics for local data; cancelling activity queue");
-//     $interval.cancel(flusher);
-//   }
-//
-//   // for episode-related activity
-//   svc.captureEpisodeActivity = function (name, data) {
-//
-//     if (config.disableAnalytics) {
-//       return;
-//     }
-//
-//     if ((appState.user && appState.user._id) && (!appState.user.track_episode_metrics)) {
-//       return;
-//     }
-//
-//     const userActivity = {
-//       'name': name,
-//       'walltime': new Date(),
-//       //if metaProps time hasn't been set,
-//       'timestamp': playbackService.getMetaProp('time') || 0 // TODO this is timeline time, we want episode time!
-//     };
-//     if (data) {
-//       userActivity.data = data;
-//     }
-//
-//     svc.activityQueue.push(userActivity);
-//   };
-//
-//   // for transmedia-related activity
-//   svc.captureEventActivity = function (name, eventID, data, force?) {
-//     if (!force) {
-//       if (config.disableAnalytics || (appState.user._id && !appState.user.track_event_actions)) {
-//         return;
-//       }
-//     }
-//     if (data === undefined) {
-//       console.warn('captureEventActivity called with no data for event ', eventID);
-//     }
-//     // console.log(data);
-//     svc.activityQueue.push({
-//       'name': name,
-//       'event_id': eventID,
-//       'walltime': new Date(),
-//       'data': data
-//     });
-//   };
-//
-//   svc.forceCaptureEventActivityWithPromise = function (name, eventID, data) {
-//     //we know this is syncronous
-//     svc.captureEventActivity(name, eventID, data, true);
-//     return svc.flushActivityQueue(); //this is async, and returns a promise.
-//   };
-//   svc.captureEventActivityWithPromise = function (name, eventID, data) {
-//     //we know this is syncronous
-//     svc.captureEventActivity(name, eventID, data);
-//     return svc.flushActivityQueue(); //this is async, and returns a promise.
-//   };
-//
-//   // read from API:
-//   svc.readEpisodeActivity = function (epId) {
-//     // console.log("analyticsSvc readEpisodeActivity");
-//     var defer = $q.defer();
-//     $http({
-//       method: 'GET',
-//       url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
-//     })
-//       .success(function (respData) {
-//         // console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
-//         defer.resolve(respData);
-//       })
-//       .error(function () {
-//         // console.log("read episode activity ERROR", respData, respStatus, respHeaders);
-//         defer.reject();
-//       });
-//     return defer.promise;
-//   };
-//
-//   // if activityType is omitted, returns all user data for that event id
-//   // if it's included, returns true if the user has at least once triggered that activityType, false if not
-//   svc.readEventActivity = function (eventId, activityType) {
-//     // console.log("analyticsSvc.readEventActivity", "eventId", "activityType");
-//     var defer = $q.defer();
-//     $http({
-//       method: 'GET',
-//       url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
-//     })
-//       .success(function (respData) {
-//         // console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
-//         if (activityType) {
-//           var matchedType = false;
-//           for (var i = 0; i < respData.length; i++) {
-//             var activity = respData[i];
-//             if (activity.name === activityType) {
-//               matchedType = true;
-//             }
-//           }
-//           defer.resolve(matchedType);
-//         } else {
-//           // no activityType specified so return everything:
-//           defer.resolve(respData);
-//         }
-//       })
-//       .error(function () {
-//         // console.log("read event activity ERROR", respData, respStatus, respHeaders);
-//         defer.reject();
-//       });
-//     return defer.promise;
-//   };
-//
-//   svc.flushActivityQueue = function () {
-//     var defer = $q.defer();
-//     if (svc.activityQueue.length === 0) {
-//       defer.resolve('');
-//     }
-//     if (!appState.episodeId) {
-//       defer.resolve(); // iOS with ?t= param is trying to post metrics before it has an episode ID. TODO figure out wtf is causing that...
-//     }
-//
-//     var actions = angular.copy(svc.activityQueue);
-//     svc.activityQueue = [];
-//
-//     var now = new Date();
-//     var episodeUserMetrics = [];
-//     var eventUserActions = [];
-//
-//     angular.forEach(actions, function (action) {
-//       action.age = (now - action.walltime) / 1000;
-//       delete action.walltime;
-//       if (action.event_id) {
-//         eventUserActions.push(action);
-//       } else {
-//         episodeUserMetrics.push(action);
-//       }
-//     });
-//     episodeUserMetrics = svc.dejitter(episodeUserMetrics);
-//
-//     var posts = [];
-//     if (eventUserActions.length > 0) {
-//       posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
-//         'event_user_actions': eventUserActions
-//       }));
-//     }
-//     if (episodeUserMetrics.length > 0) {
-//       posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
-//         'episode_user_metrics': episodeUserMetrics
-//       }));
-//     }
-//     $q.all(posts).then(function () {
-//       defer.resolve();
-//     });
-//
-//     return defer.promise;
-//   };
-//
-//   svc.dejitter = function (events) {
-//     // Consolidate repeated seek events into one single seek event before sending to API.
-//     // TODO prevent this happening in the first place :)
-//     if (events.length === 0) {
-//       return [];
-//     }
-//     var ret = [];
-//     for (var i = 0; i < events.length - 1; i++) {
-//       // if this event and the next one are both seek events, and this event's timestamp matches
-//       // the next event's seekStart, skip this event and set the next event's seekStart to this one's.
-//       // otherwise just put it into the queue.
-//       var a = events[i];
-//       var b = events[i + 1];
-//       if (a.name === 'seek' && b.name === 'seek' &&
-//         (a.timestamp === b.data.seekStart)) {
-//         b.data.seekStart = a.data.seekStart;
-//       } else {
-//         ret.push(events[i]);
-//       }
-//     }
-//     ret.push(events[events.length - 1]);
-//     return ret;
-//   };
-//
-//   return svc;
-// }
+

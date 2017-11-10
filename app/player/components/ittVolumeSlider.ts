@@ -1,3 +1,4 @@
+// @npUpgrade-player-false
 ittVolumeSlider.$inject = ['playbackService'];
 
 export default function ittVolumeSlider(playbackService) {
