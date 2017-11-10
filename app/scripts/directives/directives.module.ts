@@ -39,7 +39,6 @@ import ittToolbarStory from './ittToolbarStory';
 import { Tooltip } from './ittTooltip';
 import ittUser from './ittUser';
 import ittValidationTip from './ittValidationTip';
-import ittVideo from './ittVideo';
 import ittVolumeSlider from './ittVolumeSlider';
 import ittWidthWatch from './ittWidthWatch';
 import { SxsContainerAssets } from './sxsContainerAssets';
@@ -85,7 +84,6 @@ const directivesModule = angular.module('itt.directives', [])
   .component(Tooltip.Name,  new Tooltip())
   .directive('ittUser', ittUser)
   .directive('ittValidationTip', ittValidationTip)
-  .directive('ittVideo', ittVideo)
   .directive('ittVolumeSlider', ittVolumeSlider)
   .directive('ittWidthWatch', ittWidthWatch)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())

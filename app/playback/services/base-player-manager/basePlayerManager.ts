@@ -1,6 +1,6 @@
 import {IMetaProps, IWistiaMetaProps} from '../../../interfaces';
-import {existy, renameKey} from '../ittUtils';
-import {commonMetaProps} from './index';
+import {existy, renameKey} from '../../../scripts/services/ittUtils';
+import {commonMetaProps} from '../../../scripts/services/basePlayerManager/index';
 
 /**
  * Created by githop on 4/26/17.

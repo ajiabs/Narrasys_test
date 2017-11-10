@@ -1,4 +1,4 @@
-import { BasePlayerManager } from '../basePlayerManager/basePlayerManager';
+import { BasePlayerManager } from '../../../playback/services/base-player-manager/basePlayerManager';
 import {existy} from '../ittUtils';
 
 import {IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice, Partial} from '../../../interfaces';

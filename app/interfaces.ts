@@ -11,7 +11,7 @@ export { IDataSvc } from './scripts/services/dataSvc/dataSvc';
 export { IValidationDisplay, IValidationSvc, IXFrameOptsResult } from './scripts/services/validation.svc';
 export { TUrlFieldContexts } from './input-fields/components/npUrlField';
 export { IModelSvc } from './scripts/services/modelSvc/modelSvc';
-export { IBasePlayerManager } from './scripts/services/basePlayerManager/playerManagerCommons';
+export { IBasePlayerManager } from './playback/services/player-manager-commons/playerManagerCommons';
 export { IWistiaMetaProps, IWistiaPlayerManager } from './scripts/services/wistia/wistiaPlayerManager';
 export { IWistiaUrlservice } from './scripts/services/wistia/wistiaUrlService';
 export { IUploadData } from './scripts/services/uploadsService';

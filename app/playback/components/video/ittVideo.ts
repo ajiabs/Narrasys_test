@@ -1,10 +1,13 @@
-import { IAnalyticsSvc, ITimelineSvc, IModelSvc, IDataSvc } from '../../interfaces';
+
+import videoHtml from './video.html';
+
+import { IAnalyticsSvc, ITimelineSvc, IModelSvc, IDataSvc } from '../../../interfaces';
 
 /* tslint:disable:prefer-const */
 export default function ittVideo() {
   return {
     replace: false,
-    templateUrl: 'templates/video.html',
+    template: videoHtml,
     scope: {
       poster: '=?',
       mainPlayer: '=',
