@@ -36,7 +36,6 @@ import { SxsContainerAssets } from './sxsContainerAssets';
 import { EnableSocialshare, IttSocialShare } from './socialshare/index';
 import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
-import { ProjectsContainer } from './npProjectsContainer';
 
 const directivesModule = angular.module('itt.directives', [])
   .component(AssetUploader.Name, new AssetUploader())
@@ -74,7 +73,6 @@ const directivesModule = angular.module('itt.directives', [])
   .component(UploadProgress.Name, new UploadProgress())
   .component(NarrativeDetail.Name, new NarrativeDetail())
   .component(NarrativeContainer.Name, new NarrativeContainer())
-  .component(ProjectsContainer.Name, new ProjectsContainer())
   .component(NarrativesContainer.Name, new NarrativesContainer());
 
 export default directivesModule;
