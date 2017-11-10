@@ -6,7 +6,7 @@ import { EpisodeEditService } from './services/episodeEdit.service';
 import { Copyright } from './components/copyright/npCopyright';
 import { EpisodeFooter } from './components/episode-footer/npEpisodeFooter';
 
-const npEpisodeModule = angular.module('npEpisode', []);
+const npEpisodeModule = angular.module('np.episode', []);
 const services = [
   EpisodeTheme,
   EpisodeEditService

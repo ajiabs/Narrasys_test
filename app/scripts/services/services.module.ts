@@ -10,7 +10,7 @@ import awsSvc from './awsSvc';
 import config from './config';
 import dataSvc from './dataSvc/dataSvc';
 import errorSvc from './errorSvc';
-import imageResize from './imageResizeSvc';
+import imageResize from './imageResizeSvc;
 import {ittUtils} from './ittUtils';
 import mockSvc from './mockSvc';
 import modelSvc from './modelSvc/modelSvc';
@@ -21,9 +21,6 @@ import selectService from './selectService';
 import timelineSvc from './timelineSvc/timelineSvc';
 import urlService from './urlService';
 import playerManagerCommons from './basePlayerManager/playerManagerCommons';
-import kalturaPlayerManager from './kaltura/kalturaPlayerManager';
-import kalturaScriptLoader from './kaltura/kalturaScriptLoader';
-import kalturaUrlService from './kaltura/kalturaUrlService';
 import youTubePlayerManager from './youtube/YouTubePlayerManager.svc';
 import YTScriptLoader from './youtube/youtubeScriptLoader';
 import youtubeUrlService from './youtube/youtubeUrlService';
@@ -55,9 +52,6 @@ let servicesModule = angular.module('itt.services', [])
   .factory('timelineSvc', timelineSvc)
   .factory('urlService', urlService)
   .factory('playerManagerCommons', playerManagerCommons)
-  .factory('kalturaPlayerManager', kalturaPlayerManager)
-  .factory('kalturaScriptLoader', kalturaScriptLoader)
-  .factory('kalturaUrlService', kalturaUrlService)
   .factory('youTubePlayerManager', youTubePlayerManager)
   .factory('YTScriptLoader', YTScriptLoader)
   .factory('youtubeUrlService', youtubeUrlService)

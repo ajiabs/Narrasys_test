@@ -29,7 +29,7 @@ import ittValidUrl from './components/ittValidUrl';
 import { VideoPositionSelect } from './components/ittVideoPositionSelect';
 import { UrlField } from './components/npUrlField';
 
-const inputFieldsModule = angular.module('inputFields', []);
+const npInputFieldsModule = angular.module('np.inputFields', []);
 
 // const components = [];
 // const services = [];
@@ -45,10 +45,9 @@ const inputFieldsModule = angular.module('inputFields', []);
 
 const templates = (require as any).context('./components', true, /\.html$/);
 templates.keys().forEach((path: any) => {
-  console.log('path??', path);
   return templates(path);
 });
-inputFieldsModule
+npInputFieldsModule
   .directive('autofocus', autofocus)
   .directive('ittAnnotationField', ittAnnotationField)
   .directive('ittColorSelect', ittColorSelect)
@@ -80,4 +79,4 @@ inputFieldsModule
   .component(VideoPositionSelect.Name, new VideoPositionSelect())
   .component(UrlField.Name, new UrlField());
 
-export default inputFieldsModule;
+export default npInputFieldsModule;

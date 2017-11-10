@@ -32,7 +32,7 @@ import {
   TranscriptWiththumbnailTemplate
 } from './templates/transcript-withthumbnail/transcript-withthumbnail.template';
 
-const itemModule = angular.module('item', []);
+const npItemModule = angular.module('np.item', []);
 
 const templateDirectives = [
   FileTemplate,
@@ -68,7 +68,7 @@ const templateDirectives = [
 //   itemModule.component(cmp.Name, new cmp());
 // });
 
-itemModule
+npItemModule
   .directive('ittItem', ittItem)
   .controller('ItemController', ItemController)
   .directive('ittItemEditor', ittItemEditor)
@@ -76,11 +76,11 @@ itemModule
   .directive('ittIframe', ittIframe);
 
 templateDirectives.forEach((tmpDir: any) => {
-  itemModule.directive(tmpDir.Name, tmpDir.factory());
+  npItemModule.directive(tmpDir.Name, tmpDir.factory());
 });
 
 // services.forEach((svc: any) => {
 //   itemModule.service(svc.Name, svc);
 // });
 
-export default itemModule;
+export default npItemModule;

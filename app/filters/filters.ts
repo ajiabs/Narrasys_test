@@ -5,7 +5,7 @@
 import 'angular';
 import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../constants';
 
-let ittFilters = angular.module('itt.filters', [])
+let npFiltersModule = angular.module('np.filters', [])
 /* List filters */
   .filter('itemLayout', function () {
     return function (items, layout) {
@@ -298,4 +298,4 @@ let ittFilters = angular.module('itt.filters', [])
     }
   }]);
 
-export default ittFilters;
+export default npFiltersModule;

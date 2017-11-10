@@ -49,9 +49,9 @@ const itt = angular.module('iTT', [
     'textAngular',
     'ui.tree',
     '720kb.socialshare',
-    'npEpisode',
+    'np.episode',
     'itt.controllers',
-    'itt.filters',
+    'np.filters',
     'itt.services',
     'itt.directives'
   ]
