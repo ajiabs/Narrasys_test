@@ -45,7 +45,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
   var _scenes = {
     centered: 'templates/scene/centered.html',      			//Center 1
     centeredPro: 'templates/scene/centeredPro.html',			//Center 2
-    '1col': 'templates/scene/1col.html',						//Center 3
+    '1col': 'templates/scene/onecol.html',						//Center 3
     mirroredTwoCol: 'templates/scene/mirrored-twocol.html', 	//Split 2
     cornerV: 'templates/scene/cornerV.html',               		//Split 1
     centerVV: 'templates/scene/centerVV.html',             		//Split 3
@@ -480,7 +480,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
               item.layouts[1] = _D2.b.value; //show all + highlight current
             }
             break;
-          case 'templates/scene/1col.html': //One Column
+          case 'templates/scene/onecol.html': //One Column
             _displaySelectVisibility(true);
             _videoPositionSelectVisibility(false);
             _select.display = [

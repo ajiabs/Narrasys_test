@@ -86,7 +86,7 @@ export default function mockSvc(modelSvc) {
       "templates/scene/cornerH.html",
       "templates/scene/cornerV.html",
       "templates/scene/centered.html",
-      "templates/scene/1col.html"
+      "templates/scene/onecol.html"
     ];
 
     for (var i = 0; i < 10; i++) {

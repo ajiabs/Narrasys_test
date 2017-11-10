@@ -1,3 +1,4 @@
+// @npUpgrade-scene-false
 // Minor jquery dependency ($.inArray)
 ittScene.$inject = ['$timeout', 'appState'];
 

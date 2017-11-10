@@ -21,8 +21,6 @@ import { NarrativeContainer } from './npNarrativeContainer';
 import { Nav } from './ittNav';
 import ittReviewMode from './ittReviewMode';
 import ittRouteLoading from './ittRouteLoading';
-import ittScene from './ittScene';
-// import { ittShowHideVisualOnly, visualHideAnimation } from './ittShowHideVisualOnly';
 import ittTimeline from './ittTimeline';
 import { TimelineEditor } from './npTimelineEditor';
 import { Tooltip } from './ittTooltip';
@@ -50,9 +48,6 @@ const directivesModule = angular.module('itt.directives', [])
   .component(Nav.Name, new Nav())
   .directive('ittReviewMode', ittReviewMode)
   .directive('ittRouteLoading', ittRouteLoading)
-  .directive('ittScene', ittScene)
-  // .directive('ittShowHideVisualOnly', ittShowHideVisualOnly)
-  // .animation('.visual-hide', visualHideAnimation)
   .directive('ittTimeline', ittTimeline)
   .component(TimelineEditor.Name, new TimelineEditor())
   .component(Tooltip.Name,  new Tooltip())

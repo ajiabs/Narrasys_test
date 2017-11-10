@@ -8,14 +8,12 @@ import ContainerAssetsTestController from './ContainerAssetsTestController';
 import EditController from './EditController';
 import ErrorController from './ErrorController';
 import EventTestController from './EventTestController';
-import SceneController from './SceneController';
 import TimelineController from './TimelineController';
 
 const ittControllers = angular.module('itt.controllers', [])
   .controller('EditController', EditController)
   .controller('ErrorController', ErrorController)
   .controller('EventTestController', EventTestController)
-  .controller('SceneController', SceneController)
   .controller('TimelineController', TimelineController)
   .controller('ContainerAssetsTestController', ContainerAssetsTestController);
 

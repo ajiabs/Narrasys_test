@@ -58,7 +58,7 @@ export class EpisodeEditService implements IEpisodeEditService{
               '_type': 'Scene',
               'title': {},
               'description': {},
-              'templateUrl': 'templates/scene/1col.html',
+              'templateUrl': 'templates/scene/onecol.html',
               'start_time': 0,
               'end_time': 0,
               'episode_id': epResp._id
