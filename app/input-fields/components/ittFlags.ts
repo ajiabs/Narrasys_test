@@ -3,7 +3,7 @@
  * Created by githop on 6/30/16.
  */
 import { IEvent } from '../../models';
-import { existy } from '../../scripts/services/ittUtils';
+import { existy } from '../../shared/services/ittUtils';
 
 const TEMPLATE = `
 <div class="field">

@@ -1,5 +1,5 @@
 import { ICustomer, INarrative } from '../../models';
-import { existy } from '../services/ittUtils';
+import { existy } from '../../shared/services/ittUtils';
 import { IDataSvc, IModelSvc } from '../../interfaces';
 const TEMPLATE = `
 <div class="standaloneAncillaryPage">

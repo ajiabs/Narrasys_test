@@ -2,7 +2,7 @@
  * Created by githop on 3/16/17.
  */
 import { ICustomer, INarrative, ITimeline } from '../../../models';
-import { existy, slugify } from '../../services/ittUtils';
+import { existy, slugify } from '../../../shared/services/ittUtils';
 
 const TEMPLATE = `
 <div ng-if="!$ctrl.clipboardMode">

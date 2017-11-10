@@ -1,6 +1,5 @@
 import ittEpisode from './components/episode/ittEpisode';
 import ittEpisodeEditor from './components/episode-editor/ittEpisodeEditor';
-import { EpisodeList } from './components/episode-list/ittEpisodeList';
 import { EpisodeTheme } from './services/episodeTheme.service';
 import { EpisodeEditService } from './services/episodeEdit.service';
 import { Copyright } from './components/copyright/npCopyright';
@@ -13,7 +12,6 @@ const services = [
 ];
 
 const components = [
-  EpisodeList,
   Copyright,
   EpisodeFooter
 ];

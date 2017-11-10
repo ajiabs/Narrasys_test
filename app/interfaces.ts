@@ -1,22 +1,22 @@
 export { IEpisodeEditService } from './episode/services/episodeEdit.service';
 export { IEpisodeTheme } from './episode/services/episodeTheme.service';
-export { IUploadsService } from './scripts/services/uploadsService';
+export { IUploadsService } from './shared/services/uploadsService';
 export { ILinkValidationMessage, ILinkValidFields } from './player/services/validation/validation.svc';
 export { IAnalyticsSvc } from './player/services/analytics/analyticsSvc';
 export { IAnnotator, IAnnotators } from './input-fields/components/annotator-autocomplete/sxsAnnotatorAutocomplete';
 export { ITimelineSvc } from './scripts/services/timelineSvc/timelineSvc';
-export { IMetaObj, IMetaProps } from './scripts/services/basePlayerManager/index';
-export { IPlayerManager } from './scripts/services/basePlayerManager/index';
-export { IDataSvc } from './scripts/services/dataSvc/dataSvc';
+export { IMetaObj, IMetaProps } from './playback/services/base-player-manager/index';
+export { IPlayerManager } from './playback/services/base-player-manager/index';
+export { IDataSvc } from './shared/services/dataSvc/dataSvc';
 export { IValidationDisplay, IValidationSvc, IXFrameOptsResult } from './player/services/validation/validation.svc';
 export { TUrlFieldContexts } from './input-fields/components/npUrlField';
-export { IModelSvc } from './scripts/services/modelSvc/modelSvc';
+export { IModelSvc } from './shared/services/modelSvc/modelSvc';
 export { IBasePlayerManager } from './playback/services/player-manager-commons/playerManagerCommons';
 export { IWistiaMetaProps, IWistiaPlayerManager } from './scripts/services/wistia/wistiaPlayerManager';
 export { IWistiaUrlservice } from './scripts/services/wistia/wistiaUrlService';
-export { IUploadData } from './scripts/services/uploadsService';
+export { IUploadData } from './shared/services/uploadsService';
 export { IEmailFields } from './scripts/directives/socialshare/ittSocialShare';
-export { IimageResize } from './scripts/services/imageResizeSvc';
+export { IimageResize } from './shared/services/imageResizeSvc';
 /*
  it's nice to have the interface close to the method / object it is annotating. It's also nice to have a common
  point from where to import interfaces from.

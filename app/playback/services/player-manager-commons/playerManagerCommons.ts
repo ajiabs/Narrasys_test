@@ -4,7 +4,7 @@
  */
 
 import {IMetaProps} from '../../../interfaces';
-import {commonMetaProps} from '../../../scripts/services/basePlayerManager/index';
+import {commonMetaProps} from '../base-player-manager/index';
 /**
  * @ngdoc service
  * @name iTT.service:playerManagerCommons

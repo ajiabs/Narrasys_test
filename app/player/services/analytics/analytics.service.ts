@@ -40,7 +40,7 @@ export interface IAnalyticsSvc {
   stopPolling(): void;
 }
 
-import { AppState } from '../../../scripts/services/appState';
+import { AppState } from '../../../shared/services/appState';
 
 type AnalyticType = 'episodeLoad' | 'episodeUnload' | 'play' | 'pause' | 'seek' | 'modeChange';
 

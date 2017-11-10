@@ -6,7 +6,7 @@ import { createInstance, ICustomer, INarrative } from '../../models';
 
 import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../constants';
 import { IUploadsService, Partial } from '../../interfaces';
-import { existy, pick } from '../services/ittUtils';
+import { existy, pick } from '../../shared/services/ittUtils';
 /* tslint:disable */
 /**
  * @ngdoc directive

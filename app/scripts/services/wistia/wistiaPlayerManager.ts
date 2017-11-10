@@ -1,8 +1,8 @@
 import { BasePlayerManager } from '../../../playback/services/base-player-manager/basePlayerManager';
-import {existy} from '../ittUtils';
+import {existy} from '../../../shared/services/ittUtils';
 
 import {IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice, Partial} from '../../../interfaces';
-import { PLAYERSTATES } from '../playbackService/index';
+import { PLAYERSTATES } from '../../../playback/services/playback-service/index';
 /**
  * Created by githop on 4/12/17.
  */

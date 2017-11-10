@@ -12,7 +12,7 @@ import { MirroredTwocolTemplate } from './templates/mirrored-twocol/mirrored-two
 import { OnecolTemplate } from './templates/one-col/onecol.template';
 import { PipTemplate } from './templates/pip/pip.template';
 
-const npSceneModule = angular.module('np.scene', []);
+const npScenesModule = angular.module('np.scenes', []);
 
 const templates = [
   CenterVvTemplate,
@@ -28,12 +28,12 @@ const templates = [
   PipTemplate
 ];
 
-npSceneModule
+npScenesModule
   .directive('ittScene', ittScene)
   .controller('SceneController', SceneController);
 
 templates.forEach((svc: any) => {
-  npSceneModule.directive(svc.Name, svc.factory());
+  npScenesModule.directive(svc.Name, svc.factory());
 });
 
-export default npSceneModule;
+export default npScenesModule;

@@ -1,6 +1,6 @@
 import { ICustomer, INarrative } from '../../models';
 import { IDataSvc, IModelSvc } from '../../interfaces';
-import { existy } from '../services/ittUtils';
+import { existy } from '../../shared/services/ittUtils';
 
 interface INarrativeListBindings extends ng.IComponentController {
   customersData: ICustomer[];

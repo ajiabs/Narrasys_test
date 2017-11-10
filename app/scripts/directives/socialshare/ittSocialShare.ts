@@ -2,7 +2,7 @@
  * Created by githop on 5/26/17.
  */
 import {Partial} from '../../../interfaces';
-import {IDataSvc} from '../../services/dataSvc/dataSvc';
+import {IDataSvc} from '../../../shared/services/dataSvc/dataSvc';
 /**
  * Created by githop on 5/18/17.
  */

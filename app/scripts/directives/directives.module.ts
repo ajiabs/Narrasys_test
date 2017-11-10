@@ -2,58 +2,30 @@
  * Created by githop on 3/30/17.
  */
 
-import { AssetUploader } from './ittAssetUploader';
 import { Clipboard } from './ittClipboard';
-import { Container } from './ittContainer';
-import { ContainerEpisodes } from './ittContainerEpisodes';
-import { EditPencil } from './ittEditPencil';
-import ittFilesHandler from './ittFilesHandler';
 import ittFlotr2Chart from '../../question/components/ittFlotChart';
 import { GuestAccessibleUrl } from './guest-accessible-url/npGuestAccessibleUrl';
-import { Loading } from './ittLoading';
-import ittLogin from './ittLogin';
-import { Modal } from './ittModal';
 import { NarrativeDetail } from './npNarrativeDetail';
 import { NarrativeEditor } from './npNarrativeEditor';
 import { NarrativeList } from './npNarrativeList';
 import { NarrativesContainer } from './npNarrativesContainer';
 import { NarrativeContainer } from './npNarrativeContainer';
-import { Nav } from './ittNav';
 import ittReviewMode from './ittReviewMode';
-import ittRouteLoading from './ittRouteLoading';
 import ittTimeline from './ittTimeline';
 import { TimelineEditor } from './npTimelineEditor';
-import { Tooltip } from './ittTooltip';
-import ittUser from './ittUser';
-import ittValidationTip from './ittValidationTip';
-import { SxsContainerAssets } from './sxsContainerAssets';
 import { EnableSocialshare, IttSocialShare } from './socialshare/index';
 import { Filedrop } from './ittFiledrop';
 import { UploadProgress } from './ittUploadProgress';
 
 const directivesModule = angular.module('itt.directives', [])
-  .component(AssetUploader.Name, new AssetUploader())
   .component(Clipboard.Name, new Clipboard())
-  .component(Container.Name, new Container())
-  .component(ContainerEpisodes.Name,  new ContainerEpisodes())
-  .component(EditPencil.Name, new EditPencil())
-  .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittFlotr2Chart', ittFlotr2Chart)
   .component(GuestAccessibleUrl.Name, new GuestAccessibleUrl())
-  .component(Loading.Name, new Loading())
-  .directive('ittLogin', ittLogin)
-  .component(Modal.Name, new Modal())
   .component(NarrativeEditor.Name, new NarrativeEditor())
   .component(NarrativeList.Name, new NarrativeList())
-  .component(Nav.Name, new Nav())
   .directive('ittReviewMode', ittReviewMode)
-  .directive('ittRouteLoading', ittRouteLoading)
   .directive('ittTimeline', ittTimeline)
   .component(TimelineEditor.Name, new TimelineEditor())
-  .component(Tooltip.Name,  new Tooltip())
-  .directive('ittUser', ittUser)
-  .directive('ittValidationTip', ittValidationTip)
-  .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .component(IttSocialShare.Name, new IttSocialShare())
   .component(EnableSocialshare.Name, new EnableSocialshare())
   .component(Filedrop.Name, new Filedrop())

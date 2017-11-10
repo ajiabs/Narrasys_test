@@ -1,7 +1,7 @@
 // @npUpgrade-inputFields-true
 import { IModelSvc, Partial } from '../../interfaces';
-import { IDataSvc } from '../../scripts/services/dataSvc/dataSvc';
-import { existy } from '../../scripts/services/ittUtils';
+import { IDataSvc } from '../../shared/services/dataSvc/dataSvc';
+import { existy } from '../../shared/services/ittUtils';
 
 /**
  * Created by githop on 1/31/17.
