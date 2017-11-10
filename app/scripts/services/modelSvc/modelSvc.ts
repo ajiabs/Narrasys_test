@@ -407,7 +407,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       event.isTranscript = false;
       // event.noEmbed = event.noEmbed === undefined ? false : event.noEmbed;
       event.mixedContent = false;
-      event.noExternalLink = false;
       event.targetTop = false;
       event.isVideoUrl = false;
 
@@ -443,10 +442,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       if (event._type === 'Link' && event.url && /mailto/.test(event.url)) {
         // event.noEmbed = true;
         event.target = '_blank';
-      }
-
-      if (event.templateUrl.match(/-embed/)) {
-        event.noExternalLink = true;
       }
 
       if (event.templateUrl.match(/frameicide/)) {

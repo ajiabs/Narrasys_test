@@ -129,7 +129,8 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
     document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
     // console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
     // producer needs the episode container:
-    dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId).then(function () {
+    const containerId = modelSvc.episodes[appState.episodeId].container_id
+    dataSvc.getContainer(containerId, appState.episodeId).then(function () {
       if (modelSvc.episodes[appState.episodeId].master_asset_id) {
         // watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
         // HACK this is a weird place for this.
@@ -151,7 +152,8 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
         // TODO add help screen for new users. For now, just pop the 'edit episode' pane:
         if (appState.product === 'producer') {
           appState.editEpisode = modelSvc.episodes[appState.episodeId];
-          appState.editEpisode.templateOpts = selectService.getTemplates('episode');
+          const custId = modelSvc.containers[containerId].customer_id;
+          appState.editEpisode.templateOpts = selectService.getTemplates('episode', [custId]);
         }
         appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
         appState.videoControlsLocked = true;
