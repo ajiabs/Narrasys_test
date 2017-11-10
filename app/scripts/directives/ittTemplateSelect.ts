@@ -13,7 +13,7 @@ const TEMPLATE = `
 		  ng-model="$ctrl.data.templateUrl"
 		  ng-change="$ctrl.onSelectChange($ctrl.data, $ctrl.itemForm)"
 		  ng-options="option.url as option.name for option in $ctrl.data.templateOpts"
-		  np-options-disabled="option.isDisabled for option in $ctrl.data.templateOpts">
+		  itt-options-disabled="option.isDisabled for option in $ctrl.data.templateOpts">
     </select>
     
     <select
