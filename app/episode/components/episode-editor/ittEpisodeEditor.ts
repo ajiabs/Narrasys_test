@@ -1,3 +1,4 @@
+// @npUpgrade-episode-false
 /*
  TODO: right now we're re-building the episode structure on every keystroke.
  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
@@ -7,6 +8,7 @@
  though, so letting myself repeat myself repeat myself for now
  */
 import { IModelSvc, IDataSvc } from '../../../interfaces';
+import episodeHtml from './episode.html';
 
 ittEpisodeEditor.$inject = [
   '$rootScope',
@@ -47,7 +49,7 @@ export default function ittEpisodeEditor(
     scope: {
       episode: '=ittEpisodeEditor'
     },
-    templateUrl: 'templates/producer/episode.html',
+    template: episodeHtml,
     controller: 'EditController',
     link: function (scope) {
 

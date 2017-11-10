@@ -6,6 +6,9 @@
  look for current scene.id matching "internal".  Dim buttons instead of hiding them completely.
 
  */
+
+import addcontentHtml from './addcontent.html';
+
 sxsAddContent.$inject = ['appState', 'playbackService'];
 
 export default function sxsAddContent(appState, playbackService) {
@@ -13,7 +16,7 @@ export default function sxsAddContent(appState, playbackService) {
     restrict: 'A',
     replace: true,
     scope: {},
-    templateUrl: 'input-fields/add-content/addcontent.html',
+    template: addcontentHtml,
     controller: 'EditController',
     link: function (scope) {
 

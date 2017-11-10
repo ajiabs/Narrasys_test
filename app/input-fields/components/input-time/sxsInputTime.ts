@@ -1,5 +1,7 @@
 // @npUpgrade-inputFields-false
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
+import inputtimeHtml from './inputtime.html';
+
 sxsInputTime.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'timelineSvc', 'playbackService', 'ittUtils'];
 
 export default function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, playbackService, ittUtils) {
@@ -8,7 +10,7 @@ export default function sxsInputTime($rootScope, $timeout, appState, modelSvc, t
     scope: {
       item: '=sxsInputTime'
     },
-    templateUrl: 'input-fields/input-time/inputtime.html',
+    template: inputtimeHtml,
     link: function (scope, elem, attrs, ngForm) {
 
       var _existy = ittUtils.existy;

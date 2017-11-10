@@ -5,6 +5,7 @@
  */
 
 import { ILangForm } from '../../../interfaces';
+import annotatorAutocompleteHtml from './annotator-autocomplete.html';
 
 export interface IAnnotator {
   name: ILangForm;
@@ -22,7 +23,7 @@ sxsAnnotatorAutocomplete.$inject = ['$timeout', 'modelSvc', 'appState'];
 export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
   return {
     require: 'ngModel',
-    templateUrl: 'input-fields/annotator-autocomplete/annotator-autocomplete.html',
+    template: annotatorAutocompleteHtml,
     scope: {
       annotators: '=sxsAnnotatorAutocomplete',
       item: '=item'

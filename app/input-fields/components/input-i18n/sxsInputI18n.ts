@@ -1,9 +1,11 @@
 // @npUpgrade-inputFields-false
+import inputi18nHtml from './inputi18n.html';
+
 sxsInputI18n.$inject = ['$timeout', 'appState', 'textAngularManager'];
 
 export default function sxsInputI18n($timeout, appState, textAngularManager) {
   return {
-    templateUrl: 'input-fields/input-i18n/inputi18n.html',
+    template: inputi18nHtml,
     scope: {
       field: "=sxsInputI18n",
       inputtype: "=inputtype",
