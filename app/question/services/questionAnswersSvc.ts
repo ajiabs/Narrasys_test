@@ -1,3 +1,4 @@
+// @npUpgrade-question-false
 'use strict';
 questionAnswersSvc.$inject = ['$q', 'analyticsSvc', 'appState'];
 

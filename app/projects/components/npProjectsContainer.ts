@@ -1,3 +1,4 @@
+// @npUpgrade-projects-true
 const TEMPLATE = `
 <div class="standaloneAncillaryPage">
 	<np-nav on-logout="$ctrl.logout()"></np-nav>

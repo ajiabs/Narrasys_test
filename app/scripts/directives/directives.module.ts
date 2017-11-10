@@ -8,11 +8,10 @@ import { Container } from './ittContainer';
 import { ContainerEpisodes } from './ittContainerEpisodes';
 import { EditPencil } from './ittEditPencil';
 import ittFilesHandler from './ittFilesHandler';
-import ittFlotr2Chart from './ittFlotChart';
+import ittFlotr2Chart from '../../question/components/ittFlotChart';
 import { GuestAccessibleUrl } from './guest-accessible-url/npGuestAccessibleUrl';
 import { Loading } from './ittLoading';
 import ittLogin from './ittLogin';
-import ittMcQuestion from './ittMcQuestion';
 import { Modal } from './ittModal';
 import { NarrativeDetail } from './npNarrativeDetail';
 import { NarrativeEditor } from './npNarrativeEditor';
@@ -20,9 +19,6 @@ import { NarrativeList } from './npNarrativeList';
 import { NarrativesContainer } from './npNarrativesContainer';
 import { NarrativeContainer } from './npNarrativeContainer';
 import { Nav } from './ittNav';
-import ittQuestionOptions from './ittQuestionOptions';
-import ittQuestionTextField from './ittQuestionTextField';
-import ittQuestionTypeSelect from './ittQuestionTypeSelect';
 import ittReviewMode from './ittReviewMode';
 import ittRouteLoading from './ittRouteLoading';
 import ittScene from './ittScene';
@@ -48,14 +44,10 @@ const directivesModule = angular.module('itt.directives', [])
   .component(GuestAccessibleUrl.Name, new GuestAccessibleUrl())
   .component(Loading.Name, new Loading())
   .directive('ittLogin', ittLogin)
-  .directive('ittMcQuestion', ittMcQuestion)
   .component(Modal.Name, new Modal())
   .component(NarrativeEditor.Name, new NarrativeEditor())
   .component(NarrativeList.Name, new NarrativeList())
   .component(Nav.Name, new Nav())
-  .directive('ittQuestionOptions', ittQuestionOptions)
-  .directive('ittQuestionTextField', ittQuestionTextField)
-  .directive('ittQuestionTypeSelect', ittQuestionTypeSelect)
   .directive('ittReviewMode', ittReviewMode)
   .directive('ittRouteLoading', ittRouteLoading)
   .directive('ittScene', ittScene)

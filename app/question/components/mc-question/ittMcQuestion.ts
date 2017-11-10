@@ -1,3 +1,7 @@
+// @npUpgrade-question-false
+
+import questionMcInnerHtml from './question-mc-inner.html';
+
 ittMcQuestion.$inject = ['questionAnswersSvc', 'analyticsSvc', 'appState'];
 
 export default function ittMcQuestion(questionAnswersSvc, analyticsSvc, appState) {
@@ -13,7 +17,7 @@ export default function ittMcQuestion(questionAnswersSvc, analyticsSvc, appState
       questionType: '@',
       showChart: '='
     },
-    templateUrl: "templates/item/question-mc-inner.html",
+    template: questionMcInnerHtml,
     link: function (scope) {
 
       scope.scoreQuiz = function (i) {

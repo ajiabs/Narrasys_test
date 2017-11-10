@@ -14,7 +14,6 @@ import imageResize from './imageResizeSvc;
 import {ittUtils} from './ittUtils';
 import mockSvc from './mockSvc';
 import modelSvc from './modelSvc/modelSvc';
-import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
 import timelineSvc from './timelineSvc/timelineSvc';
 import youTubePlayerManager from './youtube/YouTubePlayerManager.svc';
@@ -39,7 +38,6 @@ let servicesModule = angular.module('itt.services', [])
   .factory('ittUtils', ittUtils)
   .factory('mockSvc', mockSvc)
   .factory('modelSvc', modelSvc)
-  .factory('questionAnswersSvc', questionAnswersSvc)
   .factory('recursionHelper', recursionHelper)
   .factory('timelineSvc', timelineSvc)
   .factory('youTubePlayerManager', youTubePlayerManager)

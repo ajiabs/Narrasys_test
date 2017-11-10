@@ -1,3 +1,4 @@
+// @npUpgrade-question-false
 // an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
 export default function ittFlotr2Chart() {
   var uniqueId = 1;
