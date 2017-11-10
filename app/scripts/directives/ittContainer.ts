@@ -1,6 +1,6 @@
 /* For admin screen episode list */
 import { IContainer } from '../models';
-import { IEpisodeEditService } from './episode/episodeEdit.service';
+import { IEpisodeEditService } from '../../episode/services/episodeEdit.service';
 ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils', 'episodeEdit'];
 
 export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils, episodeEdit: IEpisodeEditService) {
