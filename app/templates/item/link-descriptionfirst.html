@@ -18,7 +18,7 @@
 		</div>
 	</div>
 	<div class="itemDetail" ng-if="item.showInlineDetail">
-		<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink item__link--escape-link escape-link--description-first">(new window)</a>
+		<a tabindex="0" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink item__link--escape-link escape-link--description-first">(new window)</a>
 		<itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
 		<itt-video
 			ng-if="item.isVideoUrl"
