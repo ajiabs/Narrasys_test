@@ -1,4 +1,4 @@
-
+// @npUpgrade-item-false
 ItemController.$inject = ['$scope', 'timelineSvc'];
 
 export default function ItemController($scope, timelineSvc) {

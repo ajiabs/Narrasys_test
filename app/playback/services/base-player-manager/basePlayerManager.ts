@@ -1,3 +1,4 @@
+// @npUpgrade-playback-true
 import {IMetaProps, IWistiaMetaProps} from '../../../interfaces';
 import {existy, renameKey} from '../../../scripts/services/ittUtils';
 import {commonMetaProps} from '../../../scripts/services/basePlayerManager/index';

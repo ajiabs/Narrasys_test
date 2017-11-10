@@ -1,3 +1,4 @@
+// @npUpgrade-playback-false
 import {IParsedMediaSrcObj, IUrlService, IWistiaUrlservice} from '../../../interfaces';
 /**
  * Created by githop on 11/3/16.

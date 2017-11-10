@@ -16,7 +16,6 @@ import mockSvc from './mockSvc';
 import modelSvc from './modelSvc/modelSvc';
 import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
-import selectService from './selectService';
 import timelineSvc from './timelineSvc/timelineSvc';
 import youTubePlayerManager from './youtube/YouTubePlayerManager.svc';
 import YTScriptLoader from './youtube/youtubeScriptLoader';
@@ -28,8 +27,6 @@ import {
 } from './wistia/index';
 
 import {UploadsService} from './uploadsService';
-import {ValidationService} from './validation.svc';
-import {AnalyticsSvc} from './analyticsSvc/analyticsSvc';
 
 let servicesModule = angular.module('itt.services', [])
   .service('appState', AppState)
@@ -44,7 +41,6 @@ let servicesModule = angular.module('itt.services', [])
   .factory('modelSvc', modelSvc)
   .factory('questionAnswersSvc', questionAnswersSvc)
   .factory('recursionHelper', recursionHelper)
-  .factory('selectService', selectService)
   .factory('timelineSvc', timelineSvc)
   .factory('youTubePlayerManager', youTubePlayerManager)
   .factory('YTScriptLoader', YTScriptLoader)
@@ -52,8 +48,6 @@ let servicesModule = angular.module('itt.services', [])
   .service('wistiaUrlService', WistiaUrlService)
   .service('wistiaPlayerManager', WistiaPlayerManager)
   .service('wistiaScriptLoader', WistiaScriptLoader)
-  .service('analyticsSvc', AnalyticsSvc)
-  .service('validationSvc', ValidationService)
   .service('uploadsService', UploadsService);
 
 export default servicesModule;

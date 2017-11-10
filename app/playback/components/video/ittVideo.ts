@@ -1,3 +1,4 @@
+// @npUpgrade-playback-false
 
 import videoHtml from './video.html';
 
