@@ -3,10 +3,8 @@
  */
 
 import ittReviewMode from './ittReviewMode';
-import ittTimeline from './ittTimeline';
 
 const directivesModule = angular.module('itt.directives', [])
-  .directive('ittReviewMode', ittReviewMode)
-  .directive('ittTimeline', ittTimeline);
+  .directive('ittReviewMode', ittReviewMode);
 
 export default directivesModule;

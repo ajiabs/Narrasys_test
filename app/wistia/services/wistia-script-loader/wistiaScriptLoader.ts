@@ -1,4 +1,6 @@
-import {IScriptLoader} from '../../../interfaces';
+// @npUpgrade-wistia-true
+import { IScriptLoader } from '../../../interfaces';
+
 /**
  * Created by githop on 4/12/17.
  */
@@ -7,9 +9,11 @@ declare const Wistia: object;
 
 export class WistiaScriptLoader implements IScriptLoader {
   private WISTIA_HREF = 'https://fast.wistia.com/assets/external/E-v1.js';
-
+  static Name = 'wistiaScriptLoader'; // tslint:disable-line
   static $inject = ['$q'];
-  constructor(private $q: ng.IQService) {  }
+
+  constructor(private $q: ng.IQService) {
+  }
 
   load(assetId: string): ng.IPromise<{}> {
     return this.$q((resolve) => {

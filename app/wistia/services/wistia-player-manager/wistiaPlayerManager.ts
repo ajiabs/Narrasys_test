@@ -1,8 +1,10 @@
+// @npUpgrade-wistia-true
 import { BasePlayerManager } from '../../../playback/services/base-player-manager/basePlayerManager';
-import {existy} from '../../../shared/services/ittUtils';
+import { existy } from '../../../shared/services/ittUtils';
 
-import {IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice, Partial} from '../../../interfaces';
+import { IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice, Partial } from '../../../interfaces';
 import { PLAYERSTATES } from '../../../playback/services/playback-service/index';
+
 /**
  * Created by githop on 4/12/17.
  */
@@ -44,11 +46,12 @@ export interface IWistiaPlayerManager extends IPlayerManager {
 export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPlayerManager {
   public type = 'wistia';
   private _bufferCheckIntervalLength = 100;
+  static Name = 'wistiaPlayerManager'; // tslint:disable-line
   static $inject = ['$interval', 'wistiaScriptLoader', 'wistiaUrlService'];
-  constructor(
-    private $interval: ng.IIntervalService,
-    private wistiaScriptLoader: IScriptLoader,
-    private wistiaUrlService: IWistiaUrlservice) {
+
+  constructor(private $interval: ng.IIntervalService,
+              private wistiaScriptLoader: IScriptLoader,
+              private wistiaUrlService: IWistiaUrlservice) {
     super();
   }
 
@@ -64,7 +67,7 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
 `;
   }
 
-  static formatStateChangeEvent(state: string, emitterId: string): {emitterId: string, state: string} {
+  static formatStateChangeEvent(state: string, emitterId: string): { emitterId: string, state: string } {
     return {
       emitterId,
       state: PLAYERSTATES[state]
@@ -214,7 +217,7 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
       volumeControl: isEmbed
     };
     return this.wistiaScriptLoader.load(pid)
-      .then(_ =>  {
+      .then(_ => {
         window.wistiaInitQueue = window.wistiaInitQueue || [];
         window.wistiaInitQueue.push({
           id: pid,

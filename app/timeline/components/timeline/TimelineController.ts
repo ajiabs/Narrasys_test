@@ -1,4 +1,5 @@
-import { IModelSvc, IAnalyticsSvc } from '../../interfaces';
+// @npUpgrade-timeline-false
+import { IModelSvc, IAnalyticsSvc } from '../../../interfaces';
 
 TimelineController.$inject = [
   '$scope',

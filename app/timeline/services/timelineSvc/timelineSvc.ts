@@ -1,3 +1,4 @@
+// @npUpgrade-timeline-false
 /* tslint:disable */
 /*
  Son of cuePointScheduler, with a smattering of video controls.

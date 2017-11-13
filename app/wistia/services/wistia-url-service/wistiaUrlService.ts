@@ -1,4 +1,6 @@
-import {IParsedMediaSrcObj, IUrlSubService} from '../../../interfaces';
+// @npUpgrade-wistia-true
+import { IParsedMediaSrcObj, IUrlSubService } from '../../../interfaces';
+
 /**
  * Created by githop on 4/12/17.
  */
@@ -11,6 +13,7 @@ export class WistiaUrlService implements IWistiaUrlservice {
   public type = 'wistia';
   public mimetype = `video/x-${this.type}`;
   private embedUrl = 'http://fast.wistia.net/embed/iframe/';
+  static Name = 'wistiaScriptLoader'; // tslint:disable-line
   // private parser = new DOMParser();
 
   getMimeType() {
@@ -23,7 +26,7 @@ export class WistiaUrlService implements IWistiaUrlservice {
         pmo.mediaSrcArr.push(mediaSrc);
       }
       return pmo;
-    }, {type: this.type, mediaSrcArr: []});
+    }, { type: this.type, mediaSrcArr: [] });
   }
 
   //TODO: it looks like the embed code itself doesn't contain enough info to map it into a URL

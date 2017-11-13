@@ -1,6 +1,8 @@
+// @npUpgrade-timeline-false
 // jQuery dependencies: offset(), animate(), namespaced .bind and .unbind
 // TODO some events need to be unbound on destroy, which I'll get around to implementing if this ever needs to be destroyed
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
+import timelineStoryHtml from './timeline-story.html';
 ittTimeline.$inject = ['$timeout', 'appState', 'timelineSvc', 'modelSvc', 'playbackService'];
 
 export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, playbackService) {
@@ -8,8 +10,8 @@ export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, p
     restrict: 'A',
     replace: true,
     scope: true,
-    templateUrl: "templates/timeline-story.html",
-    controller: "TimelineController",
+    template: timelineStoryHtml,
+    controller: 'TimelineController',
     link: function (scope, element) {
       // console.log('ittTimeline', scope, element);
       scope.appState = appState;
