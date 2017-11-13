@@ -1,3 +1,4 @@
+/* it appears this is prototype code and not in use anywhere. */
 // Force scenes to render scenes sequentially instead of all in one ng-repeat, because it looks faster that way.
 
 // (why don't all ng-repeats do this?  More to the point, why don't all of OUR ng-repeats do this?)
