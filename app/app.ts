@@ -198,25 +198,8 @@ function routerConfig($routeProvider) {
     .when('/assets/:containerId', {
       title: 'Container Assets test',
       controller: 'ContainerAssetsTestController',
-      template: [
-        '<div class="standaloneAncillaryPage">',
-        '	<np-nav on-logout="logout()"></np-nav>',
-        '	<div>',
-        '		<sxs-container-assets container-id="{{containerId}}" mime-key="assetLib"></sxs-container-assets>',
-        '	</div>',
-        '</div>'].join(''),
-      resolve: {
-        authEffects: ['authSvc', function (authSvc) {
-          //to ensure that canAccess is properly set.
-          return authSvc.authenticate().then(angular.noop);
-        }]
-      }
+      template: '<np-assets-resolve></np-assets-resolve>'
     })
-    // .when('/event/:eventId', {
-    //   title: 'Event test',
-    //   controller: 'EventTestController',
-    //   templateUrl: 'templates/testbed-event.html'
-    // })
     .otherwise({
       title: 'Narrative Producer: Error',
       controller: 'ErrorController',

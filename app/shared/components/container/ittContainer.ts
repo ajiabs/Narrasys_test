@@ -1,3 +1,4 @@
+// @npUpgrade-shared-true
 /* For admin screen episode list */
 import { createInstance, IContainer, ICustomer, INarrative } from '../../../models';
 import { IDataSvc, IModelSvc, IEpisodeEditService } from '../../../interfaces';

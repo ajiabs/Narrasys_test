@@ -1,3 +1,4 @@
+// @npUpgrade-shared-false
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 

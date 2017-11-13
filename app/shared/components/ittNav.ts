@@ -1,3 +1,4 @@
+// @npUpgrade-shared-true
 /**
  * Created by githop on 9/22/16.
  */

@@ -1,3 +1,4 @@
+// @npUpgrade-shared-false
 authSvc.$inject = ['config', '$routeParams', '$http', '$q', '$location', 'ittUtils', 'appState', 'modelSvc', 'errorSvc'];
 
 export default function authSvc(config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {

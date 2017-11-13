@@ -1,3 +1,4 @@
+// @npUpgrade-shared-false
 
 awsSvc.$inject = ['$http', '$q', 'config'];
 

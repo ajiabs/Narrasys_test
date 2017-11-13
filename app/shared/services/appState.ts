@@ -1,3 +1,4 @@
+// @npUpgrade-shared-true
 /*
  Stash for shared information, to save us a lot of $watching and $emitting.
  It's convenient.  Maybe -too- convenient.
@@ -131,6 +132,7 @@ export class AppState {
   editEpisode;
   resizeIframeReviewMode;
   lang;
+  static Name = 'appState'; // tslint:disable-line
   static $inject = ['$interval', 'config'];
   constructor(private $interval, private config) {
     this.initService();

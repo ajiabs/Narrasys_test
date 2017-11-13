@@ -1,3 +1,4 @@
+// @npUpgrade-shared-true
 /**
  * Created by githop on 6/6/17.
  */
@@ -23,7 +24,7 @@ export class UploadsService implements IUploadsService {
     social_image_wide: null
   };
   private uploadQueue: ng.IPromise<any>[] = [];
-
+  static Name = 'uploadsService'; // tslint:disable-line
   static $inject = ['$q', 'awsSvc'];
   constructor(private $q: ng.IQService, private awsSvc) {
 

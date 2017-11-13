@@ -1,3 +1,4 @@
+// @npUpgrade-shared-false
 // TODO: load and resolve categories
 
 

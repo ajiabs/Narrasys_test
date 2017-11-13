@@ -1,3 +1,4 @@
+// @npUpgrade-shared-true
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
 
 import { IDataSvc, IModelSvc } from '../../../interfaces';

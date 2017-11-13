@@ -1,4 +1,4 @@
-
+// @npUpgrade-shared-false
 const noAvatarImg = require('../../../images/no-avatar.gif');
 
 import userHtml from './user.html';

@@ -1,4 +1,4 @@
-
+// @npUpgrade-shared-false
 
 config.$inject = [];
 
