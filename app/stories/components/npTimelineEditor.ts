@@ -1,3 +1,4 @@
+// @npUpgrade-stories-true
 import { existy, pick } from '../../shared/services/ittUtils';
 
 import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../constants';

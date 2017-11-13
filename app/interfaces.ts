@@ -15,7 +15,7 @@ export { IBasePlayerManager } from './playback/services/player-manager-commons/p
 export { IWistiaMetaProps, IWistiaPlayerManager } from './scripts/services/wistia/wistiaPlayerManager';
 export { IWistiaUrlservice } from './scripts/services/wistia/wistiaUrlService';
 export { IUploadData } from './shared/services/uploadsService';
-export { IEmailFields } from './scripts/directives/socialshare/ittSocialShare';
+export { IEmailFields } from './stories/components/socialshare/ittSocialShare';
 export { IimageResize } from './shared/services/imageResizeSvc';
 /*
  it's nice to have the interface close to the method / object it is annotating. It's also nice to have a common

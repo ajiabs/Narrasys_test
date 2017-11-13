@@ -14,7 +14,7 @@ import ittMagnet from './directives/ittMagnet';
 import ittMagnetized from './directives/ittMagnetized';
 import { ittShowHideVisualOnly, visualHideAnimation } from './directives/ittShowHideVisualOnly';
 import ittWidthWatch from './directives/ittWidthWatch';
-
+import EditController from './services/EditController';
 const npPlayerModule = angular.module('np.player', []);
 
 const services = [
@@ -37,7 +37,8 @@ npPlayerModule
   .directive('ittMagnetized', ittMagnetized)
   .directive('ittShowHideVisualOnly', ittShowHideVisualOnly)
   .animation('visualHideAnimation', visualHideAnimation)
-  .directive('ittWidthWatch', ittWidthWatch);
+  .directive('ittWidthWatch', ittWidthWatch)
+  .controller('EditController', EditController);
 
 services.forEach((svc: any) => {
   npPlayerModule.service(svc.Name, svc);

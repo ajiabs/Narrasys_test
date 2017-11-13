@@ -24,7 +24,6 @@ import dataSvc from './services/dataSvc/dataSvc';
 import modelSvc from './services/modelSvc/modelSvc';
 import { AssetsResolve } from './components/npAssetsResolve.component';
 import { ErrorNotice } from './components/error-notice/npErrorNotice.component';
-import EditController from './services/EditController';
 
 const npSharedModule = angular.module('np.shared', []);
 
@@ -54,7 +53,6 @@ npSharedModule
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittLogin', ittLogin)
   .component(AssetsResolve.Name, new AssetsResolve())
-  .component(ErrorNotice.Name, new ErrorNotice())
-  .controller('EditController', EditController);
+  .component(ErrorNotice.Name, new ErrorNotice());
 
 export default npSharedModule;

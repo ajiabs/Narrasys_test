@@ -1,8 +1,11 @@
+// @npUpgrade-stories-true
 /**
  * Created by githop on 5/26/17.
  */
-import {Partial} from '../../../interfaces';
-import {IDataSvc} from '../../../shared/services/dataSvc/dataSvc';
+import { Partial } from '../../../interfaces';
+import { IDataSvc } from '../../../shared/services/dataSvc/dataSvc';
+import socialShareHtml from './social-share.html';
+
 /**
  * Created by githop on 5/18/17.
  */
@@ -18,11 +21,12 @@ export interface IEmailFields {
 }
 
 type SupportedProviders = 'facebook' | 'twitter' | 'google' | 'linkedin' | 'email' | 'reddit';
+
 interface ISocialShareBindings {
   providers: SupportedProviders[];
   subdomain: string;
   shareTitle?: string;
-  paths: { narrative: string, timeline?: {url: string, id: string} };
+  paths: { narrative: string, timeline?: { url: string, id: string } };
 }
 
 class SocialShareController implements ng.IComponentController, ISocialShareBindings {
@@ -30,7 +34,7 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
   providers: SupportedProviders[];
   subdomain: string;
   shareTitle?: string;
-  paths: {narrative: string, timeline: {url: null, id: null}};
+  paths: { narrative: string, timeline: { url: null, id: null } };
   // props
   stubUrl: string = 'https://thecareerplaybook.narrasys.com/narratives/jim-citrin';
   expanded: boolean = false;
@@ -38,7 +42,10 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
   textCopied: boolean = false;
   email: Partial<IEmailFields> = {};
   static $inject = ['Socialshare', 'dataSvc'];
-  constructor(public Socialshare, private dataSvc: IDataSvc) {} // tslint:disable-line
+
+  constructor(public Socialshare, private dataSvc: IDataSvc) { // tslint:disable-line
+   //
+  }
 
   $onInit() {
     //MVP only works in player, so require full timeline path
@@ -64,7 +71,7 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
       case 'twitter':
       case 'reddit':
         // these providers in 720.kb use the socialshareText attr.
-        Object.assign(shareConfig.attrs, {socialshareText: this.shareTitle}, {socialshareUrl: this.stubUrl});
+        Object.assign(shareConfig.attrs, { socialshareText: this.shareTitle }, { socialshareUrl: this.stubUrl });
         break;
       default:
         Object.assign(shareConfig.attrs, { socialshareUrl: this.stubUrl });
@@ -86,7 +93,7 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
 
   handleEmailShare(email: IEmailFields, ngForm: ng.IFormController) {
     if (ngForm.$invalid) {
-      ngForm.$error.required.forEach(field => {
+      ngForm.$error.required.forEach((field: any) => {
         field.$setTouched();
       });
       return;
@@ -98,8 +105,8 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
   }
 
   private static formatShareUrl(subDomain: string, narrativePath: string, timelinePath: string): string {
-    let protocol = 'https://';
-    let rootDomain = '.narrasys.com/narratives/';
+    const protocol = 'https://';
+    const rootDomain = '.narrasys.com/narratives/';
     return `${protocol}${subDomain}${rootDomain}${narrativePath}/${timelinePath}`;
   }
 
@@ -115,14 +122,14 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
 
 }
 
-export class IttSocialShare implements ng.IComponentOptions {
+export class SocialShare implements ng.IComponentOptions {
   bindings: any = {
     providers: '<',
     subdomain: '@',
     shareTitle: '@',
     paths: '<'
   };
-  templateUrl: string = 'scripts/directives/socialshare/social-share.html';
+  template: string = socialShareHtml;
   controller = SocialShareController;
   static Name: string = 'ittSocialShare'; // tslint:disable-line
 }

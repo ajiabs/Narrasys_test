@@ -197,7 +197,6 @@ function routerConfig($routeProvider) {
     })
     .when('/assets/:containerId', {
       title: 'Container Assets test',
-      controller: 'ContainerAssetsTestController',
       template: '<np-assets-resolve></np-assets-resolve>'
     })
     .otherwise({
