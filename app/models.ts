@@ -15,6 +15,18 @@ abstract class UIAsset {
   updated_at?: Date;
 }
 
+// experimental
+export class NpComponentTemplateDirective implements ng.IDirective {
+  restrict: string = 'A';
+  static Name; // tslint:disable-line
+  static $inject = [];
+  static factory(): ng.IDirectiveFactory {
+    const instance = (...args) => new NpComponentTemplateDirective(...args);
+    instance.$inject = NpComponentTemplateDirective.$inject;
+    return instance;
+  }
+}
+
 export class IStyle extends UIAsset { }
 export class ILayout extends UIAsset { }
 
