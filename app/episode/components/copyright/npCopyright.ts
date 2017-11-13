@@ -1,3 +1,4 @@
+// @npUpgrade-episode-true
 const TEMPLATE = `
 {{$ctrl.copyrightOrg}} player &#169;
 <span ng-bind-html="$ctrl.now | date:'yyyy'"></span>

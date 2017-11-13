@@ -1,3 +1,4 @@
+// @npUpgrade-youtube-false
 
 youtubeUrlService.$inject = ['ittUtils'];
 

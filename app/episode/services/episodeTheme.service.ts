@@ -1,3 +1,4 @@
+// @npUpgrade-episode-true
 import * as WebFont from 'webfontloader';
 import { IFont, IEpisodeTemplate } from '../../models';
 

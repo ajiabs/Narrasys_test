@@ -1,3 +1,4 @@
+// @npUpgrade-episode-true
 import { IEpisodeTemplate } from '../../../models';
 const TEMPLATE = `
 <div ng-if="$ctrl.appState.viewMode != 'watch'" ng-class="$ctrl.brandingDivClass">

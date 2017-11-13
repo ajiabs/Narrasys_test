@@ -1,3 +1,4 @@
+// @npUpgrade-scenes-false
 SceneController.$inject = ['$scope', '$filter', 'ittUtils'];
 
 export default function SceneController($scope, $filter, ittUtils) {

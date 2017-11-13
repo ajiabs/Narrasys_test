@@ -1,3 +1,4 @@
+// @npUpgrade-episode-true
 
 import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IEvent, IScene, ITemplate } from '../../models';
 import { IDataSvc, IEpisodeTheme, IModelSvc, Partial } from '../../interfaces';
