@@ -19,6 +19,9 @@
  *     <itt-iframe src="<url>" contenttype="text/html" item="<itemObject>"></itt-iframe>
  * </pre>
  */
+
+import iframeHtml from './iframe.html';
+
 ittIframe.$inject = ['appState'];
 
 export default function ittIframe(appState) {
@@ -30,7 +33,7 @@ export default function ittIframe(appState) {
       item: '&'
     },
     replace: true,
-    templateUrl: 'templates/iframe.html',
+    template: iframeHtml,
     controller: ['$scope', 'ittUtils', 'appState',
       function ($scope, ittUtils, appState) {
         // moved this all back out of the controller to avoid leaking $scope.sandbox across directives

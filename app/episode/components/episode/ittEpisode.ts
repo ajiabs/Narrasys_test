@@ -10,16 +10,15 @@ const TEMPLATE = `
     
     <div ng-if="episode.template.css_configuration.fill_class === 'gwsb-seal'" class="fill"></div>
   </div>
-  <span ng-include="'view-modes/review-mode/reviewmode.html'"></span>
-  <span ng-include="'view-modes/watch-mode/watchmode.html'"></span>
+  <span np-reviewmode-template></span>
+  <span np-watchmode-template></span>
   <span
     ng-class="{'colorInvert DiscoverModeOnly': episode.template.displayName === 'Middlebury'}"
     ng-repeat="scene in episode.scenes | isCurrent"
-    ng-include="'view-modes/discover-mode/discovermode.html'">
+    np-disovermode-template>
   </span>
-  <span ng-include="'view-modes/video/video.html'"></span>
-  <span ng-include="'view-modes/windowfg/windowfg.html'"></span>
-  
+  <span np-video-template></span>
+  <span np-windowfg-template></span>
   <np-episode-footer template-data="episode.template"></np-episode-footer>
 </div>
 `;

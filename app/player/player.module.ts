@@ -55,7 +55,7 @@ npPlayerModule
   .directive('ittMagnet', ittMagnet)
   .directive('ittMagnetized', ittMagnetized)
   .directive('ittShowHideVisualOnly', ittShowHideVisualOnly)
-  .animation('visualHideAnimation', visualHideAnimation)
+  .animation('.visualHideAnimation', visualHideAnimation)
   .directive('ittWidthWatch', ittWidthWatch)
   .controller('EditController', EditController);
 

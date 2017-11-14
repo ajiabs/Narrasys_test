@@ -2,7 +2,11 @@ import { WistiaPlayerManager } from './services/wistia-player-manager/wistiaPlay
 import { WistiaScriptLoader } from './services/wistia-script-loader/wistiaScriptLoader';
 import { WistiaUrlService } from './services/wistia-url-service/wistiaUrlService';
 
-const npWistiaModule = angular.module('np.wistia', []);
+// import '../playback/playback.module';
+
+const npWistiaModule = angular.module('np.wistia', [
+  // 'np.playback'
+]);
 
 const services = [
   WistiaPlayerManager,

@@ -11,13 +11,13 @@
  * @requires textAngular
  */
 
-const templates = (require as any).context('./templates', true, /\.html$/);
-const componentTemplates = (require as any).context('./scripts/directives', true, /\.html$/);
-const viewModeTemplates = (require as any).context('./view-modes', true, /\.html$/);
+// const templates = (require as any).context('./templates', true, /\.html$/);
+// const componentTemplates = (require as any).context('./scripts/directives', true, /\.html$/);
+// const viewModeTemplates = (require as any).context('./view-modes', true, /\.html$/);
 
-[templates, componentTemplates, viewModeTemplates].forEach((templateSource) => {
-  templateSource.keys().forEach(path => templateSource(path));
-});
+// [templates, componentTemplates, viewModeTemplates].forEach((templateSource) => {
+//   templateSource.keys().forEach(path => templateSource(path));
+// });
 
 import './styles/app.scss';
 import './styles/vendor.scss';
@@ -35,10 +35,10 @@ import 'angular-socialshare';
 import './config';
 // modules
 
-import 'shared/shared.module';
-import 'projects/projects.module';
-import 'stories/stories.module';
-import 'player/player.module';
+import './shared/shared.module';
+import './projects/projects.module';
+import './stories/stories.module';
+import './player/player.module';
 
 const itt = angular.module('iTT', [
   'ngRoute',
@@ -92,14 +92,18 @@ const itt = angular.module('iTT', [
   .config(['$compileProvider', debugInfoConfig])
   .run(['$rootScope', 'errorSvc', runFunction]);
 
+import rootHtml from './templates/root.html';
+import authHtml from './templates/auth.html';
+import error404Html from './templates/error-404.html';
+
 function routerConfig($routeProvider) {
   $routeProvider
     .when('/', {
       title: 'Narrative Producer',
-      templateUrl: 'templates/root.html'
+      template: rootHtml
     })
     .when('/auth', {
-      templateUrl: 'templates/auth.html',
+      template: authHtml,
       reloadOnSearch: false
     })
     .when('/account', {
@@ -199,7 +203,7 @@ function routerConfig($routeProvider) {
     .otherwise({
       title: 'Narrative Producer: Error',
       controller: 'ErrorController',
-      templateUrl: 'templates/error-404.html'
+      template: error404Html
     });
 
   //$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked

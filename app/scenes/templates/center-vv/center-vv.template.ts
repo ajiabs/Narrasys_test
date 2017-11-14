@@ -1,5 +1,5 @@
 
-import centerVVHtml from './center-VV.html';
+import centerVVHtml from './centerVV.html';
 
 export class CenterVvTemplate implements ng.IDirective {
   restrict: string = 'EA';

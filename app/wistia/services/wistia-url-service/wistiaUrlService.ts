@@ -13,7 +13,7 @@ export class WistiaUrlService implements IWistiaUrlservice {
   public type = 'wistia';
   public mimetype = `video/x-${this.type}`;
   private embedUrl = 'http://fast.wistia.net/embed/iframe/';
-  static Name = 'wistiaScriptLoader'; // tslint:disable-line
+  static Name = 'wistiaUrlService'; // tslint:disable-line
   // private parser = new DOMParser();
 
   getMimeType() {

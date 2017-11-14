@@ -1,14 +1,13 @@
+
+import kalturaPlayerManager from './services/kaltura-player-manager/kalturaPlayerManager';
+import kalturaScriptLoader from './services/kaltura-script-loader/kalturaScriptLoader';
+import kalturaUrlService from './services/kaltura-url-service/kalturaUrlService';
+
 const npKalturaModule = angular.module('np.kaltura', []);
 
-const components = [];
-const services = [];
-
-components.forEach((cmp: any) => {
-  npKalturaModule.component(cmp.Name, new cmp());
-});
-
-services.forEach((svc: any) => {
-  npKalturaModule.service(svc.Name, svc);
-});
+npKalturaModule
+  .factory('kalturaPlayerManager', kalturaPlayerManager)
+  .factory('kalturaScriptLoader', kalturaScriptLoader)
+  .factory('kalturaUrlService', kalturaUrlService);
 
 export default npKalturaModule;

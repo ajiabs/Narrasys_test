@@ -25,7 +25,13 @@ import modelSvc from './services/modelSvc/modelSvc';
 import { AssetsResolve } from './components/npAssetsResolve.component';
 import { ErrorNotice } from './components/error-notice/npErrorNotice.component';
 
-const npSharedModule = angular.module('np.shared', []);
+import '../filters/filters';
+import { Loading } from './components/ittLoading';
+
+const npSharedModule = angular.module('np.shared', [
+  'np.filters'
+]);
+
 
 npSharedModule
   .service(AppState.Name, AppState)
@@ -52,6 +58,7 @@ npSharedModule
   .directive('ittValidationTip', ittValidationTip)
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittLogin', ittLogin)
+  .component(Loading.Name, new Loading())
   .component(AssetsResolve.Name, new AssetsResolve())
   .component(ErrorNotice.Name, new ErrorNotice());
 

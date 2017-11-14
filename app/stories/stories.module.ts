@@ -5,9 +5,9 @@ import { Clipboard } from './components/ittClipboard';
 import { Filedrop } from './components/ittFiledrop';
 import { UploadProgress } from './components/ittUploadProgress';
 import { NarrativeContainer } from './components/npNarrativeContainer';
-import { NarrativeDetail } from './components/npNarrativeDetail';
+import { NarrativeDetail } from './components/narrative-detail/npNarrativeDetail';
 import { NarrativeEditor } from './components/npNarrativeEditor';
-import { NarrativeList } from './components/npNarrativeList';
+import { NarrativeList } from './components/narrative-list/npNarrativeList';
 import { NarrativesContainer } from './components/npNarrativesContainer';
 import { TimelineEditor } from './components/npTimelineEditor';
 

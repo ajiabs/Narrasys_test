@@ -2,7 +2,7 @@ import ittItem from './components/ittItem';
 import ItemController from './components/ItemController';
 import ittItemEditor from './components/ittItemEditor';
 import ittItemDetailModal from './components/ittItemDetailModal';
-import ittIframe from './components/ittIframe';
+import ittIframe from './components/iframe/ittIframe';
 import { FileTemplate } from './templates/file/file.template';
 import { HeaderOneTemplate } from './templates/header-one/header-one.template';
 import { HeaderTwoTemplate } from './templates/header-two/header-two.template';
