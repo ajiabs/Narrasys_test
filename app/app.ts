@@ -24,7 +24,6 @@ import './styles/vendor.scss';
 
 import '../plugin/plugins';
 import 'core-js/client/shim';
-import 'angular';
 import 'angular-ui-tree';
 //text angular
 import 'rangy';
@@ -36,24 +35,22 @@ import 'angular-socialshare';
 import './config';
 // modules
 
-import './scripts/controllers/controllers.module';
-import './filters/filters';
-import './scripts/services/services.module';
-import './scripts/directives/directives.module';
-import './episode/episode.module';
+import 'shared/shared.module';
+import 'projects/projects.module';
+import 'stories/stories.module';
+import 'player/player.module';
 
 const itt = angular.module('iTT', [
-    'ngRoute',
-    'ngAnimate',
-    'ngSanitize',
-    'textAngular',
-    'ui.tree',
-    '720kb.socialshare',
-    'np.episode',
-    'itt.controllers',
-    'np.filters',
-    'itt.services',
-    'itt.directives'
+  'ngRoute',
+  'ngAnimate',
+  'ngSanitize',
+  'textAngular',
+  'ui.tree',
+  '720kb.socialshare',
+  'np.shared',
+  'np.projects',
+  'np.stories',
+  'np.player'
   ]
 )
   .constant('MIMES', {

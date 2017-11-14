@@ -6,7 +6,7 @@ import { VideoTemplate } from './templates/video/video.template';
 import { WatchmodeTemplate } from './templates/watch-mode/watchmode.template';
 import { WindowfgTemplate } from './templates/windowfg/windowfg.template';
 
-const npViewModesModule = angular.module('npViewModes', []);
+const npViewModesModule = angular.module('np.viewModes', []);
 
 const templates = [
   DiscovermodeTemplate,

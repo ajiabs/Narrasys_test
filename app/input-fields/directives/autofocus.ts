@@ -1,5 +1,4 @@
 // @npUpgrade-inputFields-false
-
 // attach to any directive to make its first input/textarea autofocus
 autofocus.$inject = ['$timeout'];
 

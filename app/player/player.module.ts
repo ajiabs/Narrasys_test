@@ -15,7 +15,26 @@ import ittMagnetized from './directives/ittMagnetized';
 import { ittShowHideVisualOnly, visualHideAnimation } from './directives/ittShowHideVisualOnly';
 import ittWidthWatch from './directives/ittWidthWatch';
 import EditController from './services/EditController';
-const npPlayerModule = angular.module('np.player', []);
+
+import '../episode/episode.module';
+import '../view-modes/viewModes.module';
+import '../item/item.module';
+import '../input-fields/input-fields.module';
+import '../scenes/scenes.module';
+import '../timeline/timeline.module';
+import '../playback/playback.module';
+import '../question/question.module';
+
+const npPlayerModule = angular.module('np.player', [
+  'np.episode',
+  'np.viewModes',
+  'np.item',
+  'np.inputFields',
+  'np.scenes',
+  'np.timeline',
+  'np.playback',
+  'np.question'
+]);
 
 const services = [
   AnalyticsService,
