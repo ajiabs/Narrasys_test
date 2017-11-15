@@ -27,7 +27,7 @@ import { ErrorNotice } from './components/error-notice/npErrorNotice.component';
 
 import '../filters/filters';
 import { Loading } from './components/ittLoading';
-
+import { DynamicEventTemplate } from './directives/dynamic-event-template';
 const npSharedModule = angular.module('np.shared', [
   'np.filters'
 ]);
@@ -58,6 +58,7 @@ npSharedModule
   .directive('ittValidationTip', ittValidationTip)
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittLogin', ittLogin)
+  .directive(DynamicEventTemplate.Name, DynamicEventTemplate.factory())
   .component(Loading.Name, new Loading())
   .component(AssetsResolve.Name, new AssetsResolve())
   .component(ErrorNotice.Name, new ErrorNotice());

@@ -11,17 +11,8 @@
  * @requires textAngular
  */
 
-// const templates = (require as any).context('./templates', true, /\.html$/);
-// const componentTemplates = (require as any).context('./scripts/directives', true, /\.html$/);
-// const viewModeTemplates = (require as any).context('./view-modes', true, /\.html$/);
-
-// [templates, componentTemplates, viewModeTemplates].forEach((templateSource) => {
-//   templateSource.keys().forEach(path => templateSource(path));
-// });
-
 import './styles/app.scss';
 import './styles/vendor.scss';
-
 import '../plugin/plugins';
 import 'core-js/client/shim';
 import 'angular-ui-tree';
@@ -40,7 +31,7 @@ import './projects/projects.module';
 import './stories/stories.module';
 import './player/player.module';
 
-const itt = angular.module('iTT', [
+angular.module('np.client', [
   'ngRoute',
   'ngAnimate',
   'ngSanitize',
@@ -51,8 +42,7 @@ const itt = angular.module('iTT', [
   'np.projects',
   'np.stories',
   'np.player'
-  ]
-)
+])
   .constant('MIMES', {
     'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
     'file': 'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',

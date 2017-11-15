@@ -1,6 +1,10 @@
 // @npUpgrade-scene-false
 // Minor jquery dependency ($.inArray)
+import { tmpSceneMap } from '../../scenes.module';
+import { IDynamicTemplateService } from '../../../interfaces';
+
 ittScene.$inject = ['$timeout', 'appState'];
+
 
 export default function ittScene($timeout, appState) {
   return {
@@ -10,7 +14,8 @@ export default function ittScene($timeout, appState) {
       scene: '=ittScene',
       episode: '=episode'
     },
-    template: '<span ng-include="scene.templateUrl"></span>',
+    template: '<span np-dynamic-event-template component-name="{{scene.component_name}}"></span>',
+    // template: '<span ng-include="scene.templateUrl"></span>',
     controller: 'SceneController',
     link: function (scope, element) {
       // force discover and watch modes to not start out scrolled halfway out of view (STORY-161)

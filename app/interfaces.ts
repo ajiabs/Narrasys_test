@@ -1,3 +1,4 @@
+export { IDynamicTemplateService } from './shared/services/dynamic-template.service';
 export { IAnalyticsSvc } from './player/services/analytics/analytics.service';
 export { IEpisodeEditService } from './episode/services/episodeEdit.service';
 export { IEpisodeTheme } from './episode/services/episodeTheme.service';

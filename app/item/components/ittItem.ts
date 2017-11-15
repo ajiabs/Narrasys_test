@@ -3,7 +3,7 @@
  NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
  so they get logged properly: don't draw plain hrefs
  */
-import {IVa} from '../../interfaces';
+import { IValidationSvc } from '../../interfaces';
 
 ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc'];
 
@@ -14,12 +14,14 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
     scope: {
       item: '=ittItem'
     },
-    template: function (el, attrs) {
+    template: (el: JQuery, attrs: any) => {
+      let componentName;
       if (attrs.forcetemplate) {
-        return '<div ng-include="\'templates/item/' + attrs.forcetemplate + '.html\'"></div>';
+        componentName = attrs.forcetemplate;
       } else {
-        return '<div ng-include="item.templateUrl"></div>';
+        componentName = '{{item.component_name}}';
       }
+      return `<div np-dynamic-event-template component-name="${componentName}"></div>`;
     },
     controller: 'ItemController',
     link: function (scope, element) {

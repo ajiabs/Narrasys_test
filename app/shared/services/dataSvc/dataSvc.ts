@@ -8,6 +8,8 @@ import {
 } from '../../../models';
 import { IEmailFields, IEpisodeTheme, Partial } from '../../../interfaces';
 import { existy, intersection, pick } from '../ittUtils';
+import { tmpSceneMap } from '../../../scenes/scenes.module';
+import { tmpItemMap } from '../../../item/item.module';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -401,7 +403,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.getCommon = getCommon; // TEMPORARY for ittContainer, so it can get the scene template ID.  After template refactor none of this id stuff will be necessary
-
   svc.cache = function (cacheType, dataList) {
     // console.log("dataSvc.cache", cacheType, dataList);
     angular.forEach(dataList, function (item) {
@@ -416,7 +417,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          url									"templates/scene-centered.html"
          type: string
          */
-
         if (item.applies_to_episodes) {
           dataCache.template[item._id] = createInstance('EpisodeTemplate', {
             id: item._id,
@@ -433,14 +433,16 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             id: item._id,
             url: item.url,
             type: 'Scene',
-            displayName: item.name
+            displayName: item.name,
+            component_name: tmpSceneMap[item.url]
           });
         } else {
           dataCache.template[item._id] = createInstance('ItemTemplate', {
             id: item._id,
             url: item.url,
             type: item.event_types && item.event_types[0],
-            displayName: item.name
+            displayName: item.name,
+            component_name: tmpItemMap[item.url]
           });
         }
         // console.log('template?', dataCache.template[item._id]);
@@ -1191,6 +1193,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       return prepped;
     }
     const template = svc.readCache('template', 'url', evt.templateUrl) as ILayoutTemplate | IItemTemplate;
+    const template2 = svc.readCache('template', 'component_name', evt.component_name) as ILayoutTemplate | IItemTemplate;
     if (template) {
       prepped.template_id = template.id;
     }

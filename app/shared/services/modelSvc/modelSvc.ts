@@ -4,6 +4,9 @@
 
 import { IAnnotators, Partial } from '../../../interfaces';
 import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent } from '../../../models';
+import { tmpItemMap } from '../../../item/item.module';
+import { tmpSceneMap } from '../../../scenes/scenes.module';
+import { EventTemplates } from '../../../constants';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
@@ -335,7 +338,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
   var isTranscript = function (item) {
     if (typeof (item) !== 'undefined') {
-      if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
+      if (item._type === 'Annotation' && item.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
         return true;
       } else {
         return false;
@@ -344,6 +347,13 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   };
 
   svc.deriveEvent = function (event: Partial<NEvent>): NEvent {
+    // temp code until db is settled
+    if (event instanceof IScene) {
+      event.component_name = tmpSceneMap[event.templateUrl];
+    } else {
+      event.component_name = tmpItemMap[event.templateUrl];
+    }
+
     event = setLang(event);
     if (event._type !== 'Scene') {
 
@@ -373,14 +383,15 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
         // I don't know why this situation occurs, but it does:
         if (event.templateUrl === '') {
-          event.templateUrl = 'templates/item/usc-badges.html';
+          // event.templateUrl = 'templates/item/usc-badges.html';
+          event.component_name = EventTemplates.USC_BADGES_TEMPLATE;
         }
 
         if (event._type === 'Link') {
-          if (event.templateUrl === 'templates/transmedia-link-default.html') {
-            // they don't want any embedded links (shrug)
-            event.templateUrl = 'templates/transmedia-link-noembed.html';
-          }
+          // if (event.templateUrl === 'templates/transmedia-link-default.html') {
+          //   // they don't want any embedded links (shrug)
+          //   event.templateUrl = 'templates/transmedia-link-noembed.html';
+          // }
           if (event.display_title.match(/ACTIVITY/)) {
             // Unnecessary explanatory text
             event.display_description = event.display_description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
@@ -445,9 +456,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         event.target = '_blank';
       }
 
-      if (event.templateUrl.match(/frameicide/)) {
-        event.targetTop = true;
-      }
     }
 
     // Finally one more super-fragile HACK for producer:
@@ -455,25 +463,26 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       if (event._type === 'Scene') {
         event.producerItemType = 'scene';
       } else if (event._type === 'Annotation') {
-        if (event.templateUrl.match(/transcript/)) {
+        if (event.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
           event.producerItemType = 'transcript';
         } else {
           event.producerItemType = 'annotation';
         }
       } else if (event._type === 'Upload') {
-        if (event.templateUrl.match(/file/)) { // HACK
+        if (event.component_name === EventTemplates.FILE_TEMPLATE) { // HACK
           event.producerItemType = 'file';
         } else {
           event.producerItemType = 'image';
         }
       } else if (event._type === 'Link') {
-        if (event.templateUrl.match(/video/)) {
+
+        if (event.component_name.match(/video/)) {
           event.producerItemType = 'video';
         } else {
           event.producerItemType = 'link';
         }
       } else if (event._type === 'Plugin') {
-        if (event.templateUrl.match(/question/)) {
+        if (event.component_name.match(/question/)) {
           event.producerItemType = 'question';
         }
       } else if (event._type === 'Chapter') {
@@ -496,18 +505,21 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       case 'annotation':
         //set to false off the bat, then flip to true for each case
         event.isPq = event.isHeader = event.isLongText = event.isDef = false;
-        if (/pullquote/.test(event.templateUrl)) {
+        // if (/pullquote/.test(event.templateUrl)) {
+        if (event.component_name === EventTemplates.PULLQUOTE_TEMPLATE) {
           event.isPq = true;
         }
-        if (/text-h1|text-h2/.test(event.templateUrl)) {
+        // if (/text-h1|text-h2/.test(event.templateUrl)) {
+        if (/header-two|header-one/.test(event.component_name)) {
           event.isHeader = true;
         }
 
-        if (/text-transmedia/.test(event.templateUrl)) {
+        // if (/text-transmedia/.test(event.templateUrl)) {
+        if (event.component_name === EventTemplates.TEXT_TRANSMEDIA_TEMPLATE) {
           event.isLongText = true;
         }
 
-        if (/text-definition/) {
+        if (event.component_name === EventTemplates.TEXT_DEFINITION_TEMPLATE) {
           event.isDef = true;
         }
         break;
@@ -570,13 +582,13 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           return -1;
         } else if (b.chapter_marker === true) {
           return 1;
-        } else if (a.templateUrl === 'templates/item/text-h1.html') {
+        } else if (a.component_name === EventTemplates.HEADER_ONE_TEMPLATE) {
           return -1;
-        } else if (b.templateUrl === 'templates/item/text-h1.html') {
+        } else if (b.component_name === EventTemplates.HEADER_ONE_TEMPLATE) {
           return 1;
-        } else if (a.templateUrl === 'templates/item/text-h2.html') {
+        } else if (a.component_name === EventTemplates.HEADER_TWO_TEMPLATE) {
           return -1;
-        } else if (b.templateUrl === 'templates/item/text-h2.html') {
+        } else if (b.component_name === EventTemplates.HEADER_TWO_TEMPLATE) {
           return 1;
         } else if (a.isTranscript) {
           return -1;
@@ -846,17 +858,17 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
         return;
       }
       event.styleCss = cascadeStyles(event);
-      var isImgPlain = event.templateUrl === 'templates/item/image-plain.html';
-      var isInlineImgWText = event.templateUrl === 'templates/item/image-inline-withtext.html';
-      var isImgCap = event.templateUrl === 'templates/item/image-caption-sliding.html';
-      var isImgThumb = event.templateUrl === 'templates/item/image-thumbnail.html';
-      var isBgImage = event.templateUrl === 'templates/item/image-fill.html';
+      var isImgPlain = event.component_name === EventTemplates.IMAGE_PLAIN_TEMPLATE ;
+      var isInlineImgWText = event.component_name === EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE;
+      var isImgCap = event.component_name === EventTemplates.SLIDING_CAPTION;
+      var isImgThumb = event.component_name === EventTemplates.IMAGE_THUMBNAIL_TEMPLATE;
+      var isBgImage = event.component_name === EventTemplates.IMAGE_FILL_TEMPLATE;
 
-      var isLongText = event.templateUrl === 'templates/item/text-transmedia.html';
-      var isDef = event.templateUrl === 'templates/item/text-definition.html';
-      var isH1 = event.templateUrl === 'templates/item/text-h1.html';
-      var isH2 = event.templateUrl === 'templates/item/text-h2.html';
-      var isPq = event.templateUrl === 'templates/item/pullquote-noattrib.html' || event.templateUrl === 'templates/item/pullquote.html';
+      var isLongText = event.component_name === EventTemplates.TEXT_TRANSMEDIA_TEMPLATE;
+      var isDef = event.component_name === EventTemplates.TEXT_DEFINITION_TEMPLATE;
+      var isH1 = event.component_name === EventTemplates.HEADER_ONE_TEMPLATE;
+      var isH2 = event.component_name === EventTemplates.HEADER_TWO_TEMPLATE;
+      var isPq = event.component_name === EventTemplates.PULLQUOTE_TEMPLATE;
       var potentialHighlight = ['highlightSolid', 'highlightBorder', 'highlightSide', 'highlightBloom', 'highlightTilt', 'highlightNone'];
       var potentialTransitions = ['transitionFade', 'transitionPop', 'transitionNone', 'transitionSlideL', 'transitionSlideR'];
       var currentScene;
@@ -1148,7 +1160,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       'episode_id': episodeId,
       'start_time': -0.01,
       // enforce its firstness; a start time of zero might sort after the first scene which also starts at zero
-      'end_time': 0.01
+      'end_time': 0.01,
+      'component_name': 'landingscreen'
     });
   };
 
@@ -1194,7 +1207,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       'templateUrl': 'templates/scene/endingscreen.html',
       'cur_episode_id': episodeId,
       'start_time': duration - 0.1,
-      'end_time': duration
+      'end_time': duration,
+      'component_name': 'endingscreen'
     });
     svc.events['internal:endingscreen:' + episodeId] = setLang(svc.events['internal:endingscreen:' + episodeId]);
     svc.resolveEpisodeEvents(episodeId);

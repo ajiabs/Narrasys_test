@@ -23,6 +23,8 @@
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
 
+import itemHtml from './item.html';
+
 ittItemEditor.$inject = ['$rootScope', 'errorSvc', 'appState', 'modelSvc', 'timelineSvc', 'selectService'];
 
 export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, timelineSvc, selectService) {
@@ -32,7 +34,7 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
     scope: {
       item: '=ittItemEditor'
     },
-    templateUrl: 'templates/producer/item.html',
+    template: itemHtml,
     controller: 'EditController',
     link: function (scope) {
 
@@ -59,7 +61,9 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         });
       }
       // TODO:this breaks when editing sxs items within producer!
-      scope.itemEditor = 'templates/producer/item/' + appState.product + '-' + scope.item.producerItemType + '.html';
+      // scope.itemEditor = 'templates/producer/item/' + appState.product + '-' + scope.item.producerItemType + '.html';
+      scope.sxsItemComponentFieldName = `${appState.product}-${scope.item.producerItemType}-field`;
+      console.log('edit cmp', scope.sxsItemComponentFieldName);
       scope.appState = appState;
 
       //watch templateUrl

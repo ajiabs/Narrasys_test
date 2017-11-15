@@ -13,9 +13,9 @@ const TEMPLATE = `
   <span np-reviewmode-template></span>
   <span np-watchmode-template></span>
   <span
+    np-discovermode-template
     ng-class="{'colorInvert DiscoverModeOnly': episode.template.displayName === 'Middlebury'}"
-    ng-repeat="scene in episode.scenes | isCurrent"
-    np-disovermode-template>
+    ng-repeat="scene in episode.scenes | isCurrent">
   </span>
   <span np-video-template></span>
   <span np-windowfg-template></span>

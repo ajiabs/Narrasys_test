@@ -44,7 +44,7 @@ let npFiltersModule = angular.module('np.filters', [])
     return function (items) {
       var ret = [];
       angular.forEach(items, function (item) {
-        if (item._type === 'Annotation' && !item.templateUrl.match(/(transmedia|definition)/)) {
+        if (item._type === 'Annotation' && !item.component_name.match(/(transmedia|definition)/)) {
           ret.push(item);
         }
       });
@@ -55,7 +55,7 @@ let npFiltersModule = angular.module('np.filters', [])
     return function (items) {
       var ret = [];
       angular.forEach(items, function (item) {
-        if (item._type !== 'Annotation' || item.templateUrl.match(/(transmedia|definition)/)) {
+        if (item._type !== 'Annotation' || item.component_name.match(/(transmedia|definition)/)) {
           ret.push(item);
         }
       });

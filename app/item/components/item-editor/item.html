@@ -3,7 +3,7 @@
 		<div ng-if="appState.product == 'sxs'" class="authoringFormScrollContainer">
 			<!-- begin sxs -->
 			<itt-time-field></itt-time-field>
-			<div ng-include="itemEditor"></div>
+			<div np-dynamic-event-template component-name="{{sxsItemComponentFieldName}}"></div>
 			<!-- end sxs -->
 		</div>
 

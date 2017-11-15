@@ -1,6 +1,9 @@
 'use strict';
 import { createInstance, IEpisode } from '../../models';
 import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../../interfaces';
+import { EventTemplates } from '../../constants';
+import { tmpItemMap } from '../../item/item.module';
+import { templateMap } from '../../../utils/legacy-styles-generator/episode-templates/templateMap';
 
 EditController.$inject = [
   '$scope',
@@ -123,9 +126,8 @@ export default function EditController(
     }
     $rootScope.$emit('searchReindexNeeded'); // HACK
   };
-
   var isTranscript = function (item) {
-    if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
+    if (item._type === 'Annotation' && item.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
       return true;
     } else {
       return false;
@@ -711,6 +713,7 @@ export default function EditController(
       stub.end_time = appState.time;
       stub.stop = true;
       stub.templateUrl = 'templates/item/sxs-' + type + '.html';
+      stub.component_name = templateMap[stub.templateUrl];
     } else {
       var defaultTemplateUrls = {
         "scene": "templates/scene/centered.html",
@@ -722,9 +725,9 @@ export default function EditController(
         "question": "templates/item/question-mc.html",
         "video": "TODO:VIDEO"
       };
-
       stub.templateOpts = selectService.getTemplates(type);
       stub.templateUrl = defaultTemplateUrls[type];
+      stub.component_name = templateMap[stub.templateUrl];
     }
     angular.extend(base, stub);
     return createInstance(stub._type, base);

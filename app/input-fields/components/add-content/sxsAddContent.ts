@@ -8,14 +8,12 @@
  */
 
 import addcontentHtml from './addcontent.html';
-
 sxsAddContent.$inject = ['appState', 'playbackService'];
 
 export default function sxsAddContent(appState, playbackService) {
   return {
     restrict: 'A',
     replace: true,
-    scope: {},
     template: addcontentHtml,
     controller: 'EditController',
     link: function (scope) {

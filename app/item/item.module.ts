@@ -1,6 +1,6 @@
 import ittItem from './components/ittItem';
 import ItemController from './components/ItemController';
-import ittItemEditor from './components/ittItemEditor';
+import ittItemEditor from './components/item-editor/ittItemEditor';
 import ittItemDetailModal from './components/ittItemDetailModal';
 import ittIframe from './components/iframe/ittIframe';
 import { FileTemplate } from './templates/file/file.template';
@@ -31,6 +31,7 @@ import { TranscriptTemplate } from './templates/transcript/transcript.template';
 import {
   TranscriptWiththumbnailTemplate
 } from './templates/transcript-withthumbnail/transcript-withthumbnail.template';
+import { SearchresultsAllTemplate } from './templates/searchresults-all/searchresults-all.template';
 
 const npItemModule = angular.module('np.item', []);
 
@@ -60,13 +61,37 @@ const templateDirectives = [
   TextDefinitionTemplate,
   TextTransmediaTemplate,
   TranscriptTemplate,
-  TranscriptWiththumbnailTemplate
+  TranscriptWiththumbnailTemplate,
+  SearchresultsAllTemplate
 ];
-// const services = [];
 
-// components.forEach((cmp: any) => {
-//   itemModule.component(cmp.Name, new cmp());
-// });
+export const tmpItemMap = {
+  'templates/item/file.html':'file',
+  'templates/item/text-h1.html':'header-one',
+  'templates/item/text-h2.html':'header-two',
+  'templates/item/image-plain.html':'image-plain',
+  'templates/item/image-caption-sliding.html':'image-caption-sliding',
+  'templates/item/image-thumbnail.html':'image-thumbnail',
+  'templates/item/image-fill.html':'image-fill',
+  'templates/item/image-inline-withtext.html':'image-inline-withtext',
+  'templates/item/link.html':'link',
+  'templates/item/link-descriptionfirst.html':'link-descriptionfirst',
+  'templates/item/link-embed.html':'link-embed',
+  'templates/item/link-modal-thumb.html':'link-modal-thumb',
+  'templates/item/link-withimage-notitle.html':'link-withimage-notitle',
+  'templates/item/pullquote.html':'pullquote',
+  'templates/item/question-mc.html':'question-mc',
+  'templates/item/sxs-annotation.html':'sxs-annotation',
+  'templates/item/sxs-file.html':'sxs-file',
+  'templates/item/sxs-image.html':'sxs-image',
+  'templates/item/sxs-link.html':'sxs-link',
+  'templates/item/sxs-question.html':'sxs-question',
+  'templates/item/sxs-video.html':'sxs-video',
+  'templates/item/text-definition.html':'text-definition',
+  'templates/item/text-transmedia.html':'text-transmedia',
+  'templates/item/transcript.html':'transcript',
+  'templates/item/searchresults-all.html': 'searchresults-all'
+};
 
 npItemModule
   .directive('ittItem', ittItem)

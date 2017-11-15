@@ -59,6 +59,7 @@ export abstract class ITemplate {
   applies_to_episodes?: boolean;
   applies_to_narratives?: boolean;
   created_at: Date;
+  component_name?: string;
 }
 
 export class IEpisodeTemplate extends ITemplate {
@@ -276,6 +277,7 @@ export class IEvent {
   style_id: string;
   layouts: string[] = ['inline'];
   templateUrl?: string;
+  component_name?: string;
   producerItemType?: string;
   //group ??
   //event_category ??

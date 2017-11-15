@@ -28,25 +28,32 @@ import ittValidPathslug from './directives/ittValidPathslug';
 import ittValidUrl from './directives/ittValidUrl';
 import { VideoPositionSelect } from './components/ittVideoPositionSelect';
 import { UrlField } from './components/npUrlField';
+import sxsAddContent from './components/add-content/sxsAddContent';
+import sxsAnnotatorAutocomplete from './components/annotator-autocomplete/sxsAnnotatorAutocomplete';
+import { SxsAnnotationFieldTemplate } from './templates/sxs-annotation/sxs-annotation-field.template';
+import { SxsFileFieldTemplate } from './templates/sxs-file/sxs-file-field.template';
+import { SxsImageFieldTemplate } from './templates/sxs-image/sxs-image-field.template';
+import { SxsLinkFieldTemplate } from './templates/sxs-link/sxs-link-field.template';
+import { SxsQuestionFieldTemplate } from './templates/sxs-question/sxs-question-field.template';
+import { SxsVideoFieldTemplate } from './templates/sxs-video/sxs-video-field.template';
+import sxsInputI18n from './components/input-i18n/sxsInputI18n';
+import sxsInputTime from './components/input-time/sxsInputTime';
 
 const npInputFieldsModule = angular.module('np.inputFields', []);
 
-// const components = [];
-// const services = [];
-//
-// components.forEach((cmp: any) => {
-//   inputFieldsModule.component(cmp.Name, new cmp());
-// });
-//
-// services.forEach((svc: any) => {
-//   inputFieldsModule.service(svc.Name, svc);
-// });
+const templates = [
+  SxsAnnotationFieldTemplate,
+  SxsFileFieldTemplate,
+  SxsImageFieldTemplate,
+  SxsLinkFieldTemplate,
+  SxsQuestionFieldTemplate,
+  SxsVideoFieldTemplate
+];
 
-
-const templates = (require as any).context('./components', true, /\.html$/);
-templates.keys().forEach((path: any) => {
-  return templates(path);
+templates.forEach((t: any) => {
+  npInputFieldsModule.directive(t.Name, t.factory());
 });
+
 npInputFieldsModule
   .directive('autofocus', autofocus)
   .directive('ittAnnotationField', ittAnnotationField)
@@ -76,6 +83,10 @@ npInputFieldsModule
   .directive('ittValidEpisodeUrl', ittValidEpisodeUrl)
   .directive('ittValidPathslug', ittValidPathslug)
   .directive('ittValidUrl', ittValidUrl)
+  .directive('sxsInputI18n', sxsInputI18n)
+  .directive('sxsInputTime', sxsInputTime)
+  .directive('sxsAddContent', sxsAddContent)
+  .directive('sxsAnnotatorAutocomplete', sxsAnnotatorAutocomplete)
   .component(VideoPositionSelect.Name, new VideoPositionSelect())
   .component(UrlField.Name, new UrlField());
 
