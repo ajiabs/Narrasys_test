@@ -38,6 +38,10 @@ import { SxsQuestionFieldTemplate } from './templates/sxs-question/sxs-question-
 import { SxsVideoFieldTemplate } from './templates/sxs-video/sxs-video-field.template';
 import sxsInputI18n from './components/input-i18n/sxsInputI18n';
 import sxsInputTime from './components/input-time/sxsInputTime';
+import { UploadMasterassetTemplate } from './templates/upload-masterasset/upload-masterasset.template';
+import { UploadPosterTemplate } from './templates/upload-poster/upload-poster.template';
+import { UploadProducerTemplate } from './templates/upload-producer/upload-producer.template';
+import { UploadSxsTemplate } from './templates/upload-sxs/upload-sxs.template';
 
 const npInputFieldsModule = angular.module('np.inputFields', []);
 
@@ -47,7 +51,11 @@ const templates = [
   SxsImageFieldTemplate,
   SxsLinkFieldTemplate,
   SxsQuestionFieldTemplate,
-  SxsVideoFieldTemplate
+  SxsVideoFieldTemplate,
+  UploadMasterassetTemplate,
+  UploadPosterTemplate,
+  UploadProducerTemplate,
+  UploadSxsTemplate
 ];
 
 templates.forEach((t: any) => {

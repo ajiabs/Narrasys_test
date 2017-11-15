@@ -12,7 +12,7 @@ export default function ittFileField() {
       '	<div class="label">File',
       '		<itt-validation-tip ng-if="ittItemForm.itemAsset.$invalid" text="File is required"></itt-validation-tip>',
       '	</div>',
-      '	<div class="input" ng-include="\'templates/producer/upload-producer.html\'"></div>',
+      '	<div class="input" np-upload-producer-template></div>',
       '</div>'
     ].join(' ')
   };

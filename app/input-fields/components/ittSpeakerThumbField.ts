@@ -8,7 +8,7 @@ export default function ittSpeakerThumbField() {
     template: [
       '<div class="field">',
       '	<div class="label">Speaker thumbnail</div>',
-      '	<div class="input" ng-include="\'templates/producer/upload-producer.html\'"></div>',
+      '	<div class="input" np-upload-producer-template></div>',
       '</div>'
     ].join(' ')
   };

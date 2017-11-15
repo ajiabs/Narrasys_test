@@ -20,7 +20,7 @@
           </div>
           <div class="field" ng-if="masterAssetType == 'Video' && userHasRole('admin')">
             <div class="label">Video</div>
-            <div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>
+            <div class="input" np-upload-masterasset-template></div>
           </div>
 
           <np-url-field
@@ -41,7 +41,7 @@
           <div class="field" ng-if="userHasRole('admin')">
             <div class="label">Poster image
             </div>
-            <div class="input" ng-include="'templates/producer/upload-poster.html'">
+            <div class="input" np-upload-poster-template>
             </div>
           </div>
 

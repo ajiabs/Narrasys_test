@@ -15,7 +15,6 @@ export default function ittScene($timeout, appState) {
       episode: '=episode'
     },
     template: '<span np-dynamic-event-template component-name="{{scene.component_name}}"></span>',
-    // template: '<span ng-include="scene.templateUrl"></span>',
     controller: 'SceneController',
     link: function (scope, element) {
       // force discover and watch modes to not start out scrolled halfway out of view (STORY-161)
