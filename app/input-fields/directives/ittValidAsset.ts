@@ -1,4 +1,6 @@
 // @npUpgrade-inputFields-false
+import { EventTemplates } from '../../constants';
+
 /**
  * Created by githop on 7/12/16.
  */
@@ -26,26 +28,25 @@ export default function ittValidAsset(ittUtils) {
       }
 
       function handleChanges(newVal) {
-        var tmplUrl = newVal.templateUrl;
+        var tmplUrl = newVal.component_name;
         var asset = newVal.asset;
         switch (tmplUrl) {
-          case 'templates/item/file.html':
-          case 'templates/item/image-plain.html':
-          case 'templates/item/image-inline-withtext.html':
-          case 'templates/item/image-caption-sliding.html':
-          case 'templates/item/image.html':
-          case 'templates/item/image-fill.html':
-          case 'templates/item/link-withimage-notitle.html':
+          case EventTemplates.FILE_TEMPLATE:
+          case EventTemplates.IMAGE_PLAIN_TEMPLATE:
+          case EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE:
+          case EventTemplates.SLIDING_CAPTION:
+          case EventTemplates.IMAGE_FILL_TEMPLATE:
+          case EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE:
             if (ittUtils.existy(asset)) {
               ngModelCtrl.$setValidity('itemAsset', true);
             } else {
               ngModelCtrl.$setValidity('itemAsset', false);
             }
             break;
-          case 'templates/item/link.html':
-          case 'templates/item/link-modal-thumb.html':
-          case 'templates/item/link-descriptionfirst.html':
-          case 'templates/item/link-embed.html':
+          case EventTemplates.LINK_TEMPLATE:
+          case EventTemplates.LINK_MODAL_THUMB_TEMPLATE:
+          case EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE:
+          case EventTemplates.LINK_EMBED_TEMPLATE:
             ngModelCtrl.$setValidity('itemAsset', true);
             break;
         }

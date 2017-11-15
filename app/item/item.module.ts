@@ -1,7 +1,7 @@
 import ittItem from './components/ittItem';
 import ItemController from './components/ItemController';
 import ittItemEditor from './components/item-editor/ittItemEditor';
-import ittItemDetailModal from './components/ittItemDetailModal';
+import ittItemDetailModal from './components/item-detail-modal/ittItemDetailModal';
 import ittIframe from './components/iframe/ittIframe';
 import { FileTemplate } from './templates/file/file.template';
 import { HeaderOneTemplate } from './templates/header-one/header-one.template';

@@ -3,6 +3,7 @@
  * Created by githop on 6/7/16.
  */
 import { IDataSvc, IModelSvc } from '../../../interfaces';
+import { EventTemplates } from '../../../constants';
 
 selectService.$inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
 
@@ -11,13 +12,13 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
   var _existy = ittUtils.existy;
 
   var _langOpts = [
-    {value: 'en', name: 'English', isDisabled: false},
-    {value: 'es', name: 'Spanish', isDisabled: false},
-    {value: 'zh', name: 'Chinese', isDisabled: false},
-    {value: 'pt', name: 'Portuguese', isDisabled: false},
-    {value: 'fr', name: 'French', isDisabled: false},
-    {value: 'de', name: 'German', isDisabled: false},
-    {value: 'it', name: 'Italian', isDisabled: false}
+    { value: 'en', name: 'English', isDisabled: false },
+    { value: 'es', name: 'Spanish', isDisabled: false },
+    { value: 'zh', name: 'Chinese', isDisabled: false },
+    { value: 'pt', name: 'Portuguese', isDisabled: false },
+    { value: 'fr', name: 'French', isDisabled: false },
+    { value: 'de', name: 'German', isDisabled: false },
+    { value: 'it', name: 'Italian', isDisabled: false }
   ];
 
   //select opts map
@@ -43,15 +44,15 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
   //moved into a map because we will need to use this
   //when we are handing updates on background images.
   var _scenes = {
-    centered: 'templates/scene/centered.html',      			//Center 1
-    centeredPro: 'templates/scene/centeredPro.html',			//Center 2
-    '1col': 'templates/scene/onecol.html',						//Center 3
-    mirroredTwoCol: 'templates/scene/mirrored-twocol.html', 	//Split 2
-    cornerV: 'templates/scene/cornerV.html',               		//Split 1
-    centerVV: 'templates/scene/centerVV.html',             		//Split 3
-    centerVVMondrian: 'templates/scene/centerVV-Mondrian.html', //Split 4
-    cornerH: 'templates/scene/cornerH.html',                    //Split 5
-    pip: 'templates/scene/pip.html'                             //Split 6
+    centered: EventTemplates.CENTERED_TEMPLATE,      			        //Center 1
+    centeredPro: EventTemplates.CENTERED_PRO_TEMPLATE,			      //Center 2
+    '1col': EventTemplates.ONECOL_TEMPLATE,						            //Center 3
+    mirroredTwoCol: EventTemplates.MIRRORED_TWOCOL_TEMPLATE, 	    //Split 2
+    cornerV: EventTemplates.CORNER_V_TEMPLATE,               		  //Split 1
+    centerVV: EventTemplates.CENTER_VV_TEMPLATE,             		  //Split 3
+    centerVVMondrian: EventTemplates.CENTER_VV_MONDRIAN_TEMPLATE, //Split 4
+    cornerH: EventTemplates.CORNER_H_TEMPLATE,                    //Split 5
+    pip: EventTemplates.PIP_TEMPLATE                              //Split 6
   };
 
   var _bgImageTitles = {
@@ -64,16 +65,16 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
   };
 
   var _D1 = {
-    a: {value: 'showCurrent', name: 'show only current transmedia items'},
-    b: {value: '', name: 'Show all transmedia items, highlight current ones'}
+    a: { value: 'showCurrent', name: 'show only current transmedia items' },
+    b: { value: '', name: 'Show all transmedia items, highlight current ones' }
   };
   var _D2 = {
-    a: {value: 'showCurrent', name: 'Show only current text items'},
-    b: {value: '', name: 'Show all text items, highlight current ones'}
+    a: { value: 'showCurrent', name: 'Show only current text items' },
+    b: { value: '', name: 'Show all text items, highlight current ones' }
   };
   var _D3 = {
-    a: {value: 'showCurrent', name: 'Show only current items'},
-    b: {value: '', name: 'Show all items, highlight current ones'}
+    a: { value: 'showCurrent', name: 'Show only current items' },
+    b: { value: '', name: 'Show all items, highlight current ones' }
   };
 
   var _imageFieldVisibility = _partialVis('imageUpload');
@@ -121,12 +122,12 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _displaySelectVisibility(true);
         _videoPositionSelectVisibility(true);
         _select.display = [
-          {value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false},
-          {value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false},
-          {value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: true},
-          {value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: true},
-          {value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true},
-          {value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true}
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: true },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: true },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true }
         ];
 
         if (isInline) {
@@ -141,12 +142,12 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         var isAdmin = _userHasRole('admin');
         _displaySelectVisibility(true);
         _select.display = [
-          {value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false},
-          {value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false},
-          {value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: !isAdmin},
-          {value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: !isAdmin},
-          {value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true},
-          {value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true},
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: !isAdmin },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: !isAdmin },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true },
         ];
         if (isInline) {
           item.layouts = ['windowBg'];
@@ -157,12 +158,12 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
       case 'mirroredTwoCol':
         _displaySelectVisibility(true);
         _select.display = [
-          {value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false},
-          {value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false},
-          {value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false},
-          {value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false},
-          {value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false},
-          {value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false}
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false }
         ];
 
         if (isInline) {
@@ -176,12 +177,12 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
       case 'cornerH':
         _displaySelectVisibility(true);
         _select.display = [
-          {value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false},
-          {value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false},
-          {value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false},
-          {value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false},
-          {value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false},
-          {value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false}
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false }
         ];
 
         if (isInline) {
@@ -194,12 +195,12 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
       case 'pip':
         _displaySelectVisibility(true);
         _select.display = [
-          {value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: true},
-          {value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false},
-          {value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: true},
-          {value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: true},
-          {value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false},
-          {value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false}
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: true },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: true },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: true },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false }
         ];
 
         if (isInline) {
@@ -210,12 +211,12 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         break;
       case 'centerVVMondrian':
         _select.display = [
-          {value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: true},
-          {value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false},
-          {value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false},
-          {value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false},
-          {value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true},
-          {value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true}
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: true },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true }
         ];
         if (isInline) {
           item.layouts = ['mainBg'];
@@ -233,7 +234,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
   //not the display name, but the key of the scene map as string.
   function getSceneName(scene) {
     return Object.keys(_scenes).filter(function (key) {
-      return _scenes[key] === scene.templateUrl;
+      return _scenes[key] === scene.component_name;
     })[0];
   }
 
@@ -261,14 +262,14 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
   function setupItemForm(stylesArr, type) {
     //global for episode and item
     var _itemFormStub = {
-      "transition": "",
-      "highlight": "",
-      "color": "",
-      "typography": "",
-      "timestamp": "",
+      'transition': '',
+      'highlight': '',
+      'color': '',
+      'typography': '',
+      'timestamp': '',
     };
     var _itemSpecificOpts = {
-      "position": "", // for image fills only
+      'position': '', // for image fills only
     };
     //add additional props for items
     if (type === 'item') {
@@ -327,15 +328,15 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         var scenes = [ //\u2022 = bullet point
-          {url: _scenes.centered, name: 'Center 1 (+ V\u2022TS\u2022ANT\u2022TM)'},
-          {url: _scenes.centeredPro, name: 'Center 2 (+ V\u2022ANT)'},
-          {url: _scenes['1col'], name: 'Center 3 (V\u2022TS\u2022ANT\u2022TM)'},
-          {url: _scenes.cornerV, name: 'Split 1 (V\u2022TS\u2022ANT | TM)'},
-          {url: _scenes.mirroredTwoCol, name: 'Split 2 (V\u2022TM | TS\u2022ANT)'},
-          {url: _scenes.centerVV, name: 'Split 3 (V\u2022ANT | TM)'},
-          {url: _scenes.centerVVMondrian, name: 'Split 4 (V\u2022ANT | TM Invert)'},
-          {url: _scenes.cornerH, name: 'Split 5 (V\u2022TS\u2022ANT / TM)'},
-          {url: _scenes.pip, name: 'Split 6 (TM / V\u2022TS\u2022ANT)'}
+          { url: _scenes.centered, name: 'Center 1 (+ V\u2022TS\u2022ANT\u2022TM)' },
+          { url: _scenes.centeredPro, name: 'Center 2 (+ V\u2022ANT)' },
+          { url: _scenes['1col'], name: 'Center 3 (V\u2022TS\u2022ANT\u2022TM)' },
+          { url: _scenes.cornerV, name: 'Split 1 (V\u2022TS\u2022ANT | TM)' },
+          { url: _scenes.mirroredTwoCol, name: 'Split 2 (V\u2022TM | TS\u2022ANT)' },
+          { url: _scenes.centerVV, name: 'Split 3 (V\u2022ANT | TM)' },
+          { url: _scenes.centerVVMondrian, name: 'Split 4 (V\u2022ANT | TM Invert)' },
+          { url: _scenes.cornerH, name: 'Split 5 (V\u2022TS\u2022ANT / TM)' },
+          { url: _scenes.pip, name: 'Split 6 (TM / V\u2022TS\u2022ANT)' }
         ];
 
         return scenes;
@@ -344,7 +345,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         return [
-          {url: 'templates/item/transcript.html', name: 'Transcript'}
+          { url: EventTemplates.TRANSCRIPT_TEMPLATE, name: 'Transcript' }
         ];
       case 'annotation':
         _speakerFieldVisibility(false);
@@ -352,12 +353,11 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         return [
-          {url: 'templates/item/text-h1.html', name: 'Header 1'},
-          {url: 'templates/item/text-h2.html', name: 'Header 2'},
-          {url: 'templates/item/pullquote.html', name: 'Pullquote'},
-          // {url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
-          {url: 'templates/item/text-transmedia.html', name: 'Long text (as transmedia)'},
-          {url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
+          { url: EventTemplates.HEADER_ONE_TEMPLATE, name: 'Header 1' },
+          { url: EventTemplates.HEADER_TWO_TEMPLATE, name: 'Header 2' },
+          { url: EventTemplates.PULLQUOTE_TEMPLATE, name: 'Pullquote' },
+          { url: EventTemplates.TEXT_TRANSMEDIA_TEMPLATE, name: 'Long text (as transmedia)' },
+          { url: EventTemplates.TEXT_DEFINITION_TEMPLATE, name: 'Definition (as transmedia)' }
         ];
       case 'link':
         _displaySelectVisibility(true);
@@ -367,14 +367,14 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         var linkTemplates = [
-          {url: 'templates/item/link.html', name: 'Link'},
-          {url: 'templates/item/link-withimage-notitle.html', name: 'Link - hide title'},
-          {url: 'templates/item/link-modal-thumb.html', name: 'Link modal'},
-          {url: 'templates/item/link-embed.html', name: 'Embedded link'}
+          { url: EventTemplates.LINK_TEMPLATE, name: 'Link' },
+          { url: EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE, name: 'Link - hide title' },
+          { url: EventTemplates.LINK_MODAL_THUMB_TEMPLATE, name: 'Link modal' },
+          { url: EventTemplates.LINK_EMBED_TEMPLATE, name: 'Embedded link' }
         ];
         if (_userHasRole('admin')) {
           linkTemplates.splice(3, 0, {
-            url: 'templates/item/link-descriptionfirst.html',
+            url: EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE,
             name: 'Link w/ description first'
           });
         }
@@ -387,11 +387,11 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         var imgTemplates = [
-          {url: 'templates/item/image-plain.html', name: 'Plain Image'},
-          {url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
-          {url: 'templates/item/image-caption-sliding.html', name: 'Image with sliding caption'},
-          {url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
-          {url: 'templates/item/image-fill.html', name: 'Background or video overlay'}
+          { url: EventTemplates.IMAGE_PLAIN_TEMPLATE, name: 'Plain Image' },
+          { url: EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE, name: 'Inline Image with text' },
+          { url: EventTemplates.SLIDING_CAPTION, name: 'Image with sliding caption' },
+          { url: EventTemplates.IMAGE_THUMBNAIL_TEMPLATE, name: 'Image thumbnail' },
+          { url: EventTemplates.IMAGE_FILL_TEMPLATE, name: 'Background or video overlay' }
         ];
         return imgTemplates;
       case 'file':
@@ -399,7 +399,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(false);
         _bgImagePositionSelectVisibility(false);
         return [
-          {url: 'templates/item/file.html', name: 'Uploaded File'},
+          { url: EventTemplates.FILE_TEMPLATE, name: 'Uploaded File' },
         ];
       case 'question':
         _displaySelectVisibility(true);
@@ -408,7 +408,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         return [
-          {url: 'templates/item/question-mc.html', name: 'Question'}
+          { url: EventTemplates.QUESTION_TEMPLATE, name: 'Question' }
         ];
       case 'chapter':
         //chapters have no template, but need to do side-effects
@@ -422,39 +422,39 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
     switch (item.producerItemType) {
       case 'scene':
         var isInline = item.layouts[0] === 'inline';
-        switch (item.templateUrl) {
-          case 'templates/scene/centered.html': //centered
-          case 'templates/scene/centeredPro.html': //Centered Pro, Hide Transcript & Transmedia
+        switch (item.component_name) {
+          case EventTemplates.CENTERED_TEMPLATE: //centered
+          case EventTemplates.CENTERED_PRO_TEMPLATE: //Centered Pro, Hide Transcript & Transmedia
             _videoPositionSelectVisibility(false);
             _displaySelectVisibility(false);
             item.layouts[0] = ''; //P1 Video Centered
             item.layouts[1] = _D1.a.value; //showCurrent;
             break;
-          case 'templates/scene/centerVV.html': //Vertical Pro, Hide Transcript
-          case 'templates/scene/centerVV-Mondrian.html': //Vertical Pro Mondrian, Hide Transcript
+          case EventTemplates.CENTER_VV_TEMPLATE: //Vertical Pro, Hide Transcript
+          case EventTemplates.CENTER_VV_MONDRIAN_TEMPLATE: //Vertical Pro Mondrian, Hide Transcript
             _displaySelectVisibility(false);
             _videoPositionSelectVisibility(true);
             _select.video = [
-              {value: 'videoLeft', name: 'Video on Left'},
-              {value: 'videoRight', name: 'Video on Right'}
+              { value: 'videoLeft', name: 'Video on Left' },
+              { value: 'videoRight', name: 'Video on Right' }
             ];
             item.layouts[1] = _D1.a.value;
             if (isInline || item.layouts[0] === '') {
               item.layouts[0] = 'videoLeft'; //P2 video left
             }
             break;
-          case 'templates/scene/cornerV.html': //Corner video, vertical
-          case 'templates/scene/cornerH.html': //Corner video, horizontal
-          case 'templates/scene/pip.html': //picture in picture
+          case EventTemplates.CORNER_V_TEMPLATE: //Corner video, vertical
+          case EventTemplates.CORNER_H_TEMPLATE: //Corner video, horizontal
+          case EventTemplates.PIP_TEMPLATE: //picture in picture
             _displaySelectVisibility(true);
             _videoPositionSelectVisibility(true);
             _select.video = [
-              {value: 'videoLeft', name: 'Video on Left'},
-              {value: 'videoRight', name: 'Video on Right'}
+              { value: 'videoLeft', name: 'Video on Left' },
+              { value: 'videoRight', name: 'Video on Right' }
             ];
             _select.display = [
-              {value: _D1.a.value, name: _D1.a.name},
-              {value: _D1.b.value, name: _D1.b.name}
+              { value: _D1.a.value, name: _D1.a.name },
+              { value: _D1.b.value, name: _D1.b.name }
             ];
 
             if (isInline || item.layouts[0] === '') {
@@ -463,16 +463,16 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
               item.layouts[1] = _D1.a.value;
             }
             break;
-          case 'templates/scene/mirrored-twocol.html': // Two Columns (v2 mirrored vert)
+          case EventTemplates.MIRRORED_TWOCOL_TEMPLATE: // Two Columns (v2 mirrored vert)
             _displaySelectVisibility(true);
             _videoPositionSelectVisibility(true);
             _select.video = [
-              {value: 'videoLeft', name: 'Video on Left'},
-              {value: 'videoRight', name: 'Video on Right'}
+              { value: 'videoLeft', name: 'Video on Left' },
+              { value: 'videoRight', name: 'Video on Right' }
             ];
             _select.display = [
-              {value: _D2.a.value, name: _D2.a.name},
-              {value: _D2.b.value, name: _D2.b.name}
+              { value: _D2.a.value, name: _D2.a.name },
+              { value: _D2.b.value, name: _D2.b.name }
             ];
 
             if (isInline || item.layouts[0] === '') {
@@ -480,12 +480,12 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
               item.layouts[1] = _D2.b.value; //show all + highlight current
             }
             break;
-          case 'templates/scene/onecol.html': //One Column
+          case EventTemplates.ONECOL_TEMPLATE: //One Column
             _displaySelectVisibility(true);
             _videoPositionSelectVisibility(false);
             _select.display = [
-              {value: _D3.a.value, name: _D3.a.name},
-              {value: _D3.b.value, name: _D3.b.name}
+              { value: _D3.a.value, name: _D3.a.name },
+              { value: _D3.b.value, name: _D3.b.name }
             ];
             item.layouts[0] = ''; //P1 Video Centered
             if (isInline) {
@@ -501,8 +501,8 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         if (item.stop === true) {
           item.layouts[0] = 'windowFg';
           //prevent link-modal template from opening on top of stop-item modal
-          if (item.templateUrl === 'templates/item/link-modal-thumb.html') {
-            item.templateUrl = 'templates/item/link-embed.html';
+          if (item.component_name === EventTemplates.LINK_MODAL_THUMB_TEMPLATE) {
+            item.component_name = EventTemplates.LINK_EMBED_TEMPLATE;
             // angular.forEach(item.templateOpts, function(opt) {
             // 	console.log('opt!!', opt);
             // });
@@ -511,14 +511,14 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
           item.layouts[0] = 'inline';
         }
 
-        switch (item.templateUrl) {
-          case 'templates/item/link.html':
-          case 'templates/item/link-withimage-notitle.html':
-          case 'templates/item/link-modal-thumb.html':
+        switch (item.component_name) {
+          case EventTemplates.LINK_TEMPLATE:
+          case EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE:
+          case EventTemplates.LINK_MODAL_THUMB_TEMPLATE:
             _imageFieldVisibility(true);
             break;
-          case 'templates/item/link-descriptionfirst.html':
-          case 'templates/item/link-embed.html':
+          case EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE:
+          case EventTemplates.LINK_EMBED_TEMPLATE:
             _imageFieldVisibility(false);
             break;
         }
@@ -530,19 +530,18 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         break;
       case 'annotation':
         item.layouts[0] = 'inline';
-        switch (item.templateUrl) {
-          case 'templates/item/text-h1.html':
-          case 'templates/item/text-h2.html':
+        switch (item.component_name) {
+          case EventTemplates.HEADER_ONE_TEMPLATE:
+          case EventTemplates.HEADER_TWO_TEMPLATE:
             _speakerFieldVisibility(false);
             _titleFieldVisibility(false);
             break;
-          case 'templates/item/pullquote-noattrib.html':
-          case 'templates/item/pullquote.html':
+          case EventTemplates.PULLQUOTE_TEMPLATE:
             _speakerFieldVisibility(true);
             _titleFieldVisibility(false);
             break;
-          case 'templates/item/text-transmedia.html':
-          case 'templates/item/text-definition.html':
+          case EventTemplates.TEXT_TRANSMEDIA_TEMPLATE:
+          case EventTemplates.TEXT_DEFINITION_TEMPLATE:
             _speakerFieldVisibility(false);
             _titleFieldVisibility(true);
             break;
@@ -553,8 +552,8 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         break;
       case 'question':
         _select.questionType = [
-          {value: 'mc-poll', name: 'Poll'},
-          {value: 'mc-formative', name: 'Formative'}
+          { value: 'mc-poll', name: 'Poll' },
+          { value: 'mc-formative', name: 'Formative' }
         ];
         item.layouts[0] = 'windowFg';
         item.stop = true;
@@ -563,27 +562,27 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         //will set to true in image fill
         _displaySelectVisibility(false);
         var _currentSceneName = getSceneName(modelSvc.scene(item.scene_id));
-        switch (item.templateUrl) {
-          case 'templates/item/image-plain.html':
-          case 'templates/item/image-inline-withtext.html':
-          case 'templates/item/image-caption-sliding.html':
-          case 'templates/item/image-thumbnail.html':
+        switch (item.component_name) {
+          case EventTemplates.IMAGE_PLAIN_TEMPLATE:
+          case EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE:
+          case EventTemplates.SLIDING_CAPTION:
+          case EventTemplates.IMAGE_THUMBNAIL_TEMPLATE:
             //set back to blank when not a BG image.
             itemForm.pin = itemForm.position = '';
             item.layouts[0] = 'inline';
             break;
-          case 'templates/item/image-fill.html':
+          case EventTemplates.IMAGE_FILL_TEMPLATE:
             item.cosmetic = true;
             _displaySelectVisibility(true);
             _bgImagePositionSelectVisibility(true);
             _select.imagePosition = [
-              {value: 'fill', name: 'Fill and stretch'},
-              {value: 'contain', name: 'Contain'},
-              {value: 'cover', name: 'Cover and crop'},
-              {value: 'tl', name: 'Top Left'},
-              {value: 'tr', name: 'Top Right'},
-              {value: 'bl', name: 'Bottom Left'},
-              {value: 'br', name: 'Bottom Right'},
+              { value: 'fill', name: 'Fill and stretch' },
+              { value: 'contain', name: 'Contain' },
+              { value: 'cover', name: 'Cover and crop' },
+              { value: 'tl', name: 'Top Left' },
+              { value: 'tr', name: 'Top Right' },
+              { value: 'bl', name: 'Bottom Left' },
+              { value: 'br', name: 'Bottom Right' },
             ];
             _setAvailableImageOptsForLayout(_currentSceneName, item, itemForm);
         }
@@ -593,13 +592,13 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         break;
       case 'file':
         item.showInlineDetail = false;
-        switch (item.templateUrl) {
-          case 'templates/item/link.html':
+        switch (item.component_name) {
+          case EventTemplates.LINK_TEMPLATE:
             item.showInlineDetail = true;
             break;
-          case 'templates/item/file.html':
-          case 'templates/item/link-descriptionfirst.html':
-          case 'templates/item/link-modal-thumb.html':
+          case EventTemplates.FILE_TEMPLATE:
+          case EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE:
+          case EventTemplates.LINK_MODAL_THUMB_TEMPLATE:
             break;
         }
         if (item.stop === true) {

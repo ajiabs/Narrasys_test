@@ -1,4 +1,6 @@
 // @npUpgrade-scenes-false
+import { EventTemplates } from '../../../constants';
+
 SceneController.$inject = ['$scope', '$filter', 'ittUtils'];
 
 export default function SceneController($scope, $filter, ittUtils) {
@@ -92,16 +94,16 @@ export default function SceneController($scope, $filter, ittUtils) {
   }
 
   function centeredProTransmedia(item) {
-    var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
-    var isH2 = item.templateUrl === 'templates/item/text-h2.html';
-    var isLongTxt = item.templateUrl === 'templates/item/text-transmedia.html';
-    var isDef = item.templateUrl === 'templates/item/text-definition.html';
-    return (isPullQuote || isH2 || isLongTxt || isDef ) ? item : false;
+    var isPullQuote = item.component_name === EventTemplates.PULLQUOTE_TEMPLATE;
+    var isH2 = item.component_name === EventTemplates.HEADER_TWO_TEMPLATE;
+    var isLongTxt = item.component_name === EventTemplates.TEXT_TRANSMEDIA_TEMPLATE;
+    var isDef = item.component_name === EventTemplates.TEXT_DEFINITION_TEMPLATE;
+    return (isPullQuote || isH2 || isLongTxt || isDef) ? item : false;
   }
 
   function byPullquoteOrH2(item) {
-    var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
-    var isH2 = item.templateUrl === 'templates/item/text-h2.html';
+    var isPullQuote = item.component_name === EventTemplates.PULLQUOTE_TEMPLATE;
+    var isH2 = item.component_name === EventTemplates.HEADER_TWO_TEMPLATE;
     return (isPullQuote || isH2) ? item : false;
   }
 

@@ -109,7 +109,7 @@ export default function SearchPanelController($scope, $rootScope, $timeout, appS
       // control whether annotations are shown header-style:
       if (item.producerItemType === 'annotation') {
         // HACK template url dependency
-        item.showAsHeader = !(item.templateUrl.match(/(transmedia|definition)/));
+        item.showAsHeader = !(item.component_name.match(/(transmedia|definition)/));
       }
     });
   };

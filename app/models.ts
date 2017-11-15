@@ -348,7 +348,6 @@ export class IChapter extends IEvent {
 export class IImage extends IEvent {
   type: 'Image';
   _type: 'Image';
-  templateUrl?: string;
 }
 
 class IPluginData {

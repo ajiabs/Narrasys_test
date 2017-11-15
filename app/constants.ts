@@ -21,6 +21,34 @@ export const UPDATE_MAGNET: string = 'magnet.updateMagnet';
 export type UPDATE_MAGNET = 'magnet.updateMagnet';
 
 export namespace EventTemplates {
+
+  export const CENTERED_TEMPLATE = 'centered';
+  export type CENTERED_TEMPLATE = typeof CENTERED_TEMPLATE;
+
+  export const ONECOL_TEMPLATE = 'one-col';
+  export type ONECOL_TEMPLATE = typeof ONECOL_TEMPLATE;
+
+  export const CORNER_H_TEMPLATE = 'corner-h';
+  export type CORNER_H_TEMPLATE = typeof CORNER_H_TEMPLATE;
+
+  export const CORNER_V_TEMPLATE = 'corner-v';
+  export type CORNER_V_TEMPLATE = typeof CORNER_V_TEMPLATE;
+
+  export const PIP_TEMPLATE = 'pip';
+  export type PIP_TEMPLATE = typeof PIP_TEMPLATE;
+
+  export const MIRRORED_TWOCOL_TEMPLATE = 'mirrored-twocol';
+  export type MIRRORED_TWOCOL_TEMPLATE = typeof MIRRORED_TWOCOL_TEMPLATE;
+
+  export const CENTERED_PRO_TEMPLATE = 'centered-pro';
+  export type CENTERED_PRO_TEMPLATE = typeof CENTERED_PRO_TEMPLATE;
+
+  export const CENTER_VV_TEMPLATE = 'center-vv';
+  export type CENTER_VV_TEMPLATE = typeof CENTER_VV_TEMPLATE;
+
+  export const CENTER_VV_MONDRIAN_TEMPLATE = 'center-vv-mondrian';
+  export type CENTER_VV_MONDRIAN_TEMPLATE = typeof CENTER_VV_MONDRIAN_TEMPLATE;
+
   export const FILE_TEMPLATE = 'file';
   export type FILE_TEMPLATE = typeof FILE_TEMPLATE;
 

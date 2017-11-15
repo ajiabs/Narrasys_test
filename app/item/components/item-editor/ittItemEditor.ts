@@ -24,6 +24,7 @@
  */
 
 import itemHtml from './item.html';
+import { EventTemplates } from '../../../constants';
 
 ittItemEditor.$inject = ['$rootScope', 'errorSvc', 'appState', 'modelSvc', 'timelineSvc', 'selectService'];
 
@@ -121,8 +122,11 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
 
         //for producers, if they edit a URL to link-embed template a site that cannot be embedded,
         //change the template URL to 'link'
-        if (appState.product === 'producer' && newItem.target === '_blank' && (newItem.templateUrl === 'templates/item/link-embed.html' || newItem.templateUrl === 'templates/item/link-modal-thumb.html')) {
-          newItem.templateUrl = 'templates/item/link.html';
+        if (appState.product === 'producer'
+          && newItem.target === '_blank'
+          && (newItem.component_name === EventTemplates.LINK_EMBED_TEMPLATE
+            || newItem.component_name === EventTemplates.LINK_MODAL_THUMB_TEMPLATE)) {
+          newItem.component_name = EventTemplates.LINK_TEMPLATE;
         }
 
         // TODO BUG items moved from one scene to another aren't being included in the new scene until the user hits save,
@@ -169,7 +173,7 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         appState.editEvent.fnord = (appState.editEvent.fnord) ? "" : "fnord";
       };
       var isTranscript = function (item) {
-        if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
+        if (item._type === 'Annotation' && item.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
           return true;
         } else {
           return false;

@@ -1,4 +1,6 @@
 // @npUpgrade-inputFields-false
+import { EventTemplates } from '../../constants';
+
 /**
  *
  * Created by githop on 6/30/16.
@@ -40,11 +42,12 @@ export default function ittDisplaySelect() {
       $scope.$watch(watchTemplate, handleChange);
 
       function watchTemplate() {
-        return ctrl.data.templateUrl;
+        return ctrl.data.component_name;
       }
 
       function handleChange(nv) {
-        ctrl.isImageFillTemplate = (nv && nv === 'templates/item/image-fill.html');
+        // ctrl.isImageFillTemplate = (nv && nv === 'templates/item/image-fill.html');
+        ctrl.isImageFillTemplate = (nv && nv === EventTemplates.IMAGE_FILL_TEMPLATE);
 
       }
 

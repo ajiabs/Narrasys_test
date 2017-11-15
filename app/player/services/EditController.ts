@@ -3,7 +3,6 @@ import { createInstance, IEpisode } from '../../models';
 import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../../interfaces';
 import { EventTemplates } from '../../constants';
 import { tmpItemMap } from '../../item/item.module';
-import { templateMap } from '../../../utils/legacy-styles-generator/episode-templates/templateMap';
 
 EditController.$inject = [
   '$scope',
@@ -713,21 +712,22 @@ export default function EditController(
       stub.end_time = appState.time;
       stub.stop = true;
       stub.templateUrl = 'templates/item/sxs-' + type + '.html';
-      stub.component_name = templateMap[stub.templateUrl];
+      stub.component_name = tmpItemMap[stub.templateUrl];
     } else {
       var defaultTemplateUrls = {
-        "scene": "templates/scene/centered.html",
-        "transcript": "templates/item/transcript.html",
-        "annotation": "templates/item/text-h2.html",
-        "link": "templates/item/link.html",
-        "image": "templates/item/image-plain.html",
-        "file": "templates/item/file.html",
-        "question": "templates/item/question-mc.html",
-        "video": "TODO:VIDEO"
+        'scene': 'templates/scene/centered.html',
+        'transcript': 'templates/item/transcript.html',
+        'annotation': 'templates/item/text-h2.html',
+        'link': 'templates/item/link.html',
+        'image': 'templates/item/image-plain.html',
+        'file': 'templates/item/file.html',
+        'question': 'templates/item/question-mc.html',
+        'video': 'TODO:VIDEO'
       };
       stub.templateOpts = selectService.getTemplates(type);
       stub.templateUrl = defaultTemplateUrls[type];
-      stub.component_name = templateMap[stub.templateUrl];
+      const withSceneDefault = Object.assign({}, tmpItemMap, { 'templates/scene/centered.html': 'centered' });
+      stub.component_name = withSceneDefault[stub.templateUrl];
     }
     angular.extend(base, stub);
     return createInstance(stub._type, base);

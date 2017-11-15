@@ -2,6 +2,7 @@
 
 import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IEvent, IScene, ITemplate } from '../../models';
 import { IDataSvc, IEpisodeTheme, IModelSvc, Partial } from '../../interfaces';
+import { EventTemplates } from '../../constants';
 
 export interface IEpisodeEditService {
   updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode>;
@@ -60,6 +61,7 @@ export class EpisodeEditService implements IEpisodeEditService{
               'title': {},
               'description': {},
               'templateUrl': 'templates/scene/onecol.html',
+              'component_name': EventTemplates.ONECOL_TEMPLATE,
               'start_time': 0,
               'end_time': 0,
               'episode_id': epResp._id

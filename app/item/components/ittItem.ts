@@ -4,6 +4,7 @@
  so they get logged properly: don't draw plain hrefs
  */
 import { IValidationSvc } from '../../interfaces';
+import { EventTemplates } from '../../constants';
 
 ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc'];
 
@@ -170,7 +171,7 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
 
       // HACK: need to capture embedded links on item enter, since they're automatically 'clicked'
       // TODO timelineSvc should be able to inform the item directive directly that enter or exit has happened, $watch is silly
-      if (scope.item.templateUrl === 'templates/item/link-embed.html') {
+      if (scope.item.component_name === EventTemplates.LINK_EMBED_TEMPLATE) {
         var captureEmbed = scope.$watch(function () {
           return playbackService.getMetaProp('time') > scope.item.start_time;
         }, function (x) {

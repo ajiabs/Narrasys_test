@@ -4,6 +4,7 @@
  */
 import { IEvent } from '../../models';
 import { existy } from '../../shared/services/ittUtils';
+import { EventTemplates } from '../../constants';
 
 const TEMPLATE = `
 <div class="field">
@@ -34,14 +35,14 @@ const TEMPLATE = `
 interface IFlagsBindings extends ng.IComponentController {
   flags: string[];
   data: IEvent;
-  templateUrl: string;
+  componentName: string;
   itemForm?: ng.IFormController;
 }
 
 class FlagsController implements IFlagsBindings {
   flags: string[];
   data: IEvent;
-  templateUrl: string;
+  componentName: string;
   itemForm?: ng.IFormController;
   _flags: any;
   _displays = {
@@ -69,8 +70,8 @@ class FlagsController implements IFlagsBindings {
   }
 
   $onChanges(changesObj) {
-    if (changesObj.templateUrl) {
-      const { previousValue, currentValue } = changesObj.templateUrl;
+    if (changesObj.componentName) {
+      const { previousValue, currentValue } = changesObj.componentName;
       this.$timeout(() => this.setFlags(currentValue, previousValue));
     }
   }
@@ -91,7 +92,7 @@ class FlagsController implements IFlagsBindings {
 
     if (newVal) {
 
-      if (newVal === 'templates/item/image-fill.html') {
+      if (newVal === EventTemplates.IMAGE_FILL_TEMPLATE) {
         this._flags = this._flags.filter((f) => {
           return f !== 'stop';
         });
@@ -117,7 +118,7 @@ class FlagsController implements IFlagsBindings {
   }
 
   private static _h1OrH2(url) {
-    return (url === 'templates/item/text-h1.html' || url === 'templates/item/text-h2.html');
+    return (url === EventTemplates.HEADER_TWO_TEMPLATE || url === EventTemplates.HEADER_ONE_TEMPLATE);
   }
 
   private _isEditingItemForm() {
@@ -130,7 +131,7 @@ export class Flags implements ng.IComponentOptions {
   bindings: any = {
     flags: '=',
     data: '=',
-    templateUrl: '@',
+    componentName: '@',
     //for the invertColor option
     itemForm: '=?'
   };

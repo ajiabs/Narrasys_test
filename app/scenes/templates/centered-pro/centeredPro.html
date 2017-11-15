@@ -1,6 +1,6 @@
 <div class="scene centered-pro" ng-class="scene.styleCss + ' '+ scene.state">
 	<div itt-item="item" class="item animate banner-pull-quote" ng-class="item.styleCss + ' ' + item.state"
-		 ng-repeat="item in (contentItems | isCurrent | filter:{templateUrl: 'templates/item/text-h1.html'} )">
+		 ng-repeat="item in (contentItems | isCurrent | filter:{component_name: 'header-one'} )">
 	</div>
 	<div class="col">
 		<div itt-magnet class="videoMagnet">

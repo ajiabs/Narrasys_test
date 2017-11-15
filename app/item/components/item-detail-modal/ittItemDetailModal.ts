@@ -14,6 +14,8 @@
  * @param {Object} item Event object to display in modal
  */
 
+import modalHtml from './modal.html';
+
 ittItemDetailModal.$inject = ['appState'];
 
 export default function ittItemDetailModal(appState) {
@@ -23,7 +25,7 @@ export default function ittItemDetailModal(appState) {
     scope: {
       item: '=ittItemDetailModal'
     },
-    templateUrl: 'templates/item/modal.html',
+    template: modalHtml,
     link: function (scope) {
       scope.item = scope.item.item;
       if (!scope.item.animate) {
