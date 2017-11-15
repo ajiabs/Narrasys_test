@@ -82,18 +82,14 @@ angular.module('np.client', [
   .config(['$compileProvider', debugInfoConfig])
   .run(['$rootScope', 'errorSvc', runFunction]);
 
-import rootHtml from './templates/root.html';
-import authHtml from './templates/auth.html';
-import error404Html from './templates/error-404.html';
-
 function routerConfig($routeProvider) {
   $routeProvider
     .when('/', {
       title: 'Narrative Producer',
-      template: rootHtml
+      template: '<np-root-template></np-root-template>'
     })
     .when('/auth', {
-      template: authHtml,
+      template: '<np-auth-template></np-auth-template>',
       reloadOnSearch: false
     })
     .when('/account', {
@@ -193,7 +189,7 @@ function routerConfig($routeProvider) {
     .otherwise({
       title: 'Narrative Producer: Error',
       controller: 'ErrorController',
-      template: error404Html
+      template: '<np-error-404-template></np-error-404-template>'
     });
 
   //$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
