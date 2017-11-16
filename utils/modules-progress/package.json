@@ -1,7 +1,7 @@
 {
   "name": "modules-progress",
   "version": "0.0.1",
-  "dependencies": {
-
+  "scripts": {
+    "progress": "./progress.sh"
   }
 }

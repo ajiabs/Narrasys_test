@@ -1,7 +1,5 @@
-// @npUpgrade-scene-false
+// @npUpgrade-scenes-false
 // Minor jquery dependency ($.inArray)
-import { tmpSceneMap } from '../../scenes.module';
-import { IDynamicTemplateService } from '../../../../interfaces';
 
 ittScene.$inject = ['$timeout', 'appState'];
 

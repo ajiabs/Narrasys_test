@@ -1,8 +1,3 @@
-
-FILES=$(find . -type f -name '*.ts')
-
-for file in $FILES
-do
-  read -r fline < $file
-  echo $fline
-done
+#!/bin/bash
+grep -r '@npUpgrade-' ../../app > progress.txt
+ts-node index.ts
