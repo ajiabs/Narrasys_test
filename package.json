@@ -9,7 +9,7 @@
     "analyze": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.prod analyze --progress --colors",
     "test": "./node_modules/.bin/karma start --browsers Chrome",
     "test:safari": "./node_modules/.bin/karma start --browsers Safari",
-    "release": "cd utils/ts-releaser && yarn release && cd ../modules-progress && yarn progress"
+    "release": "cd utils/ts-releaser && yarn release"
   },
   "dependencies": {
     "@types/angular": "1.5.11",
