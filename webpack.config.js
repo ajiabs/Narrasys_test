@@ -127,7 +127,8 @@ function configWp(env) {
       new HtmlWebpackPlugin({
         template: './app/index.html',
         inject: 'body',
-        hash: false
+        hash: false,
+        ngScript: setAngularVersion(!!env.prod)
       }),
       new HtmlWebpackPlugin({
         filename: 'privacy.html',
@@ -256,6 +257,17 @@ function configWp(env) {
   }
 
   return wpConfig
+}
+
+function setAngularVersion(prod) {
+  let ng;
+  if (prod) {
+    ng = 'angular.min.js';
+  } else {
+    ng = 'angular.js';
+  }
+
+  return `<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/${ng}"></script>`
 }
 
 
