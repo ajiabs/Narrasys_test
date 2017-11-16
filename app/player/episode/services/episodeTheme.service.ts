@@ -1,7 +1,7 @@
 // @npUpgrade-episode-true
 import * as WebFont from 'webfontloader';
 import { IFont, IEpisodeTemplate } from '../../../models';
-
+import { config } from '../../../config';
 export interface IEpisodeTheme {
   sheetLoading: boolean;
   setTheme(template: IEpisodeTemplate): ng.IPromise<void>;
@@ -15,10 +15,9 @@ export class EpisodeTheme implements IEpisodeTheme {
   private imgElm: HTMLImageElement;
   private _sheetLoading: boolean = false;
   static Name = 'episodeTheme'; // tslint:disable-line
-  static $inject = ['$q', 'config'];
+  static $inject = ['$q'];
   constructor(
-    private $q: ng.IQService,
-    private config) {
+    private $q: ng.IQService) {
     //
   }
 
@@ -51,6 +50,10 @@ export class EpisodeTheme implements IEpisodeTheme {
     }
   }
 
+  private static _getHrefPath(templateId): string {
+    return `https:${config.apiDataBaseUrl}/v1/templates/${templateId}.css`;
+  }
+
   private _imgLoadEvtHack(): ng.IPromise<void> {
     // https://www.viget.com/articles/js-201-run-a-function-when-a-stylesheet-finishes-loading
     this.sheetLoading = true;
@@ -68,18 +71,14 @@ export class EpisodeTheme implements IEpisodeTheme {
   }
 
   private _changeHref(id): void {
-    this.linkTag.setAttribute('href', this._getHrefPath(id));
-  }
-
-  private _getHrefPath(templateId): string {
-    return `https:${this.config.apiDataBaseUrl}/v1/templates/${templateId}.css`;
+    this.linkTag.setAttribute('href', EpisodeTheme._getHrefPath(id));
   }
 
   private _appendLinkTag(templateId: string): void {
     const link = document.createElement('link');
     link.setAttribute('id', this.linkId);
     link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', this._getHrefPath(templateId));
+    link.setAttribute('href', EpisodeTheme._getHrefPath(templateId));
     this.linkTag = link;
     document.head.appendChild(this.linkTag);
   }

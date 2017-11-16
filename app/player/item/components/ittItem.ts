@@ -5,10 +5,10 @@
  */
 import { IValidationSvc } from '../../../interfaces';
 import { EventTemplates } from '../../../constants';
+import { config } from '../../../config';
+ittItem.$inject = ['$http', '$timeout', '$interval', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc'];
 
-ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc'];
-
-export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService, validationSvc: IValidationSvc) {
+export default function ittItem($http, $timeout, $interval, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService, validationSvc: IValidationSvc) {
   return {
     restrict: 'A',
     replace: false,

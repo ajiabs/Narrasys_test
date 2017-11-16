@@ -1,7 +1,6 @@
 import authSvc from './services/authSvc/authSvc';
 import { AppState } from './services/appState';
 import awsSvc from './services/awsSvc';
-import config from './services/config';
 import errorSvc from './services/errorSvc';
 import imageResize from './services/imageResizeSvc';
 import { ittUtils } from './services/ittUtils';
@@ -50,7 +49,6 @@ npSharedModule
   .service(UploadsService.Name, UploadsService)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
-  .factory('config', config)
   .factory('dataSvc', dataSvc)
   .factory('errorSvc', errorSvc)
   .factory('imageResize', imageResize)

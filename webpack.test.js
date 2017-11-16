@@ -19,7 +19,7 @@ const wpConfig =  {
     rules: [
       {
         test: /\.ts$/,
-        exclude: [/app\/scripts\/plugin/, /node_modules/],
+        exclude: [/app\/plugin/, /node_modules/],
         use: [
           {
             loader: 'ts-loader',
@@ -33,12 +33,6 @@ const wpConfig =  {
         test: /\.html$/,
         exclude: [resolve(__dirname, 'app', 'index.html'), resolve(__dirname, 'app', 'privacy.html')],
         use: [
-          {
-            loader: 'ngtemplate-loader',
-            options: {
-              relativeTo: join(__dirname, './app/'),
-            },
-          },
           {
             loader: 'html-loader',
             options: {

@@ -2,7 +2,7 @@
 describe('Service: dataSvc', () => {
 
   // load the service's module
-  beforeEach(angular.mock.module('iTT'));
+  beforeEach(angular.mock.module('np.client'));
 
   // instantiate service
   let dataSvc;

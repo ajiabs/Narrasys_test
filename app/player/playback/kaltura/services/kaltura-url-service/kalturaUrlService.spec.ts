@@ -36,7 +36,7 @@ const input = {
 };
 
 describe('\nService: kalturaUrlservice -\n', () => {
-  beforeEach(angular.mock.module('iTT'));
+  beforeEach(angular.mock.module('np.client'));
   let kalturaUrlService;
   beforeEach(angular.mock.inject((_kalturaUrlService_) => {
     kalturaUrlService = _kalturaUrlService_;

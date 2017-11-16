@@ -1,12 +1,12 @@
 // @npUpgrade-playback-false
 import {IParsedMediaSrcObj, IUrlService, IWistiaUrlservice} from '../../../../interfaces';
+import { config } from '../../../../config';
 /**
  * Created by githop on 11/3/16.
  */
+urlService.$inject = ['youtubeUrlService', 'html5UrlService', 'kalturaUrlService', 'wistiaUrlService'];
 
-urlService.$inject = ['youtubeUrlService', 'html5UrlService', 'kalturaUrlService', 'wistiaUrlService', 'config'];
-
-export default function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, wistiaUrlService: IWistiaUrlservice, config) {
+export default function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, wistiaUrlService: IWistiaUrlservice) {
 
   var _urlSubServices = {
     youtube: youtubeUrlService,

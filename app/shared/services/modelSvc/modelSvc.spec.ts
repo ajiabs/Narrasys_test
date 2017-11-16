@@ -12,7 +12,7 @@ import {
 describe('Service: modelSvc', () => {
 
   // load the service's module
-  beforeEach(angular.mock.module('iTT'));
+  beforeEach(angular.mock.module('np.client'));
 
   // instantiate service
   var modelSvc;
@@ -804,7 +804,7 @@ describe('Service: modelSvc', () => {
       expect(tallySceneContents(episodeId)).toEqual(data.length);
     });
     it('resolveEpisodeEvents should assign all events to scenes (2)', () => {
-      var data = mockEpisodeEvents2;
+      var data = mockEpisodeEvents1;
       var episodeId = setupSceneContentsTest(data);
       expect(tallySceneContents(episodeId)).toEqual(data.length);
     });

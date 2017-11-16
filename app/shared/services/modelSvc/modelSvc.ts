@@ -7,6 +7,7 @@ import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent
 import { EventTemplates } from '../../../constants';
 import { tmpSceneMap } from '../../../player/scenes/scenes.module';
 import { tmpItemMap } from '../../../player/item/item.module';
+import { config } from '../../../config';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
@@ -47,9 +48,8 @@ export interface IModelSvc {
     playerType?: 'episode' | 'editor' | 'producer'
   ): string;
 }
-
-modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
-export default function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
+modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'appState', 'playbackService', 'urlService'];
+export default function modelSvc($filter, $location, ittUtils, appState, playbackService, urlService) {
   // const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
   var svc: IModelSvc = Object.create(null);
 
@@ -475,8 +475,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
           event.producerItemType = 'image';
         }
       } else if (event._type === 'Link') {
-
-        if (event.component_name.match(/video/)) {
+        if (event.component_name && event.component_name.match(/video/)) {
           event.producerItemType = 'video';
         } else {
           event.producerItemType = 'link';

@@ -1,7 +1,7 @@
 
 xdescribe('Directive: IttEpisode', () => {
 
-  beforeEach(angular.mock.module('iTT'));
+  beforeEach(angular.mock.module('np.client'));
 
   let $controller;
   beforeEach(angular.mock.inject((_$controller_) => { // tslint:disable-line

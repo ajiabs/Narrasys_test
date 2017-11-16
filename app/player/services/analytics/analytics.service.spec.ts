@@ -5,20 +5,19 @@ Obvious
 
 
 */
+import { config } from '../../../config';
+
 describe('Service: analyticsSvc', () => {
 
   // load the service's module
-  beforeEach(angular.mock.module('iTT'));
+  beforeEach(angular.mock.module('np.client'));
 
   // instantiate services
   var analyticsSvc;
   var appState;
-  var config;
-
-  beforeEach(angular.mock.inject((_analyticsSvc_, _appState_, _config_) => {
+  beforeEach(angular.mock.inject((_analyticsSvc_, _appState_) => {
     analyticsSvc = _analyticsSvc_;
     appState = _appState_;
-    config = _config_;
     appState.user.track_episode_metrics = true;
     config.disableAnalytics = false;
   }));

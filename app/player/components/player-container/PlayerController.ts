@@ -3,9 +3,10 @@
 
 import {IModelSvc, IDataSvc} from '../../../interfaces';
 import { UPDATE_MAGNET } from '../../../constants';
-PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService', 'episodeTheme'];
+import { config } from '../../../config';
+PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService', 'episodeTheme'];
 
-export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService, episodeTheme) {
+export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService, episodeTheme) {
   // console.log("playerController", $scope);
 
   $scope.episodeTheme = episodeTheme;

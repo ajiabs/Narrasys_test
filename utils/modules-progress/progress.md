@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 39, Needs Upgrade: 88, 30% complete
+  ### Upgraded Files: 39, Needs Upgrade: 87, 30% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -11,9 +11,9 @@ Completed:
 * npProjectsContainer.ts
 ### shared - :x:
 Completed: 12,
-    Needs Upgrade: 14,
-    total: 26,
-    percent complete: 46%
+    Needs Upgrade: 13,
+    total: 25,
+    percent complete: 48%
 
 Completed:
 * ittModal.ts
@@ -41,7 +41,6 @@ Needs Upgrade:
 * awsSvc.ts
 * modelSvc.ts
 * mockSvc.ts
-* config.ts
 * imageResizeSvc.ts
 * authSvc.ts
 ### stories - :white_check_mark:

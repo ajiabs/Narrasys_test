@@ -7,6 +7,8 @@
 
  */
 
+import { config } from '../../config';
+
 const noAvatarImg = require('../../images/no-avatar.gif');
 /**
  * @ngdoc service
@@ -133,8 +135,8 @@ export class AppState {
   resizeIframeReviewMode;
   lang;
   static Name = 'appState'; // tslint:disable-line
-  static $inject = ['$interval', 'config'];
-  constructor(private $interval, private config) {
+  static $inject = ['$interval'];
+  constructor(private $interval) {
     this.initService();
   }
 
@@ -181,7 +183,7 @@ export class AppState {
       false
     );
 
-    if (this.config.debugInBrowser) {
+    if (config.debugInBrowser) {
       console.log('appState:', this);
     }
   }

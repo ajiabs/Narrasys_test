@@ -3,6 +3,7 @@ import { existy, pick } from '../../shared/services/ittUtils';
 
 import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../constants';
 import { INarrative, ITempTimeline, ITimeline } from '../../models';
+import { config } from '../../config';
 /**
  * Created by githop on 6/16/16.
  */
@@ -65,17 +66,16 @@ class TimelineEditorController implements ITimelineEditorBindings {
   private _timeline: ITimeline;
   private trueAdmin: boolean;
   private underDelete: boolean = false;
-  static $inject = ['$location', 'config', 'uploadsService', 'authSvc'];
+  static $inject = ['$location', 'uploadsService', 'authSvc'];
   constructor(
     private $location: ng.ILocationService,
-    private config,
     private uploadsService,
     private authSvc) {
     //
   }
 
   $onInit() {
-    this.host = this.$location.protocol() + ':' + this.config.apiDataBaseUrl;
+    this.host = this.$location.protocol() + ':' + config.apiDataBaseUrl;
     this.trueAdmin = this.authSvc.userHasRole('admin');
     if (existy(this.timeline) && (this.timeline as ITempTimeline).isTemp === true) {
       this._timeline = this.timeline;

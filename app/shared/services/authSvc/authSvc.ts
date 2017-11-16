@@ -1,7 +1,10 @@
 // @npUpgrade-shared-false
-authSvc.$inject = ['config', '$routeParams', '$http', '$q', '$location', 'ittUtils', 'appState', 'modelSvc', 'errorSvc'];
 
-export default function authSvc(config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
+import { config } from '../../../config';
+
+authSvc.$inject = ['$routeParams', '$http', '$q', '$location', 'ittUtils', 'appState', 'modelSvc', 'errorSvc'];
+
+export default function authSvc($routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
   // console.log('authSvc factory');
   var svc = {};
   var Roles = {

@@ -1,8 +1,9 @@
 // @npUpgrade-shared-false
+import { config } from '../../config';
 
-awsSvc.$inject = ['$http', '$q', 'config'];
+awsSvc.$inject = ['$http', '$q'];
 
-export default function awsSvc($http, $q, config) {
+export default function awsSvc($http, $q) {
   // console.log('awsSvc, user: ', appState.user);
   var MAX_CHUNKS = 1000;
   var MAX_RETRIES = 4;

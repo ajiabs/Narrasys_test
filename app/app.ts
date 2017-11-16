@@ -23,7 +23,7 @@ import 'textAngular/dist/textAngular-sanitize.min';
 import 'textAngular/dist/textAngular.min';
 import 'angular-socialshare';
 //end text angular
-import './config';
+// import './config';
 // modules
 
 import './shared/shared.module';

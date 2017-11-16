@@ -1,6 +1,6 @@
 
 describe('Component: npCopyright', () => {
-  beforeEach(angular.mock.module('iTT'));
+  beforeEach(angular.mock.module('np.client'));
   let $componentController;
 
   describe('itt copyright', () => {

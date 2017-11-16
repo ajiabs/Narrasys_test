@@ -1,6 +1,6 @@
 describe('Service: authSvc', () => {
 
-  beforeEach(angular.mock.module('iTT'));
+  beforeEach(angular.mock.module('np.client'));
 
   var authSvc;
   beforeEach(angular.mock.inject((_authSvc_) => {

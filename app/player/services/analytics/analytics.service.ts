@@ -29,6 +29,8 @@
  question-answered		for quiz questions.  Data field should be {answer: 'answer text', correct: t/f}
  */
 
+import { config } from '../../../config';
+
 export interface IAnalyticsSvc {
   captureEpisodeActivity(name: AnalyticType, data?): void;
   captureEventActivity(name: AnalyticType, eventID, data?: IAnalyticData, force?): void;
@@ -59,18 +61,18 @@ interface IAnalyticData {
   seekStart?: number;
 }
 
+
 export class AnalyticsService implements IAnalyticsSvc {
   private activityQueue: IAnalytic[] = [];
   private pollInterval: any;
   private pollLength: number = 10 * 1000;
   static Name = 'analyticsSvc'; // tslint:disable-line
-  static $inject = ['$q', '$http', '$routeParams', '$interval', 'config', 'appState', 'playbackService'];
+  static $inject = ['$q', '$http', '$routeParams', '$interval', 'appState', 'playbackService'];
 
   constructor(private $q: ng.IQService,
               private $http: ng.IHttpService,
               private $routeParams,
               private $interval: ng.IIntervalService,
-              private config,
               private appState: AppState,
               private playbackService) {
   }
@@ -106,7 +108,7 @@ export class AnalyticsService implements IAnalyticsSvc {
 
   captureEventActivity(name: AnalyticType, eventID, data?, force?) {
     if (!force) {
-      if (this.config.disableAnalytics || (this.appState.user._id && !this.appState.user.track_event_actions)) {
+      if (config.disableAnalytics || (this.appState.user._id && !this.appState.user.track_event_actions)) {
         return;
       }
     }
@@ -123,13 +125,13 @@ export class AnalyticsService implements IAnalyticsSvc {
   }
 
   readEpisodeActivity(epId) {
-    return this.$http.get(`${this.config.apiDataBaseURl}/v2/episodes/${epId}/episode_user_metrics`)
+    return this.$http.get(`${config.apiDataBaseUrl}/v2/episodes/${epId}/episode_user_metrics`)
       .then((respData) => respData)
       .catch(err => console.log('error'));
   }
 
   readEventActivity(eventId, activityType) {
-    return this.$http.get(`${this.config.apiDataBaseUrl}/v2/events/${eventId}/event_user_actions`)
+    return this.$http.get(`${config.apiDataBaseUrl}/v2/events/${eventId}/event_user_actions`)
       .then(resp => resp.data)
       .then((respData: IAnalytic[]) => {
         if (activityType) {
@@ -182,7 +184,7 @@ export class AnalyticsService implements IAnalyticsSvc {
 
       const posts = [];
       if (eventUserActions.length > 0) {
-        const euaPath = this.config.apiDataBaseUrl + '/v2/episodes/' + this.appState.episodeId + '/event_user_actions';
+        const euaPath = config.apiDataBaseUrl + '/v2/episodes/' + this.appState.episodeId + '/event_user_actions';
         posts.push(
           this.$http.post(euaPath,
             {
@@ -192,7 +194,7 @@ export class AnalyticsService implements IAnalyticsSvc {
       }
       if (episodeUserMetrics.length > 0) {
         posts.push(this.$http.post(
-          this.config.apiDataBaseUrl + '/v2/episodes/' + this.appState.episodeId + '/episode_user_metrics',
+          config.apiDataBaseUrl + '/v2/episodes/' + this.appState.episodeId + '/episode_user_metrics',
           {
             'episode_user_metrics': episodeUserMetrics
           })

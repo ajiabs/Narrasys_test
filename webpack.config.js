@@ -48,7 +48,7 @@ function configWp(env) {
       rules: [
         {
           test: /\.ts$/,
-          exclude: [/app\/scripts\/plugin/, /node_modules/],
+          exclude: [/app\/plugin/, /node_modules/],
           use: [
             {
               loader: 'ts-loader',

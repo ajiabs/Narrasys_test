@@ -10,6 +10,12 @@ const stubNarrativeGuestAccessible: Partial<INarrative> = createInstance('Narrat
   guest_access_allowed: true
 });
 
+const noSubdomainNarrative: Partial<INarrative> = createInstance('Narrative', {
+  _id: 'testing',
+  path_slug: { en: 'guest-accessible-url' },
+  guest_access_allowed: true
+});
+
 const stubNarrative: Partial<INarrative> = createInstance('Narrative', {
   _id: 'testing',
   path_slug: { en: 'guest-accessible-url' },
@@ -25,7 +31,7 @@ const stubTimeline: Partial<ITimeline> = createInstance('Timeline', {
 
 
 describe('Component: GuestAccessibleUrl', () => {
-  beforeEach(angular.mock.module('iTT'));
+  beforeEach(angular.mock.module('np.client'));
   let $componentController;
 
   describe('npGuestAccessibleUrl for narrative with guest access enabled', () => {
@@ -67,6 +73,22 @@ describe('Component: GuestAccessibleUrl', () => {
       const url = $componentController.formatUrlToCopy();
       expect(url).toBe('https://test.narrasys.com/auth/lti?narrative=testing');
     });
+  });
+
+  describe('npGuestAccessibleUrl for narrative with no subdomain', () => {
+    beforeEach(angular.mock.inject((_$componentController_) => { // tslint:disable-line
+      $componentController = _$componentController_('npGuestAccessibleUrl', null, {
+        narrative: noSubdomainNarrative
+      });
+      $componentController.$onInit();
+    }));
+
+
+    it('formatGuestAccessibleUrl() should do stuff', () => {
+      const url = $componentController.formatGuestAccessibleUrl();
+      expect(url).not.toBe(false);
+    });
+
   });
 
   describe('npGuestAccessibleUrl for timeline', () => {

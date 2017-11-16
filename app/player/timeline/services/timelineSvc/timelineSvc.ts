@@ -41,6 +41,7 @@
  */
 /* tslint:enable */
 import {IEvent} from '../../../models';
+import { config } from '../../../../config';
 interface ITimelineEvent {
   t: number;
   id: string;
@@ -81,11 +82,10 @@ export interface ITimelineSvc {
   sortTimeline(): void;
   updateEventStates(): void;
 }
-
 /* tslint:disable */
-timelineSvc.$inject = ['$window', '$timeout', '$interval', '$filter', 'config', 'modelSvc', 'appState', 'analyticsSvc', 'playbackService', 'ittUtils'];
+timelineSvc.$inject = ['$window', '$timeout', '$interval', '$filter', 'modelSvc', 'appState', 'analyticsSvc', 'playbackService', 'ittUtils'];
 
-export default function timelineSvc($window, $timeout, $interval, $filter, config, modelSvc, appState, analyticsSvc, playbackService, ittUtils) {
+export default function timelineSvc($window, $timeout, $interval, $filter, modelSvc, appState, analyticsSvc, playbackService, ittUtils) {
   /* tslint:enable */
   /* tslint:disable:prefer-const */
   var svc: ITimelineSvc = Object.create(null);

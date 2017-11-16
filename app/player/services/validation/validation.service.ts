@@ -1,6 +1,7 @@
 // @npUpgrade-player-true
 import { ILinkStatus } from '../../../models';
 import { ILinkValidFields, Partial, TUrlFieldContexts } from '../../../interfaces';
+import { config } from '../../../config';
 
 /**
  * Created by githop on 5/2/17.
@@ -60,14 +61,13 @@ export interface IValidationSvc {
 
 export class ValidationService implements IValidationSvc {
   static Name = 'validationSvc'; // tslint:disable-line
-  static $inject = ['$http', '$location', '$q', 'authSvc', 'config', 'ittUtils', 'urlService'];
+  static $inject = ['$http', '$location', '$q', 'authSvc', 'ittUtils', 'urlService'];
 
   constructor(
     private $http: ng.IHttpService,
     private $location: ng.ILocationService,
     private $q: ng.IQService,
     private authSvc,
-    private config,
     private ittUtils,
     private urlService) {
   }
@@ -355,7 +355,7 @@ export class ValidationService implements IValidationSvc {
   private SANE_GET(path) {
     return this.authSvc.authenticate()
       .then(() => {
-        return this.$http.get(this.config.apiDataBaseUrl + path)
+        return this.$http.get(config.apiDataBaseUrl + path)
           .then((resp) => {
             return resp.data;
           });

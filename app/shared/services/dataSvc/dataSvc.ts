@@ -10,6 +10,7 @@ import { IEmailFields, IEpisodeTheme, Partial } from '../../../interfaces';
 import { existy, intersection, pick } from '../ittUtils';
 import { tmpSceneMap } from '../../../player/scenes/scenes.module';
 import { tmpItemMap } from '../../../player/item/item.module';
+import { config } from '../../../config';
 
 /**
  * @ngdoc service
@@ -93,9 +94,8 @@ export interface IDataSvc {
   getEpisodeTemplatesAdmin(): ITemplateSelect[];
   getEpisodeTemplatesByCustomerIds(custids: string[]): ITemplateSelect[];
 }
-
-dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
-export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, episodeTheme: IEpisodeTheme) {
+dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
+export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, episodeTheme: IEpisodeTheme) {
   var svc: IDataSvc = Object.create(null);
 
   /* ------------------------------------------------------------------------------ */
