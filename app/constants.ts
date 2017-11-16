@@ -1,6 +1,7 @@
 /**
  * Created by githop on 6/14/17.
  */
+import { capitalize } from './shared/services/ittUtils';
 
 //const / type pattern
 export const SOCIAL_IMAGE_SQUARE: string = 'social_image_square';
@@ -22,10 +23,16 @@ export type UPDATE_MAGNET = 'magnet.updateMagnet';
 
 export namespace EventTemplates {
 
+  export const LANDINGSCREEN_TEMPLATE = 'landingscreen';
+  export type LANDINGSCREEN_TEMPLATE = typeof LANDINGSCREEN_TEMPLATE;
+
+  export const ENDINGSCREEN_TEMPLATE = 'endingscreen';
+  export type ENDINGSCREEN_TEMPLATE = typeof ENDINGSCREEN_TEMPLATE;
+
   export const CENTERED_TEMPLATE = 'centered';
   export type CENTERED_TEMPLATE = typeof CENTERED_TEMPLATE;
 
-  export const ONECOL_TEMPLATE = 'one-col';
+  export const ONECOL_TEMPLATE = 'onecol';
   export type ONECOL_TEMPLATE = typeof ONECOL_TEMPLATE;
 
   export const CORNER_H_TEMPLATE = 'corner-h';
@@ -121,12 +128,21 @@ export namespace EventTemplates {
   export const TRANSCRIPT_TEMPLATE = 'transcript';
   export type TRANSCRIPT_TEMPLATE = typeof TRANSCRIPT_TEMPLATE;
 
-  export const TRANSCRIPT_WITHTHUMBNAIL_TEMPLATE = 'Default'; // DUPLICATE!
-  export type TRANSCRIPT_WITHTHUMBNAIL_TEMPLATE = typeof TRANSCRIPT_WITHTHUMBNAIL_TEMPLATE;
+  // export const TRANSCRIPT_WITHTHUMBNAIL_TEMPLATE = 'Default'; // DUPLICATE!
+  // export type TRANSCRIPT_WITHTHUMBNAIL_TEMPLATE = typeof TRANSCRIPT_WITHTHUMBNAIL_TEMPLATE;
 
-  export const USC_BADGES_TEMPLATE = 'USC Badges';
+  export const USC_BADGES_TEMPLATE = 'usc-badges';
   export type USC_BADGES_TEMPLATE = typeof USC_BADGES_TEMPLATE;
 
-  export const USC_BADGES_INNER_TEMPLATE = 'USC Badges inner';
+  export const USC_BADGES_INNER_TEMPLATE = 'usc-badges-inner';
   export type USC_BADGES_INNER_TEMPLATE = typeof USC_BADGES_INNER_TEMPLATE;
+}
+
+export function componentTemplateNameify(cmp) {
+  const componentName = cmp
+    .split('-')
+    .map(word => capitalize(word))
+    .join('');
+
+  return `np${componentName}Template`;
 }

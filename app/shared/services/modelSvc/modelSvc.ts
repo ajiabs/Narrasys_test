@@ -1161,7 +1161,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       'start_time': -0.01,
       // enforce its firstness; a start time of zero might sort after the first scene which also starts at zero
       'end_time': 0.01,
-      'component_name': 'landingscreen'
+      'component_name': EventTemplates.LANDINGSCREEN_TEMPLATE
     });
   };
 
@@ -1208,7 +1208,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       'cur_episode_id': episodeId,
       'start_time': duration - 0.1,
       'end_time': duration,
-      'component_name': 'endingscreen'
+      'component_name': EventTemplates.ENDINGSCREEN_TEMPLATE
     });
     svc.events['internal:endingscreen:' + episodeId] = setLang(svc.events['internal:endingscreen:' + episodeId]);
     svc.resolveEpisodeEvents(episodeId);
