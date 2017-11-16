@@ -30,7 +30,7 @@ const templates = [
 
 export const tmpSceneMap = {
   'templates/scene/centered.html': 'centered',
-  'templates/scene/1col.html': 'one-col',
+  'templates/scene/1col.html': 'onecol',
   'templates/scene/cornerH.html': 'corner-h',
   'templates/scene/cornerV.html': 'corner-v',
   'templates/scene/pip.html': 'pip',

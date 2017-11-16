@@ -5,7 +5,7 @@ export class TextTransmediaTemplate implements ng.IDirective {
   restrict: string = 'EA';
   template = textTransmediaHttml;
   scope = true;
-  static Name = 'npTextDefinitionTemplate'; // tslint:disable-line
+  static Name = 'npTextTransmediaTemplate'; // tslint:disable-line
 
   static factory(): ng.IDirectiveFactory {
     return () => new TextTransmediaTemplate();

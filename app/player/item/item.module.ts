@@ -67,18 +67,16 @@ const templateDirectives = [
 
 export const tmpItemMap = {
   'templates/item/file.html':'file',
-  'templates/item/text-h1.html':'header-one',
-  'templates/item/text-h2.html':'header-two',
-  'templates/item/image-plain.html':'image-plain',
   'templates/item/image-caption-sliding.html':'image-caption-sliding',
-  'templates/item/image-thumbnail.html':'image-thumbnail',
   'templates/item/image-fill.html':'image-fill',
   'templates/item/image-inline-withtext.html':'image-inline-withtext',
-  'templates/item/link.html':'link',
+  'templates/item/image-plain.html':'image-plain',
+  'templates/item/image-thumbnail.html':'image-thumbnail',
   'templates/item/link-descriptionfirst.html':'link-descriptionfirst',
   'templates/item/link-embed.html':'link-embed',
   'templates/item/link-modal-thumb.html':'link-modal-thumb',
   'templates/item/link-withimage-notitle.html':'link-withimage-notitle',
+  'templates/item/link.html':'link',
   'templates/item/pullquote.html':'pullquote',
   'templates/item/question-mc.html':'question-mc',
   'templates/item/sxs-annotation.html':'sxs-annotation',
@@ -88,9 +86,11 @@ export const tmpItemMap = {
   'templates/item/sxs-question.html':'sxs-question',
   'templates/item/sxs-video.html':'sxs-video',
   'templates/item/text-definition.html':'text-definition',
+  'templates/item/text-h1.html':'header-one',
+  'templates/item/text-h2.html':'header-two',
   'templates/item/text-transmedia.html':'text-transmedia',
   'templates/item/transcript.html':'transcript',
-  'templates/item/searchresults-all.html': 'searchresults-all'
+  'templates/item/usc-badges.html':'usc-badges'
 };
 
 npItemModule

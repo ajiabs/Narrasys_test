@@ -61,7 +61,7 @@ readFile('progress.txt', 'utf8', (err, data) => {
 });
 
 
-function getMdTemplate(modules:  Map<string, { upgraded: string[], needsUpgrade: string[] }>): string {
+function getMdTemplate(modules: Map<string, { upgraded: string[], needsUpgrade: string[] }>): string {
   return `
   # Upgrade Progress
   ### ${getAllStats(modules)}
