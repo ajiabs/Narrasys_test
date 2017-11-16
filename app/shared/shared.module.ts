@@ -25,7 +25,7 @@ import modelSvc from './services/modelSvc/modelSvc';
 import { AssetsResolve } from './components/npAssetsResolve.component';
 import { ErrorNotice } from './components/error-notice/npErrorNotice.component';
 
-import '../filters/filters';
+import './filters/filters';
 import { Loading } from './components/ittLoading';
 import { DynamicEventTemplate } from './directives/dynamic-event-template';
 import { AuthTemplate } from './templates/auth/auth.template';

@@ -1,6 +1,6 @@
 // @npUpgrade-shared-true
 import { IModelSvc, IDataSvc } from '../../../interfaces';
-import { TRANSCRIPT_UPLOAD } from '../../../input-fields/components/ittUploadTranscriptsField';
+import { TRANSCRIPT_UPLOAD } from '../../../player/input-fields/components/ittUploadTranscriptsField';
 import assetUploaderHtml from './asset-uploader.html';
 
 interface AssetUploaderBindings {

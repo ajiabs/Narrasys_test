@@ -2,7 +2,7 @@
 import { createInstance, IEpisode } from '../../models';
 import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../../interfaces';
 import { EventTemplates } from '../../constants';
-import { tmpItemMap } from '../../item/item.module';
+import { tmpItemMap } from '../item/item.module';
 
 EditController.$inject = [
   '$scope',

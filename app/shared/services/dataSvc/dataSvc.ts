@@ -8,8 +8,9 @@ import {
 } from '../../../models';
 import { IEmailFields, IEpisodeTheme, Partial } from '../../../interfaces';
 import { existy, intersection, pick } from '../ittUtils';
-import { tmpSceneMap } from '../../../scenes/scenes.module';
-import { tmpItemMap } from '../../../item/item.module';
+import { tmpSceneMap } from '../../../player/scenes/scenes.module';
+import { tmpItemMap } from '../../../player/item/item.module';
+
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc

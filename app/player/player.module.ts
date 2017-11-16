@@ -16,14 +16,14 @@ import { ittShowHideVisualOnly, visualHideAnimation } from './directives/ittShow
 import ittWidthWatch from './directives/ittWidthWatch';
 import EditController from './services/EditController';
 
-import '../episode/episode.module';
-import '../view-modes/viewModes.module';
-import '../item/item.module';
-import '../input-fields/input-fields.module';
-import '../scenes/scenes.module';
-import '../timeline/timeline.module';
-import '../playback/playback.module';
-import '../question/question.module';
+import './episode/episode.module';
+import './view-modes/viewModes.module';
+import './item/item.module';
+import './input-fields/input-fields.module';
+import './scenes/scenes.module';
+import './timeline/timeline.module';
+import './playback/playback.module';
+import './question/question.module';
 
 const npPlayerModule = angular.module('np.player', [
   'np.episode',

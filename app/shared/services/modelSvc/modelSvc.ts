@@ -4,9 +4,9 @@
 
 import { IAnnotators, Partial } from '../../../interfaces';
 import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent } from '../../../models';
-import { tmpItemMap } from '../../../item/item.module';
-import { tmpSceneMap } from '../../../scenes/scenes.module';
 import { EventTemplates } from '../../../constants';
+import { tmpSceneMap } from '../../../player/scenes/scenes.module';
+import { tmpItemMap } from '../../../player/item/item.module';
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
