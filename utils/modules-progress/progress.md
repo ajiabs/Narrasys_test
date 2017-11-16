@@ -1,17 +1,19 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 39, Needs Upgrade: 88, 44% complete
+  ### Upgraded Files: 39, Needs Upgrade: 88, 30% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
-    total: 1
+    total: 1,
+    percent complete: 100%
 
 Completed:
 * npProjectsContainer.ts
 ### shared - :x:
 Completed: 12,
     Needs Upgrade: 14,
-    total: 26
+    total: 26,
+    percent complete: 46%
 
 Completed:
 * ittModal.ts
@@ -45,7 +47,8 @@ Needs Upgrade:
 ### stories - :white_check_mark:
 Completed: 12,
     Needs Upgrade: 0,
-    total: 12
+    total: 12,
+    percent complete: 100%
 
 Completed:
 * npNarrativeContainer.ts
@@ -63,7 +66,8 @@ Completed:
 ### player - :x:
 Completed: 2,
     Needs Upgrade: 14,
-    total: 16
+    total: 16,
+    percent complete: 12%
 
 Completed:
 * validation.service.ts
@@ -87,7 +91,8 @@ Needs Upgrade:
 ### inputFields - :x:
 Completed: 4,
     Needs Upgrade: 30,
-    total: 34
+    total: 34,
+    percent complete: 11%
 
 Completed:
 * ittUploadTranscriptsField.ts
@@ -129,7 +134,8 @@ Needs Upgrade:
 ### scenes - :x:
 Completed: 0,
     Needs Upgrade: 2,
-    total: 2
+    total: 2,
+    percent complete: 0%
 
 Needs Upgrade:
 * ittScene.ts
@@ -137,7 +143,8 @@ Needs Upgrade:
 ### episode - :x:
 Completed: 4,
     Needs Upgrade: 2,
-    total: 6
+    total: 6,
+    percent complete: 66%
 
 Completed:
 * npCopyright.ts
@@ -151,7 +158,8 @@ Needs Upgrade:
 ### question - :x:
 Completed: 0,
     Needs Upgrade: 6,
-    total: 6
+    total: 6,
+    percent complete: 0%
 
 Needs Upgrade:
 * ittQuestionTextField.ts
@@ -163,7 +171,8 @@ Needs Upgrade:
 ### html5 - :x:
 Completed: 0,
     Needs Upgrade: 2,
-    total: 2
+    total: 2,
+    percent complete: 0%
 
 Needs Upgrade:
 * html5UrlService.ts
@@ -171,7 +180,8 @@ Needs Upgrade:
 ### wistia - :white_check_mark:
 Completed: 3,
     Needs Upgrade: 0,
-    total: 3
+    total: 3,
+    percent complete: 100%
 
 Completed:
 * wistiaUrlService.ts
@@ -180,7 +190,8 @@ Completed:
 ### youtube - :x:
 Completed: 0,
     Needs Upgrade: 3,
-    total: 3
+    total: 3,
+    percent complete: 0%
 
 Needs Upgrade:
 * youtubeUrlService.ts
@@ -189,7 +200,8 @@ Needs Upgrade:
 ### kaltura - :x:
 Completed: 0,
     Needs Upgrade: 3,
-    total: 3
+    total: 3,
+    percent complete: 0%
 
 Needs Upgrade:
 * kalturaUrlService.ts
@@ -198,7 +210,8 @@ Needs Upgrade:
 ### playback - :x:
 Completed: 1,
     Needs Upgrade: 4,
-    total: 5
+    total: 5,
+    percent complete: 20%
 
 Completed:
 * basePlayerManager.ts
@@ -211,7 +224,8 @@ Needs Upgrade:
 ### item - :x:
 Completed: 0,
     Needs Upgrade: 5,
-    total: 5
+    total: 5,
+    percent complete: 0%
 
 Needs Upgrade:
 * ittIframe.ts
@@ -222,7 +236,8 @@ Needs Upgrade:
 ### timeline - :x:
 Completed: 0,
     Needs Upgrade: 3,
-    total: 3
+    total: 3,
+    percent complete: 0%
 
 Needs Upgrade:
 * ittTimeline.ts

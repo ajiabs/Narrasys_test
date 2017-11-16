@@ -76,12 +76,13 @@ function renderModuleList(modules: Map<string, { upgraded: string[], needsUpgrad
     const { upgraded, needsUpgrade } = m[1];
     const name = m[0];
     const moduleStatus = upgraded.length > 0 && needsUpgrade.length === 0 ? ':white_check_mark:' : ':x:';
-
+    const percentComplete = calcPercent(upgraded.length, needsUpgrade.length);
     str += `### ${name} - ${moduleStatus}\n`;
 
     str += `Completed: ${upgraded.length},
     Needs Upgrade: ${needsUpgrade.length},
-    total: ${upgraded.length + needsUpgrade.length}\n`;
+    total: ${upgraded.length + needsUpgrade.length},
+    percent complete: ${percentComplete}%\n`;
 
     if (upgraded.length > 0) {
       str += `\nCompleted:\n`;
@@ -111,8 +112,12 @@ function getAllStats(modules: Map<string, { upgraded: string[], needsUpgrade: st
     totalNeedsUpgrade += needsUpgrade.length;
   }
 
-  const percentComplete = Math.floor((totalUpgraded / totalNeedsUpgrade) * 100);
+  const percentComplete = calcPercent(totalUpgraded, totalNeedsUpgrade);
 
   return `Upgraded Files: ${totalUpgraded}, Needs Upgrade: ${totalNeedsUpgrade}, ${percentComplete}% complete`;
+}
+
+function calcPercent(a: number, b: number): number {
+  return Math.floor((a / (a + b)) * 100);
 }
 
