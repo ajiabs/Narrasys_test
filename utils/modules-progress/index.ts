@@ -75,7 +75,7 @@ function renderModuleList(modules: Map<string, { upgraded: string[], needsUpgrad
   for (const m of modules) {
     const { upgraded, needsUpgrade } = m[1];
     const name = m[0];
-    const moduleStatus = upgraded.length > 0 && needsUpgrade.length === 0 ? ':white_check_mark:' : ':heavy_check_mark:';
+    const moduleStatus = upgraded.length > 0 && needsUpgrade.length === 0 ? ':white_check_mark:' : ':x:';
 
     str += `### ${name} - ${moduleStatus}\n`;
 
@@ -111,8 +111,8 @@ function getAllStats(modules: Map<string, { upgraded: string[], needsUpgrade: st
     totalNeedsUpgrade += needsUpgrade.length;
   }
 
-  let percentComplete = Math.floor((totalUpgraded / totalNeedsUpgrade) * 100);
+  const percentComplete = Math.floor((totalUpgraded / totalNeedsUpgrade) * 100);
 
-  return `Upgraded Files: ${totalUpgraded}, Needs Upgrade: ${totalNeedsUpgrade} ${percentComplete}% complete`;
+  return `Upgraded Files: ${totalUpgraded}, Needs Upgrade: ${totalNeedsUpgrade}, ${percentComplete}% complete`;
 }
 

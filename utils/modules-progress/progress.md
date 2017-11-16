@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 39, Needs Upgrade: 88 44% complete
+  ### Upgraded Files: 39, Needs Upgrade: 88, 44% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -8,7 +8,7 @@ Completed: 1,
 
 Completed:
 * npProjectsContainer.ts
-### shared - :heavy_check_mark:
+### shared - :x:
 Completed: 12,
     Needs Upgrade: 14,
     total: 26
@@ -60,7 +60,7 @@ Completed:
 * ittFiledrop.ts
 * npGuestAccessibleUrl.ts
 * npNarrativeEditor.ts
-### player - :heavy_check_mark:
+### player - :x:
 Completed: 2,
     Needs Upgrade: 14,
     total: 16
@@ -84,7 +84,7 @@ Needs Upgrade:
 * PlayerController.ts
 * ittTab.ts
 * selectService.ts
-### inputFields - :heavy_check_mark:
+### inputFields - :x:
 Completed: 4,
     Needs Upgrade: 30,
     total: 34
@@ -126,7 +126,7 @@ Needs Upgrade:
 * ittTypographySelect.ts
 * ittTimeField.ts
 * ittFlags.ts
-### scenes - :heavy_check_mark:
+### scenes - :x:
 Completed: 0,
     Needs Upgrade: 2,
     total: 2
@@ -134,7 +134,7 @@ Completed: 0,
 Needs Upgrade:
 * ittScene.ts
 * SceneController.ts
-### episode - :heavy_check_mark:
+### episode - :x:
 Completed: 4,
     Needs Upgrade: 2,
     total: 6
@@ -148,7 +148,7 @@ Completed:
 Needs Upgrade:
 * ittEpisodeEditor.ts
 * ittEpisode.ts
-### question - :heavy_check_mark:
+### question - :x:
 Completed: 0,
     Needs Upgrade: 6,
     total: 6
@@ -160,7 +160,7 @@ Needs Upgrade:
 * ittQuestionTypeSelect.ts
 * ittMcQuestion.ts
 * questionAnswersSvc.ts
-### html5 - :heavy_check_mark:
+### html5 - :x:
 Completed: 0,
     Needs Upgrade: 2,
     total: 2
@@ -177,7 +177,7 @@ Completed:
 * wistiaUrlService.ts
 * wistiaScriptLoader.ts
 * wistiaPlayerManager.ts
-### youtube - :heavy_check_mark:
+### youtube - :x:
 Completed: 0,
     Needs Upgrade: 3,
     total: 3
@@ -186,7 +186,7 @@ Needs Upgrade:
 * youtubeUrlService.ts
 * youtubeScriptLoader.ts
 * YouTubePlayerManager.svc.ts
-### kaltura - :heavy_check_mark:
+### kaltura - :x:
 Completed: 0,
     Needs Upgrade: 3,
     total: 3
@@ -195,7 +195,7 @@ Needs Upgrade:
 * kalturaUrlService.ts
 * kalturaScriptLoader.ts
 * kalturaPlayerManager.ts
-### playback - :heavy_check_mark:
+### playback - :x:
 Completed: 1,
     Needs Upgrade: 4,
     total: 5
@@ -208,7 +208,7 @@ Needs Upgrade:
 * urlService.ts
 * playbackService.ts
 * playerManagerCommons.ts
-### item - :heavy_check_mark:
+### item - :x:
 Completed: 0,
     Needs Upgrade: 5,
     total: 5
@@ -219,7 +219,7 @@ Needs Upgrade:
 * ittItem.ts
 * ittItemEditor.ts
 * ittItemDetailModal.ts
-### timeline - :heavy_check_mark:
+### timeline - :x:
 Completed: 0,
     Needs Upgrade: 3,
     total: 3
