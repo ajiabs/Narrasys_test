@@ -209,11 +209,11 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
     this.browseUploaded = false;
   }
 
-  handleImage(data, currTag: TSocialTagTypes): void {
+  handleImage(data, currTag?: TSocialTagTypes): void {
     this.checkAspectRatio(data[0])
       .then(({ images, tag }) => {
 
-        if (currTag !== tag) {
+        if (currTag != null && currTag !== tag) {
           return this.$q.reject({ currTag, tag, errorType: 'TAG_MISMATCH' });
         }
         this.files[tag].file = data;
