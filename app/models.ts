@@ -1,7 +1,7 @@
 import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
 
 
-import { TSocialTagTypes } from './constants';
+import { TAnnotationItemNames, TImageItemNames, TLayoutNames, TLinkItemNames, TSocialTagTypes } from './constants';
 /**
  * Created by githop on 5/1/17.
  */
@@ -323,6 +323,7 @@ export class ILink extends IEvent {
   url_status?: ILinkStatus;
   isVideoUrl: boolean;
   mixedContent?: boolean;
+  component_name?: TLinkItemNames;
 }
 
 export class IAnnotation extends IEvent {
@@ -333,6 +334,7 @@ export class IAnnotation extends IEvent {
   chapter_marker: boolean = false;
   //belongs_to annotation image;
   annotation_image_id: string;
+  component_name?: TAnnotationItemNames;
 }
 
 export class IBookmark extends IEvent {
@@ -348,6 +350,7 @@ export class IChapter extends IEvent {
 export class IImage extends IEvent {
   type: 'Image';
   _type: 'Image';
+  component_name?: TImageItemNames;
 }
 
 class IPluginData {
@@ -375,6 +378,7 @@ export class IScene extends IEvent {
   _internal?: boolean; //client only
   cur_episode_id: string;
   scene_id: string;
+  component_name?: TLayoutNames;
 }
 
 export class IText extends IEvent {
