@@ -5,8 +5,6 @@
 import { IAnnotators, Partial } from '../../../interfaces';
 import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent } from '../../../models';
 import { EventTemplates } from '../../../constants';
-import { tmpSceneMap } from '../../../player/scenes/scenes.module';
-import { tmpItemMap } from '../../../player/item/item.module';
 import { config } from '../../../config';
 
 export interface IModelSvc {
@@ -347,12 +345,6 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
   };
 
   svc.deriveEvent = function (event: Partial<NEvent>): NEvent {
-    // temp code until db is settled
-    if (event instanceof IScene) {
-      event.component_name = tmpSceneMap[event.templateUrl];
-    } else {
-      event.component_name = tmpItemMap[event.templateUrl];
-    }
 
     event = setLang(event);
     if (event._type !== 'Scene') {
@@ -363,9 +355,6 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       }
       if (event.sxs) { // HACK can probably be safely removed?
         event.cosmetic = false;
-      }
-      if (!event.templateUrl) {
-        event.templateUrl = '';
       }
 
       if (event.avatar_id) {
@@ -380,18 +369,9 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
         // HACKS AHOY
         // USC made a bunch of change requests post-release; this was the most expedient way
         // to deal with them. Sorry!
-
-        // I don't know why this situation occurs, but it does:
-        if (event.templateUrl === '') {
-          // event.templateUrl = 'templates/item/usc-badges.html';
-          event.component_name = EventTemplates.USC_BADGES_TEMPLATE;
-        }
+        event.component_name = EventTemplates.USC_BADGES_TEMPLATE;
 
         if (event._type === 'Link') {
-          // if (event.templateUrl === 'templates/transmedia-link-default.html') {
-          //   // they don't want any embedded links (shrug)
-          //   event.templateUrl = 'templates/transmedia-link-noembed.html';
-          // }
           if (event.display_title.match(/ACTIVITY/)) {
             // Unnecessary explanatory text
             event.display_description = event.display_description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
@@ -504,16 +484,13 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       case 'annotation':
         //set to false off the bat, then flip to true for each case
         event.isPq = event.isHeader = event.isLongText = event.isDef = false;
-        // if (/pullquote/.test(event.templateUrl)) {
         if (event.component_name === EventTemplates.PULLQUOTE_TEMPLATE) {
           event.isPq = true;
         }
-        // if (/text-h1|text-h2/.test(event.templateUrl)) {
         if (/header-two|header-one/.test(event.component_name)) {
           event.isHeader = true;
         }
 
-        // if (/text-transmedia/.test(event.templateUrl)) {
         if (event.component_name === EventTemplates.TEXT_TRANSMEDIA_TEMPLATE) {
           event.isLongText = true;
         }
@@ -1154,7 +1131,6 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       '_id': 'internal:landingscreen:' + episodeId,
       '_type': 'Scene',
       '_internal': true,
-      'templateUrl': 'templates/scene/landingscreen.html',
       'cur_episode_id': episodeId,
       'episode_id': episodeId,
       'start_time': -0.01,
@@ -1203,7 +1179,6 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       '_id': 'internal:endingscreen:' + episodeId,
       '_type': 'Scene',
       '_internal': true,
-      'templateUrl': 'templates/scene/endingscreen.html',
       'cur_episode_id': episodeId,
       'start_time': duration - 0.1,
       'end_time': duration,

@@ -1,6 +1,8 @@
 // @npUpgrade-scenes-false
 // Minor jquery dependency ($.inArray)
 
+import { EventTemplates } from '../../../../constants';
+
 ittScene.$inject = ['$timeout', 'appState'];
 
 
@@ -21,6 +23,8 @@ export default function ittScene($timeout, appState) {
       }
       scope.precalculateSceneValues();
       scope.appState = appState;
+
+      scope.headerOneComponentTemplate = EventTemplates.HEADER_ONE_TEMPLATE;
 
       // Trigger twiddleScene when the window changes size, the scene becomes current, or the viewMode changes:
       window.addEventListener('resize', () => twiddleScene());

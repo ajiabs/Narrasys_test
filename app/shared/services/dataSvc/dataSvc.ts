@@ -8,8 +8,6 @@ import {
 } from '../../../models';
 import { IEmailFields, IEpisodeTheme, Partial } from '../../../interfaces';
 import { existy, intersection, pick } from '../ittUtils';
-import { tmpSceneMap } from '../../../player/scenes/scenes.module';
-import { tmpItemMap } from '../../../player/item/item.module';
 import { config } from '../../../config';
 
 /**
@@ -283,11 +281,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.createNarrative = function (narrativeData) {
-    delete narrativeData.templateUrl;
     return SANE_POST('/v3/narratives', narrativeData);
   };
   svc.updateNarrative = function (narrativeData) {
-    delete narrativeData.templateUrl;
     return SANE_PUT('/v3/narratives/' + narrativeData._id, narrativeData);
   };
 
@@ -435,7 +431,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             url: item.url,
             type: 'Scene',
             displayName: item.name,
-            component_name: tmpSceneMap[item.url]
+            component_name: item.component_name
           });
         } else {
           dataCache.template[item._id] = createInstance('ItemTemplate', {
@@ -443,7 +439,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             url: item.url,
             type: item.event_types && item.event_types[0],
             displayName: item.name,
-            component_name: tmpItemMap[item.url]
+            component_name: item.component_name
           });
         }
         // console.log('template?', dataCache.template[item._id]);
@@ -502,22 +498,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   // transform API common IDs into real values
   svc.resolveIDs = function (obj) {
     // console.log("resolving IDs", obj);
-
-    // temporary:
-    // if (obj.everyone_group && !obj.template_id) {
-    //   obj.templateUrl = 'templates/narrative/default.html';
-    // }
-    if (obj.template_id) {
-      if (dataCache.template[obj.template_id]) {
-        if (obj.master_asset_id == null) {
-          obj.templateUrl = dataCache.template[obj.template_id].url;
-        }
-      } else {
-        errorSvc.error({
-          data: 'Couldn\'t get templateUrl for id ' + obj.template_id
-        });
-      }
-    }
     if (obj.layout_id) {
       var layouts = [];
       if (obj.type === 'Scene') {
@@ -1123,7 +1103,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'episode_id',
       'chapter_marker',
       'template_id',
-      'templateUrl', // We should get this from template_id, but for now there's a dependency in editController on this existing. TODO remove that dependency
       'stop',
       'required',
       'cosmetic',
@@ -1193,8 +1172,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     if (evt._type === 'Chapter') {
       return prepped;
     }
-    const template = svc.readCache('template', 'url', evt.templateUrl) as ILayoutTemplate | IItemTemplate;
-    const template2 = svc.readCache('template', 'component_name', evt.component_name) as ILayoutTemplate | IItemTemplate;
+    const template = svc.readCache('template', 'component_name', evt.component_name) as ILayoutTemplate | IItemTemplate;
     if (template) {
       prepped.template_id = template.id;
     }

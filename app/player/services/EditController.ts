@@ -2,7 +2,6 @@
 import { createInstance, IEpisode } from '../../models';
 import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../../interfaces';
 import { EventTemplates } from '../../constants';
-import { tmpItemMap } from '../item/item.module';
 
 EditController.$inject = [
   '$scope',
@@ -585,14 +584,14 @@ export default function EditController(
 
   var generateEmptyItem = function (type) {
     var base = {
-      "_id": "internal:editing",
-      "start_time": playbackService.getMetaProp('time'),
-      "episode_id": appState.episodeId,
+      '_id': 'internal:editing',
+      'start_time': playbackService.getMetaProp('time'),
+      'episode_id': appState.episodeId,
       // "type": type,  <-- NOPE that's a bug.  Confusing, so I'm leaving in this comment:  API types are Plugin, Scene, Upload, Link; these producer item types are different
-      "isCurrent": true,
-      "producerItemType": type,
-      "layouts": ["inline"],
-      "styles": []
+      'isCurrent': true,
+      'producerItemType': type,
+      'layouts': ['inline'],
+      'styles': []
     };
     /*
      Item types:
@@ -616,9 +615,9 @@ export default function EditController(
     var stub = Object.create(null);
     if (type === 'scene') {
       stub = {
-        "_type": "Scene",
-        "title": {},
-        "description": {}
+        '_type': 'Scene',
+        'title': {},
+        'description': {}
       };
     }
     if (type === 'chapter') {
@@ -632,70 +631,70 @@ export default function EditController(
       // TODO: this should be an injected episode with the linked/uploaded video as its master asset.
       // For now we're faking it as a link item.
       stub = {
-        "_type": "Link",
-        "link_image_id": "",
-        "url": "",
-        "title": {},
-        "description": {}
+        '_type': 'Link',
+        'link_image_id': '',
+        'url': '',
+        'title': {},
+        'description': {}
       };
     }
 
     if (type === 'comment' || type === 'transcript' || type === 'annotation') {
       stub = {
-        "_type": "Annotation",
-        "annotation": {},
-        "annotator": {},
-        "annotation_image_id": ""
+        '_type': 'Annotation',
+        'annotation': {},
+        'annotator': {},
+        'annotation_image_id': ''
       };
     }
 
     if (type === 'file' || type === 'image') {
       stub = {
-        "_type": "Upload",
-        "asset_id": "",
-        "title": {},
-        "description": {}
+        '_type': 'Upload',
+        'asset_id': '',
+        'title': {},
+        'description': {}
       };
     }
 
     if (type === 'link') {
       stub = {
-        "_type": "Link",
-        "link_image_id": "",
-        "url": "https://",
-        "title": {},
-        "target": "_self",
-        "description": {},
-        "url_status": {}
+        '_type': 'Link',
+        'link_image_id': '',
+        'url': 'https://',
+        'title': {},
+        'target': '_self',
+        'description': {},
+        'url_status': {}
       };
     }
 
     if (type === 'question') {
       // TODO i18n
       stub = {
-        "_type": "Plugin",
-        "title": {},
-        "data": {
-          "_pluginType": "question",
-          "_version": 2,
-          "_plugin": {
-            "questiontext": "",
-            "questiontype": "mc-formative",
-            "distractors": [{
-              "index": 1,
-              "text": ""
+        '_type': 'Plugin',
+        'title': {},
+        'data': {
+          '_pluginType': 'question',
+          '_version': 2,
+          '_plugin': {
+            'questiontext': '',
+            'questiontype': 'mc-formative',
+            'distractors': [{
+              'index': 1,
+              'text': ''
             }, {
-              "index": 2,
-              "text": ""
+              'index': 2,
+              'text': ''
             }, {
-              "index": 3,
-              "text": ""
+              'index': 3,
+              'text': ''
             }, {
-              "index": 4,
-              "text": ""
+              'index': 4,
+              'text': ''
             }],
-            "correctfeedback": "",
-            "incorrectfeedback": ""
+            'correctfeedback': '',
+            'incorrectfeedback': ''
           }
         }
       };
@@ -708,26 +707,24 @@ export default function EditController(
       stub.annotator = {
         en: appState.user.name
       };
-      stub.layouts = ["windowFg"];
+      stub.layouts = ['windowFg'];
       stub.end_time = appState.time;
       stub.stop = true;
-      stub.templateUrl = 'templates/item/sxs-' + type + '.html';
-      stub.component_name = tmpItemMap[stub.templateUrl];
+      // stub.templateUrl = 'templates/item/sxs-' + type + '.html';
+      // stub.component_name = tmpItemMap[stub.templateUrl];
     } else {
-      var defaultTemplateUrls = {
-        'scene': 'templates/scene/centered.html',
-        'transcript': 'templates/item/transcript.html',
-        'annotation': 'templates/item/text-h2.html',
-        'link': 'templates/item/link.html',
-        'image': 'templates/item/image-plain.html',
-        'file': 'templates/item/file.html',
-        'question': 'templates/item/question-mc.html',
+      const defaultTemplateNames = {
+        'scene': EventTemplates.CENTERED_TEMPLATE,
+        'transcript': EventTemplates.TRANSCRIPT_TEMPLATE,
+        'annotation': EventTemplates.HEADER_TWO_TEMPLATE,
+        'link': EventTemplates.LINK_TEMPLATE,
+        'image': EventTemplates.IMAGE_PLAIN_TEMPLATE,
+        'file': EventTemplates.FILE_TEMPLATE,
+        'question': EventTemplates.QUESTION_TEMPLATE,
         'video': 'TODO:VIDEO'
       };
       stub.templateOpts = selectService.getTemplates(type);
-      stub.templateUrl = defaultTemplateUrls[type];
-      const withSceneDefault = Object.assign({}, tmpItemMap, { 'templates/scene/centered.html': 'centered' });
-      stub.component_name = withSceneDefault[stub.templateUrl];
+      stub.component_name = defaultTemplateNames[type];
     }
     angular.extend(base, stub);
     return createInstance(stub._type, base);

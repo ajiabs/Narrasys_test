@@ -102,7 +102,6 @@ export class IEpisode {
   templateCss?: string;
   style_id: string[];
   styles: string[];
-  // templateUrl: string;
   template_id: string;
   template?: IEpisodeTemplate;
   title: ILangForm;
@@ -276,9 +275,9 @@ export class IEvent {
   layout_id: string;
   style_id: string;
   layouts: string[] = ['inline'];
-  templateUrl?: string;
   component_name?: string;
   producerItemType?: string;
+  cur_episode_id?: string;
   //group ??
   //event_category ??
 
