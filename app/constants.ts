@@ -22,7 +22,6 @@ export const UPDATE_MAGNET: string = 'magnet.updateMagnet';
 export type UPDATE_MAGNET = 'magnet.updateMagnet';
 
 export namespace EventTemplates {
-
   export const LANDINGSCREEN_TEMPLATE = 'layout-landingscreen';
   export type LANDINGSCREEN_TEMPLATE = typeof LANDINGSCREEN_TEMPLATE;
 
@@ -113,6 +112,9 @@ export namespace EventTemplates {
   export const SXS_VIDEO_TEMPLATE = 'item-sxs-video';
   export type SXS_VIDEO_TEMPLATE = typeof SXS_VIDEO_TEMPLATE;
 
+  export const SXS_IMAGE_TEMPLATE = 'item-sxs-image';
+  export type SXS_IMAGE_TEMPLATE = typeof SXS_IMAGE_TEMPLATE;
+
   export const TEXT_DEFINITION_TEMPLATE = 'item-text-definition';
   export type TEXT_DEFINITION_TEMPLATE = typeof TEXT_DEFINITION_TEMPLATE;
 
@@ -160,6 +162,7 @@ export type TSxsItemNames = EventTemplates.SXS_QUESTION_TEMPLATE
 | EventTemplates.SXS_ANNOTAITON_TEMPLATE
 | EventTemplates.SXS_FILE_TEMPLATE
 | EventTemplates.SXS_LINK_TEMPLATE
+| EventTemplates.SXS_IMAGE_TEMPLATE
 | EventTemplates.SXS_VIDEO_TEMPLATE;
 
 export type TTextDefItemNames = EventTemplates.TEXT_DEFINITION_TEMPLATE;
@@ -197,7 +200,7 @@ export type TEventTemplateNames = EventTemplates.USC_BADGES_TEMPLATE
 | TAnnotationItemNames
 | TLayoutNames;
 
-export function componentTemplateNameify(cmp: string): string {
+export function componentTemplateNameify(cmp: TEventTemplateNames): string {
   const componentName = cmp
     .split('-')
     .map(word => capitalize(word))

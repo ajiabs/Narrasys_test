@@ -36,7 +36,7 @@ export function ittUtils($timeout) {
 
 export function capitalize(str) {
   if (existy(str)) {
-    return str.slice(0, 1).toUpperCase() + str.slice(1);
+    return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();
   }
 }
 
