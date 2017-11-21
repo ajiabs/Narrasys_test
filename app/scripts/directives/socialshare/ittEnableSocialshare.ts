@@ -393,9 +393,9 @@ class EnableSocialshareController implements ng.IComponentController, IEnableSoc
 export class EnableSocialshare implements ng.IComponentOptions {
   bindings: any = {
     containerId: '@?',
-    narrative: '=',
-    timeline: '=?',
-    editorForm: '='
+    narrative: '<',
+    timeline: '<?',
+    editorForm: '<'
   };
   template: string = TEMPLATE;
   controller = EnableSocialshareController;

@@ -17,7 +17,6 @@ export default function ittValidPathslug(modelSvc, ittUtils) {
       var parentCtrl = ctrls[1];
       var customer = modelSvc.customers[parentCtrl.narrative.customer_id] || parentCtrl.customer;
 
-      console.log('huh', ctrls[1]);
       var pathSlugs = parentCtrl.type === 'narrative' ?
         modelSvc.cachedNarrativesByCustomer(customer) :
         parentCtrl.narrative.timelines;

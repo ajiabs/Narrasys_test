@@ -31,7 +31,7 @@ class NarrativesContainerController implements INarrativesContainerBindings {
 
   $onInit() {
     this._resolveCustomers()
-      .then((c: ICustomer[]) => this.customersData = c);
+      .then((c: ICustomer[]) => this.customersData = this.modelSvc.getCustomersAsArray());
   }
 
   logout() {
