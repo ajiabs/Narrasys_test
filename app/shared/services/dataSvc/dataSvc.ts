@@ -362,12 +362,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
   };
 
-  var dataCache = {
-    template: {},
-    layout: {},
-    style: {}
-  };
-
   // Gets all layouts, styles, and templates
   var gettingCommon = false;
   var getCommonDefer = $q.defer();
@@ -415,7 +409,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          type: string
          */
         if (item.applies_to_episodes) {
-          dataCache.template[item._id] = createInstance('EpisodeTemplate', {
+          modelSvc.dataCache.template[item._id] = createInstance('EpisodeTemplate', {
             id: item._id,
             url: item.url,
             type: 'Episode',
@@ -426,7 +420,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             pro_episode_template: item.pro_episode_template
           });
         } else if (item.event_types && item.event_types && item.event_types[0] === 'Scene') {
-          dataCache.template[item._id] = createInstance('LayoutTemplate', {
+          modelSvc.dataCache.template[item._id] = createInstance('LayoutTemplate', {
             id: item._id,
             url: item.url,
             type: 'Scene',
@@ -434,7 +428,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             component_name: item.component_name
           });
         } else {
-          dataCache.template[item._id] = createInstance('ItemTemplate', {
+          modelSvc.dataCache.template[item._id] = createInstance('ItemTemplate', {
             id: item._id,
             url: item.url,
             type: item.event_types && item.event_types[0],
@@ -452,7 +446,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          display_name				"Video Left"
          updated_at					"2013-11-20T20:13:31Z"
          */
-        dataCache.layout[item._id] = createInstance('Layout', {
+        modelSvc.dataCache.layout[item._id] = createInstance('Layout', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
@@ -467,7 +461,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          display_name	"Typography Serif"
          updated_at		"2013-11-20T20:13:37Z"
          */
-        dataCache.style[item._id] = createInstance('Style', {
+        modelSvc.dataCache.style[item._id] = createInstance('Style', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
@@ -504,18 +498,18 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         layouts = ['', ''];
       }
       angular.forEach(obj.layout_id, function (id) {
-        if (dataCache.layout[id]) {
+        if (modelSvc.dataCache.layout[id]) {
           if (obj.type === 'Scene') {
             //conditions outside of 'showCurrent' necessary for USC scholar
-            if (dataCache.layout[id].css_name === 'showCurrent') {
-              layouts[1] = dataCache.layout[id].css_name;
-            } else if (dataCache.layout[id].css_name === 'splitRequired') {
-              layouts[2] = dataCache.layout[id].css_name;
+            if (modelSvc.dataCache.layout[id].css_name === 'showCurrent') {
+              layouts[1] = modelSvc.dataCache.layout[id].css_name;
+            } else if (modelSvc.dataCache.layout[id].css_name === 'splitRequired') {
+              layouts[2] = modelSvc.dataCache.layout[id].css_name;
             } else {
-              layouts[0] = dataCache.layout[id].css_name;
+              layouts[0] = modelSvc.dataCache.layout[id].css_name;
             }
           } else {
-            layouts.push(dataCache.layout[id].css_name);
+            layouts.push(modelSvc.dataCache.layout[id].css_name);
           }
         } else {
           errorSvc.error({
@@ -531,8 +525,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     if (obj.style_id) {
       var styles = [];
       angular.forEach(obj.style_id, function (id) {
-        if (dataCache.style[id]) {
-          styles.push(dataCache.style[id].css_name);
+        if (modelSvc.dataCache.style[id]) {
+          styles.push(modelSvc.dataCache.style[id].css_name);
         } else {
           errorSvc.error({
             data: 'Couldn\'t get style for id ' + id
@@ -624,7 +618,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
         }
         if (episodeData.status === 'Published' || authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
-          const episodeTemplate = dataCache.template[episodeData.template_id];
+          const episodeTemplate = modelSvc.dataCache.template[episodeData.template_id];
           episodeData.template = episodeTemplate;
           modelSvc.cache('episode', svc.resolveIDs(episodeData));
           if (episodeTemplate) {
@@ -1264,7 +1258,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   // careful to only use this for guaranteed unique fields (style and layout names, basically)
   svc.readCache = function (cache, field, val) {
     var found = false;
-    angular.forEach(dataCache[cache], function (item) {
+    angular.forEach(modelSvc.dataCache[cache], function (item) {
       if (item[field] === val) {
         found = item;
       }
@@ -1276,12 +1270,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
   if (config.debugInBrowser) {
     // console.log("DataSvc:", svc);
-    console.log('DataSvc cache:', dataCache);
+    console.log('DataSvc cache:', modelSvc.dataCache);
   }
 
   svc.getTemplates = function () {
-    return Object.keys(dataCache.template).map(function (t) {
-      return dataCache.template[t];
+    return Object.keys(modelSvc.dataCache.template).map(function (t) {
+      return modelSvc.dataCache.template[t];
     });
   };
 
@@ -1337,7 +1331,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   svc.getTemplate = getTemplate;
   function getTemplate(id: string): ITemplate {
-    return dataCache.template[id];
+    return modelSvc.dataCache.template[id];
   }
 
   /*

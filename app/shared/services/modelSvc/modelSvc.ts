@@ -3,9 +3,18 @@
  and derives secondary data where necessary for performance/convenience/fun */
 
 import { IAnnotators, Partial } from '../../../interfaces';
-import { createInstance, IAsset, ICustomer, IEpisode, INarrative, IScene, NEvent } from '../../../models';
+import {
+  createInstance, IAsset, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, ITemplate,
+  NEvent
+} from '../../../models';
 import { EventTemplates } from '../../../constants';
 import { config } from '../../../config';
+
+interface IDataCache {
+  template: { [templateId: string]: ITemplate };
+  layout: { [layoutId: string]: ILayout };
+  style: { [styleId: string]: IStyle };
+}
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: any };
@@ -14,6 +23,7 @@ export interface IModelSvc {
   containers: { [containerId: string]: any };
   narratives: { [narrativeId: string]: any };
   customers: { [customerId: string]: any };
+  dataCache: IDataCache;
   getNarrativeByPathOrId(pathOrId: string): INarrative;
   assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer;
   cachedNarrativesByCustomer(customer: any): any;
@@ -57,6 +67,11 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
   svc.containers = {};
   svc.narratives = {};
   svc.customers = {};
+  svc.dataCache = {
+    template: {},
+    layout: {},
+    style: {}
+  } as IDataCache;
 
   // receives cacheTypes of episode, event, asset, and container.
   // splits event into scenes and items.  Not sure yet whether we care about containers, discarding them for now.
@@ -345,6 +360,10 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
   };
 
   svc.deriveEvent = function (event: Partial<NEvent>): NEvent {
+    const cmpTemplate = svc.dataCache.template[event.template_id];
+    if (cmpTemplate != null) {
+      event.component_name = cmpTemplate.component_name;
+    }
 
     event = setLang(event);
     if (event._type !== 'Scene') {
