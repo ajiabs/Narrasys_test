@@ -23,6 +23,7 @@ class EditPencilController implements IEditPencilBindings {
   onEdit: ($event: {$event: ng.IAngularEvent}) => { $event: ng.IAngularEvent };
   //
   showPencil: boolean = false;
+  $onInit;
   static $inject = [];
   sendEdit($event: ng.IAngularEvent) {
     this.showPencil = false;

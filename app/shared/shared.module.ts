@@ -30,6 +30,7 @@ import { DynamicEventTemplate } from './directives/dynamic-event-template';
 import { AuthTemplate } from './templates/auth/auth.template';
 import { Error404Template } from './templates/error-404/error-404.template';
 import { RootTemplate } from './templates/root/root.template';
+import { SxsContainerAssets } from './components/container-assets/sxsContainerAssets';
 const npSharedModule = angular.module('np.shared', [
   'np.filters'
 ]);
@@ -44,6 +45,7 @@ sharedTemplates.forEach((t: any) => {
   npSharedModule.directive(t.Name, t.factory());
 });
 
+
 npSharedModule
   .service(AppState.Name, AppState)
   .service(UploadsService.Name, UploadsService)
@@ -55,6 +57,7 @@ npSharedModule
   .factory('ittUtils', ittUtils)
   .factory('mockSvc', mockSvc)
   .factory('modelSvc', modelSvc)
+  .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .component(AssetUploader.Name, new AssetUploader())
   .component(Container.Name, new Container())
   .component(EpisodeList.Name, new EpisodeList())
