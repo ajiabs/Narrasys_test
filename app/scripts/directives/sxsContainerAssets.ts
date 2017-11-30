@@ -139,7 +139,8 @@ export class SxsContainerAssets implements ng.IComponentOptions {
     containerId: '@',
     mimeKey: '@?',
     context: '@?',
-    onAssetSelect: '&?'
+    onAssetSelect: '&?',
+    onAssetRemove: '&?'
   };
   templateUrl: string = 'templates/producer/container-assets.html';
   controller: ng.IComponentController = SxsContainerAssetsController;

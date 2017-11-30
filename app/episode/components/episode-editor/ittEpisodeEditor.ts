@@ -299,10 +299,12 @@ export default function ittEpisodeEditor(
 
       scope.detachMasterAsset = detachMasterAsset;
       function detachMasterAsset() {
+        scope.episode.master_asset_id = 'nil';
         scope.episode.masterAsset = null;
+        appState.editEpisode.master_asset_id = 'nil';
         appState.editEpisode.masterAsset = null;
         appState.editEpisode._master_asset_was_changed = true;
-        episodeEdit.detatchMasterAsset(scope.episode);
+        // episodeEdit.saveEpisode(scope.episode);
       }
 
       scope.saveEpisode = saveEpisode;
