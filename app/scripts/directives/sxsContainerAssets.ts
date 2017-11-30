@@ -3,12 +3,15 @@
 import {IDataSvc, IModelSvc} from '../interfaces';
 
 import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
+import { IAsset } from '../models';
+import { omit } from '../services/ittUtils';
 
 interface ISxsContainerAssetsBindings {
   containerId: string;
   mimeKey?: string;
   context?: string;
   onAssetSelect?: ($assetId: string) => string;
+  onAssetRemove?: ($ev: { $assetId: string }) => ({ $assetId: string });
 }
 
 class SxsContainerAssetsController implements ng.IComponentController, ISxsContainerAssetsBindings {
@@ -16,6 +19,7 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
   mimeKey?: string;
   context?: string;
   onAssetSelect?: ($assetId) => string;
+  onAssetRemove?: ($ev: { $assetId: string }) => ({ $assetId: string });
   //
   mimes: string;
   isAdmin: boolean;
@@ -23,9 +27,10 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
   canAccess: boolean;
   showParent: boolean;
   container: any;
-  assets: any;
+  assets: { [assetId: string]: IAsset };
   onlyImages: boolean;
   gridView: boolean;
+  assetToDelete: IAsset;
   static $inject = ['$rootScope', '$q', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'MIMES', 'authSvc'];
   constructor(
     public $rootScope: ng.IRootScopeService,
@@ -110,6 +115,23 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
     }
     this.$rootScope.$emit('UserSelectedAsset', assetId);
   }
+
+  requestDeleteAsset($asset: IAsset, $ev: ng.IAngularEvent) {
+    // to avoid triggering the click handler on the <tr> element.
+    $ev.stopPropagation();
+    this.assetToDelete = $asset;
+  }
+
+  deleteAsset(id: string): void {
+    this.dataSvc.deleteAsset(id)
+      .then(() => {
+        //delete local copies on scope and modelSvc
+        this.assets = omit(this.assets, id);
+        this.modelSvc.assets = omit(this.modelSvc.assets, id);
+      })
+      .catch(e => console.log(e))
+      .finally(() => this.assetToDelete = null);
+  }
 }
 
 export class SxsContainerAssets implements ng.IComponentOptions {
@@ -117,7 +139,8 @@ export class SxsContainerAssets implements ng.IComponentOptions {
     containerId: '@',
     mimeKey: '@?',
     context: '@?',
-    onAssetSelect: '&?'
+    onAssetSelect: '&?',
+    onAssetRemove: '&?'
   };
   templateUrl: string = 'templates/producer/container-assets.html';
   controller: ng.IComponentController = SxsContainerAssetsController;
