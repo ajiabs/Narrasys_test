@@ -1020,7 +1020,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     if (preppedData != null) {
       return PUT('/v3/episodes/' + preppedData._id, preppedData);
     } else {
-      return $q.reject(false);
+      return this.$q.reject(false);
     }
   };
 
