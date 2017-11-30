@@ -1,5 +1,5 @@
 import {
-  createInstance,
+  createInstance, IAsset,
   IContainer,
   IEpisode,
   IEpisodeTemplate,
@@ -14,6 +14,7 @@ export interface IEpisodeEditService {
   addEpisodeToContainer(newContainer: IContainer): ng.IPromise<IContainer>;
   setEpisodeToEdit(): void;
   saveEpisode(episode: IEpisode): void;
+  detatchMasterAsset(episode: IEpisode): any;
 }
 
 export class EpisodeEditService implements IEpisodeEditService {
@@ -97,6 +98,13 @@ export class EpisodeEditService implements IEpisodeEditService {
     this.appState.editEpisode.templateOpts = this.selectService.getTemplates('episode', [customerId]);
     this.appState.videoControlsActive = true; // TODO see playerController showControls;
     this.appState.videoControlsLocked = true; // this may not be sufficient on touchscreens
+  }
+
+  detatchMasterAsset(episode: IEpisode) {
+    this.dataSvc.detachMasterAsset(episode)
+      .then((data) => {
+        window.location.reload(); //?? not sure what to do next.
+      });
   }
 
   saveEpisode($episode: IEpisode) {
