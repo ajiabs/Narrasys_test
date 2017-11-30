@@ -1,7 +1,7 @@
 <span ng-if="$ctrl.errorSvc.errors.length || $ctrl.errorSvc.notifications.length" class="errors">
 	<div class="error" ng-repeat="error in $ctrl.errorSvc.errors" ng-click="$ctrl.dismiss(error)">
 		<h3><i class="fa fa-exclamation-triangle error-red"></i>Error: <span
-      ng-bind-html="error.cause || error.exception.data.error || error.exception.data || '(unknown reason)'"></span></h3>
+      ng-bind-html="error.cause || error.exception.data.error || error.exception.data.base[0] || error.exception.data || '(unknown reason)'"></span></h3>
 		<p ng-if="error.exception.config.url">
 			<i>(While trying to load {{error.exception.config.url}})</i>
 		</p>

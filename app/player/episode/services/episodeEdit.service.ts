@@ -1,17 +1,6 @@
-import {
-  createInstance, IAsset,
-  IContainer,
-  IEpisode,
-  IEpisodeTemplate,
-  IEvent,
-  IScene,
-  ITemplate
-} from '../../scripts/models';
-import { IDataSvc, IEpisodeTheme, IModelSvc, Partial, ITimelineSvc } from '../../scripts/interfaces';
 // @npUpgrade-episode-true
-
-import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IEvent, IScene, ITemplate } from '../../../models';
-import { IDataSvc, IEpisodeTheme, IModelSvc, Partial } from '../../../interfaces';
+import { IDataSvc, IEpisodeTheme, IModelSvc, Partial, ITimelineSvc } from '../../../interfaces';
+import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IScene } from '../../../models';
 import { EventTemplates } from '../../../constants';
 
 export interface IEpisodeEditService {
@@ -89,7 +78,7 @@ export class EpisodeEditService implements IEpisodeEditService {
               'start_time': 0,
               'end_time': 0,
               'episode_id': epResp._id
-            } as IScene;
+            } as Partial<IScene>;
             return newScene;
           })
           .then((firstScene: IScene) => this.dataSvc.storeItem(firstScene))

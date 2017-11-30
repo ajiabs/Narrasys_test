@@ -3,11 +3,9 @@
 import { IDataSvc, IModelSvc } from '../../../interfaces';
 import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../../constants';
 import containerAssetsHtml from './container-assets.html';
-import {IDataSvc, IModelSvc} from '../interfaces';
 
-import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
-import { IAsset } from '../models';
-import { omit } from '../services/ittUtils';
+import { IAsset } from '../../../models';
+import { omit } from '../../services/ittUtils';
 
 interface ISxsContainerAssetsBindings {
   containerId: string;

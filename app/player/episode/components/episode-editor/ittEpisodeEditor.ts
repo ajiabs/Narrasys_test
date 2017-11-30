@@ -7,7 +7,7 @@
  I expect the episode styling to drift away from the event styling,
  though, so letting myself repeat myself repeat myself for now
  */
-import { IModelSvc, IDataSvc, IEpisodeEditService, IEpisodeTheme } from '../../../scripts/interfaces';
+import { IModelSvc, IDataSvc, IEpisodeEditService, IEpisodeTheme } from '../../../../interfaces';
 import episodeHtml from './episode.html';
 
 ittEpisodeEditor.$inject = [

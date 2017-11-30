@@ -1,11 +1,8 @@
 /* For admin screen episode list */
 import { createInstance, IContainer, ICustomer, INarrative } from '../../../models';
 import { IDataSvc, IModelSvc, IEpisodeEditService } from '../../../interfaces';
-import { existy, pick } from '../../services/ittUtils';
+import { capitalize, existy, pick } from '../../services/ittUtils';
 import containerHtml from './container.html';
-import { createInstance, IContainer, ICustomer, INarrative } from '../models';
-import { IDataSvc, IModelSvc, IEpisodeEditService } from '../interfaces';
-import { capitalize, existy, omit, pick } from '../services/ittUtils';
 
 interface IContainerBindings extends ng.IComponentController {
   container: IContainer;
