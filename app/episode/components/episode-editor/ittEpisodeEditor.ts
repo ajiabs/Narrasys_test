@@ -6,7 +6,7 @@
  I expect the episode styling to drift away from the event styling,
  though, so letting myself repeat myself repeat myself for now
  */
-import { IModelSvc, IDataSvc, IEpisodeEditService, IEpisodeTheme } from '../../../scripts/interfaces';
+import { IModelSvc, IDataSvc } from '../../../scripts/interfaces';
 
 ittEpisodeEditor.$inject = [
   '$rootScope',
@@ -18,8 +18,7 @@ ittEpisodeEditor.$inject = [
   'selectService',
   'playbackService',
   'urlService',
-  'episodeTheme',
-  'episodeEdit'
+  'episodeTheme'
 ];
 
 export interface ILangformFlags {
@@ -41,9 +40,7 @@ export default function ittEpisodeEditor(
   authSvc,
   selectService,
   playbackService,
-  urlService,
-  episodeTheme: IEpisodeTheme,
-  episodeEdit: IEpisodeEditService) {
+  urlService) {
   return {
     restrict: 'A',
     replace: true,
@@ -52,7 +49,7 @@ export default function ittEpisodeEditor(
     },
     templateUrl: 'templates/producer/episode.html',
     controller: 'EditController',
-    link: function episodeEditorLinkFn(scope) {
+    link: function (scope) {
 
       scope.translationMessage = translationMessage;
       function translationMessage(langArr) {
@@ -291,26 +288,12 @@ export default function ittEpisodeEditor(
           playbackService.registerStateChangeListener(afterReady);
         }
       }
+
       scope.replaceAsset = function (assetType) {
         assetType = assetType || '';
         scope["showUploadButtons" + assetType] = true;
         scope["showUploadField" + assetType] = false;
       };
-
-      scope.detachMasterAsset = detachMasterAsset;
-      function detachMasterAsset() {
-        scope.episode.master_asset_id = 'nil';
-        scope.episode.masterAsset = null;
-        appState.editEpisode.master_asset_id = 'nil';
-        appState.editEpisode.masterAsset = null;
-        appState.editEpisode._master_asset_was_changed = true;
-        // episodeEdit.saveEpisode(scope.episode);
-      }
-
-      scope.saveEpisode = saveEpisode;
-      function saveEpisode() {
-        episodeEdit.saveEpisode(scope.episode);
-      }
 
       scope.selectText = function (event) {
         event.target.select(); // convenience for selecting the episode url

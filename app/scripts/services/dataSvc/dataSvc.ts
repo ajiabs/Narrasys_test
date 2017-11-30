@@ -73,7 +73,7 @@ export interface IDataSvc {
   updateContainer(container): ng.IPromise<{}>;
   deleteContainer(containerId): ng.IPromise<{}>;
   createEpisode(episode): ng.IPromise<{}>;
-  storeEpisode(epData): ng.IPromise<{} | boolean>;
+  storeEpisode(epData): ng.IPromise<{}> | boolean;
   deleteItem(evtId): ng.IPromise<{}>;
   createAsset(containerId, asset): ng.IPromise<{}>;
   deleteAsset(assetId): ng.IPromise<{}>;
@@ -990,7 +990,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   function deleteContainer(containerId: string): ng.IPromise<any> {
     // DANGER WILL ROBINSON incomplete and unsafe.
     // only for deleting test data for now, don't expose this to the production team.
-    return PDELETE('/v3/containers/' + containerId);
+    return PDELETE(`/v3/containers/${containerId}`);
   }
 
   // Create new episodes, c.f. storeEpisode.   TODO mild cruft
@@ -1014,17 +1014,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   // Update existing episodes, c.f. createEpisode TODO mild cruft
   svc.storeEpisode = function (epData) {
-    const preppedData = prepEpisodeForStorage(epData);
+    var preppedData = prepEpisodeForStorage(epData);
     console.log('prepped for storage:', preppedData);
     if (preppedData != null) {
-
-      if (preppedData.master_asset_id === 'nil') {
-        preppedData.master_asset_id = null;
-      }
-
       return PUT('/v3/episodes/' + preppedData._id, preppedData);
     } else {
-      return this.$q.reject(false);
+      return false;
     }
   };
 

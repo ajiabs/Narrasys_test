@@ -12,8 +12,7 @@
 <div>
 	<div ng-if="(masterAsset.original_filename) && !showUploadButtonsMaster">
 		{{masterAsset.display_name}}
-		<button class="button" ng-click="replaceAsset('Master')"> Replace</button>
-		<button class="button" ng-click="detachMasterAsset()">Remove</button>
+		<button class="button" ng-click="replaceAsset('Master')"> Replace this asset </button>
 	</div>
 	<div ng-if="showUploadButtonsMaster || !(masterAsset.original_filename)">
 		<span ng-if="showUploadFieldMaster">
