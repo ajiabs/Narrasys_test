@@ -7,7 +7,7 @@
  I expect the episode styling to drift away from the event styling,
  though, so letting myself repeat myself repeat myself for now
  */
-import { IModelSvc, IDataSvc } from '../../../../interfaces';
+import { IModelSvc, IDataSvc, IEpisodeEditService, IEpisodeTheme } from '../../../scripts/interfaces';
 import episodeHtml from './episode.html';
 
 ittEpisodeEditor.$inject = [
@@ -20,7 +20,8 @@ ittEpisodeEditor.$inject = [
   'selectService',
   'playbackService',
   'urlService',
-  'episodeTheme'
+  'episodeTheme',
+  'episodeEdit'
 ];
 
 export interface ILangformFlags {
@@ -42,7 +43,9 @@ export default function ittEpisodeEditor(
   authSvc,
   selectService,
   playbackService,
-  urlService) {
+  urlService,
+  episodeTheme: IEpisodeTheme,
+  episodeEdit: IEpisodeEditService) {
   return {
     restrict: 'A',
     replace: true,
@@ -51,7 +54,7 @@ export default function ittEpisodeEditor(
     },
     template: episodeHtml,
     controller: 'EditController',
-    link: function (scope) {
+    link: function episodeEditorLinkFn(scope) {
 
       scope.translationMessage = translationMessage;
       function translationMessage(langArr) {
@@ -290,12 +293,24 @@ export default function ittEpisodeEditor(
           playbackService.registerStateChangeListener(afterReady);
         }
       }
-
       scope.replaceAsset = function (assetType) {
         assetType = assetType || '';
         scope["showUploadButtons" + assetType] = true;
         scope["showUploadField" + assetType] = false;
       };
+
+      scope.detachMasterAsset = detachMasterAsset;
+      function detachMasterAsset() {
+        scope.episode.masterAsset = null;
+        appState.editEpisode.masterAsset = null;
+        appState.editEpisode._master_asset_was_changed = true;
+        episodeEdit.detatchMasterAsset(scope.episode);
+      }
+
+      scope.saveEpisode = saveEpisode;
+      function saveEpisode() {
+        episodeEdit.saveEpisode(scope.episode);
+      }
 
       scope.selectText = function (event) {
         event.target.select(); // convenience for selecting the episode url
