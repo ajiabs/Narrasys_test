@@ -134,6 +134,7 @@ export class IContainer {
   sort_order: number;
   editingContainer?: boolean;
   newContainerTitle?: string;
+  newContainerName?: string;
   addingContainer?: boolean;
   showChildren?: boolean;
 }

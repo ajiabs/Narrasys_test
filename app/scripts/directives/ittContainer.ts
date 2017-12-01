@@ -83,9 +83,8 @@ class ContainerController implements IContainerBindings {
       'Container',
       pick(this.container, ['_id', 'customer_id', 'episodes', 'keywords', 'parent_id', 'sort_order'])
     );
-
     newContainer.name = {
-      en: this.container.newContainerTitle
+      en: this.container.newContainerName
     };
     this.dataSvc.updateContainer(newContainer).then(() => {
       this.container.editingContainer = false;
