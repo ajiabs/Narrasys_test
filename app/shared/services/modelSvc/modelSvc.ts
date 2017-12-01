@@ -4,7 +4,7 @@
 
 import { IAnnotators, Partial } from '../../../interfaces';
 import {
-  createInstance, IAsset, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, ITemplate,
+  createInstance, IAsset, IContainer, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, ITemplate,
   NEvent
 } from '../../../models';
 import { EventTemplates } from '../../../constants';
@@ -17,12 +17,12 @@ interface IDataCache {
 }
 
 export interface IModelSvc {
-  episodes: { [episodeId: string]: any };
+  episodes: { [episodeId: string]: IEpisode };
   assets: { [assetId: string]: IAsset };
   events: { [eventId: string]: NEvent };
-  containers: { [containerId: string]: any };
-  narratives: { [narrativeId: string]: any };
-  customers: { [customerId: string]: any };
+  containers: { [containerId: string]: IContainer };
+  narratives: { [narrativeId: string]: INarrative };
+  customers: { [customerId: string]: ICustomer };
   dataCache: IDataCache;
   getNarrativeByPathOrId(pathOrId: string): INarrative;
   assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer;
