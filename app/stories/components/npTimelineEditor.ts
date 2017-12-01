@@ -41,7 +41,7 @@ const TEMPLATE = `
   <h2>Are you sure?</h2>
   <p>delete: </p>
   <p class="under__delete"><strong>{{$ctrl._timeline.name.en}}?</strong></p>
-  <button ng-click="$ctrl.onDelete({ t: $ctrl._timeline })">yes</button>
+  <button ng-click="$ctrl.onDelete({ $timeline: $ctrl._timeline })">yes</button>
   <button ng-click="$ctrl.underDelete = false">no</button>
 </np-modal>
 `;
