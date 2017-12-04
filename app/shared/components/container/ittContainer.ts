@@ -91,7 +91,6 @@ class ContainerController implements IContainerBindings {
       'Container',
       pick(this.container, ['_id', 'customer_id', 'episodes', 'keywords', 'parent_id', 'sort_order'])
     );
-
     newContainer.name = {
       en: this.container.newContainerName
     };
