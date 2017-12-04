@@ -74,7 +74,6 @@ export interface IDataSvc {
   deleteContainer(containerId): ng.IPromise<{}>;
   createEpisode(episode): ng.IPromise<{}>;
   storeEpisode(epData): ng.IPromise<{}> | boolean;
-  deleteEpisode(episodeId): ng.IPromise<{}>;
   deleteItem(evtId): ng.IPromise<{}>;
   createAsset(containerId, asset): ng.IPromise<{}>;
   deleteAsset(assetId): ng.IPromise<{}>;
@@ -850,11 +849,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return defer.promise;
   };
 
-  var PDELETE = function (path) {
+  const PDELETE = (path: string): ng.IPromise<any> => {
     return $http({
       method: 'DELETE',
       url: config.apiDataBaseUrl + path
-    }).then(function (resp) {
+    }).then((resp) => {
       return resp;
     });
   };
@@ -987,16 +986,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return defer.promise;
   };
 
-  svc.deleteContainer = function (containerId) {
-    // DANGER WILL ROBINSON incomplete and unsafe.  only for deleting test data for now, don't expose this to the production team.
-
-    // TODO  this will error out if there are assets or child containers attached to the container...
-    // definitely it will if there's a child episode.
-
-    delete modelSvc.containers[containerId]; // WARN this assumes success......
-
-    return DELETE('/v3/containers/' + containerId);
-  };
+  svc.deleteContainer = deleteContainer;
+  function deleteContainer(containerId: string): ng.IPromise<any> {
+    // DANGER WILL ROBINSON incomplete and unsafe.
+    // only for deleting test data for now, don't expose this to the production team.
+    return PDELETE(`/v3/containers/${containerId}`);
+  }
 
   // Create new episodes, c.f. storeEpisode.   TODO mild cruft
   svc.createEpisode = function (episode) {
@@ -1026,35 +1021,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     } else {
       return false;
     }
-  };
-
-  svc.deleteEpisode = function (episodeId) {
-    // DANGER WILL ROBINSON this is both incomplete and unsafe; I've built just enough to remove some of my own test data. Do not include this in any UI that is available to the production team
-    // First remove episode_user_metrics
-
-    // probably first need to remove events etc if there are any
-    var deleteEpisodeDefer = $q.defer();
-    // delete episode_user_metrics
-    GET('/v2/episodes/' + episodeId + '/episode_user_metrics')
-      .then(function (metrics) {
-        console.log('GOT METRICS: ', metrics);
-        if (metrics.length) {
-          var deleteMetricsActions = [];
-
-          for (var i = 0; i < metrics.length; i++) {
-            deleteMetricsActions.push(DELETE('/v2/episode_user_metrics/' + metrics[i]._id));
-          }
-          $q.all(deleteMetricsActions)
-            .then(function () {
-              DELETE('/v3/episodes/' + episodeId);
-              deleteEpisodeDefer.resolve();
-            });
-        } else {
-          DELETE('/v3/episodes/' + episodeId);
-          deleteEpisodeDefer.resolve();
-        }
-      });
-    return deleteEpisodeDefer.promise;
   };
 
   svc.deleteItem = function (evtId) {

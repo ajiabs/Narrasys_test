@@ -51,9 +51,9 @@
 
     <div class="delete-button__container"
          ng-style="$ctrl.depth != 3 && {'padding-right': '5.5px'}"
-         ng-if="$ctrl.depth > 0 && $ctrl.container.isActive">
-      <np-tooltip tip-text="Delete">
-        <a class="delete__button"></a>
+         ng-if="$ctrl.depth > 0 && $ctrl.container.isActive && !$ctrl.container.editingContainer">
+      <np-tooltip tip-text="Delete {{$ctrl.containerType}}?">
+        <a ng-click="$ctrl.deleteContainer($ctrl.container._id)" class="delete__button"></a>
       </np-tooltip>
     </div>
 
@@ -190,12 +190,13 @@
     </div>
     <!-- end episode -->
   </div>
-
   <np-container
     ng-if="$ctrl.depth < 3 && $ctrl.container.showChildren"
     ng-repeat="child in $ctrl.container.children"
     depth="$ctrl.depth + 1"
     container="$ctrl.containers[child._id]"
+    containers="$ctrl.modelSvc.containers"
+    on-container-remove="$ctrl.onContainerRemove({ $container })"
     on-container-click="$ctrl.onContainerClick({ $container })"
     on-container-add="$ctrl.onContainerAdd({ $container })">
   </np-container>
