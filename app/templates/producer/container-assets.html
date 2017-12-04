@@ -49,10 +49,24 @@
 					{{asset.display_name}}
 				</td>
         <td ng-if="asset.tags[0]">{{asset.tags[0] | tagName}}</td>
+        <td class="delete-button__container">
+          <np-tooltip tip-text="Delete Asset">
+            <a ng-click="$ctrl.requestDeleteAsset(asset, $event)" class="delete__button"></a>
+          </np-tooltip>
+        </td>
 			</tr>
 		</table>
 	</div>
 	<br>
+
+  <np-modal class="modal__center-center" ng-if="$ctrl.assetToDelete != null">
+    <h4>Delete</h4>
+    {{$ctrl.assetToDelete.display_name}}?
+    <div>
+      <button ng-click="$ctrl.deleteAsset($ctrl.assetToDelete._id)">Delete</button>
+      <button ng-click="$ctrl.assetToDelete = null">cancel</button>
+    </div>
+  </np-modal>
 
   <itt-asset-uploader
     container-id="{{$ctrl.container._id}}"
