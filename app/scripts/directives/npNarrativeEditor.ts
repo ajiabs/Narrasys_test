@@ -45,7 +45,7 @@ const TEMPLATE = `
 <div class="narrative__edit">
   <h2>Narrative Settings</h2>
   <form name="nEditForm">
-    <div ng-show="$ctrl._containerInfo && $ctrl.canAccess">
+    <div ng-show="$ctrl.containerInfo && $ctrl.canAccess">
       <label for="nCustomer">Customer
         <itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>
       </label>
@@ -53,7 +53,7 @@ const TEMPLATE = `
               ng-change="$ctrl.selectCustomer($ctrl.selectedCustomer)"
               ng-options="cust.name for cust in $ctrl.customers track by cust._id"></select></br>
     </div>
-    <div ng-if="$ctrl.selectedCustomer && $ctrl._containerInfo == null">
+    <div ng-if="$ctrl.selectedCustomer && $ctrl.containerInfo == null">
       <h5>{{$ctrl.selectedCustomer.name}}</h5>
     </div>
     <label id="nName">Narrative Title
