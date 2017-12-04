@@ -80,6 +80,7 @@ export interface IDataSvc {
   storeItem(evt: IEvent): ng.IPromise<IEvent | boolean>;
   prepItemForStorage(evt): any;
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
+  detachMasterAsset(epData: IEpisode): ng.IPromise<void | boolean>;
   readCache(cache, field, val): object | boolean;
   getTemplates(): ITemplate[];
   getTemplate(id: string): ITemplate;
@@ -1017,11 +1018,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     const preppedData = prepEpisodeForStorage(epData);
     console.log('prepped for storage:', preppedData);
     if (preppedData != null) {
-
-      if (preppedData.master_asset_id === 'nil') {
-        preppedData.master_asset_id = null;
-      }
-
       return PUT('/v3/episodes/' + preppedData._id, preppedData);
     } else {
       return this.$q.reject(false);
@@ -1176,16 +1172,16 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   svc.prepItemForStorage = prepItemForStorage;
 
   // No, we should not be storing episodes with no master asset halfway through editing
-  // svc.detachMasterAsset = function (epData) {
-  // 	var preppedData = prepEpisodeForStorage(epData);
-  // 	preppedData.master_asset_id = null;
-  // 	console.log("prepped sans master_asset_id for storage:", preppedData);
-  // 	if (preppedData) {
-  // 		return PUT("/v3/episodes/" + preppedData._id, preppedData);
-  // 	} else {
-  // 		return false;
-  // 	}
-  // };
+  svc.detachMasterAsset = (epData: IEpisode): ng.IPromise<void | boolean> => {
+    const preppedData = prepEpisodeForStorage(epData);
+    preppedData.master_asset_id = null;
+    console.log('prepped sans master_asset_id for storage:', preppedData);
+    if (preppedData) {
+      return PUT('/v3/episodes/' + preppedData._id, preppedData);
+    } else {
+      return $q.reject(false);
+    }
+  };
   svc.detachEventAsset = function (evt, assetId) {
     evt = prepItemForStorage(evt);
     if (!evt) {
