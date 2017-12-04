@@ -8,15 +8,14 @@
 ittValidPathslug.$inject = ['modelSvc', 'ittUtils'];
 export default function ittValidPathslug(modelSvc, ittUtils) {
   return {
-    require: ['^ngModel', '^ittGuestAccessibleUrl'],
+    require: ['^ngModel', '^npGuestAccessibleUrl'],
     restrict: 'EA',
-    link: function (scope, elm, attr, ctrls) {
+    link: function ittValidPathslugLink(scope, elm, attr, ctrls) {
       var _slugify = ittUtils.slugify;
       var _existy = ittUtils.existy;
       var ngModel = ctrls[0];
       var parentCtrl = ctrls[1];
       var customer = modelSvc.customers[parentCtrl.narrative.customer_id] || parentCtrl.customer;
-
 
       var pathSlugs = parentCtrl.type === 'narrative' ?
         modelSvc.cachedNarrativesByCustomer(customer) :

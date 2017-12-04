@@ -9,12 +9,12 @@
 
 		<div clas="user__item">
 			<div class="user__label">Name</div>
-			<itt-edit-pencil
+			<np-edit-pencil
 				can-access="true"
 				on-edit="toggleEditing()"
 				ng-if="!isEditing">
 				<p>{{user.name}}</p>
-			</itt-edit-pencil>
+			</np-edit-pencil>
 
 			<div ng-if="isEditing">
 				<input class="userEditable" ng-model="user.name">

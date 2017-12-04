@@ -961,14 +961,14 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       .then(function (data) {
         // console.log("CREATED CONTAINER", data);
         modelSvc.cache('container', data);
-
-        var parentId = data.parent_id;
+        const newContainer = modelSvc.containers[data._id];
+        const parentId = newContainer.parent_id;
 
         // add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
         // console.log(modelSvc.containers[parentId]);
-        modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
+        modelSvc.containers[parentId].children.push(newContainer);
 
-        defer.resolve(data);
+        defer.resolve(newContainer);
       });
     return defer.promise;
   };

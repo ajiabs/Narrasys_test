@@ -1,6 +1,7 @@
-import {IModelSvc, Partial} from '../interfaces';
-import {IDataSvc} from '../services/dataSvc/dataSvc';
-import {existy} from '../services/ittUtils';
+import { IModelSvc, Partial } from '../interfaces';
+import { IDataSvc } from '../services/dataSvc/dataSvc';
+import { existy } from '../services/ittUtils';
+
 /**
  * Created by githop on 1/31/17.
  */
@@ -24,7 +25,7 @@ const TEMPLATE = `
       callback="$ctrl.onUploadComplete()">
     </itt-asset-uploader>
 
-    <itt-modal
+    <np-modal
       wrapper-class="responsive-modal__wrapper"
       modal-class="responsive-modal__content"
       ng-if="$ctrl.showOptions">
@@ -52,7 +53,7 @@ const TEMPLATE = `
         </div>
       </div>
 
-    </itt-modal>
+    </np-modal>
   </div>
 </div>`;
 
@@ -105,11 +106,11 @@ class UploadTranscriptsController implements ng.IComponentController {
     const promises = this._handleTranscripts(this.episodeId, files[0], params);
     this.transcripts = {
       payload: {
-        type: TRANSCRIPT_UPLOAD,
         promises,
-        files
+        files,
+        type: TRANSCRIPT_UPLOAD
       }
-    }
+    };
   }
 
   onUploadComplete() {
@@ -119,7 +120,7 @@ class UploadTranscriptsController implements ng.IComponentController {
   }
 
   formatParams() {
-    let optionalParams = {};
+    const optionalParams = {};
     if (this.selectedParam !== 'none') {
       optionalParams[this.selectedParam] = true;
     }
@@ -132,7 +133,7 @@ class UploadTranscriptsController implements ng.IComponentController {
   }
 
   private _handleTranscripts(episodeId, postData, params) {
-    let fd = new FormData();
+    const fd = new FormData();
     fd.append('subtitles', postData);
     return this.dataSvc.batchUploadTranscripts(episodeId, fd, params);
   }
@@ -140,10 +141,10 @@ class UploadTranscriptsController implements ng.IComponentController {
 }
 
 export class UploadTranscripts implements ng.IComponentOptions {
-  static Name: string = 'ittUploadTranscripts';
   bindings: any = {
     episodeId: '@'
   };
   template: string = TEMPLATE;
-  controller: ng.IComponentController = UploadTranscriptsController;
+  controller = UploadTranscriptsController;
+  static Name: string = 'ittUploadTranscripts'; // tslint:disable-line
 }

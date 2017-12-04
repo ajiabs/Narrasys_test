@@ -1,18 +1,18 @@
 <div class="">
 
 
-  <itt-modal wrapper-class="responsive-modal__wrapper" modal-class="narrative__modal" ng-if="$ctrl.narrativeSelect || $ctrl.narrativeToEdit">
+  <np-modal wrapper-class="responsive-modal__wrapper" modal-class="narrative__modal" ng-if="$ctrl.narrativeSelect || $ctrl.narrativeToEdit">
     <h3>{{$ctrl.narrativeSelect ? 'Add' : 'Edit'}} Narrative</h3>
 
-    <itt-narrative-editor
+    <np-narrative-editor
       customers="$ctrl.selectedCustomer"
       narrative="$ctrl.narrativeToEdit"
       hide-path-slug="$ctrl.narrativeSelect"
-      on-done="$ctrl.closeAddOrEditModal()"
-      on-update="$ctrl.addOrUpdateNarrative(n)">
-    </itt-narrative-editor>
+      on-done="$ctrl.closeAddOrEditModal($undo)"
+      on-update="$ctrl.addOrUpdateNarrative($narrative)">
+    </np-narrative-editor>
 
-  </itt-modal>
+  </np-modal>
 
   <div ng-repeat="customer in $ctrl.customersData"
        ng-click="$ctrl.customerRowClick(customer, $event)"
@@ -25,9 +25,9 @@
 
     <div ng-if="customer.isActive === true">
       <div ng-if="$ctrl.canAccess" style="padding-left: 1em;">
-        <itt-tooltip tip-text="Add Narrative">
+        <np-tooltip tip-text="Add Narrative">
           <a class="icon__button button__add-inverted" ng-click="$ctrl.setSelectedNarrative(customer)"></a>
-        </itt-tooltip>
+        </np-tooltip>
       </div>
     </div>
 
@@ -37,18 +37,21 @@
          ng-click="$ctrl.toggleNarrativeRow(narrative, $event)"
          ng-class="$ctrl.setNarrativeRowClasses(customer, narrative)">
       <div>
-        <itt-edit-pencil can-access="true" on-edit="$ctrl.setNarrativeToEdit($event, narrative, customer)">
+        <np-edit-pencil can-access="true" on-edit="$ctrl.setNarrativeToEdit($event, narrative, customer)">
           <a>{{narrative.name.en}}</a>
-        </itt-edit-pencil>
+        </np-edit-pencil>
         <p ng-if="narrative.description">
           <small>{{narrative.description.en}}</small>
         </p>
 
         <div ng-if="$ctrl.narrativeRow._id === narrative._id">
-          <itt-tooltip tip-text="Go to Narrative">
+          <np-tooltip tip-text="Go to Narrative">
             <a ng-click="$ctrl.gotoNarrative(narrative._id, $event)" class="icon__button button__generateNarrative" title="Go to Narrative"></a>
-          </itt-tooltip>
-          <a itt-guest-accessible-url narrative="narrative" clipboard-mode="Click to Copy"></a>
+          </np-tooltip>
+          <a>
+            <np-guest-accessible-url narrative="narrative" clipboard-mode="Click to Copy">
+            </np-guest-accessible-url>
+          </a>
         </div>
 
 
