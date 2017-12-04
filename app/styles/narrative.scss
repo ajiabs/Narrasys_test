@@ -81,13 +81,16 @@
 	background: url("/images/customer/Narrasys_Tree.svg") no-repeat fixed 50% 80% #fff;
 	font-family: 'Source Sans Pro', 'Open Sans', Helvetica, sans-serif;
 }
-
+.standaloneAncillaryPage .loading,
+.standaloneAncillaryPage .np-narrative-container > div,
+.standaloneAncillaryPage .np-container > div,
 .standaloneAncillaryPage > div {
 	border: 1px solid #F2F2F2;
 	background-color: #F2F2F2;
 	padding: 1em;
 	border-radius: 1em;
 	font-size: 20px;
+
 }
 
 @media screen and (max-width: 500px) {
@@ -95,6 +98,9 @@
 		padding: 0;
 		background: none;
 	}
+  .standaloneAncillaryPage .loading,
+  .standaloneAncillaryPage .np-narrative-container > div,
+  .standaloneAncillaryPage .np-container > div,
 	.standaloneAncillaryPage > div {
 		border: none;
 		padding: 1em 0.5em;
@@ -109,6 +115,9 @@ and (max-device-width : 568px) {
 		padding: 0;
 		background: none;
 	}
+  .standaloneAncillaryPage .loading,
+  .standaloneAncillaryPage .np-narrative-container > div,
+  .standaloneAncillaryPage .np-container > div,
 	.standaloneAncillaryPage > div {
 		border: none;
 		padding: 1em 0.5em;

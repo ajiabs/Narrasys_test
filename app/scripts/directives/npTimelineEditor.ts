@@ -16,7 +16,7 @@ const TEMPLATE = `
     <label for="tlDescription">Description</label>
     <textarea id="tlDescription" name="description" placeholder="Insert Description..."
               ng-model="$ctrl._timeline.description.en"></textarea>
-    <itt-guest-accessible-url narrative="$ctrl.narrative" timeline="$ctrl._timeline"></itt-guest-accessible-url>
+    <np-guest-accessible-url narrative="$ctrl.narrative" timeline="$ctrl._timeline"></np-guest-accessible-url>
     <label>Hidden</label>
     <input type="checkbox" ng-model="$ctrl._timeline.hidden"/>
     <itt-enable-socialshare
@@ -35,21 +35,21 @@ const TEMPLATE = `
     </div>
   </form>
 </div>
-<itt-modal modal-class="timeline__delete" ng-if="$ctrl.underDelete">
+<np-modal modal-class="timeline__delete" ng-if="$ctrl.underDelete">
   <h2>Are you sure?</h2>
   <p>delete: </p>
   <p class="under__delete"><strong>{{$ctrl._timeline.name.en}}?</strong></p>
-  <button ng-click="$ctrl.onDelete({ t: $ctrl._timeline })">yes</button>
+  <button ng-click="$ctrl.onDelete({ $timeline: $ctrl._timeline })">yes</button>
   <button ng-click="$ctrl.underDelete = false">no</button>
-</itt-modal>
+</np-modal>
 `;
 
 interface ITimelineEditorBindings extends ng.IComponentController {
   timeline: ITimeline;
   narrative: INarrative;
   containerId: string;
-  onUpdate: ($ev: { t: ITimeline }) => ({ t: ITimeline });
-  onDelete: ($ev: { t: ITimeline }) => ({ t: ITimeline });
+  onUpdate: ($ev: { $timeline: ITimeline }) => ({ $timeline: ITimeline });
+  onDelete: ($ev: { $timeline: ITimeline }) => ({ $timeline: ITimeline });
   onDone: () => void;
 }
 
@@ -57,8 +57,8 @@ class TimelineEditorController implements ITimelineEditorBindings {
   timeline: ITimeline | ITempTimeline;
   narrative: INarrative;
   containerId: string;
-  onUpdate: ($ev: { t: ITimeline }) => ({ t: ITimeline });
-  onDelete: ($ev: { t: ITimeline }) => ({ t: ITimeline });
+  onUpdate: ($ev: { $timeline: ITimeline }) => ({ $timeline: ITimeline });
+  onDelete: ($ev: { $timeline: ITimeline }) => ({ $timeline: ITimeline });
   onDone: () => void;
   host: string;
   private _timeline: ITimeline;
@@ -84,7 +84,7 @@ class TimelineEditorController implements ITimelineEditorBindings {
   }
 
   handleUpdate(t: ITempTimeline) {
-    const tlFileds = [
+    const tlFileds: Array<keyof ITempTimeline> = [
       '_id',
       'name',
       'description',
@@ -111,11 +111,11 @@ class TimelineEditorController implements ITimelineEditorBindings {
         .then((assets) => {
           assets.forEach((asset: any) => tlToSave.timeline_image_ids.push(asset.file._id));
           this.uploadsService.resetUploads();
-          this.onUpdate({ t: tlToSave });
+          this.onUpdate({ $timeline: tlToSave });
           return;
         });
     } else {
-      this.onUpdate({ t: tlToSave });
+      this.onUpdate({ $timeline: tlToSave });
     }
   }
 
@@ -137,82 +137,3 @@ export class TimelineEditor implements ng.IComponentOptions {
   controller = TimelineEditorController;
   static Name: string = 'npTimelineEditor'; // tslint:disable-line
 }
-
-// export default function ittTimelineEditor() {
-//   return {
-//     restrict: 'EA',
-//     template: ``,
-//     scope: {
-//       timeline: '=',
-//       narrative: '=',
-//       containerId: '@?',
-//       onUpdate: '&',
-//       onDelete: '&',
-//       onDone: '&'
-//     },
-//     controller: ['$location', 'ittUtils', 'config', 'uploadsService', 'authSvc',
-//       function ($location, ittUtils, config, uploadsService, authSvc) {
-//       const ctrl = this;
-//       const existy = ittUtils.existy;
-//       ctrl.confirmDelete = confirmDelete;
-//       ctrl.handleUpdate = handleUpdate;
-//       ctrl.underDelete = false;
-//       ctrl.trueAdmin = authSvc.userHasRole('admin');
-//       onInit();
-//
-//       function onInit() {
-//         ctrl.host = $location.protocol() + ':' + config.apiDataBaseUrl;
-//         if (existy(ctrl.timeline) && ctrl.timeline.isTemp === true) {
-//           ctrl._timeline = ctrl.timeline;
-//         } else {
-//           ctrl._timeline = angular.copy(ctrl.timeline);
-//         }
-//       }
-//
-//       function handleUpdate(t) {
-//
-//         const tlFileds = [
-//           '_id',
-//           'name',
-//           'description',
-//           'hidden',
-//           'sort_order',
-//           'path_slug',
-//           'episode_segments',
-//           'timeline_image_ids'
-//         ];
-//
-//         const tlToSave = pick(t, tlFileds);
-//
-//         const socialImagesToUpload: Array<{file: FileList, tag: string}> = [];
-//         if (t.social_image_square) {
-//           socialImagesToUpload.push({file: t.social_image_square.file, tag: SOCIAL_IMAGE_SQUARE });
-//         }
-//
-//         if (t.social_image_wide) {
-//           socialImagesToUpload.push({file: t.social_image_wide.file, tag: SOCIAL_IMAGE_WIDE});
-//         }
-//
-//         if (socialImagesToUpload.length > 0) {
-//           uploadsService.uploadTaggedFiles(socialImagesToUpload, ctrl.containerId)
-//             .then((assets) => {
-//               assets.forEach((asset) => tlToSave.timeline_image_ids.push(asset.file._id));
-//               uploadsService.resetUploads();
-//               ctrl.onUpdate({t: tlToSave});
-//               return;
-//             });
-//         } else {
-//           ctrl.onUpdate({t: tlToSave});
-//         }
-//
-//       }
-//
-//       function confirmDelete() {
-//         ctrl.underDelete = true;
-//       }
-//
-//     }],
-//     controllerAs: '$ctrl',
-//     bindToController: true
-//   };
-// }

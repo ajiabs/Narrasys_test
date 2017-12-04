@@ -1,5 +1,6 @@
 export { IEpisodeEditService } from '../episode/services/episodeEdit.service';
 export { IEpisodeTheme } from '../episode/services/episodeTheme.service';
+export { IUploadsService } from './services/uploadsService';
 export { ILinkValidationMessage, ILinkValidFields } from './services/validation.svc';
 export { IAnalyticsSvc } from './services/analyticsSvc/analyticsSvc';
 export { IAnnotator, IAnnotators } from './directives/sxsAnnotatorAutocomplete';
@@ -27,11 +28,15 @@ export { IimageResize } from './services/imageResizeSvc';
 
 export type ILangformKeys = 'en' | 'es' | 'zh' | 'pt' | 'fr' | 'de' | 'it';
 export type ILangForm = {
-  [K in ILangformKeys]: string
+  [K in ILangformKeys]?: string
 };
 
 export type Partial<T> = {
   [P in keyof T]?: T[P];
+};
+
+export type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
 };
 
 export interface IScriptLoader {

@@ -25,12 +25,12 @@
       <div>
         <p>Copy link</p>
         <div class="socialshare__clipboard">
-          <itt-clipboard
+          <np-clipboard
             light="true"
             custom-notice="true"
             on-copy="$ctrl.ontextCopied($event)"
             source-text="{{$ctrl.stubUrl}}">
-          </itt-clipboard>
+          </np-clipboard>
           <div ng-if="$ctrl.textCopied">
             <span class="button button-text-copied"></span>
             <span class="text--notice">(Link copied to clipboard)</span>
@@ -39,7 +39,7 @@
       </div>
     <!--end copy link row-->
     <!--email options-->
-    <itt-modal
+    <np-modal
       wrapper-class="email-modal__wrapper"
       modal-class="email-modal__content"
       ng-if="$ctrl.emailshareExpanded">
@@ -88,7 +88,7 @@
           </div>
         </div>
       </form>
-    </itt-modal>
+    </np-modal>
 
     <!--end email options-->
 

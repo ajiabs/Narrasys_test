@@ -1,6 +1,7 @@
 /**
  * Created by githop on 4/22/16.
  */
+import { Pick } from '../interfaces';
 
 ittUtils.$inject = ['$timeout'];
 export function ittUtils($timeout) {
@@ -43,15 +44,15 @@ export function bitwiseCeil(n) {
   return n + (n < 0 ? 0 : 1) >> 0; // jshint ignore:line
 }
 
-export function pick(obj, arr) {
-  return arr.reduce(
+export function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
+  return keys.reduce(
     (accm, field) => {
       if (existy(obj[field])) {
         accm[field] = angular.copy(obj[field]);
       }
       return accm;
     },
-    {}
+    {} as any
   );
 }
 

@@ -11,7 +11,7 @@ export interface IModelSvc {
   containers: { [containerId: string]: any };
   narratives: { [narrativeId: string]: any };
   customers: { [customerId: string]: any };
-  getNarrativeByPathOrId(pathOrId: string): any;
+  getNarrativeByPathOrId(pathOrId: string): INarrative;
   assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer;
   cachedNarrativesByCustomer(customer: any): any;
   getCustomersAsArray(): any[];

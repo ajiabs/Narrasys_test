@@ -1,149 +1,174 @@
 /* For admin screen episode list */
-import { IContainer } from '../models';
-import { IEpisodeEditService } from '../../episode/services/episodeEdit.service';
-ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils', 'episodeEdit'];
+import { createInstance, IContainer, ICustomer, INarrative } from '../models';
+import { IDataSvc, IModelSvc, IEpisodeEditService } from '../interfaces';
+import { existy, pick } from '../services/ittUtils';
 
-export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils, episodeEdit: IEpisodeEditService) {
-  return {
-    restrict: 'A',
-    replace: false,
-    scope: {
-      container: '=ittContainer',
-      depth: '=depth',
-      onContainerClick: '&',
-      onContainerAdd: '&',
-      clickRootContext: '=',
-      addRootContext: '='
-    },
-    templateUrl: 'templates/container.html',
-    controller: ['$scope', '$location', 'modelSvc', 'authSvc', 'dataSvc',
-      function ($scope, $location, modelSvc, authSvc, dataSvc) {
-        $scope.toggleNarrativeModal = toggleNarrativeModal;
-        $scope.postNewNarrative = postNewNarrative;
-        $scope.showNarrativeModal = false;
-        $scope.resolvingNarrative = false;
-        $scope.isAdmin = authSvc.userHasRole('admin');
-        $scope.canAccess = $scope.isAdmin || authSvc.userHasRole('customer admin');
-        $scope.getLinkStatusReport = dataSvc.getCustomerLinkStatusReportSpreadsheet;
-        //needs to be an array, not a k/v store
-        $scope.customers = modelSvc.getCustomersAsArray();
+interface IContainerBindings extends ng.IComponentController {
+  container: IContainer;
+  depth: Number;
+  onContainerClick: ($ev: { $container: { container: IContainer, bool: boolean } }) => ({
+    $ev: { $container: { container: IContainer, bool: boolean }
+  }});
+  onContainerAdd: ($ev: { $container: IContainer }) => ({ $container: IContainer });
+}
 
-        function toggleNarrativeModal() {
-          $scope.showNarrativeModal = !$scope.showNarrativeModal;
-        }
+class ContainerController implements IContainerBindings {
+  container: IContainer;
+  depth: Number;
+  onContainerClick: ($ev: { $container: { container: IContainer, bool: boolean } }) => ({
+    $ev: { $container: { container: IContainer, bool: boolean }
+    }});
+  onContainerAdd: ($ev: { $container: IContainer }) => ({ $container: IContainer });
+  //
+  showNarrativeModal: boolean;
+  resolvingNarrative: boolean;
+  customers: ICustomer[];
+  customer: ICustomer;
+  containers: { [containerId: string]: IContainer };
+  isDemoServer: boolean;
+  containerTypes: string[] = ['customer', 'project', 'module', 'episode'];
+  static $inject = ['$timeout', '$location', 'appState', 'modelSvc', 'dataSvc', 'authSvc', 'episodeEdit'];
+  constructor(
+    private $timeout: ng.ITimeoutService,
+    private $location: ng.ILocationService,
+    public appState,
+    private modelSvc: IModelSvc,
+    private dataSvc: IDataSvc,
+    private authSvc,
+    private episodeEdit: IEpisodeEditService) {
 
-        function postNewNarrative(narrativeData) {
-          $scope.resolvingNarrative = true;
-          dataSvc.generateNewNarrative(narrativeData.c, narrativeData.n).then(function (narrative) {
-            modelSvc.cache('narrative', narrative);
-            $location.path('/story/' + narrative._id);
-            $scope.resolvingNarrative = false;
-          });
-        }
+  }
 
+  get isAdmin() {
+    return this.authSvc.userHasRole('admin');
+  }
 
-      }],
-    compile: function (element) {
+  get canAccess() {
+    return this.isAdmin || this.authSvc.userHasRole('customer admin');
+  }
 
-      // Use the compile function from the recursionHelper,
-      // And return the linking function(s) which it returns
-      return recursionHelper.compile(element, function (scope) {
-        scope.appState = appState;
-        scope.containers = modelSvc.containers;
-        scope.customer = modelSvc.customers[scope.container.customer_id];
-        // TEMP obviously
-        scope.isDemoServer = ($location.host().match(/demo|localhost|api-dev|client.dev/));
+  $onInit() {
+    this.customers = this.modelSvc.getCustomersAsArray();
+    this.containers = this.modelSvc.containers;
+  }
 
-        scope.selectText = function (event) {
-          event.target.select(); // convenience for selecting the episode url
-        };
+  toggleNarrativeModal() {
+    this.showNarrativeModal = !this.showNarrativeModal;
+  }
 
-        scope.containerTypes = ['customer', 'project', 'module', 'episode'];
+  postNewNarrative({ narrative, containerId }: { containerId: string, narrative: INarrative }) {
+    this.resolvingNarrative = true;
+    this.dataSvc.generateNewNarrative(containerId, narrative).then((narrativeResp: INarrative) => {
+      this.modelSvc.cache('narrative', narrativeResp);
+      this.$location.path('/story/' + narrativeResp._id);
+      this.resolvingNarrative = false;
+    });
+  }
 
-        scope.onToggleChildren = function (bool) {
-          scope.onContainerClick({$container: {container: scope.container, bool: bool}});
-        };
+  getLinkStatusReport(customerId: string): void {
+    this.dataSvc.getCustomerLinkStatusReportSpreadsheet(customerId);
+  }
 
-        scope.renameContainer = function () {
-          console.log('CHanging container name from ', scope.container.name.en, ' to ', scope.container.newContainerName);
-          console.log(scope.container);
+  selectText(event: any): void {
+    event.target.select(); // convenience for selecting the episode url
+  }
 
-          var newContainer = {};
-          angular.forEach(['_id', 'customer_id', 'episodes', 'keywords', 'parent_id', 'sort_order'], function (field) {
-            newContainer[field] = angular.copy(scope.container[field]);
-          });
-          newContainer.name = {
-            en: scope.container.newContainerName
-          };
-          dataSvc.updateContainer(newContainer).then(function () {
-            scope.container.editingContainer = false;
-          });
-        };
+  onToggleChildren(bool: boolean) {
+    const container = this.container;
+    this.onContainerClick({ $container: { container, bool } });
+  }
 
-        scope.addContainer = function (container) {
-          const newContainer = {
-            'customer_id': scope.container.customer_id,
-            'parent_id': scope.container._id,
-            'name': {
-              en: angular.copy(scope.container.newContainerTitle)
-            }
-          };
-          dataSvc.createContainer(newContainer).then((newContainer) => {
-            console.log('Created container:', newContainer);
-            if (scope.depth === 2) {
-              return episodeEdit.addEpisodeToContainer(newContainer)
-              // onContainerAdd will force a sort
-                .then((container: IContainer) => scope.onContainerAdd({ $container: container }))
-                .catch(e => console.log('error adding episode to container!'));
-            } else {
-              scope.onContainerAdd({ $container: container });
-            }
-          });
-          scope.container.newContainerTitle = '';
-          scope.container.addingContainer = false;
+  renameContainer() {
+    const newContainer = createInstance<IContainer>(
+      'Container',
+      pick(this.container, ['_id', 'customer_id', 'episodes', 'keywords', 'parent_id', 'sort_order'])
+    );
+    newContainer.name = {
+      en: this.container.newContainerName
+    };
+    this.dataSvc.updateContainer(newContainer).then(() => {
+      this.container.editingContainer = false;
+    });
+  }
 
-          //container.showChildren will be undefined at the project level.
-          if (!ittUtils.existy(container.showChildren) || container.showChildren === false) {
-            scope.onToggleChildren(false);
-          }
-
-        };
-
-        scope.deleteEpisodeAndContainer = function (id) {
-          var containerToDelete = modelSvc.containers[id];
-
-          // Optimistically delete the container from modelSvc.containers[containerToDelete.parent_id].children
-          // TODO This really ought to be a dataSvc thing, and shouldn't assume success
-          // (but the worst that happens is that something appears to be deleted when it wasn't, until next reload. Could be worse)
-          // console.log("About to delete", containerToDelete);
-
-          var parentId = (containerToDelete.parent_id) ? containerToDelete.parent_id : containerToDelete.ancestry.replace(/.*\//, '');
-
-          var parent = modelSvc.containers[parentId];
-          // console.log("parent is ", parent);
-          var newChildren = [];
-          angular.forEach(parent.children, function (child) {
-            if (child._id !== id) {
-              newChildren.push(child);
-            }
-          });
-          parent.children = newChildren;
-
-          if (containerToDelete.episodes.length) {
-            dataSvc.deleteEpisode(containerToDelete.episodes[0]) // Containers only ever have one episode for now (not sure why, but sticking to it as it seems to work)
-              .then(function () {
-                $timeout(function () { // I am being lazy and not bothering to figure out why .then isn't sufficient here
-                  dataSvc.deleteContainer(containerToDelete._id);
-                }, 250);
-              });
-          } else {
-            dataSvc.deleteContainer(containerToDelete._id);
-          }
-
-        };
-
-      });
+  addContainer(container: IContainer) {
+    const newContainer = {
+      'customer_id': this.container.customer_id,
+      'parent_id': this.container._id,
+      'name': {
+        en: angular.copy(this.container.newContainerTitle)
+      }
+    };
+    this.dataSvc.createContainer(newContainer).then((newContainer: IContainer) => {
+      console.log('Created container:', newContainer);
+      if (this.depth === 2) {
+        return this.episodeEdit.addEpisodeToContainer(newContainer)
+        // onContainerAdd will force a sort
+          .then((container: IContainer) => this.onContainerAdd({ $container: container }))
+          .catch((e: any) => console.log('error adding episode to container'));
+      } else {
+        this.onContainerAdd({ $container: container });
+      }
+    });
+    this.container.newContainerTitle = '';
+    this.container.addingContainer = false;
+    //container.showChildren will be undefined at the project level.
+    if (!existy(container.showChildren) || container.showChildren === false) {
+      this.onToggleChildren(false);
     }
-  };
+  }
 
+  deleteEpisodeAndContainer(id: string) {
+    const containerToDelete = this.modelSvc.containers[id];
+
+    // Optimistically delete the container from modelSvc.containers[containerToDelete.parent_id].children
+    // TODO This really ought to be a dataSvc thing, and shouldn't assume success
+    // (but the worst that happens is that something appears to be deleted when it wasn't,
+    // until next reload. Could be worse)
+    // console.log("About to delete", containerToDelete);
+
+    const parentId =
+      (containerToDelete.parent_id) ? containerToDelete.parent_id : containerToDelete.ancestry.replace(/.*\//, '');
+
+    const parent = this.modelSvc.containers[parentId];
+    // console.log("parent is ", parent);
+    const newChildren = [];
+    angular.forEach(parent.children, (child) => {
+      if (child._id !== id) {
+        newChildren.push(child);
+      }
+    });
+    parent.children = newChildren;
+
+    if (containerToDelete.episodes.length) {
+      this.dataSvc.deleteEpisode(containerToDelete.episodes[0])
+      // Containers only ever have one episode for now (not sure why, but sticking to it as it seems to work)
+        .then(() => {
+          this.$timeout(
+            () => { // I am being lazy and not bothering to figure out why .then isn't sufficient here
+              this.dataSvc.deleteContainer(containerToDelete._id);
+            },
+            250
+          );
+        });
+    } else {
+      this.dataSvc.deleteContainer(containerToDelete._id);
+    }
+  }
+}
+
+interface IComponentBindings {
+  [binding: string]: '<' | '<?' | '&' | '&?' | '@' | '@?' | '=' | '=?';
+}
+
+export class Container implements ng.IComponentOptions {
+  bindings: IComponentBindings = {
+    container: '<',
+    depth: '<',
+    onContainerClick: '&',
+    onContainerAdd: '&'
+  };
+  templateUrl: string = 'templates/container.html';
+  controller = ContainerController;
+  static Name: string = 'npContainer'; // tslint:disable-line
 }

@@ -125,15 +125,22 @@ export class IContainer {
   episodes: IEpisode[];
   evenOdd?: boolean;
   haveNotLoadedChildData?: boolean;
+  wasClicked?: boolean;
+  isActive?: boolean;
   keywords: ILangForm;
   loadedChildData?: boolean;
   name: ILangForm;
   parent_id: string;
   sort_order: number;
+  editingContainer?: boolean;
+  newContainerTitle?: string;
+  newContainerName?: string;
+  addingContainer?: boolean;
+  showChildren?: boolean;
 }
 
 export class ITimeline {
-  _id: string;
+  _id?: string;
   name: ILangForm;
   description: ILangForm;
   hidden: boolean;
@@ -141,6 +148,8 @@ export class ITimeline {
   path_slug: ILangForm;
   episode_segments: any[];
   timeline_image_ids: string[] = [];
+  parent_episode?: IEpisode;
+  duration: number;
 }
 
 export class ITempTimeline extends ITimeline {
@@ -166,6 +175,9 @@ export class ICustomer {
   oauth2_providers: string[];
   root_container_id: string;
   narratives?: INarrative[];
+  isActive?: boolean;
+  showNarratives?: boolean;
+  evenOdd?: boolean;
 }
 
 export class INarrative {
@@ -183,6 +195,11 @@ export class INarrative {
   narrative_subdomain?: string;
   timelines?: ITimeline[];
   narrative_image_ids: string[] = [];
+  disableSocialshare?: boolean;
+  social_image_square?: { file: FileList };
+  social_image_wide?: { file: FileList };
+  evenOdd?: boolean;
+  error?: string;
 }
 
 export class IAsset {
@@ -210,6 +227,7 @@ export class IAsset {
   plugins_count: number;
   container_id: string;
   user_id: string;
+  duration?: number;
 }
 
 type TEventTypes = 'Annotation'
