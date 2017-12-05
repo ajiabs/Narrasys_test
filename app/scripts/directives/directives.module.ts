@@ -28,8 +28,8 @@ import ittLanguageFlags from './ittLanguageFlags';
 import ittLanguageSelect from './ittLanguageSelect';
 import { Loading } from './ittLoading';
 import ittLogin from './ittLogin';
-import ittMagnet from './magnet/ittMagnet';
-import ittMagnetized from './magnet/ittMagnetized';
+import { Magnet } from './magnet/ittMagnet';
+import { Magnetized } from './magnet/ittMagnetized';
 import ittMcQuestion from './ittMcQuestion';
 import { Modal } from './ittModal';
 import { NarrativeDetail } from './npNarrativeDetail';
@@ -113,8 +113,8 @@ const directivesModule = angular.module('itt.directives', [])
   .directive('ittLanguageSelect', ittLanguageSelect)
   .component(Loading.Name, new Loading())
   .directive('ittLogin', ittLogin)
-  .directive('ittMagnet', ittMagnet)
-  .directive('ittMagnetized', ittMagnetized)
+  .directive(Magnet.Name, Magnet.factory())
+  .directive(Magnetized.Name, Magnetized.factory())
   .directive('ittMcQuestion', ittMcQuestion)
   .component(Modal.Name, new Modal())
   .component(NarrativeEditor.Name, new NarrativeEditor())
