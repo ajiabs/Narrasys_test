@@ -219,7 +219,7 @@ function revertTag(tag: string, syncOrigin: boolean = false): Promise<void> {
     });
 }
 
-export function showVersionDiff(releaseType: string, currentVersion: string, finalVersion: string): Promise<void> {
+export function showVersionDiff(releaseType: string, finalVersion: string): Promise<void> {
   const ghCompareStr = `https://github.com/inthetelling/client/compare`;
   inform('github diff URL:');
   if (releaseType === 'PRODUCTION') {
@@ -229,8 +229,10 @@ export function showVersionDiff(releaseType: string, currentVersion: string, fin
       })
       .then(() => logBranch());
   } else {
-    return Promise.resolve()
-      .then(() => link(`${ghCompareStr}/${currentVersion}...${finalVersion}`))
+    return getLastDevRelease()
+      .then((devCurrentVersion: string) => {
+        link(`${ghCompareStr}/${devCurrentVersion}...${finalVersion}`);
+      })
       .then(() => logBranch());
   }
 }
@@ -243,4 +245,9 @@ function logBranch() {
 function getLastProductionRelease(): Promise<string> {
   return httpRequest('https://np.narrasys.com/version.txt')
     .then((currentVersion: string) => currentVersion);
+}
+
+function getLastDevRelease(): Promise<string> {
+  return httpRequest('https://np-dev.narrasys.com/version.txt')
+    .then((devCurrentVersion: string) => devCurrentVersion);
 }
