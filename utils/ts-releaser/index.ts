@@ -40,7 +40,7 @@ async function buildApp(): Promise<void> {
   await pushChanges(currentSha);
   await addTag(releaseTypeAnswer.finalVersion, currentSha);
   await pushTag(releaseTypeAnswer.finalVersion, currentSha);
-  await showVersionDiff(releaseTypeAnswer.buildType, currentVersion, releaseTypeAnswer.finalVersion);
+  await showVersionDiff(releaseTypeAnswer.buildType, releaseTypeAnswer.finalVersion);
 }
 
 
