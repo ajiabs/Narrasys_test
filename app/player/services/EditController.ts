@@ -309,6 +309,102 @@ export default function EditController(
     return itemsAfter;
   };
 
+  $scope.saveEpisode = function () {
+    var toSave = angular.copy(appState.editEpisode);
+
+    dataSvc.storeEpisode(toSave)
+      .then(function (data) {
+        modelSvc.cache("episode", dataSvc.resolveIDs(data));
+        if (appState.editEpisode._master_asset_was_changed) {
+          delete modelSvc.episodes[data._id]._master_asset_was_changed; // probably unnecessary
+          var duration = modelSvc.assets[data.master_asset_id].duration;
+          var endTime = duration - 0.01;
+          modelSvc.episodes[appState.episodeId].masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
+          modelSvc.episodes[appState.episodeId].master_asset_id = data.master_asset_id;
+
+          /*
+           iterate through episode.scenes.
+           if start time > duration, delete the scene.
+           if end time > duration, set end time to duration.
+           iterate through episode.items.
+           if start or end time > duration, set to duration.
+
+           update ending scene
+           resolveEpisode and resolveEpisodeEvents
+
+           */
+          var modifiedEvents = [];
+          var deletedScenes = [];
+
+          var episode = modelSvc.episodes[toSave._id];
+          angular.forEach(episode.scenes, function (scene) {
+
+            if (scene.start_time > duration) {
+              deletedScenes.push(scene);
+            } else if (scene.end_time > duration) {
+              scene.end_time = endTime;
+              modifiedEvents.push(scene);
+            }
+          });
+          angular.forEach(episode.items, function (item) {
+            if (item.start_time > duration) {
+              item.start_time = endTime;
+            }
+            if (item.end_time > duration) {
+              item.end_time = endTime;
+            }
+            modifiedEvents.push(item);
+          });
+
+          var endingScene = modelSvc.events["internal:endingscreen:" + toSave._id];
+          if (endingScene) { // if episode was shortened, this might have been one that was deleted
+            endingScene.start_time = endTime;
+            endingScene.end_time = endTime;
+          } else {
+            modelSvc.addEndingScreen(toSave._id);
+          }
+
+          modelSvc.resolveEpisodeEvents(appState.episodeId);
+          // modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+          modelSvc.resolveEpisodeAssets(appState.episodeId); // TODO I suspect this is unnecessary...
+          playbackService.setMetaProp('duration', duration);
+          appState.editEpisode = false;
+          appState.videoControlsLocked = false;
+          timelineSvc.init(appState.episodeId);
+
+          // push each of modifiedEvents to server (TODO combine these into one call!)
+          angular.forEach(modifiedEvents, function (event) {
+            if (event._id.indexOf('internal') < 0) {
+              dataSvc.storeItem(event);
+            }
+          });
+          // ditto for orphaned scenes
+          angular.forEach(deletedScenes, function (scene) {
+            if (scene._id.indexOf('internal') < 0) {
+              dataSvc.deleteItem(scene._id);
+            }
+          });
+
+          // HACK HACK HACK super brute force -- something is going screwy with the timeline and video here,
+          // especially when we switch from youtube to native or vv.  Force it with a full reload.
+          // (Note this makes a lot of the above re-init code redundant, but I'm hopeful I'll someday have time to fix this prOH HA HA HA I COULDNT SAY IT WITH A STRAIGHT FACE)
+          $timeout(function () {
+            $window.location.reload();
+          }, 500);
+
+        } else {
+          // modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+          modelSvc.resolveEpisodeEvents(appState.episodeId);
+          modelSvc.resolveEpisodeAssets(appState.episodeId);
+          appState.editEpisode = false;
+          appState.videoControlsLocked = false;
+
+        }
+      }, function (data) {
+        console.error("FAILED TO STORE EPISODE", data);
+      });
+  };
+
   var resetScenes = function (updatedScenes, originalScene) {
     for (var i = 0; i < updatedScenes.length; i++) {
       if (typeof (updatedScenes[i]._id) === 'undefined' || updatedScenes[i]._id === 'internal:editing') {
