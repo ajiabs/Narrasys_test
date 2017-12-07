@@ -228,6 +228,20 @@ and (max-device-width : 568px) {
   content: '\e914';
 }
 
+.delete-button__container {
+  position: relative;
+  float: right;
+  top: 17.5px; // row height / 2 - button height / 2 == (55 / 2) - (20 / 2) = 17.5
+
+  .delete__button {
+    color: #595A5A;
+    font-family: Story;
+    &:before {
+      content: '\e91e';
+    }
+  }
+}
+
 .episode__button-row {
 	display: flex;
 	flex-direction: row;
@@ -317,20 +331,20 @@ and (max-device-width : 568px) {
 	font-size: 20px !important;
 }
 
-.timeline__delete {
-	text-align: center;
-	position: fixed;
-	border: 1px solid black;
-	width: 300px;
-	height: 200px;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: white;
-	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
+.modal__center-center {
+  text-align: center;
+  position: fixed;
+  border: 1px solid black;
+  width: 300px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
 }
 
-.timeline__delete .under__delete {
+.modal__center-center .under__delete {
 	padding: 5px;
 }
 

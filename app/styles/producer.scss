@@ -144,6 +144,19 @@ input[readonly] {
 	border: 1px solid #CCC;
 }
 
+.containerAssets .ittTooltip__text {
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 5px;
+  /* Position the tooltip */
+  position: absolute;
+  transform: translate(-150%, -75%);
+  z-index: 1;
+  pointer-events: none;
+}
+
 .containerAssets .grid:hover,
 .containerAssets tr:hover {
 	background-color: #EEE;
