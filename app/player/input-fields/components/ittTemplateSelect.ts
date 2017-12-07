@@ -11,9 +11,9 @@ const TEMPLATE = `
 	<div class="input" ng-class="{layouts: $ctrl.labelText === 'Template' && $ctrl.data.producerItemType === 'scene'}">
 		<select
 		  ng-if="$ctrl.context === 'event'"
-		  ng-model="$ctrl.data.component_name"
+		  ng-model="$ctrl.data.template_id"
 		  ng-change="$ctrl.onSelectChange($ctrl.data, $ctrl.itemForm)"
-		  ng-options="option.url as option.name for option in $ctrl.data.templateOpts"
+		  ng-options="option.template_id as option.name for option in $ctrl.data.templateOpts"
 		  itt-options-disabled="option.isDisabled for option in $ctrl.data.templateOpts">
     </select>
     

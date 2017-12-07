@@ -1,6 +1,6 @@
 'use strict';
 import { createInstance, IEpisode } from '../../models';
-import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc } from '../../interfaces';
+import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc, TDataCacheItem } from '../../interfaces';
 import { EventTemplates } from '../../constants';
 
 EditController.$inject = [
@@ -723,7 +723,13 @@ export default function EditController(
         'question': EventTemplates.QUESTION_TEMPLATE,
         'video': 'TODO:VIDEO'
       };
+      const templateObj = modelSvc.readDataCache(
+        'template',
+        ('component_name' as keyof TDataCacheItem),
+        defaultTemplateNames[type]
+      );
       stub.templateOpts = selectService.getTemplates(type);
+      stub.template_id = templateObj.id;
       stub.component_name = defaultTemplateNames[type];
     }
     angular.extend(base, stub);

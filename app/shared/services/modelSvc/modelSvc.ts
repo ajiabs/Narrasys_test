@@ -4,17 +4,21 @@
 
 import { IAnnotators, Partial } from '../../../interfaces';
 import {
-  createInstance, IAsset, IContainer, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, ITemplate,
+  createInstance, IAsset, IContainer, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, TTemplate,
   NEvent
 } from '../../../models';
 import { EventTemplates } from '../../../constants';
 import { config } from '../../../config';
 
-interface IDataCache {
-  template: { [templateId: string]: ITemplate };
+export interface IDataCache {
+  template: { [templateId: string]: TTemplate };
   layout: { [layoutId: string]: ILayout };
   style: { [styleId: string]: IStyle };
 }
+
+// note that in TS, 'keyof SomeUnionType' produces an intersection of keys in the union type
+// https://github.com/Microsoft/TypeScript/issues/12948
+export type TDataCacheItem = ILayout | IStyle | TTemplate;
 
 export interface IModelSvc {
   episodes: { [episodeId: string]: IEpisode };
@@ -24,6 +28,10 @@ export interface IModelSvc {
   narratives: { [narrativeId: string]: INarrative };
   customers: { [customerId: string]: ICustomer };
   dataCache: IDataCache;
+  readDataCache<K extends keyof IDataCache, F extends keyof TDataCacheItem>(
+    cache: K,
+    field: F,
+    val: TDataCacheItem[F]): TDataCacheItem;
   getNarrativeByPathOrId(pathOrId: string): INarrative;
   assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer;
   cachedNarrativesByCustomer(customer: any): any;
@@ -82,6 +90,20 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
   // use angular.extend if an object already exists, so we don't lose existing bindings
 
+
+  svc.readDataCache = readCache;
+  function readCache<K extends keyof IDataCache, F extends keyof TDataCacheItem>(
+    cache: K,
+    field: F,
+    val: TDataCacheItem[F]): TDataCacheItem {
+    const cacheType = svc.dataCache[cache];
+    for (const id in cacheType) {
+      if (cacheType.hasOwnProperty(id) && cacheType[id][field] === val) {
+        return cacheType[id];
+      }
+    }
+    return null;
+  }
 
   svc.mainVideoNewWindowUrl = mainVideoNewWindowUrl;
   function mainVideoNewWindowUrl(
@@ -365,6 +387,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       event.component_name = cmpTemplate.component_name;
     }
 
+    console.log('evt!', event);
     event = setLang(event);
     if (event._type !== 'Scene') {
 

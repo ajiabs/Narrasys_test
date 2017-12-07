@@ -148,3 +148,25 @@ export function renameKey(oldName, newName, obj) {
 export function slugify(str) {
   return str.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
 }
+
+
+export class StopWatchUtil {
+  private _start: number;
+  private _label: string;
+
+  static of() {
+    return new StopWatchUtil();
+  }
+
+  start(label?: string) {
+    this._label = label;
+    this._start = window.performance.now();
+  }
+
+  stop() {
+    const end = window.performance.now();
+    const prefixStr = 'Total time:';
+    const message = this._label != null ? `${this._label} ${prefixStr}` : prefixStr;
+    console.info(message, end - this._start);
+  }
+}

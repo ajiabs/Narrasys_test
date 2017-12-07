@@ -3,10 +3,10 @@
 
 
 import {
-  createInstance, IAsset, IEpisode, IEpisodeTemplate, IEvent, IItemTemplate, ILayout, ILayoutTemplate, IStyle,
+  createInstance, IAsset, IEpisode, IEpisodeTemplate, IEvent,  ILayout,  IStyle,
   ITemplate
 } from '../../../models';
-import { IEmailFields, IEpisodeTheme, Partial } from '../../../interfaces';
+import { IEmailFields, IEpisodeTheme, Partial, IDataCache, TDataCacheItem } from '../../../interfaces';
 import { existy, intersection, pick } from '../ittUtils';
 import { config } from '../../../config';
 
@@ -84,7 +84,10 @@ export interface IDataSvc {
   storeItem(evt: IEvent): ng.IPromise<IEvent | boolean>;
   prepItemForStorage(evt): any;
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
-  readCache(cache, field, val): object | boolean;
+  readCache<K extends keyof IDataCache, F extends keyof TDataCacheItem>(
+    cache: K,
+    field: F,
+    val: TDataCacheItem[F]): TDataCacheItem;
   getTemplates(): ITemplate[];
   getTemplate(id: string): ITemplate;
   sendSocialshareEmail(tlId:string, email: IEmailFields): ng.IPromise<void>;
@@ -1166,8 +1169,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     if (evt._type === 'Chapter') {
       return prepped;
     }
-    const template = svc.readCache('template', 'component_name', evt.component_name) as ILayoutTemplate | IItemTemplate;
-    if (template) {
+    const template = svc.readCache('template', ('component_name' as keyof TDataCacheItem), evt.component_name);
+    if (template != null) {
       prepped.template_id = template.id;
     }
     if (prepped.template_id) {
@@ -1244,6 +1247,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     prepped.style_id = get_id_values('style', epData.styles);
 
     const template = svc.readCache('template', 'id', epData.template_id) as ITemplate;
+    console.log('read cache template!', template);
     if (template && template.id) {
       prepped.template_id = template.id;
       return prepped;
@@ -1256,18 +1260,14 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   // careful to only use this for guaranteed unique fields (style and layout names, basically)
-  svc.readCache = function (cache, field, val) {
-    var found = false;
-    angular.forEach(modelSvc.dataCache[cache], function (item) {
-      if (item[field] === val) {
-        found = item;
-      }
-    });
-    if (found) {
-      return found;
-    }
-    return false;
-  };
+  svc.readCache = readCache;
+  function readCache<K extends keyof IDataCache, F extends keyof TDataCacheItem>(
+    cache: K,
+    field: F,
+    val: TDataCacheItem[F]): TDataCacheItem {
+    return modelSvc.readDataCache(cache, field, val);
+  }
+
   if (config.debugInBrowser) {
     // console.log("DataSvc:", svc);
     console.log('DataSvc cache:', modelSvc.dataCache);
@@ -1346,8 +1346,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     angular.forEach(realNames, (realName) => {
       if (realName) {
-        const cachedValue = svc.readCache(cache, 'css_name', realName) as IStyle | ILayout;
-        if (cachedValue) {
+        const cachedValue = svc.readCache(cache, ('css_name' as keyof TDataCacheItem), realName) as IStyle | ILayout;
+        if (cachedValue != null) {
           ids.push(cachedValue.id);
         } else {
           errorSvc.error({

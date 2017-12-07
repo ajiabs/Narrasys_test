@@ -1,3 +1,4 @@
+export { IDataCache, TDataCacheItem } from './shared/services/modelSvc/modelSvc';
 export { IAnalyticsSvc } from './player/services/analytics/analytics.service';
 export { IEpisodeEditService } from './player/episode/services/episodeEdit.service';
 export { IEpisodeTheme } from './player/episode/services/episodeTheme.service';

@@ -10,8 +10,8 @@ import { ToolbarStory } from './components/toolbar-story/ittToolbarStory';
 import ittTab from './components/ittTab';
 import ittTabs from './components/ittTabs';
 import ittVolumeSlider from './components/ittVolumeSlider';
-import ittMagnet from './directives/ittMagnet';
-import ittMagnetized from './directives/ittMagnetized';
+import { Magnet } from './directives/ittMagnet';
+import { Magnetized } from './directives/ittMagnetized';
 import { ittShowHideVisualOnly, visualHideAnimation } from './directives/ittShowHideVisualOnly';
 import ittWidthWatch from './directives/ittWidthWatch';
 import EditController from './services/EditController';
@@ -52,8 +52,8 @@ npPlayerModule
   .directive('ittTab', ittTab)
   .directive('ittTabs', ittTabs)
   .directive('ittVolumeSlider', ittVolumeSlider)
-  .directive('ittMagnet', ittMagnet)
-  .directive('ittMagnetized', ittMagnetized)
+  .directive(Magnet.Name, Magnet.factory())
+  .directive(Magnetized.Name, Magnetized.factory())
   .directive('ittShowHideVisualOnly', ittShowHideVisualOnly)
   .animation('.visualHideAnimation', visualHideAnimation)
   .directive('ittWidthWatch', ittWidthWatch)

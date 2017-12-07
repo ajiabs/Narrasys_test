@@ -6,7 +6,7 @@ import { TAnnotationItemNames, TImageItemNames, TLayoutNames, TLinkItemNames, TS
  * Created by githop on 5/1/17.
  */
 
-abstract class UIAsset {
+class UIAsset {
   id: string;
   css_name: string;
   display_name: string;
@@ -50,7 +50,7 @@ export class IFont {
   google: { families: string[] };
 }
 
-export abstract class ITemplate {
+export class ITemplate {
   id: string;
   name: string;
   displayName: string;
@@ -61,6 +61,8 @@ export abstract class ITemplate {
   created_at: Date;
   component_name?: string;
 }
+
+export type TTemplate = IEpisodeTemplate | IItemTemplate | ILayoutTemplate;
 
 export class IEpisodeTemplate extends ITemplate {
   type: 'Episode';
