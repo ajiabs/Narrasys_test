@@ -36,12 +36,24 @@
   <div ng-class="{hoverIndicator: $ctrl.depth !== 3, isActive: $ctrl.container.isActive && depth !== 3}">
 
     <div ng-if="$ctrl.depth === 3">
-      <np-tooltip tip-text="{{$ctrl.container.status}}" class="published__state" style="text-indent: 0;">
+      <np-tooltip
+        tip-text="{{$ctrl.container.status}}"
+        class="published__state"
+        ng-style="$ctrl.container.isActive && { 'top':'17.5px' }"
+        style="text-indent: 0;">
         <span
           ng-class="{
           isPublished: $ctrl.container.status === 'Published',
           isUnPublished: $ctrl.container.status !== 'Published'
           }"></span>
+      </np-tooltip>
+    </div>
+
+    <div class="delete-button__container"
+         ng-style="$ctrl.depth != 3 && {'padding-right': '5.5px'}"
+         ng-if="$ctrl.isAdmin && $ctrl.depth > 0 && $ctrl.container.isActive && !$ctrl.container.editingContainer">
+      <np-tooltip tip-text="Delete {{$ctrl.containerType}}?">
+        <a ng-click="$ctrl.deleteContainer($ctrl.container._id)" class="delete__button"></a>
       </np-tooltip>
     </div>
 
@@ -141,13 +153,13 @@
 			<button ng-disabled="!$ctrl.container.newContainerName || $ctrl.container.newContainerName == $ctrl.container.name.en"
               ng-click="$ctrl.renameContainer()">Save</button>
 		</span>
-    <span class="controls">
-			<button class="danger"
-              ng-if="$ctrl.appState.dangerousButtons && !$ctrl.container.children.length && !$ctrl.container.haveNotLoadedChildData"
-              ng-click="$ctrl.deleteEpisodeAndContainer($ctrl.container._id)">
-				Delete
-			</button>
-		</span>
+    <!--<span class="controls">-->
+			<!--<button class="danger"-->
+              <!--ng-if="$ctrl.appState.dangerousButtons && !$ctrl.container.children.length && !$ctrl.container.haveNotLoadedChildData"-->
+              <!--ng-click="$ctrl.deleteEpisodeAndContainer($ctrl.container._id)">-->
+				<!--Delete-->
+			<!--</button>-->
+		<!--</span>-->
   </div>
 
   <div ng-if="$ctrl.depth == 3 && $ctrl.container.isActive" class="container" style="text-indent: 4em;">
@@ -178,12 +190,13 @@
     </div>
     <!-- end episode -->
   </div>
-
   <np-container
     ng-if="$ctrl.depth < 3 && $ctrl.container.showChildren"
     ng-repeat="child in $ctrl.container.children"
     depth="$ctrl.depth + 1"
     container="$ctrl.containers[child._id]"
+    containers="$ctrl.modelSvc.containers"
+    on-container-remove="$ctrl.onContainerRemove({ $container })"
     on-container-click="$ctrl.onContainerClick({ $container })"
     on-container-add="$ctrl.onContainerAdd({ $container })">
   </np-container>

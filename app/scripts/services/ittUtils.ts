@@ -56,6 +56,18 @@ export function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
   );
 }
 
+export function omit(obj, ...keys) {
+  return Object.keys(obj).reduce(
+    (result, prop) => {
+      if (keys.indexOf(prop) === -1) {
+        result[prop] = obj[prop];
+      }
+      return result;
+    },
+    {}
+  );
+}
+
 export function stripHtmlTags(str) {
   return String(str).replace(/<\/?[^>]*>/gm, '');
 }

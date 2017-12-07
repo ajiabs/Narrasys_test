@@ -35,7 +35,7 @@ const TEMPLATE = `
     </div>
   </form>
 </div>
-<np-modal modal-class="timeline__delete" ng-if="$ctrl.underDelete">
+<np-modal modal-class="modal__center-center" ng-if="$ctrl.underDelete">
   <h2>Are you sure?</h2>
   <p>delete: </p>
   <p class="under__delete"><strong>{{$ctrl._timeline.name.en}}?</strong></p>
