@@ -27,7 +27,7 @@ function handleSourceMapUrl(env) {
 
 function configWp(env) {
 
-  const wpConfig =  {
+  const wpConfig = {
     resolve: {
       extensions: ['.ts', '.js', '.html'],
     },
@@ -60,14 +60,8 @@ function configWp(env) {
         },
         {
           test: /\.html$/,
-          exclude:[resolve(__dirname, 'app', 'index.html'), resolve(__dirname, 'app', 'privacy.html')],
+          exclude: [resolve(__dirname, 'app', 'index.html'), resolve(__dirname, 'app', 'privacy.html')],
           use: [
-            // {
-            //   loader: 'ngtemplate-loader',
-            //   options: {
-            //     relativeTo: join(__dirname, './app/'),
-            //   },
-            // },
             {
               loader: 'html-loader?exportAsEs6Default',
               options: {
@@ -97,7 +91,7 @@ function configWp(env) {
             {
               loader: 'file-loader',
               query: {
-                name: env.prod ?  'images/[name].[hash].[ext]' : 'images/[name].[ext]'
+                name: env.prod ? 'images/[name].[hash].[ext]' : 'images/[name].[ext]'
               }
             },
             {
@@ -174,9 +168,9 @@ function configWp(env) {
       env.prod ? new webpack.optimize.CommonsChunkPlugin({
         name: 'manifest',
         minChunks: Infinity
-      }): undefined,
+      }) : undefined,
       env.prod ? new WebpackChunkHash({algorithm: 'md5'}) : undefined,
-      env.prod ? 	new InlineManifestWebpackPlugin({
+      env.prod ? new InlineManifestWebpackPlugin({
         name: 'webpackManifest'
       }) : undefined,
       env.prod ? new webpack.optimize.ModuleConcatenationPlugin() : undefined,
