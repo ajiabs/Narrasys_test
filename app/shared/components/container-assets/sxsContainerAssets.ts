@@ -4,7 +4,7 @@ import { IDataSvc, IModelSvc } from '../../../interfaces';
 import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../../constants';
 import containerAssetsHtml from './container-assets.html';
 import { IAsset } from '../../../models';
-
+import { omit } from '../../services/ittUtils';
 
 interface ISxsContainerAssetsBindings {
   containerId: string;
@@ -28,6 +28,7 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
   assets: { [assetId: string]: IAsset };
   onlyImages: boolean;
   gridView: boolean;
+  assetToDelete: IAsset;
   static $inject = ['$rootScope', '$q', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'MIMES', 'authSvc'];
   constructor(
     public $rootScope: ng.IRootScopeService,
@@ -111,6 +112,23 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
       return;
     }
     this.$rootScope.$emit('UserSelectedAsset', assetId);
+  }
+
+  requestDeleteAsset($asset: IAsset, $ev: ng.IAngularEvent) {
+    // to avoid triggering the click handler on the <tr> element.
+    $ev.stopPropagation();
+    this.assetToDelete = $asset;
+  }
+
+  deleteAsset(id: string): void {
+    this.dataSvc.deleteAsset(id)
+      .then(() => {
+        //delete local copies on scope and modelSvc
+        this.assets = omit(this.assets, id);
+        this.modelSvc.assets = omit(this.modelSvc.assets, id);
+      })
+      .catch(e => console.log(e))
+      .finally(() => this.assetToDelete = null);
   }
 }
 

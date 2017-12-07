@@ -16,7 +16,7 @@ export class DynamicEventTemplate implements ng.IDirective {
     const template = `<span np-${attrs.componentName}-template></span>`;
     attrs.$observe('componentName', (v) => {
       if (v != null) {
-        console.log('fuck', template);
+        console.log('template', template);
         elm.replaceWith(this.$compile(template)(scope));
       }
     });

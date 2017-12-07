@@ -1,5 +1,5 @@
 import { IContainer } from '../../../models';
-import { existy } from '../../services/ittUtils';
+import { existy, omit } from '../../services/ittUtils';
 const TEMPLATE = `
 <div ng-if="$ctrl.context === 'episode' && $ctrl.userHasRole('admin') || $ctrl.userHasRole('customer admin')">
   <np-loading ng-if="$ctrl.loading"></np-loading>
@@ -8,9 +8,21 @@ const TEMPLATE = `
     ng-repeat="child in $ctrl.root.children"
     depth="0"
     container="child"
+    containers="$ctrl.modelSvc.containers"
+    on-container-remove="$ctrl.onRequestContainerRemove($container)"
     on-container-click="$ctrl.onContainerClick($container)"
     on-container-add="$ctrl.onContainerAdd($container)">
   </np-container>
+  
+  <np-modal class="modal__center-center" ng-if="$ctrl.containerToDelete != null">
+    <h4>Delete</h4>
+    {{$ctrl.containerToDelete.name.en}}?
+    <div>
+      <button ng-click="$ctrl.removeContainer($ctrl.containerToDelete)">Delete</button>
+      <button ng-click="$ctrl.containerToDelete = null">cancel</button>
+    </div>
+  </np-modal>
+  
   <div ng-if="$ctrl.showAdmin">
     Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.
   </div>
@@ -30,6 +42,16 @@ const TEMPLATE = `
 </div>
 `;
 
+const gatherIds = (container: IContainer, ids = []) => {
+  ids.push(container._id);
+  if (container.children && container.children.length > 0) {
+    container.children.forEach((child) => {
+      gatherIds(child, ids);
+    });
+  }
+  return ids;
+};
+
 interface IEpisodeListBindings extends ng.IComponentController {
   context: 'narrative' | 'episode';
   onCancel?: (e: any) => any;
@@ -45,7 +67,8 @@ class EpisodeListController implements IEpisodeListBindings {
   containers: IContainer[];
   lastClickedContainer: { container: IContainer, bool: boolean };
   root: IContainer;
-  static $inject = ['$location', '$timeout', 'authSvc', 'dataSvc', 'modelSvc', 'ittUtils'];
+  containerToDelete: IContainer;
+  static $inject = ['$location', '$timeout', 'authSvc', 'dataSvc', 'modelSvc'];
   constructor(
     private $location: ng.ILocationService,
     private $timeout: ng.ITimeoutService,
@@ -102,8 +125,25 @@ class EpisodeListController implements IEpisodeListBindings {
     this.walkContainers(this.root.children, !$container.evenOdd, false);
   }
 
+  onRequestContainerRemove($container) {
+    this.containerToDelete = $container;
+  }
+
+  removeContainer($container) {
+    this.dataSvc.deleteContainer($container._id)
+      .then(() => this.removeContainerSuccess($container))
+      .catch((e: any) => console.log('error removing container!'))
+      .finally(() => this.containerToDelete = null);
+  }
+
+  removeContainerSuccess($container) {
+    this.modelSvc.containers = omit(this.modelSvc.containers, ...gatherIds($container));
+    this.walkContainers(this.root.children, !$container.evenOdd, true);
+  }
+
   walkContainers(containerList: IContainer[], _evenOdd: boolean, findLastContainer: boolean) {
     let evenOdd = _evenOdd; // no-param-reassign
+
     containerList.sort((a, b) => {
       if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) {
         return -1;
@@ -116,7 +156,9 @@ class EpisodeListController implements IEpisodeListBindings {
 
     containerList.forEach((_container) => {
       const container = this.modelSvc.containers[_container._id];
-
+      if (container == null) {
+        return;
+      }
       container.evenOdd = evenOdd;
       evenOdd = !evenOdd;
 
