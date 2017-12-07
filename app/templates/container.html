@@ -51,7 +51,7 @@
 
     <div class="delete-button__container"
          ng-style="$ctrl.depth != 3 && {'padding-right': '5.5px'}"
-         ng-if="$ctrl.depth > 0 && $ctrl.container.isActive && !$ctrl.container.editingContainer">
+         ng-if="$ctrl.isAdmin && $ctrl.depth > 0 && $ctrl.container.isActive && !$ctrl.container.editingContainer">
       <np-tooltip tip-text="Delete {{$ctrl.containerType}}?">
         <a ng-click="$ctrl.deleteContainer($ctrl.container._id)" class="delete__button"></a>
       </np-tooltip>
