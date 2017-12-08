@@ -311,7 +311,6 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
     template_id: string;
   }
 
-
   function getTemplates(type, customerIds?: string[]) {
 
     const mergeTemplateIds = (templateOptsArr: Partial<ISelectOpt>[]): ISelectOpt[] => {
@@ -331,7 +330,6 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         []
       );
     };
-
 
     switch (type) {
       case 'episode':
@@ -354,7 +352,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _videoPositionSelectVisibility(false);
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
-        var scenes = [ //\u2022 = bullet point
+        const scenes = [ //\u2022 = bullet point
           { component_name: _scenes.centered, name: 'Center 1 (+ V\u2022TS\u2022ANT\u2022TM)' },
           { component_name: _scenes.centeredPro, name: 'Center 2 (+ V\u2022ANT)' },
           { component_name: _scenes['1col'], name: 'Center 3 (V\u2022TS\u2022ANT\u2022TM)' },
@@ -364,9 +362,9 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
           { component_name: _scenes.centerVVMondrian, name: 'Split 4 (V\u2022ANT | TM Invert)' },
           { component_name: _scenes.cornerH, name: 'Split 5 (V\u2022TS\u2022ANT / TM)' },
           { component_name: _scenes.pip, name: 'Split 6 (TM / V\u2022TS\u2022ANT)' }
-        ];
+        ] as Partial<ISelectOpt>[];
 
-        return scenes;
+        return mergeTemplateIds(scenes);
       case 'transcript':
         _speakerFieldVisibility(true);
         _templateSelectVisibility(true);
@@ -395,19 +393,19 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _titleFieldVisibility(true);
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
-        var linkTemplates = [
+        const linkTemplates = [
           { component_name: EventTemplates.LINK_TEMPLATE, name: 'Link' },
           { component_name: EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE, name: 'Link - hide title' },
           { component_name: EventTemplates.LINK_MODAL_THUMB_TEMPLATE, name: 'Link modal' },
           { component_name: EventTemplates.LINK_EMBED_TEMPLATE, name: 'Embedded link' }
-        ];
+        ] as Partial<ISelectOpt>[];
         if (_userHasRole('admin')) {
           linkTemplates.splice(3, 0, {
             component_name: EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE,
             name: 'Link w/ description first'
           });
         }
-        return linkTemplates;
+        return mergeTemplateIds(linkTemplates);
       case 'image':
         _imageFieldVisibility(true);
         _displaySelectVisibility(false);
@@ -415,30 +413,30 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _titleFieldVisibility(true);
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
-        var imgTemplates = [
+        const imgTemplates = [
           { component_name: EventTemplates.IMAGE_PLAIN_TEMPLATE, name: 'Plain Image' },
           { component_name: EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE, name: 'Inline Image with text' },
           { component_name: EventTemplates.SLIDING_CAPTION, name: 'Image with sliding caption' },
           { component_name: EventTemplates.IMAGE_THUMBNAIL_TEMPLATE, name: 'Image thumbnail' },
           { component_name: EventTemplates.IMAGE_FILL_TEMPLATE, name: 'Background or video overlay' }
-        ];
-        return imgTemplates;
+        ] as Partial<ISelectOpt>[];
+        return mergeTemplateIds(imgTemplates);
       case 'file':
         _titleFieldVisibility(true);
         _templateSelectVisibility(false);
         _bgImagePositionSelectVisibility(false);
-        return [
-          { component_name: EventTemplates.FILE_TEMPLATE, name: 'Uploaded File' },
-        ];
+        return mergeTemplateIds([
+          { component_name: EventTemplates.FILE_TEMPLATE, name: 'Uploaded File' }
+        ]);
       case 'question':
         _displaySelectVisibility(true);
         _imageFieldVisibility(true);
         _titleFieldVisibility(true);
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
-        return [
+        return mergeTemplateIds([
           { component_name: EventTemplates.QUESTION_TEMPLATE, name: 'Question' }
-        ];
+        ]);
       case 'chapter':
         //chapters have no template, but need to do side-effects
         _titleFieldVisibility(true);
