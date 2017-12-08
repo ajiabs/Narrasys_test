@@ -387,7 +387,6 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       event.component_name = cmpTemplate.component_name;
     }
 
-    console.log('evt!', event);
     event = setLang(event);
     if (event._type !== 'Scene') {
 

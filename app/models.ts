@@ -281,6 +281,7 @@ export class IEvent {
   component_name?: string;
   producerItemType?: string;
   cur_episode_id?: string;
+  renderTemplate?: boolean = true;
   //group ??
   //event_category ??
 

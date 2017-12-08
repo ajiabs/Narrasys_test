@@ -103,7 +103,6 @@ export default function EditController(
     // console.log("itemEditController.addEvent");
     var newEvent = generateEmptyItem(producerItemType);
 
-
     newEvent.cur_episode_id = appState.episodeId;
     newEvent.episode_id = appState.episodeId;
     if (appState.user && appState.user.avatar_id) {
@@ -459,6 +458,8 @@ export default function EditController(
       delete(modelSvc.events['internal:editing']);
       timelineSvc.removeEvent("internal:editing");
     } else {
+      console.log('og ev?', originalEvent);
+      originalEvent.renderTemplate = true;
       modelSvc.events[appState.editEvent._id] = originalEvent;
     }
     modelSvc.resolveEpisodeEvents(episodeId);

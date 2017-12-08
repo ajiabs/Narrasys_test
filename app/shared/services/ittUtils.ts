@@ -57,9 +57,9 @@ export function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
   );
 }
 
-export function omit(obj, ...keys) {
+export function omit(obj: object, ...keys: string[]) {
   return Object.keys(obj).reduce(
-    (result, prop) => {
+    (result: object, prop: string) => {
       if (keys.indexOf(prop) === -1) {
         result[prop] = obj[prop];
       }

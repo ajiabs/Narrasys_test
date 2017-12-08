@@ -14,11 +14,7 @@ export class DynamicEventTemplate implements ng.IDirective {
 
   link(scope: ng.IScope, elm: JQuery, attrs: any): void {
     const template = `<span np-${attrs.componentName}-template></span>`;
-    attrs.$observe('componentName', (v) => {
-      if (v != null) {
-        console.log('template', template);
-        elm.replaceWith(this.$compile(template)(scope));
-      }
-    });
+    const compiled = this.$compile(template)(scope);
+    elm.append(compiled);
   }
 }

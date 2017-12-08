@@ -44,7 +44,6 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
 
       scope.uploadStatus = [];
       scope.uneditedItem = angular.copy(scope.item); // in case of cancel
-      scope.uneditedItem['$$hashKey'] = scope.item['$$hashKey']; //Preserve the hashkey, which angular.copy strips out
       scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
       scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
@@ -92,34 +91,16 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
           timelineSvc.removeEvent(newItem._id);
         }
 
+
+
         // Special cases:
         // if new template is image-fill,
         // 	set cosmetic to true, itemForm.
         // if old template was image-fill, set cosmetic to false
         // TODO this is fragile, based on template name:
 
-        //seeing if we can put this logic below into select service
-
-        //for changes to templateUrl, i.e. picking an option from the drop down.
-        // if (newItem.templateUrl !== oldItem.templateUrl) {
-        //
-        // 	if (newItem.templateUrl === 'templates/item/image-fill.html') {
-        // 		scope.item.cosmetic = true;
-        // 		scope.item.layouts = ["windowBg"];
-        // 		scope.itemForm.position = "fill";
-        // 	}
-        // 	if (oldItem.templateUrl === 'templates/item/image-fill.html') {
-        // 		scope.item.cosmetic = false;
-        // 		scope.item.layouts = ["inline"];
-        // 		scope.itemForm.position = "";
-        // 		scope.itemForm.pin = "";
-        // 	}
-        // }
-
-
-        //newItem is scope.item
         newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
-
+        newItem.renderTemplate = (newItem.template_id === oldItem.template_id);
         //for producers, if they edit a URL to link-embed template a site that cannot be embedded,
         //change the template URL to 'link'
         if (appState.product === 'producer'

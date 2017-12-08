@@ -9,7 +9,6 @@ export default function ItemController($scope, timelineSvc) {
     ENTER: 13,
     SPACE: 32
   };
-
   $scope.seekOnKeyPress = function (t, $event) {
     var e = $event;
     var passThrough = true;

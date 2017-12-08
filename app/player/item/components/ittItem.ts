@@ -22,12 +22,11 @@ export default function ittItem($http, $timeout, $interval, authSvc, appState, a
       } else {
         componentName = '{{item.component_name}}';
       }
-      return `<div np-dynamic-event-template component-name="${componentName}"></div>`;
+      return `<div ng-if="item.renderTemplate" np-dynamic-event-template component-name="${componentName}"></div>`;
     },
     controller: 'ItemController',
     link: function (scope, element) {
       //scope.user = appState.user;
-
       scope.appState = appState; // to get searchText
       scope.userHasRole = authSvc.userHasRole;
 
