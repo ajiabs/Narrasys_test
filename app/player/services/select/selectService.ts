@@ -369,9 +369,9 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _speakerFieldVisibility(true);
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
-        return [
+        return mergeTemplateIds([
           { component_name: EventTemplates.TRANSCRIPT_TEMPLATE, name: 'Transcript' }
-        ];
+        ]);
       case 'annotation':
         _speakerFieldVisibility(false);
         _titleFieldVisibility(false);

@@ -5,7 +5,7 @@
 import { IAnnotators, Partial } from '../../../interfaces';
 import {
   createInstance, IAsset, IContainer, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, TTemplate,
-  NEvent
+  NEvent, IEvent
 } from '../../../models';
 import { EventTemplates } from '../../../constants';
 import { config } from '../../../config';
@@ -382,7 +382,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
   };
 
   svc.deriveEvent = function (event: Partial<NEvent>): NEvent {
-    const cmpTemplate = svc.dataCache.template[event.template_id];
+    const cmpTemplate = readCache('template', 'id', event.template_id);
     if (cmpTemplate != null) {
       event.component_name = cmpTemplate.component_name;
     }
@@ -502,7 +502,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
           event.producerItemType = 'link';
         }
       } else if (event._type === 'Plugin') {
-        if (event.component_name.match(/question/)) {
+        if (event.component_name && event.component_name.match(/question/)) {
           event.producerItemType = 'question';
         }
       } else if (event._type === 'Chapter') {
