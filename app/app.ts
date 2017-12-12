@@ -102,7 +102,33 @@ function routerConfig($routeProvider) {
     })
     .when('/story/:narrativePath', {
       title: 'Narrative',
-      template: `<np-narrative-container></np-narrative-container>`
+      template: `<np-narrative-container></np-narrative-container>`,
+      resolve: {
+        narrativeResolve: ['$route', '$q', 'authSvc', 'dataSvc', 'modelSvc', 'ittUtils',
+          function ($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
+            var pathOrId = $route.current.params.narrativePath;
+            //this only pulls from the cache.
+            var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+            var cachedCustomer;
+
+            var doPullFromCache = ittUtils.existy(cachedNarr) &&
+              ittUtils.existy(cachedNarr.path_slug) &&
+              ittUtils.existy(cachedNarr.timelines) &&
+              (cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
+
+            if (doPullFromCache) {
+              cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
+              return $q(function (resolve) {
+                return resolve({ n: cachedNarr, c: [cachedCustomer] });
+              });
+            }
+            return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
+              return dataSvc.getCustomer(narrativeData.customer_id, true).then(function (customer) {
+                return { n: narrativeData, c: [customer] };
+              });
+            });
+          }]
+      }
     })
     .when('/story/:narrativePath/:timelinePath', {
       template: '<div itt-narrative-timeline></div>',
