@@ -16,11 +16,7 @@ import './styles/vendor.scss';
 import '../plugin/plugins';
 import 'core-js/client/shim';
 import 'angular-ui-tree';
-//text angular
-import 'rangy';
-import 'rangy/lib/rangy-selectionsaverestore';
-import 'textAngular/dist/textAngular-sanitize.min';
-import 'textAngular/dist/textAngular.min';
+
 import 'angular-socialshare';
 //end text angular
 // import './config';
@@ -34,8 +30,6 @@ import './player/player.module';
 angular.module('np.client', [
   'ngRoute',
   'ngAnimate',
-  'ngSanitize',
-  'textAngular',
   'ui.tree',
   '720kb.socialshare',
   'np.shared',
@@ -76,8 +70,6 @@ angular.module('np.client', [
   .config(['$sceDelegateProvider', xDomainConfig])
   // Configure http headers and intercept http errors
   .config(['$httpProvider', authInterceptorConfig])
-  // Configuration for textAngular toolbar
-  .config(['$provide', textAngularConfig])
   //config for debug info disable
   .config(['$compileProvider', debugInfoConfig])
   .run(['$rootScope', 'errorSvc', runFunction]);
@@ -222,23 +214,6 @@ function authInterceptorConfig($httpProvider) {
         return $q.reject(rejection);
       }
     };
-  }]);
-}
-
-function textAngularConfig($provide) {
-  $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
-    taOptions.defaultFileDropHandler = function (a, b) {
-    }; //jshint ignore:line
-    taOptions.toolbar = [
-      ['h1', 'h2', 'h3'],
-      ['bold', 'italics', 'underline', 'strikeThrough'],
-      ['ul', 'ol'],
-      ['undo', 'redo', 'clear']
-      // ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
-      // ['justifyLeft','justifyCenter','justifyRight','indent','outdent'],
-      // ['html', 'insertImage', 'insertLink', 'insertVideo', 'wordcount', 'charcount']
-    ];
-    return taOptions;
   }]);
 }
 
