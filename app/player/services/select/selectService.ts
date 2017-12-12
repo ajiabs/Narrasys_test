@@ -4,6 +4,7 @@
  */
 import { IDataSvc, IModelSvc, Partial, TDataCacheItem } from '../../../interfaces';
 import { EventTemplates, TEventTemplateNames } from '../../../constants';
+import { TTemplate } from '../../../models';
 
 selectService.$inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
 
@@ -313,16 +314,16 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
 
   function getTemplates(type, customerIds?: string[]) {
 
-    const mergeTemplateIds = (templateOptsArr: Partial<ISelectOpt>[]): ISelectOpt[] => {
+    const mergeTemplateProps = (templateOptsArr: Partial<ISelectOpt>[]): ISelectOpt[] => {
       return templateOptsArr.reduce(
         (sOptsArr: ISelectOpt[], o: ISelectOpt) => {
           const template = modelSvc.readDataCache(
             'template',
             ('component_name' as keyof TDataCacheItem),
             o.component_name
-          );
+          ) as TTemplate;
           if (template != null) {
-            Object.assign(o, { template_id: template.id });
+            Object.assign(o, { template_id: template.id, name: template.displayName });
             sOptsArr.push(o);
           }
           return sOptsArr;
@@ -353,39 +354,38 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         const scenes = [ //\u2022 = bullet point
-          { component_name: _scenes.centered, name: 'Center 1 (+ V\u2022TS\u2022ANT\u2022TM)' },
-          { component_name: _scenes.centeredPro, name: 'Center 2 (+ V\u2022ANT)' },
-          { component_name: _scenes['1col'], name: 'Center 3 (V\u2022TS\u2022ANT\u2022TM)' },
-          { component_name: _scenes.cornerV, name: 'Split 1 (V\u2022TS\u2022ANT | TM)' },
-          { component_name: _scenes.mirroredTwoCol, name: 'Split 2 (V\u2022TM | TS\u2022ANT)' },
-          { component_name: _scenes.centerVV, name: 'Split 3 (V\u2022ANT | TM)' },
-          { component_name: _scenes.centerVVMondrian, name: 'Split 4 (V\u2022ANT | TM Invert)' },
-          { component_name: _scenes.cornerH, name: 'Split 5 (V\u2022TS\u2022ANT / TM)' },
-          { component_name: _scenes.pip, name: 'Split 6 (TM / V\u2022TS\u2022ANT)' }
+          { component_name: _scenes.centered },
+          { component_name: _scenes.centeredPro },
+          { component_name: _scenes['1col'] },
+          { component_name: _scenes.cornerV },
+          { component_name: _scenes.mirroredTwoCol },
+          { component_name: _scenes.centerVV },
+          { component_name: _scenes.centerVVMondrian },
+          { component_name: _scenes.cornerH },
+          { component_name: _scenes.pip  }
         ] as Partial<ISelectOpt>[];
 
-        return mergeTemplateIds(scenes);
+        return mergeTemplateProps(scenes);
       case 'transcript':
         _speakerFieldVisibility(true);
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
-        return mergeTemplateIds([
-          { component_name: EventTemplates.TRANSCRIPT_TEMPLATE, name: 'Transcript' }
+        return mergeTemplateProps([
+          { component_name: EventTemplates.TRANSCRIPT_TEMPLATE }
         ]);
       case 'annotation':
         _speakerFieldVisibility(false);
         _titleFieldVisibility(false);
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
-
         const annotationTemplateOpts: Partial<ISelectOpt>[] = [
-          { component_name: EventTemplates.HEADER_ONE_TEMPLATE, name: 'Header 1' },
-          { component_name: EventTemplates.HEADER_TWO_TEMPLATE, name: 'Header 2' },
-          { component_name: EventTemplates.PULLQUOTE_TEMPLATE, name: 'Pullquote' },
-          { component_name: EventTemplates.TEXT_TRANSMEDIA_TEMPLATE, name: 'Long text (as transmedia)' },
-          { component_name: EventTemplates.TEXT_DEFINITION_TEMPLATE, name: 'Definition (as transmedia)' }
+          { component_name: EventTemplates.HEADER_ONE_TEMPLATE },
+          { component_name: EventTemplates.HEADER_TWO_TEMPLATE },
+          { component_name: EventTemplates.PULLQUOTE_TEMPLATE },
+          { component_name: EventTemplates.TEXT_TRANSMEDIA_TEMPLATE },
+          { component_name: EventTemplates.TEXT_DEFINITION_TEMPLATE }
         ];
-        return mergeTemplateIds(annotationTemplateOpts);
+        return mergeTemplateProps(annotationTemplateOpts);
       case 'link':
         _displaySelectVisibility(true);
         _videoPositionSelectVisibility(false);
@@ -394,18 +394,17 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         const linkTemplates = [
-          { component_name: EventTemplates.LINK_TEMPLATE, name: 'Link' },
-          { component_name: EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE, name: 'Link - hide title' },
-          { component_name: EventTemplates.LINK_MODAL_THUMB_TEMPLATE, name: 'Link modal' },
-          { component_name: EventTemplates.LINK_EMBED_TEMPLATE, name: 'Embedded link' }
+          { component_name: EventTemplates.LINK_TEMPLATE },
+          { component_name: EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE },
+          { component_name: EventTemplates.LINK_MODAL_THUMB_TEMPLATE },
+          { component_name: EventTemplates.LINK_EMBED_TEMPLATE }
         ] as Partial<ISelectOpt>[];
         if (_userHasRole('admin')) {
           linkTemplates.splice(3, 0, {
-            component_name: EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE,
-            name: 'Link w/ description first'
+            component_name: EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE
           });
         }
-        return mergeTemplateIds(linkTemplates);
+        return mergeTemplateProps(linkTemplates);
       case 'image':
         _imageFieldVisibility(true);
         _displaySelectVisibility(false);
@@ -414,19 +413,19 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
         const imgTemplates = [
-          { component_name: EventTemplates.IMAGE_PLAIN_TEMPLATE, name: 'Plain Image' },
-          { component_name: EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE, name: 'Inline Image with text' },
-          { component_name: EventTemplates.SLIDING_CAPTION, name: 'Image with sliding caption' },
-          { component_name: EventTemplates.IMAGE_THUMBNAIL_TEMPLATE, name: 'Image thumbnail' },
-          { component_name: EventTemplates.IMAGE_FILL_TEMPLATE, name: 'Background or video overlay' }
+          { component_name: EventTemplates.IMAGE_PLAIN_TEMPLATE },
+          { component_name: EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE },
+          { component_name: EventTemplates.SLIDING_CAPTION },
+          { component_name: EventTemplates.IMAGE_THUMBNAIL_TEMPLATE },
+          { component_name: EventTemplates.IMAGE_FILL_TEMPLATE }
         ] as Partial<ISelectOpt>[];
-        return mergeTemplateIds(imgTemplates);
+        return mergeTemplateProps(imgTemplates);
       case 'file':
         _titleFieldVisibility(true);
         _templateSelectVisibility(false);
         _bgImagePositionSelectVisibility(false);
-        return mergeTemplateIds([
-          { component_name: EventTemplates.FILE_TEMPLATE, name: 'Uploaded File' }
+        return mergeTemplateProps([
+          { component_name: EventTemplates.FILE_TEMPLATE }
         ]);
       case 'question':
         _displaySelectVisibility(true);
@@ -434,8 +433,8 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         _titleFieldVisibility(true);
         _templateSelectVisibility(true);
         _bgImagePositionSelectVisibility(false);
-        return mergeTemplateIds([
-          { component_name: EventTemplates.QUESTION_TEMPLATE, name: 'Question' }
+        return mergeTemplateProps([
+          { component_name: EventTemplates.QUESTION_TEMPLATE  }
         ]);
       case 'chapter':
         //chapters have no template, but need to do side-effects
