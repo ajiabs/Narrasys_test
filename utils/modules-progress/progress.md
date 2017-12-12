@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 39, Needs Upgrade: 87, 30% complete
+  ### Upgraded Files: 38, Needs Upgrade: 85, 30% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -10,21 +10,18 @@ Completed: 1,
 Completed:
 * npProjectsContainer.ts
 ### shared - :x:
-Completed: 12,
+Completed: 9,
     Needs Upgrade: 13,
-    total: 25,
-    percent complete: 48%
+    total: 22,
+    percent complete: 40%
 
 Completed:
 * ittModal.ts
 * ittTooltip.ts
 * ittEditPencil.ts
 * ittLoading.ts
-* ittEpisodeList.ts
 * ittContainerEpisodes.ts
-* ittContainer.ts
 * ittNav.ts
-* sxsContainerAssets.ts
 * ittAssetUploader.ts
 * uploadsService.ts
 * appState.ts
@@ -63,20 +60,20 @@ Completed:
 * npGuestAccessibleUrl.ts
 * npNarrativeEditor.ts
 ### player - :x:
-Completed: 2,
-    Needs Upgrade: 14,
+Completed: 4,
+    Needs Upgrade: 12,
     total: 16,
-    percent complete: 12%
+    percent complete: 25%
 
 Completed:
+* ittMagnetized.ts
+* ittMagnet.ts
 * validation.service.ts
 * analytics.service.ts
 
 Needs Upgrade:
-* ittMagnetized.ts
 * ittShowHideVisualOnly.ts
 * ittWidthWatch.ts
-* ittMagnet.ts
 * ittNarrativeTimeline.ts
 * ittTabs.ts
 * ittVolumeSlider.ts

@@ -1,4 +1,4 @@
-// @npUpgrade-player-false
+// @npUpgrade-player-true
 
 import { CHANGE_MAGNET, JUMP_TO_MAGNET } from '../../constants';
 
