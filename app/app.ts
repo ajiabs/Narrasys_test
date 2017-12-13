@@ -18,8 +18,6 @@ import 'core-js/client/shim';
 import 'angular-ui-tree';
 
 import 'angular-socialshare';
-//end text angular
-// import './config';
 // modules
 
 import './shared/shared.module';
