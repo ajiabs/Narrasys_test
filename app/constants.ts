@@ -91,7 +91,7 @@ export namespace EventTemplates {
   export const LINK_WITHIMAGE_NOTITLE_TEMPLATE = 'item-link-withimage-notitle';
   export type LINK_WITHIMAGE_NOTITLE_TEMPLATE = typeof LINK_WITHIMAGE_NOTITLE_TEMPLATE;
 
-  export const PULLQUOTE_TEMPLATE = 'item-pull-quote';
+  export const PULLQUOTE_TEMPLATE = 'item-pullquote';
   export type PULLQUOTE_TEMPLATE = typeof PULLQUOTE_TEMPLATE;
 
   export const QUESTION_TEMPLATE = 'item-question-mc';
