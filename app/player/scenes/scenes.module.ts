@@ -28,18 +28,6 @@ const templates = [
   PipTemplate
 ];
 
-export const tmpSceneMap = {
-  'templates/scene/centered.html': 'centered',
-  'templates/scene/1col.html': 'onecol',
-  'templates/scene/cornerH.html': 'corner-h',
-  'templates/scene/cornerV.html': 'corner-v',
-  'templates/scene/pip.html': 'pip',
-  'templates/scene/mirrored-twocol.html': 'mirrored-twocol',
-  'templates/scene/centeredPro.html': 'centered-pro',
-  'templates/scene/centerVV.html':'center-vv',
-  'templates/scene/centerVV-Mondrian.html':'center-vv-mondrian'
-};
-
 npScenesModule
   .directive('ittScene', ittScene)
   .controller('SceneController', SceneController);
