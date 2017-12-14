@@ -615,8 +615,6 @@ export default function EditController(
       stub.layouts = ['windowFg'];
       stub.end_time = appState.time;
       stub.stop = true;
-      // stub.templateUrl = 'templates/item/sxs-' + type + '.html';
-      // stub.component_name = tmpItemMap[stub.templateUrl];
     } else {
       const defaultTemplateNames = {
         'scene': EventTemplates.CENTERED_TEMPLATE,
