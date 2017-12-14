@@ -27,10 +27,8 @@ import { SxsVideoTemplate } from './templates/sxs-video/sxs-video.template';
 import { TextDefinitionTemplate } from './templates/text-definition/text-definition.template';
 import { TextTransmediaTemplate } from './templates/text-transmedia/text-transmedia.template';
 import { TranscriptTemplate } from './templates/transcript/transcript.template';
-import {
-  TranscriptWiththumbnailTemplate
-} from './templates/transcript-withthumbnail/transcript-withthumbnail.template';
 import { SearchresultsAllTemplate } from './templates/searchresults-all/searchresults-all.template';
+import { UscBadgesTemplate } from './templates/usc-badges/usc-badges.template';
 
 const npItemModule = angular.module('np.item', []);
 
@@ -59,37 +57,9 @@ const templateDirectives = [
   TextDefinitionTemplate,
   TextTransmediaTemplate,
   TranscriptTemplate,
-  TranscriptWiththumbnailTemplate,
-  SearchresultsAllTemplate
+  SearchresultsAllTemplate,
+  UscBadgesTemplate
 ];
-
-export const tmpItemMap = {
-  'templates/item/file.html':'file',
-  'templates/item/image-caption-sliding.html':'image-caption-sliding',
-  'templates/item/image-fill.html':'image-fill',
-  'templates/item/image-inline-withtext.html':'image-inline-withtext',
-  'templates/item/image-plain.html':'image-plain',
-  'templates/item/image-thumbnail.html':'image-thumbnail',
-  'templates/item/link-descriptionfirst.html':'link-descriptionfirst',
-  'templates/item/link-embed.html':'link-embed',
-  'templates/item/link-modal-thumb.html':'link-modal-thumb',
-  'templates/item/link-withimage-notitle.html':'link-withimage-notitle',
-  'templates/item/link.html':'link',
-  'templates/item/pullquote.html':'pullquote',
-  'templates/item/question-mc.html':'question-mc',
-  'templates/item/sxs-annotation.html':'sxs-annotation',
-  'templates/item/sxs-file.html':'sxs-file',
-  'templates/item/sxs-image.html':'sxs-image',
-  'templates/item/sxs-link.html':'sxs-link',
-  'templates/item/sxs-question.html':'sxs-question',
-  'templates/item/sxs-video.html':'sxs-video',
-  'templates/item/text-definition.html':'text-definition',
-  'templates/item/text-h1.html':'header-one',
-  'templates/item/text-h2.html':'header-two',
-  'templates/item/text-transmedia.html':'text-transmedia',
-  'templates/item/transcript.html':'transcript',
-  'templates/item/usc-badges.html':'usc-badges'
-};
 
 npItemModule
   .directive('ittItem', ittItem)
@@ -101,9 +71,5 @@ npItemModule
 templateDirectives.forEach((tmpDir: any) => {
   npItemModule.directive(tmpDir.Name, tmpDir.factory());
 });
-
-// services.forEach((svc: any) => {
-//   itemModule.service(svc.Name, svc);
-// });
 
 export default npItemModule;
