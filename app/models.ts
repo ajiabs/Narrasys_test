@@ -111,7 +111,9 @@ export class IEpisode {
   template?: IEpisodeTemplate;
   title: ILangForm;
   updated_at: Date;
-  producerItemType?: string;
+  get producerItemType(): string {
+    return 'episode';
+  }
 
   setCurrentScene(scene: IScene): void {
     if (this.scenes && this.scenes.length) {
