@@ -97,7 +97,7 @@ class UrlFieldController implements IUrlFieldBindings {
     }
   }
 
-  updateTemplateOpts() {
+  updateTemplateOpts(): void {
     this.data.templateOpts = this._disableTemplateOpts(this.data.target === '_blank');
   }
 
@@ -142,7 +142,7 @@ class UrlFieldController implements IUrlFieldBindings {
       if (!this.canEmbed) {
         this.data.target = '_blank';
       }
-      this.data.templateOpts = this._disableTemplateOpts(this.canEmbed);
+      this.updateTemplateOpts();
       this.data.url_status = Object.assign(new ILinkStatus(), urlStatus);
       this.data.url = location || url;
       this.eventUrl = this.data.url;
