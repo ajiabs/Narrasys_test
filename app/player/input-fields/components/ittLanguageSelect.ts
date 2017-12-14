@@ -14,7 +14,7 @@ export default function ittLanguageSelect() {
       '<div class="field">',
       '	<div class="label">Default Language</div>',
       '	<div class="input">',
-      '		<select ng-model="$ctrl.data.defaultLanguage" ng-options="{{$ctrl.setNgOpts()}}" itt-options-disabled="option.isDisabled for option in $ctrl.langOpts"></select>',
+      '		<select ng-model="$ctrl.data.defaultLanguage" ng-options="{{::$ctrl.setNgOpts()}}"></select>',
       '	</div>',
       '</div>'
     ].join('\n'),
@@ -27,7 +27,7 @@ export default function ittLanguageSelect() {
       $scope.$watch(watchLangForm, handleUpdates, true);
 
       function setNgOpts() {
-        return "option.value as option.name for option in $ctrl.langOpts";
+        return 'option.value as option.name disable when option.isDisabled for option in $ctrl.langOpts';
       }
 
       function watchLangForm() {

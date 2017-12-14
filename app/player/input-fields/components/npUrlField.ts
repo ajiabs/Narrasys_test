@@ -7,6 +7,7 @@ import {
   Partial
 } from '../../../interfaces';
 import { IEpisode, ILink, ILinkStatus } from '../../../models';
+import { EventTemplates } from '../../../constants';
 
 /**
  * Created by githop on 6/30/16.
@@ -141,7 +142,7 @@ class UrlFieldController implements IUrlFieldBindings {
       if (!this.canEmbed) {
         this.data.target = '_blank';
       }
-      this.data.templateOpts = this._disableTemplateOpts(!this.canEmbed);
+      this.data.templateOpts = this._disableTemplateOpts(this.canEmbed);
       this.data.url_status = Object.assign(new ILinkStatus(), urlStatus);
       this.data.url = location || url;
       this.eventUrl = this.data.url;
@@ -170,7 +171,8 @@ class UrlFieldController implements IUrlFieldBindings {
     }
 
     return this.data.templateOpts.map((opt) => {
-      if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
+      if (opt.component_name === EventTemplates.LINK_EMBED_TEMPLATE ||
+          opt.component_name === EventTemplates.LINK_MODAL_THUMB_TEMPLATE) {
         opt.isDisabled = val;
       }
       return opt;

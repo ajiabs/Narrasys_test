@@ -18,8 +18,7 @@ export default function ittDisplaySelect() {
       '	<div class="input">',
       '		<select ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)"',
       '			ng-model="$ctrl.data.layouts[$ctrl.layoutIndex]"',
-      '			ng-options="{{$ctrl.setNgOpts(\'display\')}}"',
-      '			itt-options-disabled="option.isDisabled for option in $ctrl.getSelectOpts(\'display\')">',
+      '			ng-options="{{::$ctrl.setNgOpts(\'display\')}}">',
       '		</select>',
       '	</div>',
       '</div>',
@@ -30,16 +29,21 @@ export default function ittDisplaySelect() {
       '	</div>',
       '</div>'
     ].join(''),
-    controller: ['$scope', 'selectService', 'ittUtils', function ($scope, selectService, ittUtils) {
+    controller: ['$scope', 'selectService', function ($scope, selectService) {
       var ctrl = this;
       ctrl.getVisibility = selectService.getVisibility;
       ctrl.getSelectOpts = selectService.getSelectOpts;
       ctrl.onItemFormUpdate = selectService.onSelectChange;
-      ctrl.setNgOpts = ittUtils.setNgOpts;
+      ctrl.setNgOpts = setNgOpts;
       //layout index should be 0 for images, 1 for scenes
       ctrl.layoutIndex = (ctrl.data.producerItemType === 'image') ? 0 : 1;
-
       $scope.$watch(watchTemplate, handleChange);
+
+      function setNgOpts(selectOptTyp: string) {
+        return `option.value as option.name 
+        disable when option.isDisabled
+        for option in $ctrl.getSelectOpts('${selectOptTyp}')`;
+      }
 
       function watchTemplate() {
         return ctrl.data.component_name;

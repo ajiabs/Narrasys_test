@@ -10,7 +10,6 @@ import ittHighlightSelect from './components/ittHighlightSelect';
 import ittImageField from './components/ittImageField';
 import ittLanguageFlags from './components/ittLanguageFlags';
 import ittLanguageSelect from './components/ittLanguageSelect';
-import ittOptionsDisabled from './components/ittOptionsDisabled';
 import ittShowFocus from './directives/ittShowFocus';
 import ittSpeakerField from './components/ittSpeakerField';
 import ittSpeakerThumbField from './components/ittSpeakerThumbField';
@@ -75,7 +74,6 @@ npInputFieldsModule
   .directive('ittImageField', ittImageField)
   .directive('ittLanguageFlags', ittLanguageFlags)
   .directive('ittLanguageSelect', ittLanguageSelect)
-  .directive('ittOptionsDisabled', ittOptionsDisabled)
   .directive('ittShowFocus', ittShowFocus)
   .directive('ittSpeakerField', ittSpeakerField)
   .directive('ittSpeakerThumbField', ittSpeakerThumbField)

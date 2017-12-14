@@ -13,8 +13,7 @@ const TEMPLATE = `
 		  ng-if="$ctrl.context === 'event'"
 		  ng-model="$ctrl.data.template_id"
 		  ng-change="$ctrl.onSelectChange($ctrl.data, $ctrl.itemForm)"
-		  ng-options="option.template_id as option.name for option in $ctrl.data.templateOpts"
-		  itt-options-disabled="option.isDisabled for option in $ctrl.data.templateOpts">
+		  ng-options="option.template_id as option.name disable when option.isDisabled for option in $ctrl.data.templateOpts">
     </select>
     
     <select
