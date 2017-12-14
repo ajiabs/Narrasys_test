@@ -1,7 +1,10 @@
 import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
 
 
-import { TAnnotationItemNames, TImageItemNames, TLayoutNames, TLinkItemNames, TSocialTagTypes } from './constants';
+import {
+  EventTemplates, TAnnotationItemNames, TFileItemNames, TImageItemNames, TLayoutNames, TLinkItemNames,
+  TSocialTagTypes
+} from './constants';
 /**
  * Created by githop on 5/1/17.
  */
@@ -279,7 +282,6 @@ export class IEvent {
   style_id: string;
   layouts: string[] = ['inline'];
   component_name?: string;
-  producerItemType?: string;
   cur_episode_id?: string;
   renderTemplate?: boolean = true;
   //group ??
@@ -326,6 +328,10 @@ export class ILink extends IEvent {
   url_status?: ILinkStatus;
   isVideoUrl: boolean;
   mixedContent?: boolean;
+  get producerItemType() {
+    return 'link';
+  }
+
   component_name?: TLinkItemNames;
 }
 
@@ -338,6 +344,15 @@ export class IAnnotation extends IEvent {
   //belongs_to annotation image;
   annotation_image_id: string;
   component_name?: TAnnotationItemNames;
+
+  get producerItemType() {
+    if (this.component_name) {
+      if (this.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
+        return 'transcript';
+      }
+      return 'annotation';
+    }
+  }
 }
 
 export class IBookmark extends IEvent {
@@ -348,6 +363,9 @@ export class IBookmark extends IEvent {
 export class IChapter extends IEvent {
   type: 'Chapter';
   _type: 'Chapter';
+  get producerItemType() {
+    return 'chapter';
+  }
 }
 
 export class IImage extends IEvent {
@@ -373,6 +391,11 @@ export class IPlugin extends IEvent {
     _version: number
     _plugin: IPluginData;
   };
+  get producerItemType() {
+    if (this.component_name && /question/.test(this.component_name)) {
+      return 'question';
+    }
+  }
 }
 
 export class IScene extends IEvent {
@@ -382,6 +405,9 @@ export class IScene extends IEvent {
   cur_episode_id: string;
   scene_id: string;
   component_name?: TLayoutNames;
+  get producerItemType() {
+    return 'scene';
+  }
 }
 
 export class IText extends IEvent {
@@ -393,6 +419,15 @@ export class IUpload extends IEvent {
   type: 'Upload';
   _type: 'Upload';
   asset_id: string;
+  component_name?: TFileItemNames;
+  get producerItemType() {
+    if (this.component_name) {
+      if (this.component_name === EventTemplates.FILE_TEMPLATE) {
+        return 'file';
+      }
+      return 'image';
+    }
+  }
 }
 
 type TInstance =

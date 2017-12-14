@@ -49,6 +49,7 @@ class TemplateSelectController implements ITemplateSelectBindings {
 
     if (this.data instanceof IEpisode) {
       this.context = 'episode';
+      this.labelText = 'Theme';
     }
 
     if (this.isAnnotation) {
@@ -63,14 +64,6 @@ class TemplateSelectController implements ITemplateSelectBindings {
           }
         });
       }
-    }
-
-    //for episodes, not items (aka events).
-    //need a type of 'episode' for our selectSerivce
-    //switch statement
-    if (!this.data.hasOwnProperty('producerItemType')) {
-      this.data.producerItemType = 'episode';
-      this.labelText = 'Theme';
     }
   }
 

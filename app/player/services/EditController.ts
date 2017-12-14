@@ -403,7 +403,7 @@ export default function EditController(
     appState.editEvent.templateOpts = selectService.getTemplates('scene');
     appState.editEvent.cur_episode_id = appState.episodeId;
     appState.editEvent.episode_id = appState.episodeId;
-    appState.editEvent.producerItemType = 'scene';
+    appState.editEvent = createInstance('Scene', appState.editEvent);
     appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
     appState.videoControlsLocked = true;
     selectService.onSelectChange(appState.editEvent);
@@ -494,7 +494,6 @@ export default function EditController(
       'episode_id': appState.episodeId,
       // "type": type,  <-- NOPE that's a bug.  Confusing, so I'm leaving in this comment:  API types are Plugin, Scene, Upload, Link; these producer item types are different
       'isCurrent': true,
-      'producerItemType': type,
       'layouts': ['inline'],
       'styles': []
     };

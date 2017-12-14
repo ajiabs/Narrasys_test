@@ -480,40 +480,6 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
     }
 
-    // Finally one more super-fragile HACK for producer:
-    if (!event.producerItemType) {
-      if (event._type === 'Scene') {
-        event.producerItemType = 'scene';
-      } else if (event._type === 'Annotation') {
-        if (event.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
-          event.producerItemType = 'transcript';
-        } else {
-          event.producerItemType = 'annotation';
-        }
-      } else if (event._type === 'Upload') {
-        if (event.component_name === EventTemplates.FILE_TEMPLATE) { // HACK
-          event.producerItemType = 'file';
-        } else {
-          event.producerItemType = 'image';
-        }
-      } else if (event._type === 'Link') {
-        if (event.component_name && event.component_name.match(/video/)) {
-          event.producerItemType = 'video';
-        } else {
-          event.producerItemType = 'link';
-        }
-      } else if (event._type === 'Plugin') {
-        if (event.component_name && event.component_name.match(/question/)) {
-          event.producerItemType = 'question';
-        }
-      } else if (event._type === 'Chapter') {
-        event.producerItemType = 'chapter';
-      }
-      if (!event.producerItemType) {
-        console.warn('Couldn\'t determine a producerItemType for ', event.templateUrl);
-      }
-    }
-
     //it is helpful for UI purposes to know what type of annotation an event is
     //the IF statement above only runs if producerItemType has not be set.
     //when creating a new event, generateEmptyItem (in EditCtrl) will set producerItemType
