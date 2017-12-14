@@ -58,9 +58,6 @@ export namespace EventTemplates {
   export const FILE_TEMPLATE = 'item-file';
   export type FILE_TEMPLATE = typeof FILE_TEMPLATE;
 
-// export const IMAGE_TEMPLATE = 'Thumbnail';
-// export type IMAGE_TEMPLATE = typeof IMAGE_TEMPLATE;
-
   export const IMAGE_THUMBNAIL_TEMPLATE = 'item-image-thumbnail'; // DUPLICATE!
   export type IMAGE_THUMBNAIL_TEMPLATE = typeof IMAGE_THUMBNAIL_TEMPLATE;
 

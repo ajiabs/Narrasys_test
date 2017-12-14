@@ -6,7 +6,6 @@ import ittIframe from './components/iframe/ittIframe';
 import { FileTemplate } from './templates/file/file.template';
 import { HeaderOneTemplate } from './templates/header-one/header-one.template';
 import { HeaderTwoTemplate } from './templates/header-two/header-two.template';
-import { ImageTemplate } from './templates/image/image.template';
 import { ImageThumbnailTemplate } from './templates/image-thumbnail/image-thumbnail.template';
 import { ImageCaptionSlidingTemplate } from './templates/image-caption-sliding/image-caption-sliding.template';
 import { ImageFillTemplate } from './templates/image-fill/image-fill.template';
@@ -39,7 +38,6 @@ const templateDirectives = [
   FileTemplate,
   HeaderOneTemplate,
   HeaderTwoTemplate,
-  ImageTemplate,
   ImageCaptionSlidingTemplate,
   ImageFillTemplate,
   ImageInlineWithtextTemplate,
