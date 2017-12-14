@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 38, Needs Upgrade: 85, 30% complete
+  ### Upgraded Files: 38, Needs Upgrade: 84, 31% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -86,9 +86,9 @@ Needs Upgrade:
 * selectService.ts
 ### inputFields - :x:
 Completed: 4,
-    Needs Upgrade: 30,
-    total: 34,
-    percent complete: 11%
+    Needs Upgrade: 29,
+    total: 33,
+    percent complete: 12%
 
 Completed:
 * ittUploadTranscriptsField.ts
@@ -117,7 +117,6 @@ Needs Upgrade:
 * sxsAddContent.ts
 * ittLanguageFlags.ts
 * ittTranscriptField.ts
-* ittOptionsDisabled.ts
 * ittImageField.ts
 * ittDescriptionField.ts
 * ittTransitionSelect.ts
