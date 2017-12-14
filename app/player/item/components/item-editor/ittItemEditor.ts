@@ -98,7 +98,6 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         // 	set cosmetic to true, itemForm.
         // if old template was image-fill, set cosmetic to false
         // TODO this is fragile, based on template name:
-
         newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
         newItem.renderTemplate = (newItem.template_id === oldItem.template_id);
         //for producers, if they edit a URL to link-embed template a site that cannot be embedded,

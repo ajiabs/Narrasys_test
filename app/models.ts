@@ -494,22 +494,21 @@ export function createInstance<T>(type: TInstance, data: any): T {
 }
 
 //union type to provide type checking
-export type NEvent =
-  ILink |
-  IAnnotation |
-  IBookmark |
-  IChapter |
-  IImage |
-  IPlugin |
-  IScene |
-  IText |
-  IUpload;
+export type NEvent = IEvent
+  | ILink
+  | IAnnotation
+  | IBookmark
+  | IChapter
+  | IImage
+  | IPlugin
+  | IScene
+  | IText
+  | IUpload;
 
-export type NRecord =
-  NEvent |
-  INarrative |
-  IAsset |
-  ICustomer |
-  ITimeline |
-  IEpisode |
-  IContainer;
+export type NRecord = NEvent
+   | INarrative
+   | IAsset
+   | ICustomer
+   | ITimeline
+   | IEpisode
+   | IContainer;

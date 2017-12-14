@@ -484,7 +484,6 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
             ];
 
             if (isInline || item.layouts[0] === '') {
-              console.log('we are getting here');
               item.layouts[0] = 'videoLeft'; //P2 video left
               item.layouts[1] = _D1.a.value;
             }
@@ -555,6 +554,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
         item.layouts[0] = 'inline';
         break;
       case 'annotation':
+        console.log('annotation producerItyemType', item.component_name, EventTemplates.TEXT_TRANSMEDIA_TEMPLATE);
         item.layouts[0] = 'inline';
         switch (item.component_name) {
           case EventTemplates.HEADER_ONE_TEMPLATE:
@@ -570,6 +570,7 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
           case EventTemplates.TEXT_DEFINITION_TEMPLATE:
             _speakerFieldVisibility(false);
             _titleFieldVisibility(true);
+            console.log('title should be visible!', getVisibility('titleField'));
             break;
         }
         if (item.stop === true) {

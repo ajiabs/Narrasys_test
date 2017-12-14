@@ -410,7 +410,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   };
 
   var stopScrollWatcher = function () {
-    console.log("stopScrollWatcher");
+    // console.log("stopScrollWatcher");
     autoscrollableNode.unbind("scroll");
     $interval.cancel(autoscrollTimer);
     autoscrollTimer = false;

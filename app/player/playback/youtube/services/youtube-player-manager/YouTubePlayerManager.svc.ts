@@ -237,7 +237,6 @@ export default function youTubePlayerManager($location, ittUtils, YTScriptLoader
 
       var playerReadyEv = _formatPlayerStateChangeEvent({data: '6'}, pid);
       setMetaProp(pid, 'duration', event.target.getDuration());
-      console.log('_reset duration!');
       _emitStateChange(playerReadyEv);
     }
 

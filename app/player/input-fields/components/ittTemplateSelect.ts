@@ -80,7 +80,7 @@ class TemplateSelectController implements ITemplateSelectBindings {
   }
 
   onSelectChange(item: IEvent, form: ng.IFormController) {
-    this.selectService.onSelectChange(item, form);
+    this.selectService.onSelectChange(this.modelSvc.deriveEvent(item), form);
   }
 
   onEpisodeTemplateChange() {

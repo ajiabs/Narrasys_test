@@ -62,7 +62,7 @@ export default function sxsInputI18n($timeout, appState, textAngularManager) {
           if (!txt) {
             return;
           }
-          console.log("BEFORE", txt);
+          // console.log("BEFORE", txt);
 
           // yay regexp parsing of html my favorite thing to do
           txt = txt.replace(/<br\/>/g, '<br>'); // no xml-style tags
@@ -72,7 +72,7 @@ export default function sxsInputI18n($timeout, appState, textAngularManager) {
           txt = txt.replace(/<\/?(span|div)>/g, '');
           txt = txt.replace(/(<br>)*$/, ''); // kill extra linebreaks at end of entered text
 
-          console.log("AFTER", txt);
+          // console.log("AFTER", txt);
           scope.field[appState.lang] = txt;
         };
 
