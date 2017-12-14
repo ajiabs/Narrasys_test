@@ -5,7 +5,7 @@
 import { IAnnotators, Partial } from '../../../interfaces';
 import {
   createInstance, IAsset, IContainer, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, TTemplate,
-  NEvent, IEvent
+  NEvent, IEvent, IPlugin
 } from '../../../models';
 import { EventTemplates } from '../../../constants';
 import { config } from '../../../config';
@@ -410,8 +410,9 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
         // HACKS AHOY
         // USC made a bunch of change requests post-release; this was the most expedient way
         // to deal with them. Sorry!
-        event.component_name = EventTemplates.USC_BADGES_TEMPLATE;
-
+        if (event instanceof IPlugin && event.data && event.data._pluginType === 'credlyBadge') {
+          event.component_name = EventTemplates.USC_BADGES_TEMPLATE;
+        }
         if (event._type === 'Link') {
           if (event.display_title.match(/ACTIVITY/)) {
             // Unnecessary explanatory text

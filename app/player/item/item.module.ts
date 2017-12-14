@@ -29,6 +29,7 @@ import { TextTransmediaTemplate } from './templates/text-transmedia/text-transme
 import { TranscriptTemplate } from './templates/transcript/transcript.template';
 import { SearchresultsAllTemplate } from './templates/searchresults-all/searchresults-all.template';
 import { UscBadgesTemplate } from './templates/usc-badges/usc-badges.template';
+import { UscBadgesInnerTemplate } from './templates/usc-badges-inner/usc-badges-inner.template';
 
 const npItemModule = angular.module('np.item', []);
 
@@ -58,7 +59,8 @@ const templateDirectives = [
   TextTransmediaTemplate,
   TranscriptTemplate,
   SearchresultsAllTemplate,
-  UscBadgesTemplate
+  UscBadgesTemplate,
+  UscBadgesInnerTemplate
 ];
 
 npItemModule

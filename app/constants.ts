@@ -197,7 +197,7 @@ export type TEventTemplateNames = EventTemplates.USC_BADGES_TEMPLATE
 | TAnnotationItemNames
 | TLayoutNames;
 
-export function componentTemplateNameify(cmp: TEventTemplateNames): string {
+export function componentTemplateNameify(cmp: TEventTemplateNames | EventTemplates.USC_BADGES_INNER_TEMPLATE): string {
   const componentName = cmp
     .split('-')
     .map(word => capitalize(word))
