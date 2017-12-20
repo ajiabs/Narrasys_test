@@ -6,6 +6,15 @@ import { config } from '../../../../config';
  */
 urlService.$inject = ['youtubeUrlService', 'html5UrlService', 'kalturaUrlService', 'wistiaUrlService'];
 
+export interface IMasterAssetVideoObject {
+  youtube: string[];
+  mp4: string[];
+  m3u8: string[];
+  webm: string[];
+  kaltura: string[];
+  wistia: string[];
+}
+
 export default function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, wistiaUrlService: IWistiaUrlservice) {
 
   var _urlSubServices = {
@@ -68,7 +77,7 @@ export default function urlService(youtubeUrlService, html5UrlService, kalturaUr
   }
 
   function resolveVideo(videoAsset) {
-    var videoObject = {
+    var videoObject: IMasterAssetVideoObject = {
       youtube: [],
       mp4: [],
       webm: [],

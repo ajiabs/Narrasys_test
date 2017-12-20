@@ -1,8 +1,7 @@
 'use strict';
 import { createInstance, IEpisode } from '../../models';
 import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc, TDataCacheItem } from '../../interfaces';
-import { EventTemplates } from '../../constants';
-
+import { EventTemplates, MIMES } from '../../constants';
 EditController.$inject = [
   '$scope',
   '$rootScope',
@@ -14,7 +13,6 @@ EditController.$inject = [
   'modelSvc',
   'timelineSvc',
   'authSvc',
-  'MIMES',
   'playbackService',
   'episodeTheme',
   'episodeEdit'
@@ -31,7 +29,6 @@ export default function EditController(
   modelSvc: IModelSvc,
   timelineSvc: ITimelineSvc,
   authSvc,
-  MIMES,
   playbackService,
   episodeTheme: IEpisodeTheme,
   episodeEdit: IEpisodeEditService) {
@@ -638,10 +635,10 @@ export default function EditController(
     return createInstance(stub._type, base);
   };
 
-  $scope.updateEpisodeTemplate = updateEpisodeTemplate;
-  function updateEpisodeTemplate($data: { episode: IEpisode, templateId: string }) {
-    episodeEdit.updateEpisodeTemplate($data.episode, $data.templateId)
-      .then((episode: IEpisode) => $scope.episode = episode);
-  }
+  // $scope.updateEpisodeTemplate = updateEpisodeTemplate;
+  // function updateEpisodeTemplate($data: { episode: IEpisode, templateId: string }) {
+  //   episodeEdit.updateEpisodeTemplate($data.episode, $data.templateId)
+  //     .then((episode: IEpisode) => $scope.episode = episode);
+  // }
 
 }

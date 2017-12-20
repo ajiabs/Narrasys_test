@@ -1,7 +1,17 @@
 // @npUpgrade-episode-true
-import { IDataSvc, IEpisodeTheme, IModelSvc, Partial, ITimelineSvc } from '../../../interfaces';
+import { IDataSvc, IEpisodeTheme, IModelSvc, Partial, ITimelineSvc, } from '../../../interfaces';
 import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IScene } from '../../../models';
-import { EventTemplates } from '../../../constants';
+import { EventTemplates, MIMES } from '../../../constants';
+
+export interface ILangformFlags {
+  en: boolean;
+  es?: boolean;
+  zh?: boolean;
+  pt?: boolean;
+  fr?: boolean;
+  de?: boolean;
+  it?: boolean;
+}
 
 export interface IEpisodeEditService {
   updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode>;
@@ -12,10 +22,22 @@ export interface IEpisodeEditService {
 }
 
 export class EpisodeEditService implements IEpisodeEditService {
+  episodeLangForm: ILangformFlags = {
+    'en': true,
+    'es': false,
+    'zh': false,
+    'pt': false,
+    'fr': false,
+    'de': false,
+    'it': false
+  };
+  private _tempEpisode: Partial<IEpisode>;
   static Name = 'episodeEdit'; // tslint:disable-line
   static $inject = [
     '$timeout',
+    '$rootScope',
     'appState',
+    'authSvc',
     'selectService',
     'modelSvc',
     'dataSvc',
@@ -25,7 +47,9 @@ export class EpisodeEditService implements IEpisodeEditService {
   ];
 
   constructor(private $timeout: ng.ITimeoutService,
+              private $rootScope: ng.IRootScopeService,
               private appState,
+              private authSvc,
               private selectService,
               private modelSvc: IModelSvc,
               private dataSvc: IDataSvc,
@@ -33,6 +57,24 @@ export class EpisodeEditService implements IEpisodeEditService {
               private playbackService,
               private timelineSvc: ITimelineSvc) {
     //
+  }
+
+  get tempEpisode(): Partial<IEpisode> {
+    if (this._tempEpisode) {
+      return this._tempEpisode;
+    }
+  }
+
+  set tempEpisode(episode: Partial<IEpisode>) {
+    this._tempEpisode = episode;
+  }
+
+  get canAccess() {
+    return this.userHasRole('admin') || this.authSvc.userHasRole('customer admin');
+  }
+
+  userHasRole(role: string) {
+    return this.authSvc.userHasRole(role);
   }
 
   updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode> {
@@ -113,7 +155,10 @@ export class EpisodeEditService implements IEpisodeEditService {
           delete this.modelSvc.episodes[data._id]._master_asset_was_changed; // probably unnecessary
           const duration = this.modelSvc.assets[data.master_asset_id].duration;
           const endTime = duration - 0.01;
-          this.modelSvc.episodes[this.appState.episodeId].masterAsset = this.modelSvc.assets[$episode.master_asset_id];
+          this.modelSvc.episodes[this.appState.episodeId].masterAsset = createInstance(
+            'MasterAsset',
+            this.modelSvc.assets[$episode.master_asset_id]
+          );
           this.modelSvc.episodes[this.appState.episodeId].master_asset_id = data.master_asset_id;
 
           /*

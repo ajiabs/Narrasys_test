@@ -23,7 +23,14 @@
 			<div class="toolbar-bottom-fill">
 				<div ng-show="appState.editEvent || appState.editEpisode" class="navPanel editPanel">
 					<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
-					<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
+          <np-episode-editor
+            ng-if="appState.editEpisode"
+            episode="appState.editEpisode"
+            lang-form="episodeEdit.episodeLangForm"
+            item-form="episodeItemForm"
+            default-language="episodeDefaultLanguage">
+          </np-episode-editor>
+					<!--<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>-->
 				</div>
 
 				<div itt-timeline></div>

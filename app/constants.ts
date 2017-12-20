@@ -21,6 +21,20 @@ export type JUMP_TO_MAGNET = 'magnet.jumpToMagnet';
 export const UPDATE_MAGNET: string = 'magnet.updateMagnet';
 export type UPDATE_MAGNET = 'magnet.updateMagnet';
 
+type TMimeKeys = 'assetLib' | 'file' | 'default' | 'transcripts';
+type TMimes = {
+  readonly [key in TMimeKeys]: string;
+};
+
+/* tslint:disable */
+export const MIMES: TMimes = {
+  'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
+  'file': 'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
+  'default': 'image/*',
+  'transcripts': 'text/vtt,text/srt'
+};
+/* tslint:enable */
+
 export namespace EventTemplates {
   export const LANDINGSCREEN_TEMPLATE = 'layout-landingscreen';
   export type LANDINGSCREEN_TEMPLATE = typeof LANDINGSCREEN_TEMPLATE;

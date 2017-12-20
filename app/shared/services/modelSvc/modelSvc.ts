@@ -1119,7 +1119,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       var master_asset_id = svc.episodes[episodeId].master_asset_id;
       if (master_asset_id) {
         if (svc.assets[master_asset_id]) {
-          svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
+          svc.episodes[episodeId].masterAsset = createInstance('MasterAsset',svc.assets[master_asset_id]);
         }
       }
       var poster_frame_id = svc.episodes[episodeId].poster_frame_id;
