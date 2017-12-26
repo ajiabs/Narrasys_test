@@ -208,6 +208,8 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
     this.episode.poster_frame_id = assetId;
     this.episode.poster = asset;
     this.modelSvc.deriveEpisode(this.episode);
+    this.showAssetPicker = false;
+    this.showUploadButtonsPoster = false;
   }
 
   assetUploaded(assetId) {

@@ -65,7 +65,7 @@ interface IUrlFieldBindings extends ng.IComponentController {
 
 class UrlFieldController implements IUrlFieldBindings {
   data: ILink;
-  context: 'episode' | 'producer' | 'editor' | 'editor-video' = 'producer';
+  context: 'episode' | 'producer' | 'editor' | 'editor-video';
   label: string;
   eventUrl: string;
   onAttach: (ev) => ({$url: string});
@@ -91,7 +91,14 @@ class UrlFieldController implements IUrlFieldBindings {
   }
 
   $onInit() {
-    this.eventUrl = this.data.url;
+    if (this.data && this.data.url) {
+      this.eventUrl = this.data.url;
+    }
+
+    if (this.context == null) {
+      this.context = 'producer';
+    }
+
     if (this.context !== 'episode') {
       this.onUrlFieldChange(this.eventUrl, this.data.url_status);
     }
