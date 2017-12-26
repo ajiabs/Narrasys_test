@@ -106,7 +106,7 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
     console.log('User clicked on asset ', assetId);
     //when it comes time to emit data from a component
     //"isolate scope &" is a better fit than pubsub with $rootScope
-    if (this.context && this.context === 'narrative') {
+    if (this.context && (this.context === 'narrative' || this.context === 'episode')) {
       this.onAssetSelect({ $assetId: assetId });
       return;
     }

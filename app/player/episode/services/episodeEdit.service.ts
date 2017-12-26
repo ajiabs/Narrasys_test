@@ -14,11 +14,13 @@ export interface ILangformFlags {
 }
 
 export interface IEpisodeEditService {
+  episodeLangForm: ILangformFlags;
   updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode>;
   addEpisodeToContainer(newContainer: IContainer): ng.IPromise<IContainer>;
   setEpisodeToEdit(): void;
   saveEpisode(episode: IEpisode): void;
   detatchMasterAsset(episode: IEpisode): any;
+  cancelEpisodeEdit (originalEvent: IEpisode): void;
 }
 
 export class EpisodeEditService implements IEpisodeEditService {
@@ -31,7 +33,6 @@ export class EpisodeEditService implements IEpisodeEditService {
     'de': false,
     'it': false
   };
-  private _tempEpisode: Partial<IEpisode>;
   static Name = 'episodeEdit'; // tslint:disable-line
   static $inject = [
     '$timeout',
@@ -57,16 +58,6 @@ export class EpisodeEditService implements IEpisodeEditService {
               private playbackService,
               private timelineSvc: ITimelineSvc) {
     //
-  }
-
-  get tempEpisode(): Partial<IEpisode> {
-    if (this._tempEpisode) {
-      return this._tempEpisode;
-    }
-  }
-
-  set tempEpisode(episode: Partial<IEpisode>) {
-    this._tempEpisode = episode;
   }
 
   get canAccess() {
@@ -137,6 +128,19 @@ export class EpisodeEditService implements IEpisodeEditService {
     this.appState.videoControlsLocked = true; // this may not be sufficient on touchscreens
   }
 
+  cancelEpisodeEdit (originalEvent: IEpisode): void {
+    console.log('cancel edpisode edit?');
+    this.modelSvc.episodes[this.appState.episodeId] = originalEvent;
+
+    this.modelSvc.deriveEpisode(this.modelSvc.episodes[originalEvent._id]);
+    this.modelSvc.resolveEpisodeContainers(originalEvent._id); // only needed for navigation_depth changes
+    this.modelSvc.resolveEpisodeEvents(originalEvent._id); // needed for template or style changes
+    // console.log("Episode StyleCss is now ", modelSvc.episodes[originalEvent._id].styleCss);
+    this.episodeTheme.setTheme(originalEvent.template);
+    this.appState.editEpisode = false;
+    this.appState.videoControlsLocked = false;
+  }
+
   detatchMasterAsset(episode: IEpisode) {
     this.dataSvc.detachMasterAsset(episode)
       .then((data) => {
@@ -146,7 +150,6 @@ export class EpisodeEditService implements IEpisodeEditService {
 
   saveEpisode($episode: IEpisode) {
     const toSave = angular.copy(this.appState.editEpisode);
-    console.log('wtf?', toSave);
 
     this.dataSvc.storeEpisode(toSave)
       .then((data: any) => {

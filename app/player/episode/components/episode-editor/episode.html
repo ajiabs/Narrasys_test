@@ -34,18 +34,19 @@
           <div class="field" ng-if="$ctrl.showmessage">
             <div class="input" ng-bind-html="$ctrl.showmessage"></div>
           </div>
-          <itt-title-field
+          <np-title-field
             data="$ctrl.episode"
             model-opts="{ debounce: 500 }"
             do-validate="true"
-            itt-item-form="ittEpisodeForm">
-          </itt-title-field>
+            itt-item-form="ittEpisodeForm"
+            on-field-change="$ctrl.onTitleOrDescriptionChange()">
+          </np-title-field>
 
-          <itt-description-field
+          <np-description-field
             data="$ctrl.episode"
-            model-opts="{debounce: 50}">
-          </itt-description-field>
-
+            model-opts="{debounce: 50}"
+            on-field-change="$ctrl.onTitleOrDescriptionChange()">
+          </np-description-field>
 
           <div class="field" ng-if="$ctrl.isAdmin">
             <div class="label">Poster image
@@ -64,12 +65,16 @@
             </div>
           </div>
 
-          <itt-language-flags></itt-language-flags>
-          <itt-language-select
+          <np-language-flags
+            lang-form="$ctrl.langForm"
+            on-langflag-change="$ctrl.onLangFlagChange()">
+          </np-language-flags>
+          <np-language-select
             ng-if="$ctrl.languageCount > 1"
-            data="episode"
-            lang-form="langForm">
-          </itt-language-select>
+            data="$ctrl.episode"
+            on-select-change="$ctrl.onLangFlagChange()"
+            lang-form="$ctrl.episodeEdit.episodeLangForm">
+          </np-language-select>
           <div class="field" ng-if="$ctrl.episode.languages.length > 1">
             <div class="label">Current Language</div>
             <div class="input">
@@ -106,16 +111,28 @@
 
           <!--<itt-typography-select></itt-typography-select>-->
           <!--<itt-color-select></itt-color-select>-->
-          <itt-timestamp-select></itt-timestamp-select>
-          <itt-highlight-select></itt-highlight-select>
-          <itt-transition-select></itt-transition-select>
+          <np-timestamp-select
+            data="$ctrl.episode"
+            item-form="$ctrl.itemForm"
+            on-item-form-change="$ctrl.updateItemForm()">
+          </np-timestamp-select>
+          <np-highlight-select
+            data="$ctrl.episode"
+            item-form="$ctrl.itemForm"
+            on-item-form-change="$ctrl.updateItemForm()">
+          </np-highlight-select>
+          <np-transition-select
+            data="$ctrl.episode"
+            item-form="$ctrl.itemForm"
+            on-item-form-change="$ctrl.updateItemForm()">
+          </np-transition-select>
           <!-- end styles tab -->
         </div>
         <!-- end of tabset -->
       </div>
     </div>
     <div class="ittTabFoot">
-      <a ng-click="$ctrl.cancelEdit()">Cancel</a> &nbsp; &nbsp;
+      <a ng-click="$ctrl.cancelEpisodeEdit()">Cancel</a> &nbsp; &nbsp;
       <button ng-click="$ctrl.saveEpisode()" ng-disabled="ittEpisodeForm.$invalid">Save</button>
     </div>
   </form>

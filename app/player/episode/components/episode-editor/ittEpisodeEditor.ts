@@ -7,25 +7,46 @@
  I expect the episode styling to drift away from the event styling,
  though, so letting myself repeat myself repeat myself for now
  */
-import { IModelSvc, IDataSvc, IEpisodeEditService, IEpisodeTheme, ILangformFlags } from '../../../../interfaces';
+import {
+  IModelSvc,
+  IDataSvc,
+  IItemForm,
+  IEpisodeEditService,
+  IEpisodeTheme,
+  ILangformFlags
+} from '../../../../interfaces';
 import episodeHtml from './episode.html';
-import { createInstance, IContainer, ICustomer, IEpisode } from '../../../../models';
+import { createInstance, IContainer, ICustomer, IEpisode, IEvent, IMasterAsset } from '../../../../models';
+
+const isInternal = (item: IEvent): boolean => {
+  return (item._id && /internal/.test(item._id));
+};
+
+const getItemsAfter = (items: IEvent[], after: number): IEvent[] => {
+  const itemsAfter = [];
+  for (let i = 0, len = items.length; i < len; i += 1) {
+    if (!isInternal(items[i])) {
+      if (after < items[i].start_time || after < items[i].end_time) {
+        itemsAfter.push(items[i]);
+      }
+    }
+  }
+  return itemsAfter;
+};
 
 interface IEpisodeEditorBindings extends ng.IComponentController {
   episode: IEpisode;
-  langForm: ILangformFlags;
-  itemForm: any;
   defaultLanguage: string;
 }
 
 class EpisodeEditorController implements IEpisodeEditorBindings {
   episode: IEpisode;
-  langForm: ILangformFlags;
-  itemForm: any;
   defaultLanguage: string;
   //
   customer: ICustomer;
-  masterAsset: any;
+  itemForm: IItemForm;
+  langForm: ILangformFlags;
+  masterAsset: IMasterAsset;
   doCheckForTranslations: boolean;
   afterTranslationAttempt: string;
   episodeContainerId: string;
@@ -39,6 +60,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
   showUploadButtonsPoster: boolean;
   showUploadFieldPoster: boolean;
   languageCount: number;
+  showAssetPicker: boolean;
   private container: IContainer;
   static $inject = [
     '$timeout',
@@ -83,8 +105,13 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
     }
 
     this.uneditedEpisode = angular.copy(this.episode);
-    // this.itemForm = this.selectService.setupItemForm(this.episode.styles, 'episode');
+    this.itemForm = this.selectService.setupItemForm(this.episode.styles, 'episode');
+    this.langForm = this.episodeEdit.episodeLangForm;
 
+    for (let j = 0; j < this.episode.languages.length; j += 1) {
+      this.episodeEdit.episodeLangForm[this.episode.languages[j].code] = true;
+    }
+    this.onLangFlagChange();
     if (!this.authSvc.userHasRole('admin') || (this.masterAsset && /video\/x-/.test(this.masterAsset.content_type))) {
       this.masterAssetType = 'WebUrl';
     } else {
@@ -93,12 +120,13 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
 
   }
 
-  $onChanges(changes) {
-    if (changes) {
-      if (changes.langForm && changes.defaultLanguage) {
-        console.log('wtf mate?');
-      }
-    }
+  forcePreview() {
+    // defined in ittItemEditor, wtf?
+  }
+
+
+  toggleUpload(assetType = '') {
+    this[`showUploadField${assetType}`] = !this[`showUploadField${assetType}`];
   }
 
   translationMessage(langArr: any[]) {
@@ -137,12 +165,19 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
       .catch(handleError);
   }
 
-  forcePreview() {
-    // defined in ittItemEditor, wtf?
-  }
+  updateItemForm() {
+    this.episode.styles = Object.keys(this.itemForm).reduce(
+      (styles, styleType) => {
+        if (this.itemForm[styleType]) {
+          styles.push(styleType + this.itemForm[styleType]);
+        }
+        return styles;
+      },
+      []
+    );
 
-  cancelEdit() {
-    //defined in EditCtrl
+    this.modelSvc.deriveEpisode(this.episode);
+    this.modelSvc.resolveEpisodeEvents(this.episode._id); // needed for template or style changes
   }
 
   attachChosenAsset(asset_id: string) {
@@ -152,7 +187,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
     this.showmessage = 'New video attached.';
     if (previousAsset && (asset.duration < previousAsset.duration)) {
       // getItemAfter IN EDIT CONTROLLER
-      const orphans = this.getItemsAfter(this.episode.items.concat(this.episode.scenes), asset.duration);
+      const orphans = getItemsAfter(this.episode.items.concat(this.episode.scenes), asset.duration);
       if (orphans.length) {
         // TODO i18n
         this.showmessage = `Warning: this new video is shorter than the current video and we've detected that some 
@@ -207,7 +242,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
         mediaSrcArr: [mediaSrcUrl]
       };
 
-      const afterReady = this.waitForDuration(this.createAssetFromTmp, mediaSrcUrl, contentType);
+      const afterReady = this.waitForDuration(this.createAssetFromTmp.bind(this), mediaSrcUrl, contentType);
       this.playbackService.registerStateChangeListener(afterReady);
     }
   }
@@ -236,6 +271,52 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
   updateEpisodeTemplate($data: { episode: IEpisode, templateId: string }) {
     this.episodeEdit.updateEpisodeTemplate($data.episode, $data.templateId)
       .then((episode: IEpisode) => this.episode = episode);
+  }
+
+  cancelEpisodeEdit(originalEvent: IEpisode) {
+    this.episodeEdit.cancelEpisodeEdit(this.uneditedEpisode);
+  }
+
+  onTitleOrDescriptionChange() {
+    this.modelSvc.deriveEpisode(this.episode);
+    // modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+    this.modelSvc.resolveEpisodeEvents(this.episode._id); // needed for template or style changes
+  }
+
+  onLangFlagChange() {
+    let languageCount = 0; // not sure if necessary -- can use languages.length instead?
+    let lastSelectedLanguage = ''; // convenience to stuff into default if the old default is no longer valid
+    const newLanguages = []; // will replace the existing episode languages array
+    for (const lang in this.langForm) {
+      if (this.langForm[lang]) {
+        languageCount += 1;
+        lastSelectedLanguage = lang;
+        newLanguages.push({
+          'code': lang
+        });
+      } else {
+        // language not selected; remove it as default if it was one
+        if (this.episode.defaultLanguage === lang) {
+          this.episode.defaultLanguage = false;
+        }
+      }
+    }
+    this.languageCount = languageCount;
+
+    // ensure there is a valid default selection:
+    if (this.episode.defaultLanguage === false) {
+      this.episode.defaultLanguage = lastSelectedLanguage;
+    }
+
+    // set the default inside in the languages structure:
+    angular.forEach(newLanguages, (lang) => {
+      if (lang.code === this.episode.defaultLanguage) {
+        lang.default = true;
+      }
+    });
+
+    this.episode.languages = angular.copy(newLanguages);
+    console.log('default?', this.episode.defaultLanguage);
   }
 
   private waitForDuration(onDone: (a: any) => any, url: string, type: string) {
@@ -285,7 +366,6 @@ export class EpisodeEditor implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     episode: '<',
     langForm: '<',
-    itemForm: '<',
     defaultLanguage: '<'
   };
   template: string = episodeHtml;
@@ -392,76 +472,76 @@ export default function ittEpisodeEditor(
       //   scope.langForm[scope.episode.languages[j].code] = true;
       // }
       // scope.langForm[scope.episode.defaultLanguage] = true;
-      scope.languageWatcher = scope.$watch(function () {
-        return [scope.langForm, scope.episode.defaultLanguage];
-      }, function () {
-        var languageCount = 0; // not sure if necessary -- can use languages.length instead?
-        var lastSelectedLanguage = ''; // convenience to stuff into default if the old default is no longer valid
-        var newLanguages = []; // will replace the existing episode languages array
-        for (var lang in scope.langForm) {
-          if (scope.langForm[lang]) {
-            languageCount++;
-            lastSelectedLanguage = lang;
-            newLanguages.push({
-              'code': lang
-            });
-          } else {
-            // language not selected; remove it as default if it was one
-            if (scope.episode.defaultLanguage === lang) {
-              scope.episode.defaultLanguage = false;
-            }
-          }
-        }
-        scope.languageCount = languageCount;
-
-        // ensure there is a valid default selection:
-        if (scope.episode.defaultLanguage === false) {
-          scope.episode.defaultLanguage = lastSelectedLanguage;
-        }
-
-        // set the default inside in the languages structure:
-        angular.forEach(newLanguages, function (lang) {
-          if (lang.code === scope.episode.defaultLanguage) {
-            lang.default = true;
-          }
-        });
-
-        scope.episode.languages = angular.copy(newLanguages);
-      }, true);
+      // scope.languageWatcher = scope.$watch(function () {
+      //   return [scope.langForm, scope.episode.defaultLanguage];
+      // }, function () {
+      //   var languageCount = 0; // not sure if necessary -- can use languages.length instead?
+      //   var lastSelectedLanguage = ''; // convenience to stuff into default if the old default is no longer valid
+      //   var newLanguages = []; // will replace the existing episode languages array
+      //   for (var lang in scope.langForm) {
+      //     if (scope.langForm[lang]) {
+      //       languageCount++;
+      //       lastSelectedLanguage = lang;
+      //       newLanguages.push({
+      //         'code': lang
+      //       });
+      //     } else {
+      //       // language not selected; remove it as default if it was one
+      //       if (scope.episode.defaultLanguage === lang) {
+      //         scope.episode.defaultLanguage = false;
+      //       }
+      //     }
+      //   }
+      //   scope.languageCount = languageCount;
+      //
+      //   // ensure there is a valid default selection:
+      //   if (scope.episode.defaultLanguage === false) {
+      //     scope.episode.defaultLanguage = lastSelectedLanguage;
+      //   }
+      //
+      //   // set the default inside in the languages structure:
+      //   angular.forEach(newLanguages, function (lang) {
+      //     if (lang.code === scope.episode.defaultLanguage) {
+      //       lang.default = true;
+      //     }
+      //   });
+      //
+      //   scope.episode.languages = angular.copy(newLanguages);
+      // }, true);
 
       // Transform changes to form fields for styles into item.styles[]:
-      scope.watchStyleEdits = scope.$watch(function () {
-        return scope.itemForm;
-      }, function () {
-        // console.log("itemForm:", scope.itemForm);
-        var styles = [];
-        for (var styleType in scope.itemForm) {
-          if (scope.itemForm[styleType]) {
-            styles.push(styleType + scope.itemForm[styleType]);
-          }
-        }
-        scope.episode.styles = styles;
-        modelSvc.deriveEpisode(scope.episode);
-        modelSvc.resolveEpisodeEvents(scope.episode._id); // needed for template or style changes
-      }, true);
+      // scope.watchStyleEdits = scope.$watch(function () {
+      //   return scope.itemForm;
+      // }, function () {
+      //   // console.log("itemForm:", scope.itemForm);
+      //   var styles = [];
+      //   for (var styleType in scope.itemForm) {
+      //     if (scope.itemForm[styleType]) {
+      //       styles.push(styleType + scope.itemForm[styleType]);
+      //     }
+      //   }
+      //   scope.episode.styles = styles;
+      //   modelSvc.deriveEpisode(scope.episode);
+      //   modelSvc.resolveEpisodeEvents(scope.episode._id); // needed for template or style changes
+      // }, true);
 
       // scope.appState = appState;
 
       // Angular1.3 dependency: watchGroup
       // Deep-watching the entire episode is not so much with the good performance characteristics so we instead only watch the editable fields
       // TODO would it be worth using watchGroup in itemEdit as well?
-      scope.watchEdits = scope.$watchGroup(
-        // I am kind of amazed that using appState.lang works here, these strings must get recalculated every tick
-        [
-          'episode.title[appState.lang]',
-          'episode.description[appState.lang]'
-        ],
-        () => {
-          modelSvc.deriveEpisode(scope.episode);
-          // modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-          modelSvc.resolveEpisodeEvents(scope.episode._id); // needed for template or style changes
-        }
-      );
+      // scope.watchEdits = scope.$watchGroup(
+      //   // I am kind of amazed that using appState.lang works here, these strings must get recalculated every tick
+      //   [
+      //     'episode.title[appState.lang]',
+      //     'episode.description[appState.lang]'
+      //   ],
+      //   () => {
+      //     modelSvc.deriveEpisode(scope.episode);
+      //     // modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+      //     modelSvc.resolveEpisodeEvents(scope.episode._id); // needed for template or style changes
+      //   }
+      // );
 
       // scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
 

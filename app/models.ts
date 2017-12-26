@@ -90,7 +90,7 @@ export class ILayoutTemplate extends ITemplate {
   url: string;
 }
 
-class IMasterAsset {
+export class IMasterAsset {
   _id: string;
   _type: string;
   container_id: string;
@@ -134,7 +134,7 @@ export class IEpisode {
   children: any[];
   container_id: string;
   created_at: Date;
-  defaultLanguage: ILangformKeys;
+  defaultLanguage: ILangformKeys | false;
   description: ILangForm;
   display_description: string;
   display_title: string;

@@ -1,27 +1,30 @@
 <!-- producer master asset -->
 
-<div ng-if="showAssetPicker" class="floatAssetPicker">
+<div ng-if="$ctrl.showAssetPicker" class="floatAssetPicker">
 	<div class="scrollContainer">
-    <sxs-container-assets container-id="{{episodeContainerId}}"></sxs-container-assets>
+    <sxs-container-assets
+      on-asset-select="$ctrl.attachChosenAsset($assetId)"
+      container-id="{{$ctrl.episodeContainerId}}">
+    </sxs-container-assets>
 	</div>
 	<div class="controlsContainer">
-		<button ng-click="endChooseAsset();">Cancel</button>
+		<button ng-click="$ctrl.showAssetPicker = false;">Cancel</button>
 	</div>
 </div>
 
 <div>
-	<div ng-if="(masterAsset.original_filename) && !showUploadButtonsMaster">
-		{{masterAsset.display_name}}
-		<button class="button" ng-click="replaceAsset('Master')"> Replace</button>
-		<button class="button" ng-click="detachMasterAsset()">Remove</button>
+	<div ng-if="($ctrl.masterAsset.original_filename) && !$ctrl.showUploadButtonsMaster">
+		{{$ctrl.masterAsset.display_name}}
+		<button class="button" ng-click="$ctrl.replaceAsset('Master')"> Replace</button>
+		<button class="button" ng-click="$ctrl.detachMasterAsset()">Remove</button>
 	</div>
-	<div ng-if="showUploadButtonsMaster || !(masterAsset.original_filename)">
-		<span ng-if="showUploadFieldMaster">
-      <itt-asset-uploader container-id="{{episodeContainerId}}" callback="assetUploaded(data)"></itt-asset-uploader>
+	<div ng-if="$ctrl.showUploadButtonsMaster || !($ctrl.masterAsset.original_filename)">
+		<span ng-if="$ctrl.showUploadFieldMaster">
+      <itt-asset-uploader container-id="{{$ctrl.episodeContainerId}}" callback="$ctrl.assetUploaded(data)"></itt-asset-uploader>
 		</span>
-		<span ng-if="!showUploadFieldMaster">
-			<button class="button" ng-click="chooseAsset('Master')">Browse uploaded assets</button>
-			<button class="button" ng-click="toggleUpload('Master')">Upload new asset</button>
+		<span ng-if="!$ctrl.showUploadFieldMaster">
+			<button class="button" ng-click="$ctrl.showAssetPicker = true;">Browse uploaded assets</button>
+			<button class="button" ng-click="$ctrl.toggleUpload('Master')">Upload new asset</button>
 		</span>
 	</div>
 </div>

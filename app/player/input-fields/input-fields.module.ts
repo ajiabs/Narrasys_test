@@ -1,24 +1,24 @@
 import autofocus from './directives/autofocus';
 import ittAnnotationField from './components/ittAnnotationField';
 import ittColorSelect from './components/ittColorSelect';
-import ittDescriptionField from './components/ittDescriptionField';
+import ittDescriptionField, { DescriptionField } from './components/ittDescriptionField';
 import ittDisplaySelect from './components/ittDisplaySelect';
 import ittDynamicModel from './directives/ittDynamicModel';
 import ittFileField from './components/ittFileField';
 import { Flags } from './components/ittFlags';
-import ittHighlightSelect from './components/ittHighlightSelect';
+import ittHighlightSelect, { HighlightSelect } from './components/ittHighlightSelect';
 import ittImageField from './components/ittImageField';
-import ittLanguageFlags from './components/ittLanguageFlags';
-import ittLanguageSelect from './components/ittLanguageSelect';
+import  { LanguageFlags } from './components/ittLanguageFlags';
+import ittLanguageSelect, { LanguageSelect }  from './components/ittLanguageSelect';
 import ittShowFocus from './directives/ittShowFocus';
 import ittSpeakerField from './components/ittSpeakerField';
 import ittSpeakerThumbField from './components/ittSpeakerThumbField';
 import { TemplateSelect } from './components/ittTemplateSelect';
 import ittTimeField from './components/ittTimeField';
-import ittTimestampSelect from './components/ittTimestampSelect';
-import ittTitleField from './components/ittTitleField';
+import ittTimestampSelect, { TimestampSelect } from './components/ittTimestampSelect';
+import ittTitleField, { TitleField } from './components/ittTitleField';
 import ittTranscriptField from './components/ittTranscriptField';
-import ittTransitionSelect from './components/ittTransitionSelect';
+import ittTransitionSelect, { TransitionSelect } from './components/ittTransitionSelect';
 import ittTypographySelect from './components/ittTypographySelect';
 import { UploadTranscripts } from './components/ittUploadTranscriptsField';
 import ittValidAsset from './directives/ittValidAsset';
@@ -66,23 +66,29 @@ npInputFieldsModule
   .directive('ittAnnotationField', ittAnnotationField)
   .directive('ittColorSelect', ittColorSelect)
   .directive('ittDescriptionField', ittDescriptionField)
+  .component(DescriptionField.Name, new DescriptionField())
   .directive('ittDisplaySelect',ittDisplaySelect)
   .directive('ittDynamicModel', ittDynamicModel)
   .directive('ittFileField', ittFileField)
   .component(Flags.Name, new Flags())
   .directive('ittHighlightSelect', ittHighlightSelect)
+  .component(HighlightSelect.Name, new HighlightSelect())
   .directive('ittImageField', ittImageField)
-  .directive('ittLanguageFlags', ittLanguageFlags)
+  // .directive('ittLanguageFlags', ittLanguageFlags)
   .directive('ittLanguageSelect', ittLanguageSelect)
+  .component(LanguageSelect.Name, new LanguageSelect())
   .directive('ittShowFocus', ittShowFocus)
   .directive('ittSpeakerField', ittSpeakerField)
   .directive('ittSpeakerThumbField', ittSpeakerThumbField)
   .component(TemplateSelect.Name, new TemplateSelect())
   .directive('ittTimeField', ittTimeField)
   .directive('ittTimestampSelect', ittTimestampSelect)
+  .component(TimestampSelect.Name, new TimestampSelect())
   .directive('ittTitleField', ittTitleField)
+  .component(TitleField.Name, new TitleField())
   .directive('ittTranscriptField', ittTranscriptField)
   .directive('ittTransitionSelect', ittTransitionSelect)
+  .component(TransitionSelect.Name, new TransitionSelect())
   .directive('ittTypographySelect', ittTypographySelect)
   .component(UploadTranscripts.Name, new UploadTranscripts())
   .directive('ittValidAsset', ittValidAsset)
@@ -94,6 +100,7 @@ npInputFieldsModule
   .directive('sxsAddContent', sxsAddContent)
   .directive('sxsAnnotatorAutocomplete', sxsAnnotatorAutocomplete)
   .component(VideoPositionSelect.Name, new VideoPositionSelect())
-  .component(UrlField.Name, new UrlField());
+  .component(UrlField.Name, new UrlField())
+  .component(LanguageFlags.Name, new LanguageFlags());
 
 export default npInputFieldsModule;

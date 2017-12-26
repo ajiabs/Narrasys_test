@@ -211,6 +211,9 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   $scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
   $scope.now = new Date();
 
+  $scope.editEpisode = () => {
+    episodeEdit.setEpisodeToEdit();
+  };
   // $scope.newWindowUrl = config.apiDataBaseUrl + "/v1/new_window";
   // if (appState.narrativeId) {
   //   $scope.newWindowUrl = $scope.newWindowUrl + "?narrative=" + appState.narrativeId + "&timeline=" + appState.timelineId;
@@ -223,11 +226,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   $scope.calcNewWindowUrl = calcNewWindowUrl;
 
   function setupEpisodeEditor(episode) {
-    $scope.episodeItemForm = selectService.setupItemForm(episode.styles, 'episode');
     $scope.defaultLanguage = episode.defaultLanguage;
-    for (let j = 0; j < episode.languages.length; j += 1) {
-      episodeEdit.episodeLangForm[episode.languages[j].code] = true;
-    }
   }
 
   function calcNewWindowUrl() {

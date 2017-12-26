@@ -2,9 +2,30 @@
 /**
  * Created by githop on 6/7/16.
  */
-import { IDataSvc, IModelSvc, Partial, TDataCacheItem } from '../../../interfaces';
+import { IDataSvc, IModelSvc, Partial, TDataCacheItem, ILangformKeys } from '../../../interfaces';
 import { EventTemplates, TEventTemplateNames } from '../../../constants';
 import { TTemplate } from '../../../models';
+
+export interface IItemForm {
+  transition: '' | 'None' | 'Fade' | 'SlideL' | 'SlideR' | 'Pop';
+  highlight: '' | 'None' | 'Solid' | 'Border' | 'Side' | 'Bloom' | 'Tilt';
+  color: '' | 'Invert' | 'Sepia' | 'Solarized' | 'Vivid';
+  typography: '' | 'Sans' | 'Serif' | 'Book' | 'Swiss';
+  timestamp: '' | 'None' | 'Inline';
+  position?: string;
+}
+
+export interface ISelectOpt {
+  component_name: TEventTemplateNames;
+  name: string;
+  template_id: string;
+}
+
+export interface ILangOpt {
+  value: ILangformKeys;
+  name: 'English' | 'Spanish' | 'Chinese' | 'Portuguese' | 'French' | 'German' | 'Italian';
+  isDisabled: boolean;
+}
 
 selectService.$inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
 
@@ -257,12 +278,13 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
    When it comes time to persist, the styles array is used in dataSvc#prepItemForStorage,
    which reads the strings in the styles array and returns the corresponding ID for the entity in the DB.
 
-   We do the inverse of this inside of watchStyleEdits below, which watches the itemForm, and builds up the styles array from
-   the itemForm props. It also formats background URLs.
+   We do the inverse of this inside of watchStyleEdits below, which watches the itemForm, and builds up the styles array
+   from the itemForm props. It also formats background URLs.
    */
-  function setupItemForm(stylesArr, type) {
+  function setupItemForm(stylesArr, type): IItemForm {
+
     //global for episode and item
-    var _itemFormStub = {
+    var _itemFormStub: IItemForm = {
       'transition': '',
       'highlight': '',
       'color': '',
@@ -304,12 +326,6 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
     }
 
     return _itemFormStub;
-  }
-
-  interface ISelectOpt {
-    component_name: TEventTemplateNames;
-    name: string;
-    template_id: string;
   }
 
   function getTemplates(type, customerIds?: string[]) {

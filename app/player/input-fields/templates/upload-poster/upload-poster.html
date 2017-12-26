@@ -1,26 +1,33 @@
 <!-- producer episode poster asset-->
 
-<div ng-if="showAssetPicker" class="floatAssetPicker">
+<div ng-if="$ctrl.showAssetPicker" class="floatAssetPicker">
 	<div class="scrollContainer">
-    <sxs-container-assets container-id="{{episodeContainerId}}"></sxs-container-assets>
+    <sxs-container-assets
+      context="episode"
+      on-asset-select="$ctrl.posterUploaded($assetId)"
+      container-id="{{$ctrl.episodeContainerId}}">
+    </sxs-container-assets>
 	</div>
 	<div class="controlsContainer">
-		<button ng-click="endChooseAsset();">Cancel</button>
+		<button ng-click="$ctrl.showAssetPicker = false;">Cancel</button>
 	</div>
 </div>
 
 <div>
-	<div ng-if="episode.poster && !showUploadButtonsPoster">
-		{{episode.poster.display_name}}
-		<button class="button" ng-click="replaceAsset('Poster')">Replace this</button>
+	<div ng-if="$ctrl.episode.poster && !$ctrl.showUploadButtonsPoster">
+		{{$ctrl.episode.poster.display_name}}
+		<button class="button" ng-click="$ctrl.replaceAsset('Poster')">Replace this</button>
 	</div>
-	<div ng-if="showUploadButtonsPoster || !episode.poster">
-		<span ng-if="showUploadFieldPoster">
-      <itt-asset-uploader container-id="{{episodeContainerId}}" callback="posterUploaded(data)"></itt-asset-uploader>
+	<div ng-if="$ctrl.showUploadButtonsPoster || !$ctrl.episode.poster">
+		<span ng-if="$ctrl.showUploadFieldPoster">
+      <itt-asset-uploader
+        container-id="{{$ctrl.episodeContainerId}}"
+        callback="$ctrl.posterUploaded(data)">
+      </itt-asset-uploader>
 		</span>
 		<span ng-if="!showUploadFieldPoster">
-			<button class="button" ng-click="chooseAsset('Poster')">Browse uploaded</button>
-			<button class="button" ng-click="toggleUpload('Poster')">Upload new</button>
+			<button class="button" ng-click="$ctrl.showAssetPicker = true;">Browse uploaded</button>
+			<button class="button" ng-click="$ctrl.toggleUpload('Poster')">Upload new</button>
 		</span>
 	</div>
 </div>

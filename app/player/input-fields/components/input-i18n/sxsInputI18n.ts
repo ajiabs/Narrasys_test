@@ -10,7 +10,8 @@ export default function sxsInputI18n($timeout, appState, textAngularManager) {
       field: "=sxsInputI18n",
       inputtype: "=inputtype",
       doValidate: '=',
-      onEmitName: '&'
+      onEmitName: '&',
+      onFieldChange: '&?'
     },
     link: function (scope, el, attrs) {
       if (!scope.field) {

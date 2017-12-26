@@ -1,5 +1,5 @@
 'use strict';
-import { createInstance, IEpisode } from '../../models';
+import { createInstance, IEpisode, IEvent } from '../../models';
 import { IEpisodeTheme, IEpisodeEditService, IModelSvc, IDataSvc, ITimelineSvc, TDataCacheItem } from '../../interfaces';
 import { EventTemplates, MIMES } from '../../constants';
 EditController.$inject = [
@@ -289,20 +289,8 @@ export default function EditController(
 
   var getScenes = modelSvc.getEpisodeScenes;
 
-  var isInternal = function (item) {
-    return (item._id && item._id.match(/internal/));
-  };
-
-  $scope.getItemsAfter = function (items, after) {
-    var itemsAfter = [];
-    for (var i = 0, len = items.length; i < len; i++) {
-      if (!isInternal(items[i])) {
-        if (after < items[i].start_time || after < items[i].end_time) {
-          itemsAfter.push(items[i]);
-        }
-      }
-    }
-    return itemsAfter;
+  const isInternal = (item: IEvent): boolean => {
+    return (item._id && /internal/.test(item._id));
   };
 
   var resetScenes = function (updatedScenes, originalScene) {
@@ -406,9 +394,6 @@ export default function EditController(
     selectService.onSelectChange(appState.editEvent);
   };
 
-  $scope.editEpisode = function () {
-    episodeEdit.setEpisodeToEdit();
-  };
 
   $scope.deleteEvent = function (eventId) {
     if (window.confirm("Are you sure you wish to delete this item?")) {
@@ -471,18 +456,6 @@ export default function EditController(
     appState.videoControlsLocked = false;
   };
 
-  $scope.cancelEpisodeEdit = function (originalEvent: IEpisode) {
-
-    modelSvc.episodes[appState.episodeId] = originalEvent;
-
-    modelSvc.deriveEpisode(modelSvc.episodes[originalEvent._id]);
-    modelSvc.resolveEpisodeContainers(originalEvent._id); // only needed for navigation_depth changes
-    modelSvc.resolveEpisodeEvents(originalEvent._id); // needed for template or style changes
-    // console.log("Episode StyleCss is now ", modelSvc.episodes[originalEvent._id].styleCss);
-    episodeTheme.setTheme(originalEvent.template);
-    appState.editEpisode = false;
-    appState.videoControlsLocked = false;
-  };
 
   var generateEmptyItem = function (type) {
     var base = {
