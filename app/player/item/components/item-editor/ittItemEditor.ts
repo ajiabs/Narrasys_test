@@ -24,7 +24,281 @@
  */
 
 import itemHtml from './item.html';
-import { EventTemplates } from '../../../../constants';
+import { EventTemplates, MIMES } from '../../../../constants';
+import { IModelSvc, ITimelineSvc } from '../../../../interfaces';
+import { IEvent, IPlugin, IScene } from '../../../../models';
+
+const isTranscript = function (item: IEvent) {
+  return item._type === 'Annotation' && item.component_name === EventTemplates.TRANSCRIPT_TEMPLATE;
+};
+
+const sortByStartTime = function (a, b) {
+  return a.start_time - b.start_time;
+};
+
+const getNextStartTime = (currentScene, currentItem, _items) => {
+  if (currentItem._type === 'Chapter') {
+    return false;
+  }
+  //HACK to work around TS-412
+  if (!currentScene) {
+    console.warn(
+      "getNextStartTime called with no scene (because it's being called for a scene event?)",
+      currentItem,
+      _items);
+    return false;
+  }
+  let nextItem;
+  let nextStartTime = currentScene.end_time;
+  const items = _items.sort(sortByStartTime);
+  for (let i = 0, len = items.length; i < len; i += 1) {
+    if (items[i]._id === currentItem._id) {
+      //the next item start_time if less than scen end time
+      nextItem = items[i + 1];
+      break;
+    }
+  }
+  if (nextItem) {
+    if (nextItem.start_time < currentScene.end_time) {
+      nextStartTime = nextItem.start_time;
+    }
+  }
+  return nextStartTime;
+};
+
+
+interface IItemEditorBindings extends ng.IComponentController {
+  item: IEvent;
+}
+
+class ItemEditorController implements IItemEditorBindings {
+  item: IEvent;
+  //
+  sxsItemComponentFieldName: string;
+  uploadStatus = [];
+  uneditedItem: IEvent;
+  annotators: any;
+  episodeContainerId: string;
+  languages: any;
+  itemForm: any;
+  dismissalWatcher: any;
+  showUploadButtons: boolean;
+  showUploadField: boolean;
+  blockDoubleClicks: boolean;
+  showAssetPicker: boolean;
+  mimes: any;
+  static $inject = [
+    '$rootScope',
+    'errorSvc',
+    'appState',
+    'modelSvc',
+    'timelineSvc',
+    'selectService',
+    'episodeEdit',
+    'authSvc'
+  ];
+  constructor(
+    private $rootScope,
+    private errorSvc,
+    private appState,
+    private modelSvc: IModelSvc,
+    private timelineSvc: ITimelineSvc,
+    private selectService,
+    private episodeEdit,
+    private authSvc) {
+    //
+  }
+
+  get customEndTime() {
+    return this.isAutoEndTime();
+  }
+
+  get canAccess() {
+    return this.authSvc.userHasRole('admin') || this.authSvc.userHasRole('customer admin');
+  }
+
+  userHasRole(role: string) {
+    return this.authSvc.userHasRole(role);
+  }
+
+  $onInit() {
+    this.timelineSvc.pause();
+    this.timelineSvc.seek(this.item.start_time);
+    this.uploadStatus = [];
+    this.annotators = angular.copy(this.item);
+    const ep = this.modelSvc.episodes[this.appState.episodeId];
+    this.episodeContainerId = ep.container_id;
+    this.languages = ep.languages;
+    this.itemForm = this.selectService.setupItemForm(this.item.styles, 'item');
+
+    if (!this.item.layouts) {
+      this.item.layouts = ['inline'];
+    }
+
+    this.dismissalWatcher = this.$rootScope.$on('player.dismissAllPanels', this.cancelEdit.bind(this));
+
+    this.sxsItemComponentFieldName = `${this.appState.product}-${this.item.producerItemType}-field`;
+    this.uneditedItem = angular.copy(this.item);
+
+    if (MIMES[this.item.producerItemType]) {
+      this.mimes = MIMES[this.item.producerItemType];
+    } else {
+      this.mimes = MIMES.default;
+    }
+  }
+
+  forcePreview() {
+    this.appState.editEvent.fnord = (this.appState.editEvent.fnord) ? '' : 'fnord';
+  }
+
+  isAutoEndTime(): boolean {
+    const items = isTranscript(this.item) ? this.episodeEdit.getTranscriptItems() : [];
+    const nextStartTime = getNextStartTime(this.getCurrentScene(this.item), this.item, items);
+    if (this.item.end_time === nextStartTime) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  cancelEdit() {
+    this.episodeEdit.cancelEventEdit(this.uneditedItem);
+  }
+
+  saveEvent() {
+    this.blockDoubleClicks = true;
+    const toSave = angular.copy(this.appState.editEvent);
+    const unmodifiedEvent = this.uneditedItem;
+
+    this.episodeEdit.saveEvent(toSave, unmodifiedEvent)
+      .final(() => this.blockDoubleClicks = false);
+  }
+
+  assetUploaded(assetId: string) {
+    this.item.asset = this.modelSvc.assets[assetId];
+    // TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
+    if (this.item._type === 'Link') {
+      this.item.link_image_id = assetId;
+    } else if (this.item._type === 'Annotation') {
+      this.item.annotation_image_id = assetId;
+    } else {
+      this.item.asset_id = assetId;
+    }
+    this.showUploadButtons = false;
+    this.showUploadField = false;
+  }
+
+  replaceAsset() {
+    console.log('replace asset!');
+    this.showUploadButtons = true;
+
+    if (this.item.sxs) { // we will delete assets atached to editor items, not from producer items
+      this.item.removedAssets = this.item.removedAssets || [];
+      // removedAsset will be used by editController on save to delete the old asset (if we're in editor)
+      if (this.item._type === 'Link') {
+        this.item.removedAssets.push(this.item.link_image_id);
+      } else if (this.item._type === 'Annotation') {
+        this.item.removedAssets.push(this.item.annotation_image_id);
+      } else {
+        this.item.removedAssets.push(this.item.asset_id);
+      }
+    }
+  }
+
+  detachAsset(): void {
+    // console.log(
+    // 	'item:', scope.item,
+    // 	'asset:', scope.item.asset,
+    // 	'link_image_id:', scope.item.link_image_id,
+    // 	'asset_id:', scope.item.asset_id,
+    // 	'annotation_image_id:', scope.item.annotation_image_id
+    // );
+    if (this.item.asset) {
+      switch (this.item.producerItemType) {
+        case 'link':
+          this.item.asset = null;
+          this.item.link_image_id = null;
+          this.item.asset_id = null;
+          this.item.annotation_image_id = null;
+          break;
+        case 'transcript':
+          this.item.asset = null;
+          this.item.annotation_image_id = null;
+          break;
+        case 'image':
+        case 'question':
+        case 'file':
+          this.item.asset = null;
+          this.item.asset_id = null;
+          break;
+      }
+    }
+  }
+
+  attachChosenAsset(asset_id: string): void {
+    // console.log(scope.item);
+    const asset = this.modelSvc.assets[asset_id];
+    if (this.item) {
+      this.item.asset = asset;
+      this.selectService.onSelectChange(this.item, this.itemForm);
+      if (this.item._type === 'Upload' || this.item._type === 'Plugin') {
+        this.item.asset_id = asset_id;
+      } else if (this.item._type === 'Link') {
+        this.item.link_image_id = asset_id;
+        this.item.asset_id = asset_id;
+      } else if (this.item._type === 'Annotation') {
+        console.log('you are actually getting here!!');
+        this.item.asset_id = asset_id;
+        this.item.annotation_image_id = asset_id;
+      } else {
+        console.error('Tried to select asset for unknown item type', this.item);
+      }
+    }
+  }
+
+  addDistractor() {
+    (this.item as IPlugin).data._plugin.distractors.push({
+      text: '',
+      index: ((this.item as IPlugin).data._plugin.distractors.length + 1)
+    });
+  }
+
+  toggleUpload(assetType = '') {
+    this['showUploadField' + assetType] = !this['showUploadField' + assetType];
+  }
+
+  chooseAsset() {
+    this.showAssetPicker = true;
+  }
+
+  onAssetSelected(assetId) {
+    this.attachChosenAsset(assetId);
+  }
+
+
+  private getCurrentScene(item: IEvent) {
+    if (item._type === 'Scene') {
+      return item;
+    } else {
+      return this.modelSvc.events[(this.item as IScene).scene_id];
+    }
+  }
+
+}
+
+interface IComponentBindings {
+  [binding: string]: '<' | '<?' | '&' | '&?' | '@' | '@?' | '=' | '=?';
+}
+
+export class ItemEditor implements ng.IComponentOptions {
+  bindings: IComponentBindings = {
+    item: '<'
+  };
+  template: string = TEMPLATE;
+  controller = ItemEditorController;
+  static Name: string = 'npItemEditor'; // tslint:disable-line
+}
+
 
 ittItemEditor.$inject = ['$rootScope', 'errorSvc', 'appState', 'modelSvc', 'timelineSvc', 'selectService'];
 
@@ -148,200 +422,200 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
 
       }, true);
 
-      scope.forcePreview = function () {
-        // this is silly but it works.
-        appState.editEvent.fnord = (appState.editEvent.fnord) ? "" : "fnord";
-      };
-      var isTranscript = function (item) {
-        if (item._type === 'Annotation' && item.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
-          return true;
-        } else {
-          return false;
-        }
-      };
-      scope.setItemTime = function () {
-        // triggered when user changes start time in the input field
+      // scope.forcePreview = function () {
+      //   // this is silly but it works.
+      //   appState.editEvent.fnord = (appState.editEvent.fnord) ? "" : "fnord";
+      // };
+      // var isTranscript = function (item) {
+      //   if (item._type === 'Annotation' && item.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
+      //     return true;
+      //   } else {
+      //     return false;
+      //   }
+      // };
+      // scope.setItemTime = function () {
+      //   // triggered when user changes start time in the input field
+      //
+      //   // TODO ensure within episode duration. If too close to a scene start, match to scene start. If end time not in same scene, change end time to end of scene / beginning of next transcript
+      //
+      //   if (scope.item._type === 'Scene') {
+      //     modelSvc.resolveEpisodeEvents(appState.episodeId); // reparent events to new scene times if necessary
+      //
+      //     // need to update timeline enter/exit for *all* scenes here, since changing one can modify others ...
+      //     timelineSvc.updateSceneTimes(scope.item.episode_id);
+      //
+      //   } else if (scope.item.stop) {
+      //     scope.item.end_time = scope.item.start_time;
+      //     modelSvc.resolveEpisodeEvents(appState.episodeId); // redundant but necessary
+      //     timelineSvc.updateEventTimes(scope.item);
+      //   } else {
+      //     modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes
+      //
+      //     // for now, just using end of scene if the currently set end time is invalid.
+      //     if (scope.item.end_time <= scope.item.start_time || scope.item.end_time > modelSvc.events[scope.item.scene_id].end_time) {
+      //       scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
+      //     }
+      //     timelineSvc.updateEventTimes(scope.item);
+      //   }
+      //
+      // };
+      // var sortByStartTime = function (a, b) {
+      //   return a.start_time - b.start_time;
+      // };
 
-        // TODO ensure within episode duration. If too close to a scene start, match to scene start. If end time not in same scene, change end time to end of scene / beginning of next transcript
+      // scope.setItemEndTime = function () {
+      //   if (scope.item.end_time <= scope.item.start_time || scope.item.end_time > modelSvc.events[scope.item.scene_id].end_time) {
+      //     scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
+      //   }
+      //   timelineSvc.updateEventTimes(scope.item);
+      // };
+      // var getTranscriptItems = function () {
+      //   var episode = modelSvc.episodes[appState.episodeId];
+      //   var allItems = angular.copy(episode.items);
+      //   return allItems.filter(isTranscript);
+      // };
 
-        if (scope.item._type === 'Scene') {
-          modelSvc.resolveEpisodeEvents(appState.episodeId); // reparent events to new scene times if necessary
+      // var getNextStartTime = function (currentScene, currentItem, items) {
+      //   if (currentItem._type === 'Chapter') {
+      //     return false;
+      //   }
+      //   //HACK to work around TS-412
+      //   if (!currentScene) {
+      //     console.warn("getNextStartTime called with no scene (because it's being called for a scene event?)", currentItem, items);
+      //     return false;
+      //   }
+      //   var nextItem;
+      //   var nextStartTime = currentScene.end_time;
+      //   items = items.sort(sortByStartTime);
+      //   for (var i = 0, len = items.length; i < len; i++) {
+      //     if (items[i]._id === currentItem._id) {
+      //       //the next item start_time if less than scen end time
+      //       nextItem = items[i + 1];
+      //       break;
+      //     }
+      //   }
+      //   if (nextItem) {
+      //     if (nextItem.start_time < currentScene.end_time) {
+      //       nextStartTime = nextItem.start_time;
+      //     }
+      //   }
+      //   return nextStartTime;
+      // };
+      // var getCurrentScene = function (item) {
+      //   if (item._type === 'Scene') {
+      //     return item;
+      //   } else {
+      //     return modelSvc.events[scope.item.scene_id];
+      //   }
+      // };
+      // // scope.switchToAutoOrCustom = function (isSwitchingFromCustom) {
+      //   if (isSwitchingFromCustom) {
+      //     var items = isTranscript(scope.item) ? getTranscriptItems() : [];
+      //     scope.item.end_time = getNextStartTime(getCurrentScene(scope.item), scope.item, items);
+      //     scope.customEndTime = false;
+      //   } else {
+      //     scope.customEndTime = true;
+      //   }
+      // };
+      // scope.isAutoEndTime = function () {
+      //   var items = isTranscript(scope.item) ? getTranscriptItems() : [];
+      //   var nextStartTime = getNextStartTime(getCurrentScene(scope.item), scope.item, items);
+      //   if (scope.item.end_time === nextStartTime) {
+      //     return true;
+      //   } else {
+      //     return false;
+      //   }
+      //
+      // };
+      // scope.customEndTime = !scope.isAutoEndTime();
+      // scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
 
-          // need to update timeline enter/exit for *all* scenes here, since changing one can modify others ...
-          timelineSvc.updateSceneTimes(scope.item.episode_id);
+      // scope.cancelEdit = function () {
+      //   // hand off to EditController (with the original to be restored)
+      //   scope.cancelEventEdit(scope.uneditedItem);
+      // };
 
-        } else if (scope.item.stop) {
-          scope.item.end_time = scope.item.start_time;
-          modelSvc.resolveEpisodeEvents(appState.episodeId); // redundant but necessary
-          timelineSvc.updateEventTimes(scope.item);
-        } else {
-          modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes
+      // scope.assetUploaded = function (assetId) {
+      //   scope.item.asset = modelSvc.assets[assetId];
+      //   // TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
+      //   if (scope.item._type === 'Link') {
+      //     scope.item.link_image_id = assetId;
+      //   } else if (scope.item._type === 'Annotation') {
+      //     scope.item.annotation_image_id = assetId;
+      //   } else {
+      //     scope.item.asset_id = assetId;
+      //   }
+      //   scope.showUploadButtons = false;
+      //   scope.showUploadField = false;
+      // };
 
-          // for now, just using end of scene if the currently set end time is invalid.
-          if (scope.item.end_time <= scope.item.start_time || scope.item.end_time > modelSvc.events[scope.item.scene_id].end_time) {
-            scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
-          }
-          timelineSvc.updateEventTimes(scope.item);
-        }
+      // scope.replaceAsset = function () {
+      //   console.log('replace asset!');
+      //   scope.showUploadButtons = true;
+      //
+      //   if (scope.item.sxs) { // we will delete assets atached to editor items, not from producer items
+      //     scope.item.removedAssets = scope.item.removedAssets || [];
+      //     // removedAsset will be used by editController on save to delete the old asset (if we're in editor)
+      //     if (scope.item._type === 'Link') {
+      //       scope.item.removedAssets.push(scope.item.link_image_id);
+      //     } else if (scope.item._type === 'Annotation') {
+      //       scope.item.removedAssets.push(scope.item.annotation_image_id);
+      //     } else {
+      //       scope.item.removedAssets.push(scope.item.asset_id);
+      //     }
+      //   }
+      // };
 
-      };
-      var sortByStartTime = function (a, b) {
-        return a.start_time - b.start_time;
-      };
+      // scope.detachAsset = function () {
+      //   // console.log(
+      //   // 	'item:', scope.item,
+      //   // 	'asset:', scope.item.asset,
+      //   // 	'link_image_id:', scope.item.link_image_id,
+      //   // 	'asset_id:', scope.item.asset_id,
+      //   // 	'annotation_image_id:', scope.item.annotation_image_id
+      //   // );
+      //   if (scope.item.asset) {
+      //     switch (scope.item.producerItemType) {
+      //       case 'link':
+      //         scope.item.asset = null;
+      //         scope.item.link_image_id = null;
+      //         scope.item.asset_id = null;
+      //         scope.item.annotation_image_id = null;
+      //         break;
+      //       case 'transcript':
+      //         scope.item.asset = null;
+      //         scope.item.annotation_image_id = null;
+      //         break;
+      //       case 'image':
+      //       case 'question':
+      //       case 'file':
+      //         scope.item.asset = null;
+      //         scope.item.asset_id = null;
+      //         break;
+      //     }
+      //   }
+      // };
 
-      scope.setItemEndTime = function () {
-        if (scope.item.end_time <= scope.item.start_time || scope.item.end_time > modelSvc.events[scope.item.scene_id].end_time) {
-          scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
-        }
-        timelineSvc.updateEventTimes(scope.item);
-      };
-      var getTranscriptItems = function () {
-        var episode = modelSvc.episodes[appState.episodeId];
-        var allItems = angular.copy(episode.items);
-        return allItems.filter(isTranscript);
-      };
-
-      var getNextStartTime = function (currentScene, currentItem, items) {
-        if (currentItem._type === 'Chapter') {
-          return false;
-        }
-        //HACK to work around TS-412
-        if (!currentScene) {
-          console.warn("getNextStartTime called with no scene (because it's being called for a scene event?)", currentItem, items);
-          return false;
-        }
-        var nextItem;
-        var nextStartTime = currentScene.end_time;
-        items = items.sort(sortByStartTime);
-        for (var i = 0, len = items.length; i < len; i++) {
-          if (items[i]._id === currentItem._id) {
-            //the next item start_time if less than scen end time
-            nextItem = items[i + 1];
-            break;
-          }
-        }
-        if (nextItem) {
-          if (nextItem.start_time < currentScene.end_time) {
-            nextStartTime = nextItem.start_time;
-          }
-        }
-        return nextStartTime;
-      };
-      var getCurrentScene = function (item) {
-        if (item._type === 'Scene') {
-          return item;
-        } else {
-          return modelSvc.events[scope.item.scene_id];
-        }
-      };
-      scope.switchToAutoOrCustom = function (isSwitchingFromCustom) {
-        if (isSwitchingFromCustom) {
-          var items = isTranscript(scope.item) ? getTranscriptItems() : [];
-          scope.item.end_time = getNextStartTime(getCurrentScene(scope.item), scope.item, items);
-          scope.customEndTime = false;
-        } else {
-          scope.customEndTime = true;
-        }
-      };
-      scope.isAutoEndTime = function () {
-        var items = isTranscript(scope.item) ? getTranscriptItems() : [];
-        var nextStartTime = getNextStartTime(getCurrentScene(scope.item), scope.item, items);
-        if (scope.item.end_time === nextStartTime) {
-          return true;
-        } else {
-          return false;
-        }
-
-      };
-      scope.customEndTime = !scope.isAutoEndTime();
-      scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
-
-      scope.cancelEdit = function () {
-        // hand off to EditController (with the original to be restored)
-        scope.cancelEventEdit(scope.uneditedItem);
-      };
-
-      scope.assetUploaded = function (assetId) {
-        scope.item.asset = modelSvc.assets[assetId];
-        // TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
-        if (scope.item._type === 'Link') {
-          scope.item.link_image_id = assetId;
-        } else if (scope.item._type === 'Annotation') {
-          scope.item.annotation_image_id = assetId;
-        } else {
-          scope.item.asset_id = assetId;
-        }
-        scope.showUploadButtons = false;
-        scope.showUploadField = false;
-      };
-
-      scope.replaceAsset = function () {
-        console.log('replace asset!');
-        scope.showUploadButtons = true;
-
-        if (scope.item.sxs) { // we will delete assets atached to editor items, not from producer items
-          scope.item.removedAssets = scope.item.removedAssets || [];
-          // removedAsset will be used by editController on save to delete the old asset (if we're in editor)
-          if (scope.item._type === 'Link') {
-            scope.item.removedAssets.push(scope.item.link_image_id);
-          } else if (scope.item._type === 'Annotation') {
-            scope.item.removedAssets.push(scope.item.annotation_image_id);
-          } else {
-            scope.item.removedAssets.push(scope.item.asset_id);
-          }
-        }
-      };
-
-      scope.detachAsset = function () {
-        // console.log(
-        // 	'item:', scope.item,
-        // 	'asset:', scope.item.asset,
-        // 	'link_image_id:', scope.item.link_image_id,
-        // 	'asset_id:', scope.item.asset_id,
-        // 	'annotation_image_id:', scope.item.annotation_image_id
-        // );
-        if (scope.item.asset) {
-          switch (scope.item.producerItemType) {
-            case 'link':
-              scope.item.asset = null;
-              scope.item.link_image_id = null;
-              scope.item.asset_id = null;
-              scope.item.annotation_image_id = null;
-              break;
-            case 'transcript':
-              scope.item.asset = null;
-              scope.item.annotation_image_id = null;
-              break;
-            case 'image':
-            case 'question':
-            case 'file':
-              scope.item.asset = null;
-              scope.item.asset_id = null;
-              break;
-          }
-        }
-      };
-
-      scope.attachChosenAsset = function (asset_id) {
-        // console.log(scope.item);
-        var asset = modelSvc.assets[asset_id];
-        if (scope.item) {
-          scope.item.asset = asset;
-          selectService.onSelectChange(scope.item, scope.itemForm);
-          if (scope.item._type === 'Upload' || scope.item._type === 'Plugin') {
-            scope.item.asset_id = asset_id;
-          } else if (scope.item._type === 'Link') {
-            scope.item.link_image_id = asset_id;
-            scope.item.asset_id = asset_id;
-          } else if (scope.item._type === 'Annotation') {
-            console.log('you are actually getting here!!');
-            scope.item.asset_id = asset_id;
-            scope.item.annotation_image_id = asset_id;
-          } else {
-            console.error("Tried to select asset for unknown item type", scope.item);
-          }
-        }
-      };
+      // scope.attachChosenAsset = function (asset_id) {
+      //   // console.log(scope.item);
+      //   var asset = modelSvc.assets[asset_id];
+      //   if (scope.item) {
+      //     scope.item.asset = asset;
+      //     selectService.onSelectChange(scope.item, scope.itemForm);
+      //     if (scope.item._type === 'Upload' || scope.item._type === 'Plugin') {
+      //       scope.item.asset_id = asset_id;
+      //     } else if (scope.item._type === 'Link') {
+      //       scope.item.link_image_id = asset_id;
+      //       scope.item.asset_id = asset_id;
+      //     } else if (scope.item._type === 'Annotation') {
+      //       console.log('you are actually getting here!!');
+      //       scope.item.asset_id = asset_id;
+      //       scope.item.annotation_image_id = asset_id;
+      //     } else {
+      //       console.error("Tried to select asset for unknown item type", scope.item);
+      //     }
+      //   }
+      // };
 
       scope.$on('$destroy', function () {
         scope.watchEdits();

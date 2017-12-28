@@ -108,13 +108,14 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
   var _bgImagePositionSelectVisibility = _partialVis('bgImagePosition');
 
   return {
-    showTab: showTab,
-    onSelectChange: onSelectChange,
-    getTemplates: getTemplates,
-    getVisibility: getVisibility,
-    getSelectOpts: getSelectOpts,
-    setupItemForm: setupItemForm,
-    getSceneName: getSceneName
+    handleItemFormUpdates,
+    showTab,
+    onSelectChange,
+    getTemplates,
+    getVisibility,
+    getSelectOpts,
+    setupItemForm,
+    getSceneName
   };
 
   function _setVisibility(prop, bool) {
@@ -326,6 +327,20 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
     }
 
     return _itemFormStub;
+  }
+
+  function handleItemFormUpdates(itemForm: IItemForm): string[] {
+    return Object.keys(itemForm).reduce(
+      (stylesArr: string[], styleKey: string) => {
+        if (itemForm[styleKey] === 'position') {
+          stylesArr.push(itemForm[styleKey]);
+        } else {
+          stylesArr.push(styleKey + itemForm[styleKey]);
+        }
+        return stylesArr;
+      },
+      []
+    );
   }
 
   function getTemplates(type, customerIds?: string[]) {

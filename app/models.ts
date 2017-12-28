@@ -330,12 +330,18 @@ export class IEvent {
   template_id: string;
   layout_id: string;
   style_id: string;
+  styles: string[];
   layouts: string[] = ['inline'];
   component_name?: string;
   cur_episode_id?: string;
   renderTemplate?: boolean = true;
-  //group ??
-  //event_category ??
+  producerItemType: string;
+  asset?: IAsset;
+  asset_id?: string;
+  link_image_id?: string;
+  annotation_image_id: string;
+  sxs?: any;
+  removedAssets?: string[];
 
   setFuture(): void {
     this.state = 'isFuture';
