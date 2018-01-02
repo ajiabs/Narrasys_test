@@ -4,8 +4,33 @@
  TODO: disentangle annotator_image_id from this, move it into parent template
  */
 
-import { ILangForm } from '../../../../interfaces';
+import { ILangForm, IModelSvc } from '../../../../interfaces';
 import annotatorAutocompleteHtml from './annotator-autocomplete.html';
+import { IAnnotation, IEvent } from '../../../../models';
+
+
+const _sortAvailableAnnotators = (annotators: IAnnotators) => {
+  const _filteredAnnotators = Object.keys(annotators).map(key => annotators[key]);
+  const _nextAnnotator = _filteredAnnotators.pop();
+  const _sortedAndFiltered = _filteredAnnotators.sort((a, b) => {
+    if (a.key.toLowerCase() < b.key.toLowerCase()) {
+      return -1;
+    } else if (a.key.toLowerCase() > b.key.toLowerCase()) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  _sortedAndFiltered.push(_nextAnnotator);
+  //return object built from sorted array
+  return _sortedAndFiltered.reduce(
+    (sortedObj, annotator) => {
+      sortedObj[annotator.key] = annotator;
+      return sortedObj;
+    },
+    {}
+  );
+};
 
 export interface IAnnotator {
   name: ILangForm;
@@ -17,6 +42,128 @@ export interface IAnnotator {
 export interface IAnnotators {
   [key: string]: IAnnotator;
 }
+
+
+const TEMPLATE = ``;
+
+interface IAnnotatorAutocompleteBindings extends ng.IComponentController {
+  annotators: any;
+  item: IAnnotation;
+  ngModelController: ng.INgModelController;
+}
+
+class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings {
+  annotators: { [name: string]: IAnnotator };
+  item: IAnnotation;
+  ngModelController: ng.INgModelController;
+  //
+  autoCompleting: boolean;
+  searchText: string;
+  annotator: IAnnotator;
+  filteredAnnotators: any;
+  preselectedItem: number;
+  static $inject = ['$element','$timeout', 'modelSvc', 'appState'];
+  constructor(private $element, private $timeout: ng.ITimeoutService, private modelSvc: IModelSvc, private appState) {
+    //
+  }
+
+  $onInit() {
+    //
+  }
+
+  $postLink() {
+    // look up the annotator images
+    angular.forEach(this.annotators, (annotator) => {
+      if (annotator.annotation_image_id) {
+        annotator.imageUrl = this.modelSvc.assets[annotator.annotation_image_id].url;
+      }
+    });
+
+    // the form value we'll ultimately want to return
+    this.annotator = {
+      name: this.item.annotator
+    } as any;
+
+    if (this.annotators[this.item.annotator.name] && this.annotators[this.item.annotator.name].annotation_image_id) {
+      this.annotator.imageUrl = this.modelSvc.assets[this.annotators[this.item.annotator.name].annotation_image_id].url;
+    }
+
+    this.filteredAnnotators =  _sortAvailableAnnotators(angular.copy(this.annotators));
+    this.preselectedItem = -1;
+
+    this.$element.find('.annotatorChooser').bind('keydown', (event) => {
+      switch (event.which) {
+        case 40: // down arrow
+          this.preselectedItem = (this.preselectedItem + 1) % Object.keys(this.filteredAnnotators).length;
+          break;
+        case 38: // up arrow
+          this.preselectedItem = (this.preselectedItem - 1) % Object.keys(this.filteredAnnotators).length;
+          break;
+        case 13: // enter
+          event.preventDefault();
+          if (this.preselectedItem > -1) {
+            this.selectByIndex(this.preselectedItem);
+          }
+          break;
+        default:
+      }
+    });
+
+  }
+
+  hasAnnotator() {
+    if (this.item.annotator) {
+      return Object.keys(this.item.annotator).length > 0;
+    }
+  }
+
+  selectByIndex(index: number) {
+    if (index < 0) {
+      return;
+    }
+    const names = Object.keys(this.filteredAnnotators).sort();
+    this.select(this.filteredAnnotators[names[index]]);
+  }
+
+  select(annotator) {
+    // console.log("Selected ", annotator);
+    this.preselectedItem = -1;
+
+    if (annotator.annotation_image_id) {
+      this.item.annotation_image_id = annotator.annotation_image_id;
+      this.item.asset = this.modelSvc.assets[annotator.annotation_image_id];
+      this.annotator.imageUrl = this.item.asset.url;
+    } else {
+      // TODO allow adding new image
+      delete this.annotator.imageUrl;
+      delete this.item.asset;
+    }
+
+    this.ngModelController.$setViewValue(annotator.name); // passes annotator name back to item
+    this.searchText = '';
+
+    //TODO  allow upload to replace image
+  }
+
+  showAutocomplete() {
+    const inputField = this.$element.find('.annotatorChooser')[0];
+    inputField.setSelectionRange(0, inputField.value.length);
+    this.autoCompleting = true;
+  }
+
+}
+
+interface IComponentBindings {
+  [binding: string]: '<' | '<?' | '&' | '&?' | '@' | '@?' | '=' | '=?';
+}
+
+export class AnnotatorAutocomplete implements ng.IComponentOptions {
+  bindings: IComponentBindings = {};
+  template: string = TEMPLATE;
+  controller = AnnotatorAutocompleteController;
+  static Name: string = 'npAnnotatorAutocomplete'; // tslint:disable-line
+}
+
 
 sxsAnnotatorAutocomplete.$inject = ['$timeout', 'modelSvc', 'appState'];
 
@@ -30,71 +177,71 @@ export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
     },
     link: function (scope, element, attrs, ngModelController) {
 
-      scope.appState = appState;
-      scope.hasAnnotator = function () {
-        if (scope.item.annotator) {
-          return Object.keys(scope.item.annotator).length > 0;
-        }
-      };
+      // scope.appState = appState;
+      // scope.hasAnnotator = function () {
+      //   if (scope.item.annotator) {
+      //     return Object.keys(scope.item.annotator).length > 0;
+      //   }
+      // };
 
-      // look up the annotator images
-      angular.forEach(scope.annotators, function (annotator) {
-        if (annotator.annotation_image_id) {
-          annotator.imageUrl = modelSvc.assets[annotator.annotation_image_id].url;
-        }
-      });
+      // // look up the annotator images
+      // angular.forEach(scope.annotators, function (annotator) {
+      //   if (annotator.annotation_image_id) {
+      //     annotator.imageUrl = modelSvc.assets[annotator.annotation_image_id].url;
+      //   }
+      // });
 
       // the form value we'll ultimately want to return
-      scope.annotator = {
-        name: scope.item.annotator
-      };
+      // scope.annotator = {
+      //   name: scope.item.annotator
+      // };
 
-      if (scope.annotators[scope.item.annotator] && scope.annotators[scope.item.annotator].annotation_image_id) {
-        scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
-      }
+      // if (scope.annotators[scope.item.annotator] && scope.annotators[scope.item.annotator].annotation_image_id) {
+      //   scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
+      // }
+      //
+      // scope.filteredAnnotators =  _sortAvailableAnnotators(angular.copy(scope.annotators));
+      // scope.preselectedItem = -1;
 
-      scope.filteredAnnotators =  _sortAvailableAnnotators(angular.copy(scope.annotators));
-      scope.preselectedItem = -1;
-
-      function _sortAvailableAnnotators(annotators: IAnnotators) {
-        let _filteredAnnotators = Object.keys(annotators).map(key => annotators[key]);
-        let _nextAnnotator = _filteredAnnotators.pop();
-        let _sortedAndFiltered = _filteredAnnotators.sort((a, b) => {
-          if (a.key.toLowerCase() < b.key.toLowerCase()) {
-            return -1;
-          } else if (a.key.toLowerCase() > b.key.toLowerCase()) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
-        _sortedAndFiltered.push(_nextAnnotator);
-        //return object built from sorted array
-        return _sortedAndFiltered.reduce((sortedObj, annotator) => {
-          sortedObj[annotator.key] = annotator;
-          return sortedObj;
-        }, {});
-      }
+      // function _sortAvailableAnnotators(annotators: IAnnotators) {
+      //   let _filteredAnnotators = Object.keys(annotators).map(key => annotators[key]);
+      //   let _nextAnnotator = _filteredAnnotators.pop();
+      //   let _sortedAndFiltered = _filteredAnnotators.sort((a, b) => {
+      //     if (a.key.toLowerCase() < b.key.toLowerCase()) {
+      //       return -1;
+      //     } else if (a.key.toLowerCase() > b.key.toLowerCase()) {
+      //       return 1;
+      //     } else {
+      //       return 0;
+      //     }
+      //   });
+      //   _sortedAndFiltered.push(_nextAnnotator);
+      //   //return object built from sorted array
+      //   return _sortedAndFiltered.reduce((sortedObj, annotator) => {
+      //     sortedObj[annotator.key] = annotator;
+      //     return sortedObj;
+      //   }, {});
+      // }
 
 
 
-      element.find('.annotatorChooser').bind("keydown", function (event) {
-        switch (event.which) {
-          case 40: // down arrow
-            scope.preselectedItem = (scope.preselectedItem + 1) % Object.keys(scope.filteredAnnotators).length;
-            break;
-          case 38: // up arrow
-            scope.preselectedItem = (scope.preselectedItem - 1) % Object.keys(scope.filteredAnnotators).length;
-            break;
-          case 13: // enter
-            event.preventDefault();
-            if (scope.preselectedItem > -1) {
-              scope.selectByIndex(scope.preselectedItem);
-            }
-            break;
-          default:
-        }
-      });
+      // element.find('.annotatorChooser').bind("keydown", function (event) {
+      //   switch (event.which) {
+      //     case 40: // down arrow
+      //       scope.preselectedItem = (scope.preselectedItem + 1) % Object.keys(scope.filteredAnnotators).length;
+      //       break;
+      //     case 38: // up arrow
+      //       scope.preselectedItem = (scope.preselectedItem - 1) % Object.keys(scope.filteredAnnotators).length;
+      //       break;
+      //     case 13: // enter
+      //       event.preventDefault();
+      //       if (scope.preselectedItem > -1) {
+      //         scope.selectByIndex(scope.preselectedItem);
+      //       }
+      //       break;
+      //     default:
+      //   }
+      // });
 
       // TODO destroy langWatcher when unlinking
 
@@ -124,40 +271,40 @@ export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
 
       };
 
-      scope.selectByIndex = function (index) {
-        if (index < 0) {
-          return;
-        }
-        var names = Object.keys(scope.filteredAnnotators).sort();
-        scope.select(scope.filteredAnnotators[names[index]]);
-      };
+      // scope.selectByIndex = function (index) {
+      //   if (index < 0) {
+      //     return;
+      //   }
+      //   var names = Object.keys(scope.filteredAnnotators).sort();
+      //   scope.select(scope.filteredAnnotators[names[index]]);
+      // };
 
-      scope.select = function (annotator) {
-        // console.log("Selected ", annotator);
-        scope.preselectedItem = -1;
+      // scope.select = function (annotator) {
+      //   // console.log("Selected ", annotator);
+      //   scope.preselectedItem = -1;
+      //
+      //   if (annotator.annotation_image_id) {
+      //     scope.item.annotation_image_id = annotator.annotation_image_id;
+      //     scope.item.asset = modelSvc.assets[annotator.annotation_image_id];
+      //     scope.annotator.imageUrl = scope.item.asset.url;
+      //   } else {
+      //     // TODO allow adding new image
+      //     delete scope.annotator.imageUrl;
+      //     delete scope.item.asset;
+      //   }
+      //
+      //   ngModelController.$setViewValue(annotator.name); // passes annotator name back to item
+      //   scope.searchText = '';
+      //
+      //   //TODO  allow upload to replace image
+      // };
 
-        if (annotator.annotation_image_id) {
-          scope.item.annotation_image_id = annotator.annotation_image_id;
-          scope.item.asset = modelSvc.assets[annotator.annotation_image_id];
-          scope.annotator.imageUrl = scope.item.asset.url;
-        } else {
-          // TODO allow adding new image
-          delete scope.annotator.imageUrl;
-          delete scope.item.asset;
-        }
-
-        ngModelController.$setViewValue(annotator.name); // passes annotator name back to item
-        scope.searchText = '';
-
-        //TODO  allow upload to replace image
-      };
-
-      scope.autoCompleting = false;
-      scope.showAutocomplete = function () {
-        var inputField = element.find('.annotatorChooser')[0];
-        inputField.setSelectionRange(0, inputField.value.length);
-        scope.autoCompleting = true;
-      };
+      // scope.autoCompleting = false;
+      // scope.showAutocomplete = function () {
+      //   var inputField = element.find('.annotatorChooser')[0];
+      //   inputField.setSelectionRange(0, inputField.value.length);
+      //   scope.autoCompleting = true;
+      // };
 
       scope.hideAutocomplete = function () {
         $timeout(function () {

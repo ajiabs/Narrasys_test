@@ -117,10 +117,6 @@ class ItemEditorController implements IItemEditorBindings {
     return this.authSvc.userHasRole('admin') || this.authSvc.userHasRole('customer admin');
   }
 
-  userHasRole(role: string) {
-    return this.authSvc.userHasRole(role);
-  }
-
   $onInit() {
     this.timelineSvc.pause();
     this.timelineSvc.seek(this.item.start_time);
@@ -145,6 +141,14 @@ class ItemEditorController implements IItemEditorBindings {
     } else {
       this.mimes = MIMES.default;
     }
+  }
+
+  $onChanges(changes) {
+    console.log('huh', changes);
+  }
+
+  userHasRole(role: string) {
+    return this.authSvc.userHasRole(role);
   }
 
   forcePreview() {
@@ -275,6 +279,14 @@ class ItemEditorController implements IItemEditorBindings {
     this.attachChosenAsset(assetId);
   }
 
+  resolveEvents() {
+    this.modelSvc.resolveEpisodeEvents(this.appState.episodeId);
+  }
+
+  deriveEvent() {
+    console.log('deriving event!');
+    this.item = this.modelSvc.deriveEvent(this.appState.editEvent);
+  }
 
   private getCurrentScene(item: IEvent) {
     if (item._type === 'Scene') {
@@ -294,7 +306,7 @@ export class ItemEditor implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     item: '<'
   };
-  template: string = TEMPLATE;
+  template: string = itemHtml;
   controller = ItemEditorController;
   static Name: string = 'npItemEditor'; // tslint:disable-line
 }
@@ -372,16 +384,16 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         // 	set cosmetic to true, itemForm.
         // if old template was image-fill, set cosmetic to false
         // TODO this is fragile, based on template name:
-        newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
-        newItem.renderTemplate = (newItem.template_id === oldItem.template_id);
+        // newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+        // newItem.renderTemplate = (newItem.template_id === oldItem.template_id);
         //for producers, if they edit a URL to link-embed template a site that cannot be embedded,
         //change the template URL to 'link'
-        if (appState.product === 'producer'
-          && newItem.target === '_blank'
-          && (newItem.component_name === EventTemplates.LINK_EMBED_TEMPLATE
-            || newItem.component_name === EventTemplates.LINK_MODAL_THUMB_TEMPLATE)) {
-          newItem.component_name = EventTemplates.LINK_TEMPLATE;
-        }
+        // if (appState.product === 'producer'
+        //   && newItem.target === '_blank'
+        //   && (newItem.component_name === EventTemplates.LINK_EMBED_TEMPLATE
+        //     || newItem.component_name === EventTemplates.LINK_MODAL_THUMB_TEMPLATE)) {
+        //   newItem.component_name = EventTemplates.LINK_TEMPLATE;
+        // }
 
         // TODO BUG items moved from one scene to another aren't being included in the new scene until the user hits save,
         // only in discover mode (review mode has no problem.)   This was also the case when we ran resolveEpisodeEvents on every edit, it's an older bug.

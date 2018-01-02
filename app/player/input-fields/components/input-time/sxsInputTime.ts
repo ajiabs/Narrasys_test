@@ -8,7 +8,8 @@ export default function sxsInputTime($rootScope, $timeout, appState, modelSvc, t
   return {
     require: '?^^form',
     scope: {
-      item: '=sxsInputTime'
+      item: '=sxsInputTime',
+      onFieldChange: '&'
     },
     template: inputtimeHtml,
     link: function (scope, elem, attrs, ngForm) {

@@ -41,7 +41,7 @@ export interface IModelSvc {
   deriveEpisode(episode: any): IEpisode;
   deriveAsset(asset: any): any;
   deriveContainer(container: any): any;
-  deriveEvent(event: Partial<NEvent>): NEvent;
+  deriveEvent<T extends IEvent>(event: Partial<T>): T;
   setLanguageStrings(): void;
   resolveEpisodeEvents(epId: string): IEpisode;
   resolveEpisodeContainers(epId: string): void;
@@ -381,7 +381,8 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     }
   };
 
-  svc.deriveEvent = function (event: Partial<NEvent>): NEvent {
+  svc.deriveEvent = function deriveEvent<T extends IEvent>(_event: Partial<T>): T {
+    let event = _event;
     const cmpTemplate = readCache('template', 'id', event.template_id);
     if (cmpTemplate != null) {
       event.component_name = cmpTemplate.component_name;
@@ -510,7 +511,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     }
 
     event.displayStartTime = $filter('asTime')(event.start_time);
-    return event;
+    return event as T;
   };
 
   var setLang = function (obj) {

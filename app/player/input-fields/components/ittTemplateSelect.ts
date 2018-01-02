@@ -38,8 +38,8 @@ class TemplateSelectController implements ITemplateSelectBindings {
   isEpisode: boolean;
   context: 'episode' | 'event' = 'event';
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
-  static $inject = ['selectService', 'modelSvc'];
-  constructor(public selectService, public modelSvc: IModelSvc) {
+  static $inject = ['$timeout', 'selectService', 'modelSvc'];
+  constructor(private $timeout: ng.ITimeoutService, public selectService, public modelSvc: IModelSvc) {
     //
   }
 
@@ -72,7 +72,12 @@ class TemplateSelectController implements ITemplateSelectBindings {
   }
 
   onSelectChange(item: IEvent, form: ng.IFormController) {
-    this.selectService.onSelectChange(this.modelSvc.deriveEvent(item), form);
+    const newEvent = this.modelSvc.deriveEvent(item);
+    this.selectService.onSelectChange(newEvent, form);
+    this.data = newEvent;
+    this.data.renderTemplate = false;
+    console.log('hey yo!');
+    this.$timeout(() => void 0, 5).then(() => (this.data as IEvent).renderTemplate = true);
   }
 
   onEpisodeTemplateChange() {

@@ -22,7 +22,8 @@
 		<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
 			<div class="toolbar-bottom-fill">
 				<div ng-show="appState.editEvent || appState.editEpisode" class="navPanel editPanel">
-					<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
+					<!--<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>-->
+          <np-item-editor ng-if="appState.editEvent" item="appState.editEvent"></np-item-editor>
           <np-episode-editor
             ng-if="appState.editEpisode"
             episode="appState.editEpisode"

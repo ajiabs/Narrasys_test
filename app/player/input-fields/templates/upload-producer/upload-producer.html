@@ -1,35 +1,35 @@
 <!-- producer item assets-->
 
-<div ng-if="showAssetPicker" class="floatAssetPicker">
+<div ng-if="$ctrl.showAssetPicker" class="floatAssetPicker">
 	<div class="scrollContainer">
-    <sxs-container-assets container-id="{{episodeContainerId}}" mime-key="{{item.producerItemType}}"></sxs-container-assets>
+    <sxs-container-assets container-id="{{$ctrl.episodeContainerId}}" mime-key="{{$ctrl.item.producerItemType}}"></sxs-container-assets>
 	</div>
 	<div class="controlsContainer">
-		<button ng-click="endChooseAsset();">Cancel</button>
+		<button ng-click="$ctrl.endChooseAsset();">Cancel</button>
 	</div>
 </div>
 
 <div>
 	<!--ng-model as element here so we can attach itt-valid-image, which requires ng-model-->
-	<ng-model ng-model="item.asset" name="itemAsset" itt-valid-asset item="item"></ng-model>
-	<div ng-if="item.asset && !showUploadButtons">
-		{{item.asset.display_name}}
-		<button class="button" ng-click="replaceAsset()">Replace</button>
-		<button class="button" ng-click="detachAsset(); selectService.onSelectChange(item, itemForm)">Remove</button>
+	<ng-model ng-model="$ctrl.item.asset" name="itemAsset" itt-valid-asset item="$ctrl.item"></ng-model>
+	<div ng-if="$ctrl.item.asset && !$ctrl.showUploadButtons">
+		{{$ctrl.item.asset.display_name}}
+		<button class="button" ng-click="$ctrl.replaceAsset()">Replace</button>
+		<button class="button" ng-click="$ctrl.detachAsset(); $ctrl.selectService.onSelectChange($ctrl.item, itemForm)">Remove</button>
 	</div>
-	<div ng-if="showUploadButtons || !item.asset">
-		<span ng-if="showUploadField">
+	<div ng-if="$ctrl.showUploadButtons || !$ctrl.item.asset">
+		<span ng-if="$ctrl.showUploadField">
 
 			<itt-asset-uploader
-        container-id="{{episodeContainerId}}"
-        ng-if="canAccess"
-        callback="assetUploaded(data)"
-        mime-types="{{mimes}}">
+        container-id="{{$ctrl.episodeContainerId}}"
+        ng-if="$ctrl.canAccess"
+        callback="$ctrl.assetUploaded(data)"
+        mime-types="{{$ctrl.mimes}}">
       </itt-asset-uploader>
 		</span>
-		<span ng-if="!showUploadField">
-			<button class="button" ng-click="chooseAsset()">Browse uploaded</button>
-			<button class="button" ng-click="toggleUpload()">Upload new</button>
+		<span ng-if="!$ctrl.showUploadField">
+			<button class="button" ng-click="$ctrl.chooseAsset()">Browse uploaded</button>
+			<button class="button" ng-click="$ctrl.toggleUpload()">Upload new</button>
 		</span>
 	</div>
 </div>

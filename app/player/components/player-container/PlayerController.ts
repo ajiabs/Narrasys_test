@@ -229,6 +229,11 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
     $scope.defaultLanguage = episode.defaultLanguage;
   }
 
+  $scope.addEvent = addEvent;
+  function addEvent(producerItemType: string) {
+    episodeEdit.addEvent(producerItemType);
+  }
+
   function calcNewWindowUrl() {
     const entityId = appState.narrativeId || appState.episodeId;
     const timelineId = appState.timelineId;

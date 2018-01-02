@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 38, Needs Upgrade: 84, 31% complete
+  ### Upgraded Files: 50, Needs Upgrade: 72, 40% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -85,16 +85,28 @@ Needs Upgrade:
 * ittTab.ts
 * selectService.ts
 ### inputFields - :x:
-Completed: 4,
-    Needs Upgrade: 29,
+Completed: 16,
+    Needs Upgrade: 17,
     total: 33,
-    percent complete: 12%
+    percent complete: 48%
 
 Completed:
+* ittAnnotationField.ts
 * ittUploadTranscriptsField.ts
 * ittTemplateSelect.ts
+* ittSpeakerField.ts
+* ittHighlightSelect.ts
 * ittVideoPositionSelect.ts
+* ittTitleField.ts
+* ittDisplaySelect.ts
+* ittLanguageSelect.ts
+* ittLanguageFlags.ts
+* ittTranscriptField.ts
+* ittDescriptionField.ts
+* ittTransitionSelect.ts
+* ittSpeakerThumbField.ts
 * npUrlField.ts
+* ittTimestampSelect.ts
 
 Needs Upgrade:
 * autofocus.ts
@@ -104,24 +116,12 @@ Needs Upgrade:
 * ittValidPathslug.ts
 * ittValidEpisodeUrl.ts
 * ittDynamicModel.ts
-* ittAnnotationField.ts
 * sxsAnnotatorAutocomplete.ts
 * sxsInputI18n.ts
-* ittSpeakerField.ts
-* ittHighlightSelect.ts
-* ittTitleField.ts
-* ittDisplaySelect.ts
 * ittFileField.ts
 * sxsInputTime.ts
-* ittLanguageSelect.ts
 * sxsAddContent.ts
-* ittLanguageFlags.ts
-* ittTranscriptField.ts
 * ittImageField.ts
-* ittDescriptionField.ts
-* ittTransitionSelect.ts
-* ittSpeakerThumbField.ts
-* ittTimestampSelect.ts
 * ittColorSelect.ts
 * ittTypographySelect.ts
 * ittTimeField.ts
