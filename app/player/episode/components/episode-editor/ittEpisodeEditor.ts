@@ -166,16 +166,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
   }
 
   updateItemForm() {
-    this.episode.styles = Object.keys(this.itemForm).reduce(
-      (styles, styleType) => {
-        if (this.itemForm[styleType]) {
-          styles.push(styleType + this.itemForm[styleType]);
-        }
-        return styles;
-      },
-      []
-    );
-
+    this.episode.styles = this.selectService.handleItemFormUpdates(this.itemForm);
     this.modelSvc.deriveEpisode(this.episode);
     this.modelSvc.resolveEpisodeEvents(this.episode._id); // needed for template or style changes
   }
