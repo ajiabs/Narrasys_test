@@ -413,7 +413,7 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         // console.log('itemForm.pin', scope.itemForm.pin);
         // console.log('itemForm.position', scope.itemForm.position);
         // console.groupEnd('itemStyles');
-
+        modelSvc.cache('event', newItem);
       }, true);
 
       // Transform changes to form fields for styles into item.styles[]:
