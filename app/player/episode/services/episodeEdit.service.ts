@@ -772,6 +772,7 @@ export class EpisodeEditService implements IEpisodeEditService {
       };
       stub.plugin = stub.data._plugin;
     }
+    let defaultTemplateNames = {};
 
     if (this.appState.product === 'sxs') {
       // SxS overrides a lot of the item options:
@@ -782,8 +783,17 @@ export class EpisodeEditService implements IEpisodeEditService {
       stub.layouts = ['windowFg'];
       stub.end_time = this.appState.time;
       stub.stop = true;
+      defaultTemplateNames = {
+        'annotation': EventTemplates.SXS_ANNOTAITON_TEMPLATE,
+        'link': EventTemplates.SXS_LINK_TEMPLATE,
+        'question': EventTemplates.SXS_QUESTION_TEMPLATE,
+        'image': EventTemplates.SXS_IMAGE_TEMPLATE,
+        'file': EventTemplates.SXS_FILE_TEMPLATE,
+        'video': EventTemplates.SXS_VIDEO_TEMPLATE
+      };
+
     } else {
-      const defaultTemplateNames = {
+      defaultTemplateNames = {
         'scene': EventTemplates.CENTERED_TEMPLATE,
         'transcript': EventTemplates.TRANSCRIPT_TEMPLATE,
         'annotation': EventTemplates.HEADER_TWO_TEMPLATE,
@@ -793,15 +803,15 @@ export class EpisodeEditService implements IEpisodeEditService {
         'question': EventTemplates.QUESTION_TEMPLATE,
         'video': 'TODO:VIDEO'
       };
-      const templateObj = this.modelSvc.readDataCache(
-        'template',
-        ('component_name' as keyof TDataCacheItem),
-        defaultTemplateNames[type]
-      );
-      stub.templateOpts = this.selectService.getTemplates(type);
-      stub.template_id = templateObj.id;
-      stub.component_name = defaultTemplateNames[type];
     }
+    const templateObj = this.modelSvc.readDataCache(
+      'template',
+      ('component_name' as keyof TDataCacheItem),
+      defaultTemplateNames[type]
+    );
+    stub.templateOpts = this.selectService.getTemplates(type);
+    stub.template_id = templateObj.id;
+    stub.component_name = defaultTemplateNames[type];
     angular.extend(base, stub);
     return createInstance(stub._type, base);
   }
