@@ -59,7 +59,8 @@ interface IComponentBindings {
 export class TranscriptField implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     data: '<',
-    ittItemForm: '<'
+    ittItemForm: '<',
+    onUpdate: '&'
   };
   template: string = TEMPLATE;
   controller = TranscriptFieldController;

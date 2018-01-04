@@ -4,6 +4,7 @@
  */
 import { IModelSvc } from '../../../interfaces';
 import { createInstance, IAnnotation, IEpisode, IEvent, IScene } from '../../../models';
+import { IProducerInputFieldController } from '../input-fields.module';
 
 const TEMPLATE = `
 <div class="field" ng-if="$ctrl.isVisible">
@@ -25,17 +26,20 @@ const TEMPLATE = `
 	</div>
 </div>`;
 
-interface ITemplateSelectBindings extends ng.IComponentController {
+interface ITemplateSelectBindings extends IProducerInputFieldController {
   data: IEvent | IEpisode;
   itemForm?: ng.IFormController;
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
+  onUpdate: () => void;
 }
+
 
 class TemplateSelectController implements ITemplateSelectBindings {
   data: IEvent | IEpisode;
   labelText: string = 'Template';
   isAnnotation: boolean;
   isEpisode: boolean;
+  onUpdate: () => void;
   context: 'episode' | 'event' = 'event';
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
   static $inject = ['$timeout', 'selectService', 'modelSvc'];
@@ -72,12 +76,13 @@ class TemplateSelectController implements ITemplateSelectBindings {
   }
 
   onSelectChange(item: IEvent, form: ng.IFormController) {
-    const newEvent = this.modelSvc.deriveEvent(item);
+    const newEvent = this.modelSvc.cache('event', item);
     this.selectService.onSelectChange(newEvent, form);
     this.data = newEvent;
     this.data.renderTemplate = false;
-    console.log('hey yo!');
-    this.$timeout(() => void 0, 5).then(() => (this.data as IEvent).renderTemplate = true);
+    this.$timeout(() => void 0, 0).then(() => {
+      this.onUpdate();
+    });
   }
 
   onEpisodeTemplateChange() {
@@ -96,7 +101,8 @@ export class TemplateSelect implements ng.IComponentOptions {
   bindings: any = {
     data: '=',
     itemForm: '=?',
-    onEpisodeEdit: '&'
+    onEpisodeEdit: '&',
+    onUpdate: '&'
   };
   template: string = TEMPLATE;
   controller = TemplateSelectController;

@@ -165,7 +165,7 @@
               <!--time, template, position, display-->
               <!--<itt-time-field></itt-time-field>-->
               <np-time-field data="$ctrl.item" item-form="ittItemForm" on-time-change=""></np-time-field>
-              <np-template-select data="$ctrl.item" item-form="itemForm"></np-template-select>
+              <np-template-select data="$ctrl.item" item-form="itemForm" on-update="$ctrl.deriveEvent()"></np-template-select>
               <itt-video-position-select data="$ctrl.item"></itt-video-position-select>
               <itt-display-select data="$ctrl.item"></itt-display-select>
             </div>

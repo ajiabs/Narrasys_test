@@ -143,6 +143,7 @@ export interface IEpisodeEditService {
   cancelEpisodeEdit (originalEvent: IEpisode): void;
   cancelEventEdit(originalEvent: IEvent): void;
   addEvent(producerItemType: string): void;
+  editEvent(event: IEvent): void;
   editCurrentScene(currentTime: number): void;
   saveEvent(toSave, unmodifiedEvent): ng.IPromise<void>;
   deleteEvent(eventId: string, unmodifiedScene): void;
@@ -408,6 +409,22 @@ export class EpisodeEditService implements IEpisodeEditService {
       this.timelineSvc.updateSceneTimes(this.appState.episodeId);
     }
     this.$rootScope.$emit('searchReindexNeeded'); // HACK
+  }
+
+  editEvent(event: IEvent) {
+    this.appState.editEvent = event;
+    this.appState.editEvent.templateOpts = this.selectService.getTemplates(event.producerItemType);
+    //second arg to onSelectChange is the itemForm, which is created in ittItemEditor and
+    //we do not have access here. Note that itemForm is only really used in background Images.
+    //hack fix is to pass in an empty object, and selectService will add the necessary itemForm
+    //props.
+
+    const itemForm = this.selectService.setupItemForm(this.appState.editEvent.styles, 'item');
+
+    this.selectService.onSelectChange(this.appState.editEvent, itemForm);
+    //// TODO see playerController showControls; this may not be sufficient on touchscreens
+    this.appState.videoControlsActive = true;
+    this.appState.videoControlsLocked = true;
   }
 
   editCurrentScene(currentTime: number): void {

@@ -37,7 +37,7 @@ export interface IModelSvc {
   cachedNarrativesByCustomer(customer: any): any;
   getCustomersAsArray(): any[];
   getNarrativesAsArray(): any[];
-  cache(cacheType: string, item: any): void;
+  cache<T>(cacheType: string, item: T): T;
   deriveEpisode(episode: any): IEpisode;
   deriveAsset(asset: any): any;
   deriveContainer(container: any): any;
@@ -253,6 +253,8 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       }
 
     }
+
+    return svc.events[item._id];
   };
 
   // svc.deriveFoo() are for efficiency precalculations.

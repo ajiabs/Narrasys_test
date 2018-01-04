@@ -41,7 +41,7 @@ import { UploadMasterassetTemplate } from './templates/upload-masterasset/upload
 import { UploadPosterTemplate } from './templates/upload-poster/upload-poster.template';
 import { UploadProducerTemplate } from './templates/upload-producer/upload-producer.template';
 import { UploadSxsTemplate } from './templates/upload-sxs/upload-sxs.template';
-import { IEvent } from '../../models';
+import { IEpisode, IEvent } from '../../models';
 
 const npInputFieldsModule = angular.module('np.inputFields', []);
 
@@ -63,7 +63,7 @@ templates.forEach((t: any) => {
 });
 
 export interface IProducerInputFieldController extends ng.IComponentController {
-  data: IEvent;
+  data: IEvent | IEpisode;
   onUpdate?: () => void;
 }
 

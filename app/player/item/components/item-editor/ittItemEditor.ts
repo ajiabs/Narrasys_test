@@ -175,7 +175,7 @@ class ItemEditorController implements IItemEditorBindings {
     const unmodifiedEvent = this.uneditedItem;
 
     this.episodeEdit.saveEvent(toSave, unmodifiedEvent)
-      .final(() => this.blockDoubleClicks = false);
+      .finally(() => this.blockDoubleClicks = false);
   }
 
   assetUploaded(assetId: string) {
@@ -284,8 +284,9 @@ class ItemEditorController implements IItemEditorBindings {
   }
 
   deriveEvent() {
-    console.log('deriving event!');
-    this.item = this.modelSvc.deriveEvent(this.appState.editEvent);
+    this.appState.editEvent = this.modelSvc.cache('event', this.item);
+    this.appState.editEvent.renderTemplate = true;
+    // this.item = this.appState.editEvent;
   }
 
   private getCurrentScene(item: IEvent) {
