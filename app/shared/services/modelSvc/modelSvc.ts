@@ -37,7 +37,7 @@ export interface IModelSvc {
   cachedNarrativesByCustomer(customer: any): any;
   getCustomersAsArray(): any[];
   getNarrativesAsArray(): any[];
-  cache(cacheType: string, item: any): void;
+  cache<T>(cacheType: string, item: T): T;
   deriveEpisode(episode: any): IEpisode;
   deriveAsset(asset: any): any;
   deriveContainer(container: any): any;
@@ -194,7 +194,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     });
   }
 
-  svc.cache = function (cacheType, item) {
+  svc.cache = function <T>(cacheType: string, item: T): T {
     if (cacheType === 'narrative') {
       // NOTE no deriveNarrative used here, not needed so far
       const instance = createInstance('Narrative', item);
@@ -253,6 +253,8 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       }
 
     }
+
+    return svc[cacheType + 's'][item._id];
   };
 
   // svc.deriveFoo() are for efficiency precalculations.
