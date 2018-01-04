@@ -605,6 +605,8 @@ export default function EditController(
       stub.plugin = stub.data._plugin;
     }
 
+    let defaultTemplateNames = {};
+
     if (appState.product === 'sxs') {
       // SxS overrides a lot of the item options:
       stub.sxs = true; // temporary?
@@ -614,8 +616,18 @@ export default function EditController(
       stub.layouts = ['windowFg'];
       stub.end_time = appState.time;
       stub.stop = true;
+
+      defaultTemplateNames = {
+        'annotation': EventTemplates.SXS_ANNOTAITON_TEMPLATE,
+        'link': EventTemplates.SXS_LINK_TEMPLATE,
+        'question': EventTemplates.SXS_QUESTION_TEMPLATE,
+        'image': EventTemplates.SXS_IMAGE_TEMPLATE,
+        'file': EventTemplates.SXS_FILE_TEMPLATE,
+        'video': EventTemplates.SXS_VIDEO_TEMPLATE
+      };
+
     } else {
-      const defaultTemplateNames = {
+      defaultTemplateNames = {
         'scene': EventTemplates.CENTERED_TEMPLATE,
         'transcript': EventTemplates.TRANSCRIPT_TEMPLATE,
         'annotation': EventTemplates.HEADER_TWO_TEMPLATE,
@@ -625,15 +637,16 @@ export default function EditController(
         'question': EventTemplates.QUESTION_TEMPLATE,
         'video': 'TODO:VIDEO'
       };
-      const templateObj = modelSvc.readDataCache(
-        'template',
-        ('component_name' as keyof TDataCacheItem),
-        defaultTemplateNames[type]
-      );
-      stub.templateOpts = selectService.getTemplates(type);
-      stub.template_id = templateObj.id;
-      stub.component_name = defaultTemplateNames[type];
+
     }
+    const templateObj = modelSvc.readDataCache(
+      'template',
+      ('component_name' as keyof TDataCacheItem),
+      defaultTemplateNames[type]
+    );
+    stub.templateOpts = selectService.getTemplates(type);
+    stub.template_id = templateObj.id;
+    stub.component_name = defaultTemplateNames[type];
     angular.extend(base, stub);
     return createInstance(stub._type, base);
   };
