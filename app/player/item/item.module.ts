@@ -30,6 +30,7 @@ import { TranscriptTemplate } from './templates/transcript/transcript.template';
 import { SearchresultsAllTemplate } from './templates/searchresults-all/searchresults-all.template';
 import { UscBadgesTemplate } from './templates/usc-badges/usc-badges.template';
 import { UscBadgesInnerTemplate } from './templates/usc-badges-inner/usc-badges-inner.template';
+import { CaptionTemplate } from './templates/caption/caption.template';
 
 const npItemModule = angular.module('np.item', []);
 
@@ -60,7 +61,8 @@ const templateDirectives = [
   TranscriptTemplate,
   SearchresultsAllTemplate,
   UscBadgesTemplate,
-  UscBadgesInnerTemplate
+  UscBadgesInnerTemplate,
+  CaptionTemplate
 ];
 
 npItemModule
