@@ -1,6 +1,7 @@
 // @npUpgrade-inputFields-true
 import { IEpisode, IEvent } from '../../../models';
 import { existy } from '../../../shared/services/ittUtils';
+import { IProducerInputFieldController } from '../input-fields.module';
 
 /**
  * Created by githop on 6/30/16.
@@ -18,17 +19,17 @@ const TEMPLATE = `
 	  do-validate="$ctrl.doValidate"
 	  sxs-input-i18n="$ctrl.data.title"
 	  on-emit-name="$ctrl.onName($taName)"
-	  on-field-change="$ctrl.onFieldChange()"
+	  on-field-change="$ctrl.onUpdate()"
 	  x-inputtype="'input'" autofocus></div>
 </div>
 `;
 
-interface ITitleFieldBindings extends ng.IComponentController {
+interface ITitleFieldBindings extends IProducerInputFieldController {
   data: IEpisode | IEvent;
   modelOpts?: ng.INgModelOptions;
   doValidate?: boolean;
   ittItemForm?: ng.IFormController;
-  onFieldChange: () => void;
+  onUpdate: () => void;
 }
 
 class TitleFieldController implements ITitleFieldBindings {
@@ -36,7 +37,7 @@ class TitleFieldController implements ITitleFieldBindings {
   modelOpts?: ng.INgModelOptions;
   doValidate?: boolean;
   ittItemForm?: ng.IFormController;
-  onFieldChange: () => void;
+  onUpdate: () => void;
   //
   textAreaName: string;
   static $inject = ['appState', 'selectService'];
@@ -70,7 +71,7 @@ export class TitleField implements ng.IComponentOptions {
     modelOpts: '<?',
     doValidate: '<?',
     ittItemForm: '<?',
-    onFieldChange: '&?'
+    onUpdate: '&?'
   };
   template: string = TEMPLATE;
   controller = TitleFieldController;

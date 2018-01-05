@@ -2,7 +2,7 @@
 
 <div ng-if="$ctrl.showAssetPicker" class="floatAssetPicker">
 	<div class="scrollContainer">
-    <sxs-container-assets container-id="{{$ctrl.episodeContainerId}}" mime-key="{{$ctrl.item.producerItemType}}"></sxs-container-assets>
+    <sxs-container-assets container-id="{{$ctrl.episodeContainerId}}" mime-key="{{$ctrl.data.producerItemType}}"></sxs-container-assets>
 	</div>
 	<div class="controlsContainer">
 		<button ng-click="$ctrl.endChooseAsset();">Cancel</button>
@@ -11,13 +11,17 @@
 
 <div>
 	<!--ng-model as element here so we can attach itt-valid-image, which requires ng-model-->
-	<ng-model ng-model="$ctrl.item.asset" name="itemAsset" itt-valid-asset item="$ctrl.item"></ng-model>
-	<div ng-if="$ctrl.item.asset && !$ctrl.showUploadButtons">
-		{{$ctrl.item.asset.display_name}}
+	<ng-model
+    ng-model="$ctrl.data.asset"
+    name="itemAsset"
+    np-valid-asset item="$ctrl.data" component-name="$ctrl.data.component_name">
+  </ng-model>
+	<div ng-if="$ctrl.data.asset && !$ctrl.showUploadButtons">
+		{{$ctrl.data.asset.display_name}}
 		<button class="button" ng-click="$ctrl.replaceAsset()">Replace</button>
-		<button class="button" ng-click="$ctrl.detachAsset(); $ctrl.selectService.onSelectChange($ctrl.item, itemForm)">Remove</button>
+		<button class="button" ng-click="$ctrl.detachAsset(); $ctrl.selectService.onSelectChange($ctrl.data, itemForm)">Remove</button>
 	</div>
-	<div ng-if="$ctrl.showUploadButtons || !$ctrl.item.asset">
+	<div ng-if="$ctrl.showUploadButtons || !$ctrl.data.asset">
 		<span ng-if="$ctrl.showUploadField">
 
 			<itt-asset-uploader

@@ -45,16 +45,16 @@
               <!--Time, Title, URL, Description, Template, Image, Flags-->
               <!--these are impure component directives that depend inherited scope from item-->
               <!--<itt-time-field></itt-time-field>-->
-              <np-time-field data="$ctrl.item" item-form="ittItemForm" on-time-change=""></np-time-field>
-              <itt-title-field do-validate="true" data="$ctrl.item" itt-item-form="ittItemForm"></itt-title-field>
+              <np-time-field data="$ctrl.item" item-form="ittItemForm" on-update="$ctrl.resolveEvents()"></np-time-field>
+              <np-title-field do-validate="true" data="$ctrl.item" itt-item-form="ittItemForm" on-update="$ctrl.deriveEvent()"></np-title-field>
               <np-url-field data="$ctrl.item" itt-item-form="ittItemForm"></np-url-field>
-              <itt-description-field data="$ctrl.item"></itt-description-field>
-              <np-template-select data="$ctrl.item" item-form="itemForm"></np-template-select>
-              <itt-image-field></itt-image-field>
+              <np-description-field data="$ctrl.item" on-update="$ctrl.deriveEvent()"></np-description-field>
+              <np-template-select data="$ctrl.item" on-update="$ctrl.deriveEvent()" item-form="$ctrl.itemForm"></np-template-select>
+              <np-image-field data="$ctrl.item" item-form="ittItemForm"></np-image-field>
               <np-flags
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
-                item-form="itemForm"
+                item-form="$ctrl.itemForm"
                 flags="['required', 'stop', 'cosmetic']"></np-flags>
             </div>
             <div ng-switch-when="transcript">
@@ -118,12 +118,18 @@
               <!--<itt-time-field></itt-time-field>-->
               <np-time-field data="$ctrl.item" item-form="ittItemForm" on-time-change=""></np-time-field>
               <!--investigate log error regarding undefined input for itt-title-->
-              <itt-title-field do-validate="true" data="$ctrl.item" itt-item-form="ittItemForm"></itt-title-field>
+              <!--<itt-title-field do-validate="true" data="$ctrl.item" itt-item-form="ittItemForm"></itt-title-field>-->
+              <np-title-field
+                data="$ctrl.item"
+                do-validate="true"
+                itt-item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent()">
+              </np-title-field>
               <itt-question-text-field data="$ctrl.item" do-validate="false"
                                        itt-item-form="ittItemForm"></itt-question-text-field>
               <itt-question-type-select data="$ctrl.item"></itt-question-type-select>
-              <itt-image-field></itt-image-field>
-              <itt-question-options></itt-question-options>
+              <np-image-field data="$ctrl.item" item-form="ittItemForm"></np-image-field>
+              <np-question-options data="$ctrl.item" on-update="$ctrl.deriveEvent()"></np-question-options>
             </div>
             <div ng-switch-when="chapter">
               <!--Time, Title, Description-->
@@ -149,7 +155,7 @@
           <div ng-switch on="$ctrl.item.producerItemType">
             <!--hidden across the board-->
             <div ng-switch-when="link">
-              <itt-display-select></itt-display-select>
+              <!--<itt-display-select></itt-display-select>-->
             </div>
             <!--hidden accross the board-->
             <div ng-switch-when="transcript">
@@ -205,11 +211,11 @@
           <div ng-switch on="$ctrl.item.producerItemType">
             <div ng-switch-when="link">
               <!--Typography	Color	Timestamp	Highlight	Transition-->
-              <itt-typography-select></itt-typography-select>
-              <itt-color-select></itt-color-select>
-              <itt-timestamp-select></itt-timestamp-select>
-              <itt-highlight-select></itt-highlight-select>
-              <itt-transition-select></itt-transition-select>
+              <!--<itt-typography-select></itt-typography-select>-->
+              <!--<itt-color-select></itt-color-select>-->
+              <!--<itt-timestamp-select></itt-timestamp-select>-->
+              <!--<itt-highlight-select></itt-highlight-select>-->
+              <!--<itt-transition-select></itt-transition-select>-->
             </div>
             <div ng-switch-when="transcript">
               <!--Typography,	Color,	Timestamp,	Highlight,	Transition-->

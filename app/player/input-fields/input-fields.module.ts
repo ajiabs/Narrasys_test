@@ -7,7 +7,7 @@ import ittDynamicModel from './directives/ittDynamicModel';
 import ittFileField from './components/ittFileField';
 import { Flags } from './components/ittFlags';
 import ittHighlightSelect, { HighlightSelect } from './components/ittHighlightSelect';
-import ittImageField from './components/ittImageField';
+import ittImageField, { ImageField } from './components/ittImageField';
 import  { LanguageFlags } from './components/ittLanguageFlags';
 import ittLanguageSelect, { LanguageSelect }  from './components/ittLanguageSelect';
 import ittShowFocus from './directives/ittShowFocus';
@@ -21,7 +21,7 @@ import ittTranscriptField, { TranscriptField } from './components/ittTranscriptF
 import ittTransitionSelect, { TransitionSelect } from './components/ittTransitionSelect';
 import ittTypographySelect from './components/ittTypographySelect';
 import { UploadTranscripts } from './components/ittUploadTranscriptsField';
-import ittValidAsset from './directives/ittValidAsset';
+import ittValidAsset, { ValidAsset } from './directives/ittValidAsset';
 import ittValidEpisodeUrl from './directives/ittValidEpisodeUrl';
 import ittValidPathslug from './directives/ittValidPathslug';
 import ittValidUrl from './directives/ittValidUrl';
@@ -55,7 +55,8 @@ const templates = [
   UploadMasterassetTemplate,
   UploadPosterTemplate,
   UploadProducerTemplate,
-  UploadSxsTemplate
+  UploadSxsTemplate,
+  ValidAsset
 ];
 
 templates.forEach((t: any) => {
@@ -81,6 +82,7 @@ npInputFieldsModule
   .directive('ittHighlightSelect', ittHighlightSelect)
   .component(HighlightSelect.Name, new HighlightSelect())
   .directive('ittImageField', ittImageField)
+  .component(ImageField.Name, new ImageField())
   // .directive('ittLanguageFlags', ittLanguageFlags)
   .directive('ittLanguageSelect', ittLanguageSelect)
   .component(LanguageSelect.Name, new LanguageSelect())

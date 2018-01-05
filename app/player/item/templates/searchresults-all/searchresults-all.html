@@ -63,7 +63,12 @@
             <img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
             <div class="touchableIndicator"></div>
           </div>
-          <itt-mc-question show-chart="item.data._plugin.questiontype == 'mc-poll'" choices="item.data._plugin.distractors" on-choice="save" data="item.data._plugin" qid="item._id"></itt-mc-question>
+          <np-mc-question
+            show-chart="item.data._plugin.questiontype == 'mc-poll'"
+            choices="item.data._plugin.distractors"
+            plugin="item.data._plugin"
+            qid="item._id">
+          </np-mc-question>
         </span>
         <span ng-switch-default>
           <span ng-if="item.data._pluginType == 'credlyBadge'" np-item-usc-badges-inner-template></span>

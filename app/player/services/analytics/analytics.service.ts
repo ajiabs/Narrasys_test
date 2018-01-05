@@ -43,8 +43,9 @@ export interface IAnalyticsSvc {
 }
 
 import { AppState } from '../../../shared/services/appState';
+import { ILangForm } from '../../../interfaces';
 
-type AnalyticType = 'episodeLoad' | 'episodeUnload' | 'play' | 'pause' | 'seek' | 'modeChange';
+type AnalyticType = 'episodeLoad' | 'episodeUnload' | 'play' | 'pause' | 'seek' | 'modeChange' | 'question-answered';
 
 interface IAnalytic {
   name: AnalyticType;
@@ -59,6 +60,9 @@ interface IAnalyticData {
   method?: 'scrubTimeline' | 'sceneMenu' | 'nextScene' | 'prevScene' | 'clickedOnEvent';
   mode?: 'discover' | 'review' | 'watch';
   seekStart?: number;
+  answer?: ILangForm | string;
+  index?: number;
+  correct?: boolean;
 }
 
 

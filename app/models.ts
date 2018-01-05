@@ -377,7 +377,7 @@ export class ILink extends IEvent {
   url: string;
   display_title?: string;
   display_description?: string;
-  styles?: string[];
+  styles: string[];
   showInlineDetail?: boolean;
   //relations
   link_image_id: string;
@@ -432,10 +432,18 @@ export class IImage extends IEvent {
   component_name?: TImageItemNames;
 }
 
-class IPluginData {
-  correctFeedback: ILangForm;
-  distractors: { index: number, text: string }[];
-  incorrectFeedback: ILangForm;
+export class IPluginData {
+  hasBeenAnswered: boolean;
+  correctfeedback: ILangForm;
+  selectedDistractor: number;
+  answer_counts: any;
+  distractors: {
+    index: number;
+    text: ILangForm | string;
+    correct?: boolean;
+    selected?: boolean;
+  }[];
+  incorrectfeedback: ILangForm;
   questionText: ILangForm;
   questionType: string;
 }

@@ -46,25 +46,25 @@ export default function EditController(
   //   $scope.mimes = MIMES.default;
   // }
 
-  $scope.chooseAsset = function (assetType) {
-    assetType = assetType || '';
-    $scope.showAssetPicker = true;
-    $scope.w1 = $rootScope.$on('UserSelectedAsset', function (e, id) {
-      if (assetType === 'Poster') {
-        $scope.attachPosterAsset(id); // in ittEpisodeEditor
-      } else {
-        $scope.attachChosenAsset(id); // in ittItemEditor or ittEpisodeEditor
-      }
-      $scope["showUploadButtons" + assetType] = false;
-      $scope.endChooseAsset();
-    });
-    $scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
-  };
-  $scope.endChooseAsset = function () {
-    $scope.w1();
-    $scope.w2();
-    $scope.showAssetPicker = false;
-  };
+  // $scope.chooseAsset = function (assetType) {
+  //   assetType = assetType || '';
+  //   $scope.showAssetPicker = true;
+  //   $scope.w1 = $rootScope.$on('UserSelectedAsset', function (e, id) {
+  //     if (assetType === 'Poster') {
+  //       $scope.attachPosterAsset(id); // in ittEpisodeEditor
+  //     } else {
+  //       $scope.attachChosenAsset(id); // in ittItemEditor or ittEpisodeEditor
+  //     }
+  //     $scope["showUploadButtons" + assetType] = false;
+  //     $scope.endChooseAsset();
+  //   });
+  //   $scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
+  // };
+  // $scope.endChooseAsset = function () {
+  //   $scope.w1();
+  //   $scope.w2();
+  //   $scope.showAssetPicker = false;
+  // };
 
   // $scope.toggleUpload = function (assetType) {
   //   assetType = assetType || '';
@@ -79,15 +79,14 @@ export default function EditController(
   // };
 
 
-  // TODO put into ittQuestionOptions
-  $scope.onFormativeChecked = onFormativeChecked;
-  function onFormativeChecked(distractor) {
-    angular.forEach($scope.item.data._plugin.distractors, function (_distractor) {
-      if (_distractor !== distractor) {
-        _distractor.correct = undefined;
-      }
-    });
-  }
+  // $scope.onFormativeChecked = onFormativeChecked;
+  // function onFormativeChecked(distractor) {
+  //   angular.forEach($scope.item.data._plugin.distractors, function (_distractor) {
+  //     if (_distractor !== distractor) {
+  //       _distractor.correct = undefined;
+  //     }
+  //   });
+  // }
 
 
 

@@ -260,13 +260,6 @@ class ItemEditorController implements IItemEditorBindings {
     }
   }
 
-  addDistractor() {
-    (this.item as IPlugin).data._plugin.distractors.push({
-      text: '',
-      index: ((this.item as IPlugin).data._plugin.distractors.length + 1)
-    });
-  }
-
   toggleUpload(assetType = '') {
     this['showUploadField' + assetType] = !this['showUploadField' + assetType];
   }
