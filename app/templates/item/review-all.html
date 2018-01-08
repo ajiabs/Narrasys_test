@@ -1,9 +1,0 @@
-<!-- hack, to be removed when we move away from review mode -->
-<span ng-switch="(item._type == 'Annotation' && item.templateUrl != 'templates/item/text-transmedia.html' && item.templateUrl != 'templates/item/text-definition.html')">
-	<span ng-switch-when="true">
-		<div ng-include="'templates/item/review-annotation.html'"></div>
-	</span>
-	<span ng-switch-default>
-		<div ng-include="'templates/item/review-transmedia.html'"></div>
-	</span>
-</span>

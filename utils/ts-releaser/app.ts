@@ -3,6 +3,7 @@ import {
   runCmd,
   pReadFile,
   clientDir,
+  modulesProgressDir,
   inform,
   pSpawn,
   pWriteFile,
@@ -250,4 +251,8 @@ function getLastProductionRelease(): Promise<string> {
 function getLastDevRelease(): Promise<string> {
   return httpRequest('https://np-dev.narrasys.com/version.txt')
     .then((devCurrentVersion: string) => devCurrentVersion);
+}
+
+export function checkUpgradeProgress() {
+  return pSpawn('sh', ['progress.sh'], modulesProgressDir);
 }

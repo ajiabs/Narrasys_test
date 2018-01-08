@@ -1,0 +1,79 @@
+<div class="ios-iframe-overlay" ng-if="showIframeIOSOverlay" ng-click="iframeIOSOverlayHandler()"></div>
+<div ng-class="{
+	isTouchDevice: appState.isTouchDevice,
+	isFramed: appState.isFramed,
+	isProducer: (appState.product == 'producer'),
+	isSxS: (appState.product == 'sxs'),
+
+	canEditContent: (!appState.editEvent && !appState.editEpisode) && (appState.product == 'producer' || appState.product == 'sxs')
+	}">
+	<div class="player">
+		<!-- TODO: make sure user has admin role for canEditContent -->
+
+		<np-toolbar-story></np-toolbar-story>
+
+		<np-loading ng-if="loading"></np-loading>
+		<div ng-show="!loading" itt-episode ng-class="{
+		padForEditing: appState.editEvent || appState.editEpisode,
+		showBackgroundOnly: appState.producerEditLayer < 0,
+		showForegroundOnly: appState.producerEditLayer > 0,
+	}"></div>
+
+		<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
+			<div class="toolbar-bottom-fill">
+				<div ng-show="appState.editEvent || appState.editEpisode" class="navPanel editPanel">
+					<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
+					<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
+				</div>
+
+				<div itt-timeline></div>
+			</div>
+		</div>
+		<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()"></div>
+	</div>
+
+	<div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
+
+	<div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
+		<img src="/images/autoscroll.svg" width="32" height="32">
+	</div>
+
+	<div ng-show="show.navPanel" class="modal-backdrop" ng-click="hidePanel('navPanel')"></div>
+	<div ng-show="show.profilePanel" class="modal-backdrop" ng-click="hidePanel('profilePanel')"></div>
+
+	<!-- ITEM DETAIL -->
+	<div ng-show="appState.itemDetail" class="modal-backdrop" ng-click="appState.itemDetail=false"></div>
+	<div ng-if="appState.itemDetail" itt-item-detail-modal="appState.itemDetail"></div>
+
+
+	<!--show.profilePanel is toggled toobar-story.html-->
+	<div ng-if="show.profilePanel">
+		<!--<div class="arrow-up"></div>-->
+		<!--$parent because ng-if creates a new scope-->
+		<np-modal modal-class="account__modal" wrapper-class="account__modal--wrapper">
+			<button ng-hide="appState.isFramed ||  !(userHasRole('admin') || userHasRole('customer admin'))"
+					class="button"
+					ng-click="editInfo = !editInfo">{{editInfo ? 'Done Editing' : 'Edit Profile'}}</button>
+			<a class="button" ng-click="show.profilePanel = false">close</a>
+			<np-nav ng-if="!editInfo && ((userHasRole('admin') || userHasRole('customer admin')) && !appState.isFramed)"
+					 on-logout="$parent.logout()" in-player="true"></np-nav>
+
+			<div ng-if="editInfo || appState.isFramed ||  !(userHasRole('admin') || userHasRole('customer admin'))">
+				<div itt-user></div>
+			</div>
+		</np-modal>
+	</div>
+
+
+
+
+	<div ng-cloak ng-if="show.wileyNag &&  (appState.productLoadedAs == 'player'
+	 			|| (appState.productLoadedAs == 'narrative'
+	 			&& !narrative.disable_new_window ) )" class="wileyNag animate transitionFade">
+		<!-- HACK design-by-committee idiocy -->
+		<div>
+			<span style="float:right">⤴</span>
+			<span style="float:right; display:inline-block; padding: 5px">Go here for best view</span>
+		</div> <a class="goAway" ng-click="noWileyNag()">Don't show this again</a>
+	</div>
+</div>
