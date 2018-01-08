@@ -1,4 +1,4 @@
-// @npUpgrade-inputFields-false
+// @npUpgrade-inputFields-true
 import { IChapter, IEvent, IScene } from '../../../models';
 import { IProducerInputFieldController } from '../input-fields.module';
 

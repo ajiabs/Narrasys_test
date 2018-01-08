@@ -21,7 +21,7 @@ import ittTranscriptField, { TranscriptField } from './components/ittTranscriptF
 import ittTransitionSelect, { TransitionSelect } from './components/ittTransitionSelect';
 import ittTypographySelect from './components/ittTypographySelect';
 import { UploadTranscripts } from './components/ittUploadTranscriptsField';
-import ittValidAsset, { ValidAsset } from './directives/ittValidAsset';
+import { ValidAsset } from './directives/ittValidAsset';
 import ittValidEpisodeUrl from './directives/ittValidEpisodeUrl';
 import ittValidPathslug from './directives/ittValidPathslug';
 import ittValidUrl from './directives/ittValidUrl';
@@ -103,7 +103,6 @@ npInputFieldsModule
   .component(TransitionSelect.Name, new TransitionSelect())
   .directive('ittTypographySelect', ittTypographySelect)
   .component(UploadTranscripts.Name, new UploadTranscripts())
-  .directive('ittValidAsset', ittValidAsset)
   .directive('ittValidEpisodeUrl', ittValidEpisodeUrl)
   .directive('ittValidPathslug', ittValidPathslug)
   .directive('ittValidUrl', ittValidUrl)

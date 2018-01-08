@@ -32,7 +32,7 @@ class ImageFieldController implements IImageFieldBindings {
   }
 
   $onInit() {
-    console.log('huh', this.data);
+    //
   }
 }
 
