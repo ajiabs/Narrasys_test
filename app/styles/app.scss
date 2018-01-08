@@ -16,7 +16,7 @@
 @import "main";
 @import "timeline";
 @import "toolbar";
-@import "../episode/episode";
+@import "../player/episode/episode";
 @import "scene";
 @import "item";
 @import "highlights";
@@ -27,9 +27,9 @@
 @import "admin";
 @import "producer";
 @import "itt-upload-progress";
-@import "../scripts/directives/socialshare/enable-socialshare";
+@import "../stories/components/enable-socialshare/enable-socialshare";
 @import "itt-filedrop";
-@import "../scripts/directives/socialshare/itt-socialshare";
+@import "../stories/components/socialshare/itt-socialshare";
 
 //old order
 //@import "admin";

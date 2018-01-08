@@ -21,7 +21,7 @@ gzip.sh export-ignore
 karma-e2e.conf.js export-ignore
 karma.conf.js export-ignore
 nginx-cache-config export-ignore
-overrides.d.ts export-ignore
+global-ng.d.ts export-ignore
 package.json export-ignore
 rename.sh export-ignore
 /sourcemaps export-ignore

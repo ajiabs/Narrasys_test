@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="iTT" ng-strict-di>
+<html lang="en" ng-app="np.client" ng-strict-di>
 
 <head>
 	<meta charset="utf-8">
@@ -29,15 +29,14 @@
 
 <itt-route-loading></itt-route-loading>
 <div id="CONTAINER" x-ng-view=""></div>
-<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
+<np-error-notice></np-error-notice>
 <!-- endbuild -->
 <script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise"></script>
 <script src="//sdk.amazonaws.com/js/aws-sdk-2.38.0.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js"></script>
+<%=htmlWebpackPlugin.options.ngScript%>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-route.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
-
 <%=htmlWebpackPlugin.files.webpackManifest%>
 </body>
 

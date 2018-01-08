@@ -27,12 +27,12 @@ function handleSourceMapUrl(env) {
 
 function configWp(env) {
 
-  const wpConfig =  {
+  const wpConfig = {
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.js', '.html'],
     },
     entry: {
-      app: resolve(__dirname, 'app', 'scripts', 'app.ts')
+      app: resolve(__dirname, 'app', 'app.ts')
     },
     output: {
       filename: env.prod ? `[name].[chunkHash].min.js` : '[name].bundle.js',
@@ -48,7 +48,7 @@ function configWp(env) {
       rules: [
         {
           test: /\.ts$/,
-          exclude: [/app\/scripts\/plugin/, /node_modules/],
+          exclude: [/app\/plugin/, /node_modules/],
           use: [
             {
               loader: 'ts-loader',
@@ -60,16 +60,10 @@ function configWp(env) {
         },
         {
           test: /\.html$/,
-          exclude:[resolve(__dirname, 'app', 'index.html'), resolve(__dirname, 'app', 'privacy.html')],
+          exclude: [resolve(__dirname, 'app', 'index.html'), resolve(__dirname, 'app', 'privacy.html')],
           use: [
             {
-              loader: 'ngtemplate-loader',
-              options: {
-                relativeTo: join(__dirname, './app/'),
-              },
-            },
-            {
-              loader: 'html-loader',
+              loader: 'html-loader?exportAsEs6Default',
               options: {
                 minimize: !!env.prod
               }
@@ -97,7 +91,7 @@ function configWp(env) {
             {
               loader: 'file-loader',
               query: {
-                name: env.prod ?  'images/[name].[hash].[ext]' : 'images/[name].[ext]'
+                name: env.prod ? 'images/[name].[hash].[ext]' : 'images/[name].[ext]'
               }
             },
             {
@@ -127,7 +121,8 @@ function configWp(env) {
       new HtmlWebpackPlugin({
         template: './app/index.html',
         inject: 'body',
-        hash: false
+        hash: false,
+        ngScript: setAngularVersion(!!env.prod)
       }),
       new HtmlWebpackPlugin({
         filename: 'privacy.html',
@@ -173,9 +168,9 @@ function configWp(env) {
       env.prod ? new webpack.optimize.CommonsChunkPlugin({
         name: 'manifest',
         minChunks: Infinity
-      }): undefined,
+      }) : undefined,
       env.prod ? new WebpackChunkHash({algorithm: 'md5'}) : undefined,
-      env.prod ? 	new InlineManifestWebpackPlugin({
+      env.prod ? new InlineManifestWebpackPlugin({
         name: 'webpackManifest'
       }) : undefined,
       env.prod ? new webpack.optimize.ModuleConcatenationPlugin() : undefined,
@@ -256,6 +251,17 @@ function configWp(env) {
   }
 
   return wpConfig
+}
+
+function setAngularVersion(prod) {
+  let ng;
+  if (prod) {
+    ng = 'angular.min.js';
+  } else {
+    ng = 'angular.js';
+  }
+
+  return `<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/${ng}"></script>`
 }
 
 

@@ -9,6 +9,7 @@ const got = require('got');
 
 export const prompt = inquirer.prompt;
 export const clientDir = resolve('../../');
+export const modulesProgressDir = resolve('../modules-progress');
 
 function timestamp(type: string, args: string[]) {
   return [new Date().toLocaleTimeString(), type, ...args];
@@ -61,8 +62,8 @@ export function pWriteFile(path: string, file: string): Promise<void> {
   });
 }
 
-export function pSpawn(cmd: string, args: string[]): Promise<any> {
-  const childProcess = spawn(cmd, args, { cwd: clientDir });
+export function pSpawn(cmd: string, args: string[], path = clientDir): Promise<any> {
+  const childProcess = spawn(cmd, args, { cwd: path });
   childProcess.stdout.on('data', (data: string) => {
     console.log(data.toString());
   });
