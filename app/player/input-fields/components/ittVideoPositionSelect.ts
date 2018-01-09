@@ -4,12 +4,14 @@
  * Created by githop on 6/30/16.
  */
 import { IEvent } from '../../../models';
+import { IProducerInputFieldController } from '../input-fields.module';
 
 const TEMPLATE = `
 <div class="field" ng-if="$ctrl.selectService.getVisibility('videoPosition')">
   <div class="label">Video Postion</div>
   <div class="input">
     <select
+      ng-change="$ctrl.onUpdate()"
       ng-model="$ctrl.data.layouts[0]"
       ng-options="option.value as option.name for option in $ctrl.selectService.getSelectOpts('video')">
     </select>
@@ -17,24 +19,27 @@ const TEMPLATE = `
 </div>
 `;
 
-interface IVideoPositionSelectBindings {
+interface IVideoPositionSelectBindings extends IProducerInputFieldController {
   data: IEvent;
+  onUpdate: () => void;
 }
 
 class VideoPositionSelectController implements IVideoPositionSelectBindings {
   data: IEvent;
+  onUpdate: () => void;
   static $inject = ['$rootScope', '$timeout', 'selectService'];
-  constructor(
-    public $rootScope: ng.IRootScopeService,
-    public $timeout: ng.ITimeoutService,
-    public selectService) {
+
+  constructor(public $rootScope: ng.IRootScopeService,
+              public $timeout: ng.ITimeoutService,
+              public selectService) {
     //
   }
 }
 
 export class VideoPositionSelect implements ng.IComponentOptions {
   bindings: any = {
-    data: '='
+    data: '<',
+    onUpdate: '&'
   };
   template: string = TEMPLATE;
   controller = VideoPositionSelectController;

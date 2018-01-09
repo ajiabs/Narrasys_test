@@ -147,6 +147,11 @@ class ItemEditorController implements IItemEditorBindings {
     // console.log('huh', changes);
   }
 
+  onItemFormUpdates() {
+    this.item.styles = this.selectService.handleItemFormUpdates(this.itemForm);
+    this.deriveEvent();
+  }
+
   userHasRole(role: string) {
     return this.authSvc.userHasRole(role);
   }
@@ -277,9 +282,14 @@ class ItemEditorController implements IItemEditorBindings {
   }
 
   deriveEvent() {
+    console.log('derive event?');
     this.appState.editEvent = this.modelSvc.cache('event', this.item);
+    this.appState.editEvent.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
     this.appState.editEvent.renderTemplate = true;
     // this.item = this.appState.editEvent;
+    if (this.item instanceof IScene) {
+      this.resolveEvents();
+    }
   }
 
   private getCurrentScene(item: IEvent) {

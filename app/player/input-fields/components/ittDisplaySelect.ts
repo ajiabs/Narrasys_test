@@ -1,7 +1,7 @@
 // @npUpgrade-inputFields-true
 import { EventTemplates } from '../../../constants';
 import { IEvent } from '../../../models';
-import { IItemForm } from '../../../interfaces';
+import { IItemForm, IModelSvc } from '../../../interfaces';
 
 const TEMPLATE = `
 <div class="field" ng-if="$ctrl.displayVisibility">
@@ -28,11 +28,13 @@ const TEMPLATE = `
 interface IDisplaySelectBindings extends ng.IComponentController {
   data: IEvent;
   itemForm: IItemForm;
+  onUpdate: () => void;
 }
 
 class DisplaySelectController implements IDisplaySelectBindings {
   data: IEvent;
   itemForm: IItemForm;
+  onUpdate: () => void;
   componentName: string;
   isImageFillTemplate: boolean;
   static $inject = ['selectService'];
@@ -57,11 +59,10 @@ class DisplaySelectController implements IDisplaySelectBindings {
 
   onItemFormUpdate(evt: IEvent, form: IItemForm) {
     this.selectService.onSelectChange(evt, form);
+    this.data.styles = this.selectService.handleEventItemFormUpdate(form);
+    this.onUpdate();
   }
 
-  onStyleArrUpdate() {
-
-  }
 
   $onChanges(changes: { componentName: ng.IChangesObject }) {
     if (changes && !changes.componentName.isFirstChange()) {

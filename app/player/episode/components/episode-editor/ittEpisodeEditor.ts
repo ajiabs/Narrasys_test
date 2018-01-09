@@ -101,7 +101,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
     this.customer = this.modelSvc.customers[this.container.customer_id];
 
     if (this.episode.master_asset_id && this.episode.master_asset_id !== '') {
-      this.masterAsset = createInstance('MasterAsset',this.modelSvc.assets[this.episode.master_asset_id]);
+      this.masterAsset = createInstance('MasterAsset', this.modelSvc.assets[this.episode.master_asset_id]);
     }
 
     this.uneditedEpisode = angular.copy(this.episode);
@@ -166,7 +166,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
   }
 
   updateItemForm() {
-    this.episode.styles = this.selectService.handleItemFormUpdates(this.itemForm);
+    this.episode.styles = this.selectService.handleEpisodeItemFormUpdates(this.itemForm);
     this.modelSvc.deriveEpisode(this.episode);
     this.modelSvc.resolveEpisodeEvents(this.episode._id); // needed for template or style changes
   }

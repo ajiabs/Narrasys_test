@@ -108,7 +108,8 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
   var _bgImagePositionSelectVisibility = _partialVis('bgImagePosition');
 
   return {
-    handleItemFormUpdates,
+    handleEpisodeItemFormUpdates,
+    handleEventItemFormUpdate,
     showTab,
     onSelectChange,
     getTemplates,
@@ -329,13 +330,27 @@ export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDa
     return _itemFormStub;
   }
 
-  function handleItemFormUpdates(itemForm: IItemForm): string[] {
+  function handleEpisodeItemFormUpdates(itemForm: IItemForm) {
     return Object.keys(itemForm).reduce(
       (stylesArr: string[], styleKey: string) => {
-        if (itemForm[styleKey] === 'position') {
-          stylesArr.push(itemForm[styleKey]);
-        } else {
+        if (itemForm[styleKey]) {
           stylesArr.push(styleKey + itemForm[styleKey]);
+        }
+        return stylesArr;
+      },
+      []
+    );
+  }
+
+  function handleEventItemFormUpdate(itemForm: IItemForm): string[] {
+    return Object.keys(itemForm).reduce(
+      (stylesArr: string[], styleKey: string) => {
+        if (itemForm[styleKey]) {
+          if (styleKey === 'position') {
+            stylesArr.push(itemForm[styleKey]);
+          } else {
+            stylesArr.push(styleKey + itemForm[styleKey]);
+          }
         }
         return stylesArr;
       },
