@@ -522,7 +522,7 @@ type TInstance =
   | 'Style'
   | 'MasterAsset';
 
-export function createInstance<T>(type: TInstance, data: any): T {
+export function createInstance<T extends NRecord>(type: TInstance, data: any): T {
   let model;
   switch (type) {
     case 'Link':

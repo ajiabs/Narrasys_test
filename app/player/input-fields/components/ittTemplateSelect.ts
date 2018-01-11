@@ -78,10 +78,14 @@ class TemplateSelectController implements ITemplateSelectBindings {
   onSelectChange(item: IEvent, form: ng.IFormController) {
     const newEvent = this.modelSvc.cache('event', item);
     this.selectService.onSelectChange(newEvent, form);
+    if (item instanceof IScene) {
+      this.modelSvc.resolveEpisodeEvents(item.episode_id);
+    }
     this.data = newEvent;
     this.data.renderTemplate = false;
-    this.$timeout(() => void 0, 0).then(() => {
-      this.onUpdate();
+    // this.onUpdate();
+    this.$timeout(() => void 0, 5).then(() => {
+      (this.data as IEvent).renderTemplate = true;
     });
   }
 

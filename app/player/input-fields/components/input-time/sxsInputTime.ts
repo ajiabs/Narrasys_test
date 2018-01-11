@@ -51,13 +51,18 @@ export default function sxsInputTime($rootScope, $timeout, appState, modelSvc, t
         return parse(scope.model);
       }
 
-      function handleUpdates(parsedTime) {
+      function handleUpdates(parsedTime, old) {
 
         setTime(parsedTime);
 
         // Stop questions should always have the same start + end
         if (attrs.inputField === 'start_time' && scope.item.stop) {
           scope.item.end_time = parsedTime;
+        }
+
+        if (parsedTime !== old) {
+          console.log('hmmm');
+          scope.onFieldChange();
         }
       }
 
@@ -128,7 +133,6 @@ export default function sxsInputTime($rootScope, $timeout, appState, modelSvc, t
         scope.realValue = t;
         scope.item[attrs.inputField] = scope.realValue;
         scope.model = scope.format(t);
-
         scope.item.invalid_end_time = (scope.item.start_time > scope.item.end_time);
       }
 

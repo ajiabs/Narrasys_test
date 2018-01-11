@@ -1,6 +1,6 @@
 import autofocus from './directives/autofocus';
 import ittAnnotationField, { AnnotationField } from './components/ittAnnotationField';
-import ittColorSelect from './components/ittColorSelect';
+import ittColorSelect, { ColorSelect } from './components/ittColorSelect';
 import ittDescriptionField, { DescriptionField } from './components/ittDescriptionField';
 import ittDisplaySelect from './components/ittDisplaySelect';
 import ittDynamicModel from './directives/ittDynamicModel';
@@ -19,7 +19,7 @@ import ittTimestampSelect, { TimestampSelect } from './components/ittTimestampSe
 import ittTitleField, { TitleField } from './components/ittTitleField';
 import ittTranscriptField, { TranscriptField } from './components/ittTranscriptField';
 import ittTransitionSelect, { TransitionSelect } from './components/ittTransitionSelect';
-import ittTypographySelect from './components/ittTypographySelect';
+import ittTypographySelect, { TypographySelect } from './components/ittTypographySelect';
 import { UploadTranscripts } from './components/ittUploadTranscriptsField';
 import { ValidAsset } from './directives/ittValidAsset';
 import ittValidEpisodeUrl from './directives/ittValidEpisodeUrl';
@@ -73,6 +73,7 @@ npInputFieldsModule
   .directive('ittAnnotationField', ittAnnotationField)
   .component(AnnotationField.Name, new AnnotationField)
   .directive('ittColorSelect', ittColorSelect)
+  .component(ColorSelect.Name, new ColorSelect())
   .directive('ittDescriptionField', ittDescriptionField)
   .component(DescriptionField.Name, new DescriptionField())
   .directive('ittDisplaySelect',ittDisplaySelect)
@@ -102,6 +103,7 @@ npInputFieldsModule
   .directive('ittTransitionSelect', ittTransitionSelect)
   .component(TransitionSelect.Name, new TransitionSelect())
   .directive('ittTypographySelect', ittTypographySelect)
+  .component(TypographySelect.Name, new TypographySelect())
   .component(UploadTranscripts.Name, new UploadTranscripts())
   .directive('ittValidEpisodeUrl', ittValidEpisodeUrl)
   .directive('ittValidPathslug', ittValidPathslug)

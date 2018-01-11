@@ -11,7 +11,7 @@ const TEMPLATE = `
 <div class="field">
 	<div class="label">Highlight<span ng-if="$ctrl.isEpisode"> Style</span></div>
 	<div class="input">
-		<select size="1" ng-model="$ctrl.itemForm.highlight" ng-change="$ctrl.onItemFormChange()">
+		<select size="1" ng-model="$ctrl.itemForm.highlight" ng-change="$ctrl.onUpdate()">
 			<option ng-if="$ctrl.isEpisode" value="">(Default)</option>
 			<option ng-if="$ctrl.isScene" value="">(Inherit from episode)</option>
 			<option ng-if="!($ctrl.isScene || $ctrl.isEpisode)" value="">(Inherit from layout)</option>
@@ -29,13 +29,13 @@ const TEMPLATE = `
 interface IHighlightSelectBindings extends ng.IComponentController {
   data: IEpisode | IEvent;
   itemForm: IItemForm;
-  onItemFormChange: () => void;
+  onUpdate: () => void;
 }
 
 class HighlightSelectController implements IHighlightSelectBindings {
   data: IEpisode | IEvent;
   itemForm: IItemForm;
-  onItemFormChange: () => void;
+  onUpdate: () => void;
 
   get isEpisode() {
     if (this.data) {
@@ -60,7 +60,7 @@ export class HighlightSelect implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     data: '<',
     itemForm: '<',
-    onItemFormChange: '&'
+    onUpdate: '&'
   };
   template: string = TEMPLATE;
   controller = HighlightSelectController;

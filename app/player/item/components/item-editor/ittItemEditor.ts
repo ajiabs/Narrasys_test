@@ -148,7 +148,7 @@ class ItemEditorController implements IItemEditorBindings {
   }
 
   onItemFormUpdates() {
-    this.item.styles = this.selectService.handleItemFormUpdates(this.itemForm);
+    // this.item.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
     this.deriveEvent();
   }
 
@@ -281,15 +281,14 @@ class ItemEditorController implements IItemEditorBindings {
     this.modelSvc.resolveEpisodeEvents(this.appState.episodeId);
   }
 
-  deriveEvent() {
-    console.log('derive event?');
-    this.appState.editEvent = this.modelSvc.cache('event', this.item);
-    this.appState.editEvent.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
-    this.appState.editEvent.renderTemplate = true;
-    // this.item = this.appState.editEvent;
-    if (this.item instanceof IScene) {
+  deriveEvent(doResolveEvents: boolean = false) {
+    const newEv = this.modelSvc.cache('event', this.appState.editEvent);
+    newEv.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
+    this.appState.editEvent = newEv;
+    if (doResolveEvents) {
       this.resolveEvents();
     }
+    console.log('derived!', this.appState.editEvent);
   }
 
   private getCurrentScene(item: IEvent) {
