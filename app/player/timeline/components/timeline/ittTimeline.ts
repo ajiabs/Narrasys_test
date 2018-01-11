@@ -66,17 +66,19 @@ export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, p
         }
       };
 
-      var editWatcher = scope.$watch(function () {
-        return appState.editEvent;
-      }, function (item) {
-        if (appState.product === 'producer') {
-          if (item) {
-            scope.autoZoom(item);
-          } else {
-            scope.endAutoZoom();
+      let editWatcher = scope.$watch(
+        () => appState.editEvent,
+        (item) => {
+          if (appState.product === 'producer') {
+            if (item) {
+              scope.autoZoom(item);
+            } else {
+              scope.endAutoZoom();
+            }
           }
-        }
-      });
+        },
+        true
+      );
 
       scope.appState = appState;
 
