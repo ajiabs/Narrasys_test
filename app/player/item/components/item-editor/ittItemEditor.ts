@@ -26,7 +26,7 @@
 import itemHtml from './item.html';
 import { EventTemplates, MIMES } from '../../../../constants';
 import { IModelSvc, ITimelineSvc } from '../../../../interfaces';
-import { IEvent, IPlugin, IScene } from '../../../../models';
+import { IEvent, IScene } from '../../../../models';
 
 const isTranscript = function (item: IEvent) {
   return item._type === 'Annotation' && item.component_name === EventTemplates.TRANSCRIPT_TEMPLATE;

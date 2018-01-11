@@ -33,7 +33,7 @@ const _sortAvailableAnnotators = (annotators: IAnnotators) => {
 };
 
 export interface IAnnotator {
-  name: ILangForm;
+  name: ILangForm | '';
   annotation_image_id: string;
   key?: string;
   imageUrl?: string;
@@ -151,6 +151,31 @@ class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings 
     this.autoCompleting = true;
   }
 
+  handleAutocomplete() {
+    this.annotator.name = '';
+    if (this.searchText) {
+
+      this.preselectedItem = -1;
+      const newFilter = {};
+      angular.forEach(this.annotators, (annotator) => {
+        if (annotator.key.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1) {
+          newFilter[annotator.key] = annotator;
+        }
+      });
+
+      this.filteredAnnotators = newFilter;
+      // if only one left, select it automatically
+      if (Object.keys(this.filteredAnnotators).length === 1) {
+        this.preselectedItem = 0;
+      }
+    } else {
+      // empty searchText, show all autocomplete options
+      this.filteredAnnotators = angular.copy(this.annotators);
+      this.preselectedItem = -1;
+    }
+
+  }
+
 }
 
 interface IComponentBindings {
@@ -158,7 +183,10 @@ interface IComponentBindings {
 }
 
 export class AnnotatorAutocomplete implements ng.IComponentOptions {
-  bindings: IComponentBindings = {};
+  bindings: IComponentBindings = {
+    annotators: '<',
+    item: '<'
+  };
   template: string = TEMPLATE;
   controller = AnnotatorAutocompleteController;
   static Name: string = 'npAnnotatorAutocomplete'; // tslint:disable-line

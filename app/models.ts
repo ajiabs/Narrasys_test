@@ -395,7 +395,7 @@ export class ILink extends IEvent {
 export class IAnnotation extends IEvent {
   type: 'Annotation';
   _type: 'Annotation';
-  annotator: ILangForm;
+  annotator: { name };
   annotation: ILangForm;
   chapter_marker: boolean = false;
   //belongs_to annotation image;
