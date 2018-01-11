@@ -98,7 +98,7 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         // 	set cosmetic to true, itemForm.
         // if old template was image-fill, set cosmetic to false
         // TODO this is fragile, based on template name:
-        newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+        newItem = modelSvc.cache('event', newItem);
         newItem.renderTemplate = (newItem.template_id === oldItem.template_id);
         //for producers, if they edit a URL to link-embed template a site that cannot be embedded,
         //change the template URL to 'link'
@@ -115,18 +115,19 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
         if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time || newItem.stop === true) {
           modelSvc.resolveEpisodeEvents(appState.episodeId);
         }
-        // console.count('$watch turn');
 
+        appState.editEvent = newItem;
+        // console.count('$watch turn');
+        // console.log('styleCSs', appState.editEvent.styleCss, newItem.styleCss);
         // console.group('itemStyles');
         // console.count('incoming item layouts');
         // console.log('Layouts:', newItem.layouts);
         // console.log('Styles:', newItem.styles);
         // console.log('styleCss:', newItem.styleCss);
         // console.log('\n');
-        // console.log('itemForm.pin', scope.itemForm.pin);
+        // console.log('itemForm', scope.itemForm);
         // console.log('itemForm.position', scope.itemForm.position);
         // console.groupEnd('itemStyles');
-        modelSvc.cache('event', newItem);
       }, true);
 
       // Transform changes to form fields for styles into item.styles[]:
