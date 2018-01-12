@@ -1,4 +1,4 @@
-// @npUpgrade-inputFields-false
+// @npUpgrade-inputFields-true
 import { IEvent } from '../../../models';
 
 /**

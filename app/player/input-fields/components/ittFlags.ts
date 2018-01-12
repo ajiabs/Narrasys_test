@@ -1,4 +1,4 @@
-// @npUpgrade-inputFields-false
+// @npUpgrade-inputFields-true
 /**
  * Created by githop on 6/30/16.
  */

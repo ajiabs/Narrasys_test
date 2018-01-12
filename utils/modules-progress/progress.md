@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 50, Needs Upgrade: 72, 40% complete
+  ### Upgraded Files: 58, Needs Upgrade: 64, 47% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -85,12 +85,13 @@ Needs Upgrade:
 * ittTab.ts
 * selectService.ts
 ### inputFields - :x:
-Completed: 16,
-    Needs Upgrade: 17,
+Completed: 22,
+    Needs Upgrade: 11,
     total: 33,
-    percent complete: 48%
+    percent complete: 66%
 
 Completed:
+* ittValidAsset.ts
 * ittAnnotationField.ts
 * ittUploadTranscriptsField.ts
 * ittTemplateSelect.ts
@@ -102,15 +103,19 @@ Completed:
 * ittLanguageSelect.ts
 * ittLanguageFlags.ts
 * ittTranscriptField.ts
+* ittImageField.ts
 * ittDescriptionField.ts
 * ittTransitionSelect.ts
 * ittSpeakerThumbField.ts
 * npUrlField.ts
 * ittTimestampSelect.ts
+* ittColorSelect.ts
+* ittTypographySelect.ts
+* ittTimeField.ts
+* ittFlags.ts
 
 Needs Upgrade:
 * autofocus.ts
-* ittValidAsset.ts
 * ittShowFocus.ts
 * ittValidUrl.ts
 * ittValidPathslug.ts
@@ -121,11 +126,6 @@ Needs Upgrade:
 * ittFileField.ts
 * sxsInputTime.ts
 * sxsAddContent.ts
-* ittImageField.ts
-* ittColorSelect.ts
-* ittTypographySelect.ts
-* ittTimeField.ts
-* ittFlags.ts
 ### scenes - :x:
 Completed: 0,
     Needs Upgrade: 2,
@@ -151,17 +151,19 @@ Needs Upgrade:
 * ittEpisodeEditor.ts
 * ittEpisode.ts
 ### question - :x:
-Completed: 0,
-    Needs Upgrade: 6,
+Completed: 2,
+    Needs Upgrade: 4,
     total: 6,
-    percent complete: 0%
+    percent complete: 33%
+
+Completed:
+* ittMcQuestion.ts
+* ittQuestionOptions.ts
 
 Needs Upgrade:
 * ittQuestionTextField.ts
 * ittFlotChart.ts
-* ittQuestionOptions.ts
 * ittQuestionTypeSelect.ts
-* ittMcQuestion.ts
 * questionAnswersSvc.ts
 ### html5 - :x:
 Completed: 0,

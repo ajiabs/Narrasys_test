@@ -1,4 +1,4 @@
-// @npUpgrade-inputFields-false
+// @npUpgrade-inputFields-true
 import { EventTemplates } from '../../../constants';
 import { IPlugin } from '../../../models';
 
