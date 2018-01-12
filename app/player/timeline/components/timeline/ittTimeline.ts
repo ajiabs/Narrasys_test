@@ -45,7 +45,7 @@ export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, p
 
       // zoom in on item edit:
       scope.autoZoom = function (item) {
-        // console.log("autoZoom");
+        console.log("autoZoom");
 
         scope.savedZoomLevel = scope.zoomLevel;
         var itemLength = item.end_time - item.start_time;
@@ -66,9 +66,14 @@ export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, p
         }
       };
 
-      let editWatcher = scope.$watch(
+      const editWatcher = scope.$watch(
         () => appState.editEvent,
-        (item) => {
+        (item, oldItem) => {
+          // debounce this to prevent scope.savedZoomLevel from being
+          // overwritten
+          if (item === oldItem || item._id === oldItem._id) {
+            return;
+          }
           if (appState.product === 'producer') {
             if (item) {
               scope.autoZoom(item);
@@ -76,8 +81,7 @@ export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, p
               scope.endAutoZoom();
             }
           }
-        },
-        true
+        }
       );
 
       scope.appState = appState;
