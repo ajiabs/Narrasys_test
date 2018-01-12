@@ -1,4 +1,4 @@
-import autofocus from './directives/autofocus';
+import autofocus, { Autofocus } from './directives/autofocus';
 import ittAnnotationField, { AnnotationField } from './components/ittAnnotationField';
 import ittColorSelect, { ColorSelect } from './components/ittColorSelect';
 import ittDescriptionField, { DescriptionField } from './components/ittDescriptionField';
@@ -46,6 +46,7 @@ import { IEpisode, IEvent } from '../../models';
 const npInputFieldsModule = angular.module('np.inputFields', []);
 
 const templates = [
+  Autofocus,
   SxsAnnotationFieldTemplate,
   SxsFileFieldTemplate,
   SxsImageFieldTemplate,

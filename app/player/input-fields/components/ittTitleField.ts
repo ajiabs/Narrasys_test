@@ -20,7 +20,7 @@ const TEMPLATE = `
 	  sxs-input-i18n="$ctrl.data.title"
 	  on-emit-name="$ctrl.onName($taName)"
 	  on-field-change="$ctrl.onUpdate()"
-	  x-inputtype="'input'" autofocus></div>
+	  x-inputtype="'input'" np-autofocus></div>
 </div>
 `;
 
@@ -92,7 +92,7 @@ export default function ittTitleField() {
       '	<div class="label">Title [{{$ctrl.appState.lang}}]',
       '		<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Title is a required field"></itt-validation-tip>',
       '	</div>',
-      '	<div class="input" ng-model-options="$ctrl.modelOpts" do-validate="$ctrl.doValidate" sxs-input-i18n="$ctrl.data.title" on-emit-name="$ctrl.onName($taName)" x-inputtype="\'input\'" autofocus></div>',
+      '	<div class="input" ng-model-options="$ctrl.modelOpts" do-validate="$ctrl.doValidate" sxs-input-i18n="$ctrl.data.title" on-emit-name="$ctrl.onName($taName)" x-inputtype="\'input\'" np-autofocus></div>',
       '</div>'
     ].join(' '),
     controller: ['appState', 'ittUtils', 'selectService', function (appState, ittUtils, selectService) {

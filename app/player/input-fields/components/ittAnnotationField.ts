@@ -22,7 +22,7 @@ const TEMPLATE = `
 	  do-validate="true"
 	  x-inputtype="'textarea'"
 	  on-emit-name="$ctrl.onName($taName)"
-	  autofocus>
+	  np-autofocus>
   </div>
 </div>'
 `;
@@ -79,7 +79,7 @@ export default function ittAnnotationField() {
       '	<div class="label">Annotation Text [{{$ctrl.appState.lang}}]',
       '		<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Annotation Text is a required field"></itt-validation-tip>',
       '	</div>',
-      '	<div class="input" sxs-input-i18n="$ctrl.data.annotation" on-field-change="$ctrl.onUpdate()" do-validate="true" x-inputtype="\'textarea\'" on-emit-name="$ctrl.onName($taName)" autofocus></div>',
+      '	<div class="input" sxs-input-i18n="$ctrl.data.annotation" on-field-change="$ctrl.onUpdate()" do-validate="true" x-inputtype="\'textarea\'" on-emit-name="$ctrl.onName($taName)" np-autofocus></div>',
       '</div>'
     ].join('\n'),
     controller: ['appState', function (appState) {
