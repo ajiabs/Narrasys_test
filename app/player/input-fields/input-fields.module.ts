@@ -10,7 +10,6 @@ import ittHighlightSelect, { HighlightSelect } from './components/ittHighlightSe
 import ittImageField, { ImageField } from './components/ittImageField';
 import  { LanguageFlags } from './components/ittLanguageFlags';
 import ittLanguageSelect, { LanguageSelect }  from './components/ittLanguageSelect';
-import ittShowFocus from './directives/ittShowFocus';
 import ittSpeakerField, { SpeakerField } from './components/ittSpeakerField';
 import ittSpeakerThumbField from './components/ittSpeakerThumbField';
 import { TemplateSelect } from './components/ittTemplateSelect';
