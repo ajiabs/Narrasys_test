@@ -45,7 +45,6 @@ export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, p
 
       // zoom in on item edit:
       scope.autoZoom = function (item) {
-        console.log("autoZoom");
 
         scope.savedZoomLevel = scope.zoomLevel;
         var itemLength = item.end_time - item.start_time;
