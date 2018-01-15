@@ -44,19 +44,44 @@ export interface IAnnotators {
 }
 
 
-const TEMPLATE = ``;
+const TEMPLATE = `
+<div style="position:relative;" ng-show="!$ctrl.hasAnnotator()">
+
+	<input
+	  class="annotatorChooser"
+	  type="text"
+	  ng-model="$ctrl.searchText"
+	  ng-focus="$ctrl.showAutocomplete()"
+	  ng-blur="$ctrl.hideAutocomplete()"
+	  ng-change="$ctrl.handleAutocomplete()">
+
+	<div class="autocompleteList animate transitionFade" ng-if="$ctrl.autoCompleting">
+		<div class="autocompleteItem"
+		  ng-repeat="annotator in $ctrl.filteredAnnotators"
+		  ng-click="$ctrl.select(annotator)"
+		  ng-class="{selected: ($index == $ctrl.preselectedItem)}"
+		  style="white-space: nowrap">
+			<img ng-src="{{annotator.imageUrl}}">
+			<span ng-bind-html="(annotator.key | highlightSubstring: $ctrl.searchText) || '(New speaker)'"></span>
+		</div>
+	</div>
+</div>
+<div style="position:relative;" ng-show="$ctrl.hasAnnotator()">
+	<div sxs-input-i18n="$ctrl.item.annotator" x-inputtype="'input'"></div>
+	<a style="position: absolute; top: 3px; right: 10px" ng-click="$ctrl.item.annotator={}">(x)</a>
+</div>
+`;
 
 interface IAnnotatorAutocompleteBindings extends ng.IComponentController {
   annotators: any;
   item: IAnnotation;
-  ngModelController: ng.INgModelController;
 }
 
 class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings {
   annotators: { [name: string]: IAnnotator };
   item: IAnnotation;
-  ngModelController: ng.INgModelController;
   //
+  ngModelController: ng.INgModelController;
   autoCompleting: boolean;
   searchText: string;
   annotator: IAnnotator;
@@ -67,29 +92,37 @@ class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings 
     //
   }
 
+  $onChanges(changes: { item: ng.IChangesObject }) {
+
+    if (changes && changes.item && changes.item.currentValue != null) {
+      // look up the annotator images
+      console.log('fucking has a value', this.item);
+      angular.forEach(this.annotators, (annotator) => {
+        if (annotator.annotation_image_id) {
+          annotator.imageUrl = this.modelSvc.assets[annotator.annotation_image_id].url;
+        }
+      });
+
+      // the form value we'll ultimately want to return
+      console.log('what gives mate?', this.item);
+      this.annotator = {
+        name: this.item.annotator
+      } as any;
+
+      if (this.annotators[this.item.annotator.name] && this.annotators[this.item.annotator.name].annotation_image_id) {
+        this.annotator.imageUrl = this.modelSvc.assets[this.annotators[this.item.annotator.name].annotation_image_id].url;
+      }
+
+      this.filteredAnnotators =  _sortAvailableAnnotators(angular.copy(this.annotators));
+      this.preselectedItem = -1;
+    }
+  }
+
   $onInit() {
-    //
+
   }
 
   $postLink() {
-    // look up the annotator images
-    angular.forEach(this.annotators, (annotator) => {
-      if (annotator.annotation_image_id) {
-        annotator.imageUrl = this.modelSvc.assets[annotator.annotation_image_id].url;
-      }
-    });
-
-    // the form value we'll ultimately want to return
-    this.annotator = {
-      name: this.item.annotator
-    } as any;
-
-    if (this.annotators[this.item.annotator.name] && this.annotators[this.item.annotator.name].annotation_image_id) {
-      this.annotator.imageUrl = this.modelSvc.assets[this.annotators[this.item.annotator.name].annotation_image_id].url;
-    }
-
-    this.filteredAnnotators =  _sortAvailableAnnotators(angular.copy(this.annotators));
-    this.preselectedItem = -1;
 
     this.$element.find('.annotatorChooser').bind('keydown', (event) => {
       switch (event.which) {
@@ -112,7 +145,7 @@ class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings 
   }
 
   hasAnnotator() {
-    if (this.item.annotator) {
+    if (this.item && this.item.annotator) {
       return Object.keys(this.item.annotator).length > 0;
     }
   }
@@ -176,6 +209,55 @@ class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings 
 
   }
 
+  hideAutocomplete() {
+    this.$timeout(
+      () => {
+        if (this.preselectedItem > -1) {
+          this.selectByIndex(this.preselectedItem);
+        } else {
+          // doesn't match an existing name, so...
+          if (this.searchText !== '') {
+            this.addNewAnnotator();
+          }
+        }
+        this.autoCompleting = false;
+      },
+      300
+    );
+  }
+
+  addNewAnnotator() {
+    const annotatorName = this.searchText; // TODO sanitize me!!!
+    this.item.annotator = {};
+    this.item.annotator[this.appState.lang] = annotatorName;
+    this.searchText = '';
+
+    this.handleAutocomplete();
+
+    // var newAnnotator = {
+    // 	"name": {
+    // 		"en": annotatorName // make sure we have something consistent to key against
+    // 	},
+    // 	"imageUrl": "",
+    // 	"annotation_image_id": false
+    // };
+    // if (appState.lang !== 'en') {
+    // 	newAnnotator.name[appState.lang] = annotatorName;
+    // }
+    // console.log(newAnnotator);
+
+    // // make available in future transcript edits
+    // // TODO shoudl this happen now? or wait until save?
+    // scope.annotators[annotatorName] = angular.copy(newAnnotator);
+    // console.log(scope.annotators);
+
+    // scope.annotator = angular.copy(newAnnotator);
+    // delete scope.annotator.imageUrl;
+
+    // ngModelController.$setViewValue(newAnnotator);
+
+  }
+
 }
 
 interface IComponentBindings {
@@ -183,6 +265,9 @@ interface IComponentBindings {
 }
 
 export class AnnotatorAutocomplete implements ng.IComponentOptions {
+  require = {
+    ngModel: 'ngModel'
+  };
   bindings: IComponentBindings = {
     annotators: '<',
     item: '<'
@@ -273,31 +358,31 @@ export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
 
       // TODO destroy langWatcher when unlinking
 
-      scope.handleAutocomplete = function () {
-        scope.annotator.name = '';
-        if (scope.searchText) {
-
-          scope.preselectedItem = -1;
-          var newFilter = {};
-          angular.forEach(scope.annotators, function (annotator) {
-            // console.log(annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1, annotator.key.toLowerCase(), scope.searchText.toLowerCase());
-            if (annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1) {
-              newFilter[annotator.key] = annotator;
-            }
-          });
-
-          scope.filteredAnnotators = newFilter;
-          // if only one left, select it automatically
-          if (Object.keys(scope.filteredAnnotators).length === 1) {
-            scope.preselectedItem = 0;
-          }
-        } else {
-          // empty searchText, show all autocomplete options
-          scope.filteredAnnotators = angular.copy(scope.annotators);
-          scope.preselectedItem = -1;
-        }
-
-      };
+      // scope.handleAutocomplete = function () {
+      //   scope.annotator.name = '';
+      //   if (scope.searchText) {
+      //
+      //     scope.preselectedItem = -1;
+      //     var newFilter = {};
+      //     angular.forEach(scope.annotators, function (annotator) {
+      //       // console.log(annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1, annotator.key.toLowerCase(), scope.searchText.toLowerCase());
+      //       if (annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1) {
+      //         newFilter[annotator.key] = annotator;
+      //       }
+      //     });
+      //
+      //     scope.filteredAnnotators = newFilter;
+      //     // if only one left, select it automatically
+      //     if (Object.keys(scope.filteredAnnotators).length === 1) {
+      //       scope.preselectedItem = 0;
+      //     }
+      //   } else {
+      //     // empty searchText, show all autocomplete options
+      //     scope.filteredAnnotators = angular.copy(scope.annotators);
+      //     scope.preselectedItem = -1;
+      //   }
+      //
+      // };
 
       // scope.selectByIndex = function (index) {
       //   if (index < 0) {

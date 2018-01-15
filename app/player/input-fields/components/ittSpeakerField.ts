@@ -10,12 +10,13 @@ const TEMPLATE = `
 <div class="field" ng-if="$ctrl.speakerFieldVisibility">
 	<div class="label">Speaker [{{$ctrl.appState.lang}}]</div>
 	<div class="input">
-		<div
-		  sxs-annotator-autocomplete="annotators"
-		  item="$ctrl.data"
-		  ng-model="$ctrl.data.annotator"
-		  ng-change="$ctrl.onUpdate()">
-    </div>
+	
+    <np-annotator-autocomplete
+    	ng-model="$ctrl.data.annotator"
+    	ng-change="$ctrl.onUpdate()"
+    	item="$ctrl.item"
+      annotators="$ctrl.annotators">
+    </np-annotator-autocomplete>
 	</div>
 </div>
 `;

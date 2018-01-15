@@ -21,7 +21,7 @@ const TEMPLATE = `
       type="text"
       name="path"
       placeholder="{{$ctrl.display.placeholder}}"
-      itt-valid-pathslug
+      np-valid-path-slug
       narrative-id="{{$ctrl.narrative._id}}"
       ng-model="$ctrl[$ctrl.type].path_slug.en">
   </div>

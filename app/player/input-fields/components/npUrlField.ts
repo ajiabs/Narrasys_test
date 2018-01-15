@@ -47,7 +47,7 @@ const TEMPLATE = `
     <input
       type="text"
       ng-model="$ctrl.data"
-      itt-valid-episode-url
+      np-valid-episode-url
       on-validation-notice="$ctrl.handleEpisodeValidationMessage($notice)"/>
     <button ng-if="$ctrl.data" ng-click="$ctrl.onAttach({$url: $ctrl.data})">Attach Video</button>
   </div>

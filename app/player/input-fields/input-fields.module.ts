@@ -3,8 +3,8 @@ import ittAnnotationField, { AnnotationField } from './components/ittAnnotationF
 import ittColorSelect, { ColorSelect } from './components/ittColorSelect';
 import ittDescriptionField, { DescriptionField } from './components/ittDescriptionField';
 import ittDisplaySelect from './components/ittDisplaySelect';
-import ittDynamicModel from './directives/ittDynamicModel';
-import ittFileField from './components/ittFileField';
+import { DynamicModel } from './directives/ittDynamicModel';
+import { FileField } from './components/ittFileField';
 import { Flags } from './components/ittFlags';
 import ittHighlightSelect, { HighlightSelect } from './components/ittHighlightSelect';
 import ittImageField, { ImageField } from './components/ittImageField';
@@ -21,13 +21,13 @@ import ittTransitionSelect, { TransitionSelect } from './components/ittTransitio
 import ittTypographySelect, { TypographySelect } from './components/ittTypographySelect';
 import { UploadTranscripts } from './components/ittUploadTranscriptsField';
 import { ValidAsset } from './directives/ittValidAsset';
-import ittValidEpisodeUrl from './directives/ittValidEpisodeUrl';
-import ittValidPathslug from './directives/ittValidPathslug';
-import ittValidUrl from './directives/ittValidUrl';
+import { ValidEpisodeUrl } from './directives/ittValidEpisodeUrl';
+import { ValidPathSlug } from './directives/ittValidPathslug';
+import ittValidUrl, { ValidUrl } from './directives/ittValidUrl';
 import { VideoPositionSelect } from './components/ittVideoPositionSelect';
 import { UrlField } from './components/npUrlField';
 import sxsAddContent from './components/add-content/sxsAddContent';
-import sxsAnnotatorAutocomplete from './components/annotator-autocomplete/sxsAnnotatorAutocomplete';
+import { AnnotatorAutocomplete } from './components/annotator-autocomplete/sxsAnnotatorAutocomplete';
 import { SxsAnnotationFieldTemplate } from './templates/sxs-annotation/sxs-annotation-field.template';
 import { SxsFileFieldTemplate } from './templates/sxs-file/sxs-file-field.template';
 import { SxsImageFieldTemplate } from './templates/sxs-image/sxs-image-field.template';
@@ -56,7 +56,11 @@ const templates = [
   UploadPosterTemplate,
   UploadProducerTemplate,
   UploadSxsTemplate,
-  ValidAsset
+  ValidAsset,
+  ValidUrl,
+  ValidPathSlug,
+  ValidEpisodeUrl,
+  DynamicModel
 ];
 
 templates.forEach((t: any) => {
@@ -77,8 +81,7 @@ npInputFieldsModule
   .directive('ittDescriptionField', ittDescriptionField)
   .component(DescriptionField.Name, new DescriptionField())
   .directive('ittDisplaySelect',ittDisplaySelect)
-  .directive('ittDynamicModel', ittDynamicModel)
-  .directive('ittFileField', ittFileField)
+  .component(FileField.Name, new FileField())
   .component(Flags.Name, new Flags())
   .directive('ittHighlightSelect', ittHighlightSelect)
   .component(HighlightSelect.Name, new HighlightSelect())
@@ -87,7 +90,6 @@ npInputFieldsModule
   // .directive('ittLanguageFlags', ittLanguageFlags)
   .directive('ittLanguageSelect', ittLanguageSelect)
   .component(LanguageSelect.Name, new LanguageSelect())
-  .directive('ittShowFocus', ittShowFocus)
   .directive('ittSpeakerField', ittSpeakerField)
   .component(SpeakerField.Name, new SpeakerField())
   .directive('ittSpeakerThumbField', ittSpeakerThumbField)
@@ -105,13 +107,11 @@ npInputFieldsModule
   .directive('ittTypographySelect', ittTypographySelect)
   .component(TypographySelect.Name, new TypographySelect())
   .component(UploadTranscripts.Name, new UploadTranscripts())
-  .directive('ittValidEpisodeUrl', ittValidEpisodeUrl)
-  .directive('ittValidPathslug', ittValidPathslug)
   .directive('ittValidUrl', ittValidUrl)
   .directive('sxsInputI18n', sxsInputI18n)
   .directive('sxsInputTime', sxsInputTime)
   .directive('sxsAddContent', sxsAddContent)
-  .directive('sxsAnnotatorAutocomplete', sxsAnnotatorAutocomplete)
+  .component(AnnotatorAutocomplete.Name, new AnnotatorAutocomplete())
   .component(VideoPositionSelect.Name, new VideoPositionSelect())
   .component(UrlField.Name, new UrlField())
   .component(LanguageFlags.Name, new LanguageFlags());

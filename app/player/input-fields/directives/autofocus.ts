@@ -5,12 +5,12 @@ export class Autofocus implements ng.IDirective {
   restrict: string = 'A';
   static Name = 'npAutofocus';
   static $inject = ['$timeout'];
-  constructor() {
+  constructor(private $timeout: ng.ITimeoutService) {
     //
   }
 
   static factory(): ng.IDirectiveFactory {
-    const directiveInstance = () => new Autofocus();
+    const directiveInstance = ($timeout) => new Autofocus($timeout);
     directiveInstance.$inject = Autofocus.$inject;
     return directiveInstance;
   }

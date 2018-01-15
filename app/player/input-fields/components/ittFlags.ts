@@ -15,7 +15,7 @@ const TEMPLATE = `
         <label for="{{$ctrl._ids[flag]}}"></label>
         <input id="{{$ctrl._ids[flag]}}"
           type="checkbox"
-          itt-dynamic-model="'$ctrl.data.' + flag"
+          np-dynamic-model="'$ctrl.data.' + flag"
           ng-change="$ctrl.handleChange()"/>{{$ctrl._displays[flag]}}
       </span>
       <span ng-if="flag === 'invertColor'">
