@@ -66,7 +66,7 @@ const TEMPLATE = `
 	</div>
 </div>
 <div style="position:relative;" ng-show="$ctrl.hasAnnotator()">
-	<div sxs-input-i18n="$ctrl.item.annotator" x-inputtype="'input'"></div>
+	<np-input-18n field="$ctrl.item.annotator" x-inputtype="input"></np-input-18n>
 	<a style="position: absolute; top: 3px; right: 10px" ng-click="$ctrl.item.annotator={}">(x)</a>
 </div>
 `;
@@ -218,7 +218,7 @@ class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings 
 
   addNewAnnotator() {
     const annotatorName = this.searchText; // TODO sanitize me!!!
-    this.item.annotator = {};
+    this.item.annotator = {} as any;
     this.item.annotator[this.appState.lang] = annotatorName;
     this.searchText = '';
 

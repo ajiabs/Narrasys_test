@@ -15,15 +15,15 @@ const TEMPLATE = `
 		  text="Annotation Text is a required field">
     </itt-validation-tip>
 	</div>
-	<div 
+	<np-input-18n 
 	  class="input"
-	  sxs-input-i18n="$ctrl.data.annotation"
+	  field="$ctrl.data.annotation"
 	  on-field-change="$ctrl.onUpdate()"
 	  do-validate="true"
-	  x-inputtype="'textarea'"
+	  x-inputtype="textarea"
 	  on-emit-name="$ctrl.onName($taName)"
 	  np-autofocus>
-  </div>
+  </np-input-18n>
 </div>'
 `;
 

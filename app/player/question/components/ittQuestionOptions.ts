@@ -16,7 +16,12 @@ const TEMPLATE = `
     <input type="checkbox" ng-model="distractor.correct" ng-change="$ctrl.onFormativeChecked(distractor)"
            ng-if="$ctrl.data.data._plugin.questiontype == 'mc-formative'">
   </div>
-  <div class="input" sxs-input-i18n="distractor.text" on-field-change="$ctrl.onUpdate()" x-inputtype="'textarea'"></div>
+  <np-input-i18n
+    class="input"
+    field="distractor.text"
+    on-field-change="$ctrl.onUpdate()"
+    inputtype="textarea">
+  </np-input-i18n>
 </div>
 <div class="field">
   <div class="input">
@@ -25,19 +30,21 @@ const TEMPLATE = `
 </div>
 <div class="field" ng-if="$ctrl.data.data._plugin.questiontype == 'mc-formative'">
   <div class="label">Feedback when correct</div>
-  <div class="input"
-       sxs-input-i18n="$ctrl.data.data._plugin.correctfeedback"
-       on-field-change="$ctrl.onUpdate()"
-       x-inputtype="'textarea'">
-  </div>
+  <np-input-i18n
+    class="input"
+    field="$ctrl.data.data._plugin.correctfeedback"
+    on-field-change="$ctrl.onUpdate()"
+    inputtype="textarea">
+  </np-input-i18n>
 </div>
 <div class="field" ng-if="$ctrl.data.data._plugin.questiontype == 'mc-formative'">
   <div class="label">Feedback when incorrect</div>
-  <div class="input"
-       sxs-input-i18n="$ctrl.data.data._plugin.incorrectfeedback"
-       on-field-change="$ctrl.onUpdate()"
-       x-inputtype="'textarea'">
-  </div>
+  <np-input-18n
+    class="input"
+    field="$ctrl.data.data._plugin.incorrectfeedback"
+    on-field-change="$ctrl.onUpdate()"
+    inputtype="textarea">
+  </np-input-18n>
 </div>
 `;
 

@@ -1,7 +1,7 @@
 import questionAnswersSvc from './services/questionAnswersSvc';
 import ittFlotr2Chart from './components/ittFlotChart';
 import ittQuestionOptions, { QuestionOptions } from './components/ittQuestionOptions';
-import ittQuestionTextField from './components/ittQuestionTextField';
+import ittQuestionTextField, { QuestionTextField } from './components/ittQuestionTextField';
 import ittQuestionTypeSelect from './components/ittQuestionTypeSelect';
 import { McQuestion } from './components/ittMcQuestion';
 
@@ -13,6 +13,7 @@ npQuestionModule
   .directive('ittQuestionOptions', ittQuestionOptions)
   .component(QuestionOptions.Name, new QuestionOptions())
   .directive('ittQuestionTextField', ittQuestionTextField)
+  .component(QuestionTextField.Name, new QuestionTextField())
   .directive('ittQuestionTypeSelect', ittQuestionTypeSelect)
   .component(McQuestion.Name, new McQuestion());
 

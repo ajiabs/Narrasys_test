@@ -14,13 +14,16 @@ const TEMPLATE = `
 		  text="Title is a required field">
     </itt-validation-tip>
 	</div>
-	<div class="input"
+	<np-input-i18n
+	  class="input"
 	  ng-model-options="$ctrl.modelOpts"
 	  do-validate="$ctrl.doValidate"
-	  sxs-input-i18n="$ctrl.data.title"
+	  field="$ctrl.data.title"
 	  on-emit-name="$ctrl.onName($taName)"
 	  on-field-change="$ctrl.onUpdate()"
-	  x-inputtype="'input'" np-autofocus></div>
+	  x-inputtype="input"
+	  np-autofocus>
+  </np-input-i18n>
 </div>
 `;
 
