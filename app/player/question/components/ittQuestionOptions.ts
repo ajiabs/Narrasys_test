@@ -39,12 +39,12 @@ const TEMPLATE = `
 </div>
 <div class="field" ng-if="$ctrl.data.data._plugin.questiontype == 'mc-formative'">
   <div class="label">Feedback when incorrect</div>
-  <np-input-18n
+  <np-input-i18n
     class="input"
     field="$ctrl.data.data._plugin.incorrectfeedback"
     on-field-change="$ctrl.onUpdate()"
     inputtype="textarea">
-  </np-input-18n>
+  </np-input-i18n>
 </div>
 `;
 

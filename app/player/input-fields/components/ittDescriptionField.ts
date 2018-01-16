@@ -10,13 +10,12 @@ import { existy } from '../../../shared/services/ittUtils';
 const TEMPLATE = `
 <div class="field">
 	<div class="label">Description [{{$ctrl.lang}}]</div>
-	<np-input-18n
+	<np-input-i18n
 	  class="input"
-	  ng-model-options="$ctrl.modelOpts"
 	  field="$ctrl.data.description"
 	  on-field-change="$ctrl.onFieldChange()"
-	  x-inputtype="textarea">
-  </np-input-18n>
+	  inputtype="textarea">
+  </np-input-i18n>
 </div>
 `;
 

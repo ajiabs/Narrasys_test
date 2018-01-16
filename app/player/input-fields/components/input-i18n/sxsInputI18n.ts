@@ -9,7 +9,7 @@ const TEMPLATE = `
   ng-required="$ctrl.doValidate">
 <text-angular
   ng-change="$ctrl.onFieldChange()"
-  ng-if="$ctrl.inputtype=='textarea'"
+  ng-if="$ctrl.inputtype == 'textarea'"
   name="{{$ctrl.textangularname}}"
   ng-required="$ctrl.doValidate"
   ng-model="$ctrl.field[$ctrl.appState.lang]"

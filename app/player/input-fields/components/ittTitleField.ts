@@ -21,7 +21,7 @@ const TEMPLATE = `
 	  field="$ctrl.data.title"
 	  on-emit-name="$ctrl.onName($taName)"
 	  on-field-change="$ctrl.onUpdate()"
-	  x-inputtype="input"
+	  inputtype="input"
 	  np-autofocus>
   </np-input-i18n>
 </div>

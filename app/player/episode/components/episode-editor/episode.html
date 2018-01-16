@@ -39,13 +39,13 @@
             model-opts="{ debounce: 500 }"
             do-validate="true"
             itt-item-form="ittEpisodeForm"
-            on-field-change="$ctrl.onTitleOrDescriptionChange()">
+            on-update="$ctrl.onTitleOrDescriptionChange()">
           </np-title-field>
 
           <np-description-field
             data="$ctrl.episode"
             model-opts="{debounce: 50}"
-            on-field-change="$ctrl.onTitleOrDescriptionChange()">
+            on-update="$ctrl.onTitleOrDescriptionChange()">
           </np-description-field>
 
           <div class="field" ng-if="$ctrl.isAdmin">

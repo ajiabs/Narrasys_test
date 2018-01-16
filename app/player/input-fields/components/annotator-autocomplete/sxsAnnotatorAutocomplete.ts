@@ -66,7 +66,7 @@ const TEMPLATE = `
 	</div>
 </div>
 <div style="position:relative;" ng-show="$ctrl.hasAnnotator()">
-	<np-input-18n field="$ctrl.item.annotator" x-inputtype="input"></np-input-18n>
+	<np-input-i18n field="$ctrl.item.annotator" inputtype="input"></np-input-i18n>
 	<a style="position: absolute; top: 3px; right: 10px" ng-click="$ctrl.item.annotator={}">(x)</a>
 </div>
 `;

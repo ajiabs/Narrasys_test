@@ -23,7 +23,7 @@ export class DynamicModel implements ng.IDirective {
 
   link(scope: ng.IScope, elm: JQuery): void {
     const name = this.$parse(elm.attr('np-dynamic-model'))(scope);
-    elm.removeAttr('itt-dynamic-model');
+    elm.removeAttr('np-dynamic-model');
     elm.attr('ng-model', name);
     this.$compile(elm)(scope);
   }
