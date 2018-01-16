@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 58, Needs Upgrade: 64, 47% complete
+  ### Upgraded Files: 69, Needs Upgrade: 52, 57% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -84,23 +84,33 @@ Needs Upgrade:
 * PlayerController.ts
 * ittTab.ts
 * selectService.ts
-### inputFields - :x:
-Completed: 22,
-    Needs Upgrade: 11,
-    total: 33,
-    percent complete: 66%
+### inputFields - :white_check_mark:
+Completed: 32,
+    Needs Upgrade: 0,
+    total: 32,
+    percent complete: 100%
 
 Completed:
+* autofocus.ts
 * ittValidAsset.ts
+* ittValidUrl.ts
+* ittValidPathslug.ts
+* ittValidEpisodeUrl.ts
+* ittDynamicModel.ts
 * ittAnnotationField.ts
 * ittUploadTranscriptsField.ts
+* sxsAnnotatorAutocomplete.ts
 * ittTemplateSelect.ts
+* sxsInputI18n.ts
 * ittSpeakerField.ts
 * ittHighlightSelect.ts
 * ittVideoPositionSelect.ts
 * ittTitleField.ts
 * ittDisplaySelect.ts
+* ittFileField.ts
+* sxsInputTime.ts
 * ittLanguageSelect.ts
+* sxsAddContent.ts
 * ittLanguageFlags.ts
 * ittTranscriptField.ts
 * ittImageField.ts
@@ -113,19 +123,6 @@ Completed:
 * ittTypographySelect.ts
 * ittTimeField.ts
 * ittFlags.ts
-
-Needs Upgrade:
-* autofocus.ts
-* ittShowFocus.ts
-* ittValidUrl.ts
-* ittValidPathslug.ts
-* ittValidEpisodeUrl.ts
-* ittDynamicModel.ts
-* sxsAnnotatorAutocomplete.ts
-* sxsInputI18n.ts
-* ittFileField.ts
-* sxsInputTime.ts
-* sxsAddContent.ts
 ### scenes - :x:
 Completed: 0,
     Needs Upgrade: 2,
@@ -151,17 +148,17 @@ Needs Upgrade:
 * ittEpisodeEditor.ts
 * ittEpisode.ts
 ### question - :x:
-Completed: 2,
-    Needs Upgrade: 4,
+Completed: 3,
+    Needs Upgrade: 3,
     total: 6,
-    percent complete: 33%
+    percent complete: 50%
 
 Completed:
 * ittMcQuestion.ts
+* ittQuestionTextField.ts
 * ittQuestionOptions.ts
 
 Needs Upgrade:
-* ittQuestionTextField.ts
 * ittFlotChart.ts
 * ittQuestionTypeSelect.ts
 * questionAnswersSvc.ts
