@@ -43,5 +43,5 @@ export class VideoPositionSelect implements ng.IComponentOptions {
   };
   template: string = TEMPLATE;
   controller = VideoPositionSelectController;
-  static Name: string = 'ittVideoPositionSelect'; // tslint:disable-line
+  static Name: string = 'npVideoPositionSelect'; // tslint:disable-line
 }

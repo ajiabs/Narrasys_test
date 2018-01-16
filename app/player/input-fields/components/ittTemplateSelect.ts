@@ -30,7 +30,6 @@ interface ITemplateSelectBindings extends IProducerInputFieldController {
   data: IEvent | IEpisode;
   itemForm?: ng.IFormController;
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
-  onUpdate: () => void;
 }
 
 
@@ -39,7 +38,6 @@ class TemplateSelectController implements ITemplateSelectBindings {
   labelText: string = 'Template';
   isAnnotation: boolean;
   isEpisode: boolean;
-  onUpdate: () => void;
   context: 'episode' | 'event' = 'event';
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
   static $inject = ['$timeout', 'selectService', 'modelSvc'];
@@ -83,7 +81,6 @@ class TemplateSelectController implements ITemplateSelectBindings {
     }
     this.data = newEvent;
     this.data.renderTemplate = false;
-    // this.onUpdate();
     this.$timeout(() => void 0, 5).then(() => {
       (this.data as IEvent).renderTemplate = true;
     });
@@ -103,8 +100,8 @@ class TemplateSelectController implements ITemplateSelectBindings {
 
 export class TemplateSelect implements ng.IComponentOptions {
   bindings: any = {
-    data: '=',
-    itemForm: '=?',
+    data: '<',
+    itemForm: '<?',
     onEpisodeEdit: '&',
     onUpdate: '&'
   };
