@@ -118,7 +118,7 @@ export class IMasterAsset {
   frame_rate_n: number;
   frame_rate_d: number;
   start_time: string;
-  duration: string;
+  duration: number;
   width: number;
   height: number;
   urls:  IMasterAssetVideoObject;
@@ -342,6 +342,8 @@ export class IEvent {
   annotation_image_id: string;
   sxs?: any;
   removedAssets?: string[];
+  validationMessage?: string;
+  invalid_end_time?: boolean;
 
   setFuture(): void {
     this.state = 'isFuture';

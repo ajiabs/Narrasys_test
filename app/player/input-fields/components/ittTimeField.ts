@@ -15,10 +15,15 @@ const TEMPLATE = `
     ng-if="$ctrl.ittItemForm.time.$invalid"
     text="{{$ctrl.data.validationMessage}}">
   </itt-validation-tip>
-		<span sxs-input-time="$ctrl.data" on-field-change="$ctrl.onUpdate()" x-input-field="start_time"></span>
+		<np-input-time
+		  item="$ctrl.data"
+		  on-field-change="$ctrl.onUpdate()"
+		  input-field="start_time">
+    </np-input-time>
 		<span ng-if="!($ctrl.stop || $ctrl.isScene || $ctrl.isChapter)">
 			<span class="label"> &nbsp; &nbsp; &nbsp; End</span>
-			<span sxs-input-time="$ctrl.data" on-field-change="$ctrl.onUpdate()" x-input-field="end_time"></span>
+			<np-input-time
+			  item="$ctrl.data" on-field-change="$ctrl.onUpdate()" input-field="end_time"></np-input-time>
 		</span>
 	</div>
 </div>

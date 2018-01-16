@@ -1,217 +1,274 @@
-// @npUpgrade-inputFields-false
+// @npUpgrade-inputFields-true
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
-import inputtimeHtml from './inputtime.html';
+import { IEvent, IScene } from '../../../../models';
+import { IModelSvc } from '../../../../shared/services/modelSvc/modelSvc';
+import { existy } from '../../../../shared/services/ittUtils';
 
-sxsInputTime.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'timelineSvc', 'playbackService', 'ittUtils'];
+const TEMPLATE = `
+<span class="floaterContainer">
+	<input
+	  class="inputfield"
+	  ng-model="$ctrl.model"
+	  ng-change="$ctrl.handleUpdates()"
+	  name="time"
+	  ng-focus="$ctrl.showTools(true)"
+	  ng-blur="$ctrl.showTools(false)"
+	  ng-model-options="{ updateOn: 'blur' }"
+	  style="max-width: 150px"
+	  ng-class="{invalid: ($ctrl.fieldname == 'end_time' && $ctrl.item.invalid_end_time)}">
+	<div class="floater" ng-if="$ctrl.tooltip">
 
-export default function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, playbackService, ittUtils) {
-  return {
-    require: '?^^form',
-    scope: {
-      item: '=sxsInputTime',
-      onFieldChange: '&'
-    },
-    template: inputtimeHtml,
-    link: function (scope, elem, attrs, ngForm) {
+		<ul style="list-style:none; white-space:nowrap">
+			<li style="text-align:center; font-size: 150%">
+				<a ng-click="$ctrl.nudge(-5)">«</a>
+				<a ng-click="$ctrl.nudge(-1)">‹</a>
+				<span> &nbsp;&nbsp; </span>
+				<a ng-click="$ctrl.nudge(1)">›</a>
+				<a ng-click="$ctrl.nudge(5)">»</a>
+			</li>
+			<li ng-click="$ctrl.setTime($ctrl.playbackService.getMetaProp('time'))">
+				<a>Set to current time ({{::$ctrl.format($ctrl.playbackService.getMetaProp('time'))}})</a>
+			</li>
+			<span ng-if="$ctrl.item._type != 'Scene' && $ctrl.scene().start_time > 0">
+				<li ng-if="$ctrl.fieldname=='start_time'" ng-click="$ctrl.setTime($ctrl.scene().start_time)">
+					<a>Beginning of layout ({{$ctrl.format($ctrl.scene().start_time)}})</a>
+				</li>
+				<li ng-if="$ctrl.fieldname=='end_time'" ng-click="$ctrl.setTime($ctrl.scene().end_time)">
+					<a>End of layout ({{$ctrl.format($ctrl.scene().end_time)}})</a>
+				</li>
+				<li ng-if="$ctrl.fieldname=='end_time' && $ctrl.isTranscript()" ng-click="TODO">
+					<a>Auto (TODO)</a>
+				</li>
+			</span>
+		</ul>
+	</div>
+</span>
 
-      var _existy = ittUtils.existy;
+`;
 
-      angular.extend(scope, {
-        fieldname: angular.copy(attrs.inputField), // start_time or end_time
-        realValue: angular.copy(scope.item[attrs.inputField]), // internal representation of the selected time.  Don't parse or format this, it causes rounding errors,
-        playbackService: playbackService,
-        model: format(angular.copy(scope.item[attrs.inputField])), // user input
-        appState: appState,
-        parse: parse,
-        format: format,
-        nudge: nudge,
-        setTime: setTime,
-        showTools: showTools,
-        isTranscript: isTranscript
-      });
+const validateStartTime = (t: number) => {
+  return (existy(t) && t > 0.1);
+};
 
-      onInit();
+interface IInputTimeBindings extends ng.IComponentController {
+  item: IEvent;
+  onFieldChange: () => void;
+}
 
-      function onInit() {
-        if (scope.item._type === 'Scene') {
-          scope.scene = function () {
-            return scope.item;
-          };
-        } else {
-          scope.scene = function () {
-            return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, playbackService.getMetaProp('time'));
-          };
-        }
-      }
+class InputTimeController implements IInputTimeBindings {
+  item: IEvent;
+  onFieldChange: () => void;
+  //
+  fieldname: string;
+  realValue: any;
+  model: any;
+  ngForm: ng.IFormController;
+  scene: any;
+  tooltipHider: any;
+  episodeDuration: number;
+  tooltip: boolean;
+  static $inject = [
+    '$attrs',
+    '$rootScope',
+    '$timeout',
+    'appState',
+    'modelSvc',
+    'timelineSvc',
+    'playbackService',
+    'ittUtils'
+  ];
 
-      // Watch for user input, send it to item if different
-      scope.$watch(watchModel, handleUpdates);
+  constructor(
+    private $attrs,
+    private $rootScope: ng.IRootScopeService,
+    private $timeout: ng.ITimeoutService,
+    private appState,
+    private modelSvc: IModelSvc,
+    private timelineSvc,
+    private playbackService) {
+  }
 
-      function watchModel() {
-        return parse(scope.model);
-      }
-
-      function handleUpdates(parsedTime, old) {
-
-        setTime(parsedTime);
-
-        // Stop questions should always have the same start + end
-        if (attrs.inputField === 'start_time' && scope.item.stop) {
-          scope.item.end_time = parsedTime;
-        }
-
-        if (parsedTime !== old) {
-          console.log('hmmm');
-          scope.onFieldChange();
-        }
-      }
-
-      function handelValidation(t) {
-        scope.item.validationMessage = null;
-        ngForm.time.$setValidity('time', true);
-
-        //these validations are specific to scenes.
-        if (scope.item._type !== 'Scene') {
-          return true;
-        }
-
-        var isValidInput = false;
-        var validStartTime = validateStartTime(t);
-        var isOnExistingScene = validateSceneStartTime(t);
-
-        isValidInput = validStartTime && isOnExistingScene;
-
-        if (!isValidInput) {
-          if (ngForm) {
-            ngForm.time.$setValidity('time', false);
-            ngForm.time.$setViewValue(format(t));
-            ngForm.time.$render();
-
-
-            if (!isOnExistingScene) {
-              scope.item.validationMessage = 'Scenes cannot share the same start time.';
-            }
-
-            if (!validStartTime) {
-              scope.item.validationMessage = 'For a start time <=0:00.1, please edit the first layout';
-            }
-
-          }
-        }
-
-        return isValidInput;
-      }
-
-      function validateSceneStartTime(t) {
-        var isOnSameStartTime;
-        var isValid = true;
-        //don't check the current scene
-        if (scope.item.start_time !== t) {
-          isOnSameStartTime = modelSvc.isOnExistingSceneStart(t);
-          isValid = !isOnSameStartTime;
-        }
-
-        return isValid;
-      }
-
-      function validateStartTime(t) {
-        return (_existy(t) && t > 0.1);
-      }
-
-      function setTime(t) { // pass in parsed values only!
-
-        if (handelValidation(t) === false) {
-          return;
-        }
-
-        if (t > episodeDuration) {
-          t = episodeDuration;
-        }
-        if (scope.item.stop) {
-          scope.item.end_time = t;
-        }
-        scope.realValue = t;
-        scope.item[attrs.inputField] = scope.realValue;
-        scope.model = scope.format(t);
-        scope.item.invalid_end_time = (scope.item.start_time > scope.item.end_time);
-      }
-
-      function parse(data) {
-        // console.log("Converting view ", data, " to model");
-        var ret;
-        if (data === undefined || data === '') {
-          ret = playbackService.getMetaProp('time');
-        } else if (isNaN(data)) {
-          var mss = data.split(':');
-          if (mss.length === 2) {
-            if (isNaN(mss[0])) {
-              mss[0] = 0;
-            }
-            if (isNaN(mss[1])) {
-              mss[1] = 0;
-            }
-            ret = (Number(mss[0]) * 60 + Number(mss[1]));
-          } else {
-            ret = playbackService.getMetaProp('time');
-          }
-        } else {
-          ret = data;
-        }
-        // HACK First scene is bumped a bit after the landing screen...
-        if (ret < 0.01) {
-          ret = 0.01;
-        }
-        $rootScope.$emit('searchReindexNeeded'); // HACK
-        return ret;
-      }
-
-      function format(data) {
-        // convert model value to view value
-        // in a way which is not completely borken, for a change
-        // srsly how was that even working before
-        var mins = Math.floor(data / 60);
-        var secs = Math.round((data % 60) * 100) / 100;
-        if (secs < 10) {
-          secs = "0" + secs;
-        }
-        return mins + ":" + secs;
-      }
-
-      // console.log("initing inputTime: ", scope.realValue, scope.model);
-      // TODO this will break in multi-episode timelines
-      var episodeDuration = modelSvc.episodes[scope.item.cur_episode_id].masterAsset.duration;
-
-      function nudge(amt) {
-        // keep the tooltip panel open:
-        $timeout.cancel(tooltipHider);
-        elem.find('.inputfield').focus();
-
-        // This ends up triggering setTime twice (it changes scope.model, which triggers the $watch)  Oh Well
-        var diff = amt / 30; // pretend 1 frame is always 1/30s for now
-        setTime(scope.item[attrs.inputField] + diff);
-        if (attrs.inputField === 'start_time') {
-          timelineSvc.seek(scope.item[attrs.inputField] + diff);
-        }
-      }
-
-      var tooltipHider;
-
-      function showTools(x) {
-        if (x) {
-          scope.tooltip = true;
-        } else {
-          // allow time for clicks before we unload the thing being clicked on:
-          tooltipHider = $timeout(function () {
-            scope.tooltip = false;
-          }, 300);
-        }
-      }
-
-      function isTranscript() {
-        // TODO
-        return false;
-      }
-
+  $onInit() {
+    if (this.item instanceof IScene) {
+      this.scene = () =>  {
+        return this.item;
+      };
+    } else {
+      this.scene = () => {
+        return this.modelSvc.sceneAtEpisodeTime(this.item.cur_episode_id, this.playbackService.getMetaProp('time'));
+      };
     }
+    this.fieldname = angular.copy(this.$attrs.inputField);
+    this.realValue = angular.copy(this.item[this.$attrs.inputField]);
+    this.model = this.format(angular.copy(this.item[this.$attrs.inputField]));
+    this.episodeDuration = this.modelSvc.episodes[this.item.cur_episode_id].masterAsset.duration;
+  }
+
+  parse(data: any) {
+    // console.log("Converting view ", data, " to model");
+    let ret;
+    if (data === undefined || data === '') {
+      ret = this.playbackService.getMetaProp('time');
+    } else if (isNaN(data)) {
+      const mss = data.split(':');
+      if (mss.length === 2) {
+        if (isNaN(mss[0])) {
+          mss[0] = 0;
+        }
+        if (isNaN(mss[1])) {
+          mss[1] = 0;
+        }
+        ret = (Number(mss[0]) * 60 + Number(mss[1]));
+      } else {
+        ret = this.playbackService.getMetaProp('time');
+      }
+    } else {
+      ret = data;
+    }
+    // HACK First scene is bumped a bit after the landing screen...
+    if (ret < 0.01) {
+      ret = 0.01;
+    }
+    this.$rootScope.$emit('searchReindexNeeded'); // HACK
+    return ret;
+  }
+
+  format(data) {
+    // convert model value to view value
+    // in a way which is not completely borken, for a change
+    // srsly how was that even working before
+    const mins = Math.floor(data / 60);
+    let secs = Math.round((data % 60) * 100) / 100;
+    if (secs < 10) {
+      secs = '0' + secs;
+    }
+    return mins + ':' + secs;
+  }
+
+  nudge(amt: any) {
+    // keep the tooltip panel open:
+    this.$timeout.cancel(this.tooltipHider);
+    // elem.find('.inputfield').focus();
+
+    // This ends up triggering setTime twice (it changes scope.model, which triggers the $watch)  Oh Well
+    const diff = amt / 30; // pretend 1 frame is always 1/30s for now
+    this.setTime(this.item[this.$attrs.inputField] + diff);
+    if (this.$attrs.inputField === 'start_time') {
+      this.timelineSvc.seek(this.item[this.$attrs.inputField] + diff);
+    }
+  }
+
+  setTime(t: number) { // pass in parsed values only!
+
+    if (this.handelValidation(t) === false) {
+      return;
+    }
+
+    if (t > this.episodeDuration) {
+      t = this.episodeDuration;
+    }
+    if (this.item.stop) {
+      this.item.end_time = t;
+    }
+    this.realValue = t;
+    this.item[this.$attrs.inputField] = this.realValue;
+    this.model = this.format(t);
+    this.item.invalid_end_time = (this.item.start_time > this.item.end_time);
+  }
+
+  showTools(x: any) {
+    if (x) {
+      this.tooltip = true;
+    } else {
+      // allow time for clicks before we unload the thing being clicked on:
+      this.tooltipHider = this.$timeout(
+        () => {
+          this.tooltip = false;
+        },
+        300
+      );
+    }
+  }
+
+  isTranscript() {
+    // TODO
+    return false;
+  }
+
+  private handleUpdates() {
+    const parsedTime = this.parse(this.model);
+    this.setTime(parsedTime);
+
+    // Stop questions should always have the same start + end
+    if (this.$attrs.inputField === 'start_time' && this.item.stop) {
+      this.item.end_time = parsedTime;
+    }
+
+    this.onFieldChange();
+  }
+
+  private handelValidation(t: number) {
+    this.item.validationMessage = null;
+    this.ngForm.time.$setValidity('time', true);
+
+    //these validations are specific to scenes.
+    if (this.item._type !== 'Scene') {
+      return true;
+    }
+
+    let isValidInput = false;
+    const validStartTime = validateStartTime(t);
+    const isOnExistingScene = this.validateSceneStartTime(t);
+
+    isValidInput = validStartTime && isOnExistingScene;
+
+    if (!isValidInput) {
+      if (this.ngForm) {
+        this.ngForm.time.$setValidity('time', false);
+        this.ngForm.time.$setViewValue(this.format(t));
+        this.ngForm.time.$render();
+
+
+        if (!isOnExistingScene) {
+          this.item.validationMessage = 'Scenes cannot share the same start time.';
+        }
+
+        if (!validStartTime) {
+          this.item.validationMessage = 'For a start time <=0:00.1, please edit the first layout';
+        }
+
+      }
+    }
+
+    return isValidInput;
+  }
+
+  private validateSceneStartTime(t: number) {
+    let isOnSameStartTime;
+    let isValid = true;
+    //don't check the current scene
+    if (this.item.start_time !== t) {
+      isOnSameStartTime = this.modelSvc.isOnExistingSceneStart(t);
+      isValid = !isOnSameStartTime;
+    }
+
+    return isValid;
+  }
+}
+
+interface IComponentBindings {
+  [binding: string]: '<' | '<?' | '&' | '&?' | '@' | '@?' | '=' | '=?';
+}
+
+export class InputTime implements ng.IComponentOptions {
+  require = {
+    ngForm: '?^^form'
   };
+  bindings: IComponentBindings = {
+    item: '<',
+    onFieldChange: '&'
+  };
+  template: string = TEMPLATE;
+  controller = InputTimeController;
+  static Name: string = 'npInputTime'; // tslint:disable-line
 }

@@ -34,8 +34,8 @@ import { SxsImageFieldTemplate } from './templates/sxs-image/sxs-image-field.tem
 import { SxsLinkFieldTemplate } from './templates/sxs-link/sxs-link-field.template';
 import { SxsQuestionFieldTemplate } from './templates/sxs-question/sxs-question-field.template';
 import { SxsVideoFieldTemplate } from './templates/sxs-video/sxs-video-field.template';
-import sxsInputI18n, { InputI18n } from './components/input-i18n/sxsInputI18n';
-import sxsInputTime from './components/input-time/sxsInputTime';
+import { InputI18n } from './components/input-i18n/sxsInputI18n';
+import { InputTime } from './components/input-time/sxsInputTime';
 import { UploadMasterassetTemplate } from './templates/upload-masterasset/upload-masterasset.template';
 import { UploadPosterTemplate } from './templates/upload-poster/upload-poster.template';
 import { UploadProducerTemplate } from './templates/upload-producer/upload-producer.template';
@@ -108,9 +108,8 @@ npInputFieldsModule
   .component(TypographySelect.Name, new TypographySelect())
   .component(UploadTranscripts.Name, new UploadTranscripts())
   .directive('ittValidUrl', ittValidUrl)
-  .directive('sxsInputI18n', sxsInputI18n)
   .component(InputI18n.Name, new InputI18n())
-  .directive('sxsInputTime', sxsInputTime)
+  .component(InputTime.Name, new InputTime())
   .directive('sxsAddContent', sxsAddContent)
   .component(AnnotatorAutocomplete.Name, new AnnotatorAutocomplete())
   .component(VideoPositionSelect.Name, new VideoPositionSelect())
