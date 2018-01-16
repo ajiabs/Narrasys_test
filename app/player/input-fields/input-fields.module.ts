@@ -26,7 +26,7 @@ import { ValidPathSlug } from './directives/ittValidPathslug';
 import ittValidUrl, { ValidUrl } from './directives/ittValidUrl';
 import { VideoPositionSelect } from './components/ittVideoPositionSelect';
 import { UrlField } from './components/npUrlField';
-import sxsAddContent from './components/add-content/sxsAddContent';
+import { AddContent } from './components/add-content/sxsAddContent';
 import { AnnotatorAutocomplete } from './components/annotator-autocomplete/sxsAnnotatorAutocomplete';
 import { SxsAnnotationFieldTemplate } from './templates/sxs-annotation/sxs-annotation-field.template';
 import { SxsFileFieldTemplate } from './templates/sxs-file/sxs-file-field.template';
@@ -110,7 +110,7 @@ npInputFieldsModule
   .directive('ittValidUrl', ittValidUrl)
   .component(InputI18n.Name, new InputI18n())
   .component(InputTime.Name, new InputTime())
-  .directive('sxsAddContent', sxsAddContent)
+  .component(AddContent.Name, new AddContent())
   .component(AnnotatorAutocomplete.Name, new AnnotatorAutocomplete())
   .component(VideoPositionSelect.Name, new VideoPositionSelect())
   .component(UrlField.Name, new UrlField())

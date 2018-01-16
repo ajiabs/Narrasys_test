@@ -38,7 +38,14 @@
 		<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()"></div>
 	</div>
 
-	<div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
+	<np-add-content
+    class="animate transitionFade"
+    item="appState.editEvent"
+    ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')"
+    ng-mouseenter="showControls();"
+    ng-click="showControls();"
+    ng-focus="showControls()">
+  </np-add-content>
 
 	<div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
 		<img src="/images/autoscroll.svg" width="32" height="32">
