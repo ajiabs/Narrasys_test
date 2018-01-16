@@ -121,8 +121,8 @@ class ItemEditorController implements IItemEditorBindings {
     this.timelineSvc.pause();
     this.timelineSvc.seek(this.item.start_time);
     this.uploadStatus = [];
-    this.annotators = angular.copy(this.item);
     const ep = this.modelSvc.episodes[this.appState.episodeId];
+    this.annotators = ep.annotators;
     this.episodeContainerId = ep.container_id;
     this.languages = ep.languages;
     this.itemForm = this.selectService.setupItemForm(this.item.styles, 'item');

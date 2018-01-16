@@ -61,7 +61,7 @@
               <!--time, speaker, transcript-->
               <!--<itt-time-field></itt-time-field>-->
               <np-time-field data="$ctrl.item" item-form="ittItemForm" on-update="$ctrl.deriveEvent(true)"></np-time-field>
-              <np-speaker-field data="$ctrl.item"></np-speaker-field>
+              <np-speaker-field data="$ctrl.item" annotators="$ctrl.annotators"></np-speaker-field>
               <np-transcript-field data="$ctrl.item" itt-item-form="ittItemForm" on-update="$ctrl.deriveEvent()"></np-transcript-field>
               <itt-speaker-thumb-field></itt-speaker-thumb-field>
             </div>
@@ -72,7 +72,7 @@
               <np-title-field data="$ctrl.item" on-update="$ctrl.deriveEvent()"></np-title-field>
               <np-annotation-field data="$ctrl.item" on-update="$ctrl.deriveEvent()" itt-item-form="ittItemForm"></np-annotation-field>
               <np-template-select data="$ctrl.item" item-form="itemForm"></np-template-select>
-              <np-speaker-field data="$ctrl.item"></np-speaker-field>
+              <np-speaker-field data="$ctrl.item" annotators="$ctrl.annotators"></np-speaker-field>
               <np-flags
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"

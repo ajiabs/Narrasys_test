@@ -14,7 +14,7 @@ const TEMPLATE = `
     <np-annotator-autocomplete
     	ng-model="$ctrl.data.annotator"
     	ng-change="$ctrl.onUpdate()"
-    	item="$ctrl.item"
+    	item="$ctrl.data"
       annotators="$ctrl.annotators">
     </np-annotator-autocomplete>
 	</div>
@@ -23,11 +23,13 @@ const TEMPLATE = `
 
 interface ISpeakerFieldBindings extends IProducerInputFieldController {
   data: IEvent;
+  annotators: any;
   onUpdate: () => void;
 }
 
 class SpeakerFieldController implements ISpeakerFieldBindings {
   data: IEvent;
+  annotators: any;
   onUpdate: () => void;
   static $inject = ['selectService', 'appState'];
 
@@ -51,6 +53,7 @@ interface IComponentBindings {
 export class SpeakerField implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     data: '<',
+    annotators: '<',
     onUpdate: '&'
   };
   template: string = TEMPLATE;
