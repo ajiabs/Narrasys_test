@@ -111,8 +111,13 @@ export class IEpisode {
   template?: IEpisodeTemplate;
   title: ILangForm;
   updated_at: Date;
+  private _producerItemType = 'episode';
   get producerItemType(): string {
-    return 'episode';
+    return this._producerItemType;
+  }
+
+  set producerItemType(itemType: string) {
+    this._producerItemType = itemType;
   }
 
   setCurrentScene(scene: IScene): void {
@@ -330,11 +335,15 @@ export class ILink extends IEvent {
   url_status?: ILinkStatus;
   isVideoUrl: boolean;
   mixedContent?: boolean;
+  component_name?: TLinkItemNames;
+  private _producerItemType = 'link';
   get producerItemType() {
-    return 'link';
+    return this._producerItemType;
   }
 
-  component_name?: TLinkItemNames;
+  set producerItemType(itemType: string) {
+    this._producerItemType = itemType;
+  }
 }
 
 export class IAnnotation extends IEvent {
@@ -346,14 +355,13 @@ export class IAnnotation extends IEvent {
   //belongs_to annotation image;
   annotation_image_id: string;
   component_name?: TAnnotationItemNames;
-
+  private _producerItemType: 'transcript' | 'annotation';
   get producerItemType() {
-    if (this.component_name) {
-      if (this.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
-        return 'transcript';
-      }
-      return 'annotation';
-    }
+    return this._producerItemType;
+  }
+
+  set producerItemType(producerItemType: 'transcript' | 'annotation') {
+    this._producerItemType = producerItemType;
   }
 }
 
@@ -365,8 +373,13 @@ export class IBookmark extends IEvent {
 export class IChapter extends IEvent {
   type: 'Chapter';
   _type: 'Chapter';
-  get producerItemType() {
-    return 'chapter';
+  private _producerItemType: 'chapter' = 'chapter';
+  get producerItemType(): 'chapter' {
+    return this._producerItemType;
+  }
+
+  set producerItemType(producerItemType: 'chapter') {
+    this._producerItemType = producerItemType;
   }
 }
 
@@ -393,10 +406,13 @@ export class IPlugin extends IEvent {
     _version: number
     _plugin: IPluginData;
   };
+  private _producerItemType: string;
   get producerItemType() {
-    if (this.component_name && /question/.test(this.component_name)) {
-      return 'question';
-    }
+    return this._producerItemType;
+  }
+
+  set producerItemType(val: string) {
+    this._producerItemType = val;
   }
 }
 
@@ -407,8 +423,13 @@ export class IScene extends IEvent {
   cur_episode_id: string;
   scene_id: string;
   component_name?: TLayoutNames;
+  private _producerItemType: 'scene' = 'scene';
   get producerItemType() {
-    return 'scene';
+    return this._producerItemType;
+  }
+
+  set producerItemType(val: 'scene') {
+    this._producerItemType = val;
   }
 }
 
@@ -422,13 +443,13 @@ export class IUpload extends IEvent {
   _type: 'Upload';
   asset_id: string;
   component_name?: TFileItemNames;
+  private _producerItemType: 'file' | 'image';
   get producerItemType() {
-    if (this.component_name) {
-      if (this.component_name === EventTemplates.FILE_TEMPLATE) {
-        return 'file';
-      }
-      return 'image';
-    }
+    return this._producerItemType;
+  }
+
+  set producerItemType(val: 'file' | 'image') {
+    this._producerItemType = val;
   }
 }
 
