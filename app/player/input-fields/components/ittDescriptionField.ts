@@ -22,13 +22,13 @@ const TEMPLATE = `
 interface IDescriptionFieldBindings extends ng.IComponentController {
   data: IEpisode | IEvent;
   modelOpts: ng.INgModelOptions;
-  onFieldChange: () => void;
+  onUpdate: () => void;
 }
 
 class DescriptionFieldController implements IDescriptionFieldBindings {
   data: IEpisode | IEvent;
   modelOpts: ng.INgModelOptions;
-  onFieldChange: () => void;
+  onUpdate: () => void;
   static $inject = ['appState'];
 
   constructor(public appState) {
@@ -54,34 +54,9 @@ export class DescriptionField implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     data: '<',
     modelOpts: '<?',
-    onFieldChange: '&?'
+    onUpdate: '&?'
   };
   template: string = TEMPLATE;
   controller = DescriptionFieldController;
   static Name: string = 'npDescriptionField'; // tslint:disable-line
-}
-
-export default function ittDescriptionField() {
-  return {
-    restrict: 'EA',
-    scope: {
-      data: '=',
-      modelOpts: '=?'
-    },
-    template: [
-      '<div class="field">',
-      '	<div class="label">Description [{{descriptionField.lang}}]</div>',
-      '	<div class="input" ng-model-options="descriptionField.modelOpts" sxs-input-i18n="descriptionField.data.description" x-inputtype="\'textarea\'"></div>',
-      '</div>'
-    ].join(' '),
-    controller: ['appState', 'ittUtils', function (appState, ittUtils) {
-      var ctrl = this;
-      ctrl.lang = appState.lang;
-      if (!ittUtils.existy(ctrl.modelOpts)) {
-        ctrl.modelOpts = {updateOn: 'default'};
-      }
-    }],
-    controllerAs: 'descriptionField',
-    bindToController: true
-  };
 }

@@ -1,29 +1,29 @@
-import autofocus, { Autofocus } from './directives/autofocus';
-import ittAnnotationField, { AnnotationField } from './components/ittAnnotationField';
-import ittColorSelect, { ColorSelect } from './components/ittColorSelect';
-import ittDescriptionField, { DescriptionField } from './components/ittDescriptionField';
-import ittDisplaySelect from './components/ittDisplaySelect';
+import { Autofocus } from './directives/autofocus';
+import { AnnotationField } from './components/ittAnnotationField';
+import { ColorSelect } from './components/ittColorSelect';
+import { DescriptionField } from './components/ittDescriptionField';
+import { DisplaySelect } from './components/ittDisplaySelect';
 import { DynamicModel } from './directives/ittDynamicModel';
 import { FileField } from './components/ittFileField';
 import { Flags } from './components/ittFlags';
-import ittHighlightSelect, { HighlightSelect } from './components/ittHighlightSelect';
-import ittImageField, { ImageField } from './components/ittImageField';
-import  { LanguageFlags } from './components/ittLanguageFlags';
-import ittLanguageSelect, { LanguageSelect }  from './components/ittLanguageSelect';
-import ittSpeakerField, { SpeakerField } from './components/ittSpeakerField';
-import ittSpeakerThumbField from './components/ittSpeakerThumbField';
+import { HighlightSelect } from './components/ittHighlightSelect';
+import { ImageField } from './components/ittImageField';
+import { LanguageFlags } from './components/ittLanguageFlags';
+import { LanguageSelect }  from './components/ittLanguageSelect';
+import { SpeakerField } from './components/ittSpeakerField';
+import { SpeakerThumbField } from './components/ittSpeakerThumbField';
 import { TemplateSelect } from './components/ittTemplateSelect';
-import ittTimeField, { TimeField } from './components/ittTimeField';
-import ittTimestampSelect, { TimestampSelect } from './components/ittTimestampSelect';
-import ittTitleField, { TitleField } from './components/ittTitleField';
-import ittTranscriptField, { TranscriptField } from './components/ittTranscriptField';
-import ittTransitionSelect, { TransitionSelect } from './components/ittTransitionSelect';
-import ittTypographySelect, { TypographySelect } from './components/ittTypographySelect';
+import { TimeField } from './components/ittTimeField';
+import { TimestampSelect } from './components/ittTimestampSelect';
+import { TitleField } from './components/ittTitleField';
+import { TranscriptField } from './components/ittTranscriptField';
+import { TransitionSelect } from './components/ittTransitionSelect';
+import { TypographySelect } from './components/ittTypographySelect';
 import { UploadTranscripts } from './components/ittUploadTranscriptsField';
 import { ValidAsset } from './directives/ittValidAsset';
 import { ValidEpisodeUrl } from './directives/ittValidEpisodeUrl';
 import { ValidPathSlug } from './directives/ittValidPathslug';
-import ittValidUrl, { ValidUrl } from './directives/ittValidUrl';
+import { ValidUrl } from './directives/ittValidUrl';
 import { VideoPositionSelect } from './components/ittVideoPositionSelect';
 import { UrlField } from './components/npUrlField';
 import { AddContent } from './components/add-content/sxsAddContent';
@@ -73,41 +73,25 @@ export interface IProducerInputFieldController extends ng.IComponentController {
 }
 
 npInputFieldsModule
-  .directive('autofocus', autofocus)
-  .directive('ittAnnotationField', ittAnnotationField)
   .component(AnnotationField.Name, new AnnotationField)
-  .directive('ittColorSelect', ittColorSelect)
   .component(ColorSelect.Name, new ColorSelect())
-  .directive('ittDescriptionField', ittDescriptionField)
   .component(DescriptionField.Name, new DescriptionField())
-  .directive('ittDisplaySelect',ittDisplaySelect)
+  .component(DisplaySelect.Name, new DisplaySelect())
   .component(FileField.Name, new FileField())
   .component(Flags.Name, new Flags())
-  .directive('ittHighlightSelect', ittHighlightSelect)
   .component(HighlightSelect.Name, new HighlightSelect())
-  .directive('ittImageField', ittImageField)
   .component(ImageField.Name, new ImageField())
-  // .directive('ittLanguageFlags', ittLanguageFlags)
-  .directive('ittLanguageSelect', ittLanguageSelect)
   .component(LanguageSelect.Name, new LanguageSelect())
-  .directive('ittSpeakerField', ittSpeakerField)
   .component(SpeakerField.Name, new SpeakerField())
-  .directive('ittSpeakerThumbField', ittSpeakerThumbField)
+  .component(SpeakerThumbField.Name, new SpeakerThumbField())
   .component(TemplateSelect.Name, new TemplateSelect())
-  .directive('ittTimeField', ittTimeField)
   .component(TimeField.Name, new TimeField())
-  .directive('ittTimestampSelect', ittTimestampSelect)
   .component(TimestampSelect.Name, new TimestampSelect())
-  .directive('ittTitleField', ittTitleField)
   .component(TitleField.Name, new TitleField())
-  .directive('ittTranscriptField', ittTranscriptField)
   .component(TranscriptField.Name, new TranscriptField())
-  .directive('ittTransitionSelect', ittTransitionSelect)
   .component(TransitionSelect.Name, new TransitionSelect())
-  .directive('ittTypographySelect', ittTypographySelect)
   .component(TypographySelect.Name, new TypographySelect())
   .component(UploadTranscripts.Name, new UploadTranscripts())
-  .directive('ittValidUrl', ittValidUrl)
   .component(InputI18n.Name, new InputI18n())
   .component(InputTime.Name, new InputTime())
   .component(AddContent.Name, new AddContent())

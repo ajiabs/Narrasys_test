@@ -36,23 +36,3 @@ export class ColorSelect implements ng.IComponentOptions {
   template: string = TEMPLATE;
   static Name: string = 'npColorSelect'; // tslint:disable-line
 }
-
-export default function ittColorSelect() {
-  return {
-    restrict: 'EA',
-    template: [
-      '<div class="field">',
-      '	<div class="label">Color</div>',
-      '	<div class="input">',
-      '		<select size="1" ng-model="itemForm.color">',
-      '			<option value="">(Default)</option>',
-      '			<option value="Invert">Invert</option>',
-      '			<option value="Sepia">Sepia</option>',
-      '			<option value="Solarized">Solarized</option>',
-      '			<option value="Vivid">Vivid</option>',
-      '		</select>',
-      '	</div>',
-      '</div>'
-    ].join(' ')
-  };
-}

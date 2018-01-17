@@ -28,18 +28,3 @@ export class ValidUrl implements ng.IDirective {
     }
   }
 }
-
-ittValidUrl.$inject = ['ittUtils'];
-
-export default function ittValidUrl(ittUtils) {
-  return {
-    require: '?ngModel',
-    link: function (scope, elm, attr, ngModel) {
-      if (ngModel) {
-        ngModel.$validators.supportUrl = function (modelVal) {
-          return ngModel.$isEmpty(modelVal) || ittUtils.isValidURL(modelVal);
-        };
-      }
-    }
-  };
-}

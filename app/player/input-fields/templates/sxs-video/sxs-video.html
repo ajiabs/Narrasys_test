@@ -1,4 +1,10 @@
 <span class="eventIcon icon-video"></span>
 <np-url-field data="item" label="Video url" context="editor-video" itt-item-form="ittItemForm"></np-url-field>
-<itt-title-field do-validate="false" data="item" itt-item-form="ittItemForm"></itt-title-field>
-<itt-description-field data="item"></itt-description-field>
+<np-title-field
+  data="$ctrl.item"
+  on-update="$ctrl.deriveEvent()">
+</np-title-field>
+<np-description-field
+  on-upate="$ctrl.deriveEvent()"
+  data="item">
+</np-description-field>

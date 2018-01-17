@@ -13,11 +13,11 @@ const TEMPLATE = `
 </div>
 `;
 
-interface ISpeakerFieldBindings extends IProducerInputFieldController {
+interface ISpeakerThumbFieldBindings extends IProducerInputFieldController {
   data: IEvent;
 }
 
-class SpeakerFieldController implements ISpeakerFieldBindings {
+class SpeakerThumbFieldController implements ISpeakerThumbFieldBindings {
   data: IEvent;
   static $inject = [];
 
@@ -34,21 +34,9 @@ interface IComponentBindings {
   [binding: string]: '<' | '<?' | '&' | '&?' | '@' | '@?' | '=' | '=?';
 }
 
-export class SpeakerField implements ng.IComponentOptions {
+export class SpeakerThumbField implements ng.IComponentOptions {
   bindings: IComponentBindings = {};
   template: string = TEMPLATE;
-  controller = SpeakerFieldController;
-  static Name: string = 'npSpeakerField'; // tslint:disable-line
-}
-
-export default function ittSpeakerThumbField() {
-  return {
-    restrict: 'EA',
-    template: [
-      '<div class="field">',
-      '	<div class="label">Speaker thumbnail</div>',
-      '	<div class="input" np-upload-producer-template></div>',
-      '</div>'
-    ].join(' ')
-  };
+  controller = SpeakerThumbFieldController;
+  static Name: string = 'npSpeakerThumbField'; // tslint:disable-line
 }

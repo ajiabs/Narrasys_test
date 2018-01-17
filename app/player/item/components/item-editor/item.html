@@ -2,7 +2,6 @@
   <form name="ittItemForm" class="doValidate">
     <div ng-if="$ctrl.appState.product == 'sxs'" class="authoringFormScrollContainer">
       <!-- begin sxs -->
-      <!--<itt-time-field></itt-time-field>-->
       <np-time-field data="$ctrl.item" item-form="ittItemForm" on-time-change=""></np-time-field>
       <div np-dynamic-event-template component-name="{{$ctrl.sxsItemComponentFieldName}}"></div>
       <!-- end sxs -->
@@ -135,7 +134,6 @@
             <!--</div>-->
             <div ng-switch-when="file">
               <!--Time, Title, File, Description, Template, Flags-->
-              <!--<itt-time-field></itt-time-field>-->
               <np-time-field
                 data="$ctrl.item"
                 item-form="ittItemForm"
@@ -204,13 +202,11 @@
             <div ng-switch-when="question">
               <!--Time, Question type, Title, Question Text, Image, Answers, Feedback when correct, Feedback when incorrect-->
               <span class="eventIcon icon-question"></span>
-              <!--<itt-time-field></itt-time-field>-->
               <np-time-field
                 data="$ctrl.item"
                 item-form="ittItemForm" on-update="$ctrl.deriveEvent(true)">
               </np-time-field>
               <!--investigate log error regarding undefined input for itt-title-->
-              <!--<itt-title-field do-validate="true" data="$ctrl.item" itt-item-form="ittItemForm"></itt-title-field>-->
               <np-title-field
                 data="$ctrl.item"
                 do-validate="true"
@@ -236,7 +232,6 @@
             </div>
             <div ng-switch-when="chapter">
               <!--Time, Title, Description-->
-              <!--<itt-time-field></itt-time-field>-->
               <np-time-field
                 data="$ctrl.item"
                 item-form="ittItemForm"
@@ -288,11 +283,10 @@
             </div>
             <div ng-switch-when="scene">
               <!--time, template, position, display-->
-              <!--<itt-time-field></itt-time-field>-->
               <np-time-field data="$ctrl.item" item-form="ittItemForm" on-update="$ctrl.resolveEvents()"></np-time-field>
               <np-template-select data="$ctrl.item" item-form="itemForm"></np-template-select>
               <np-video-position-select data="$ctrl.item" on-update="$ctrl.resolveEvents()"></np-video-position-select>
-              <itt-display-select on-update="$ctrl.deriveEvent(true)" data="$ctrl.item"></itt-display-select>
+              <np-display-select on-update="$ctrl.deriveEvent(true)" data="$ctrl.item"></np-display-select>
             </div>
             <!--file hidden in style tab-->
             <!--<div ng-switch-when="file">-->
