@@ -42,6 +42,11 @@ import { UploadProducerTemplate } from './templates/upload-producer/upload-produ
 import { UploadSxsTemplate } from './templates/upload-sxs/upload-sxs.template';
 import { IEpisode, IEvent } from '../../models';
 
+export interface IProducerInputFieldController extends ng.IComponentController {
+  data: IEvent | IEpisode;
+  onUpdate?: () => void;
+}
+
 const npInputFieldsModule = angular.module('np.inputFields', []);
 
 const templates = [
@@ -63,41 +68,42 @@ const templates = [
   DynamicModel
 ];
 
+const components = [
+  Autofocus,
+  AnnotationField,
+  ColorSelect,
+  DescriptionField,
+  DisplaySelect,
+  FileField,
+  Flags,
+  HighlightSelect,
+  ImageField,
+  LanguageFlags,
+  LanguageSelect,
+  SpeakerField,
+  SpeakerThumbField,
+  TemplateSelect,
+  TimeField,
+  TimestampSelect,
+  TitleField,
+  TranscriptField,
+  TransitionSelect,
+  TypographySelect,
+  UploadTranscripts,
+  VideoPositionSelect,
+  UrlField,
+  AddContent,
+  AnnotatorAutocomplete,
+  InputI18n,
+  InputTime
+];
+
 templates.forEach((t: any) => {
   npInputFieldsModule.directive(t.Name, t.factory());
 });
 
-export interface IProducerInputFieldController extends ng.IComponentController {
-  data: IEvent | IEpisode;
-  onUpdate?: () => void;
-}
-
-npInputFieldsModule
-  .component(AnnotationField.Name, new AnnotationField)
-  .component(ColorSelect.Name, new ColorSelect())
-  .component(DescriptionField.Name, new DescriptionField())
-  .component(DisplaySelect.Name, new DisplaySelect())
-  .component(FileField.Name, new FileField())
-  .component(Flags.Name, new Flags())
-  .component(HighlightSelect.Name, new HighlightSelect())
-  .component(ImageField.Name, new ImageField())
-  .component(LanguageSelect.Name, new LanguageSelect())
-  .component(SpeakerField.Name, new SpeakerField())
-  .component(SpeakerThumbField.Name, new SpeakerThumbField())
-  .component(TemplateSelect.Name, new TemplateSelect())
-  .component(TimeField.Name, new TimeField())
-  .component(TimestampSelect.Name, new TimestampSelect())
-  .component(TitleField.Name, new TitleField())
-  .component(TranscriptField.Name, new TranscriptField())
-  .component(TransitionSelect.Name, new TransitionSelect())
-  .component(TypographySelect.Name, new TypographySelect())
-  .component(UploadTranscripts.Name, new UploadTranscripts())
-  .component(InputI18n.Name, new InputI18n())
-  .component(InputTime.Name, new InputTime())
-  .component(AddContent.Name, new AddContent())
-  .component(AnnotatorAutocomplete.Name, new AnnotatorAutocomplete())
-  .component(VideoPositionSelect.Name, new VideoPositionSelect())
-  .component(UrlField.Name, new UrlField())
-  .component(LanguageFlags.Name, new LanguageFlags());
+components.forEach((Component: any) => { //tslint:disable-line
+  npInputFieldsModule.component(Component.Name, new Component());
+});
 
 export default npInputFieldsModule;
