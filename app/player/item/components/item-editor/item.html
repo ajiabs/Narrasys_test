@@ -116,7 +116,7 @@
               </np-annotation-field>
               <np-template-select
                 data="$ctrl.item"
-                item-form="itemForm">
+                item-form="$ctrl.itemForm">
               </np-template-select>
               <np-speaker-field
                 data="$ctrl.item"
@@ -184,7 +184,7 @@
               </np-description-field>
               <np-template-select
                 data="$ctrl.item"
-                item-form="itemForm">
+                item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select
                 data="$ctrl.item"
@@ -284,7 +284,7 @@
             <div ng-switch-when="scene">
               <!--time, template, position, display-->
               <np-time-field data="$ctrl.item" item-form="ittItemForm" on-update="$ctrl.resolveEvents()"></np-time-field>
-              <np-template-select data="$ctrl.item" item-form="itemForm"></np-template-select>
+              <np-template-select data="$ctrl.item" item-form="$ctrl.itemForm"></np-template-select>
               <np-video-position-select data="$ctrl.item" on-update="$ctrl.resolveEvents()"></np-video-position-select>
               <np-display-select on-update="$ctrl.deriveEvent(true)" data="$ctrl.item"></np-display-select>
             </div>
@@ -298,7 +298,7 @@
               <!--Template, Display, Flags-->
               <np-template-select
                 data="$ctrl.item"
-                item-form="itemForm">
+                item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select
                 data="$ctrl.item"
@@ -406,6 +406,7 @@
                 item-form="$ctrl.itemForm"
                 on-update="$ctrl.deriveEvent(true)">
               </np-transition-select>
+            </div>
             <div ng-switch-when="scene">
               <!--typography, color, timestamp, highlight, transition-->
               <np-typography-select

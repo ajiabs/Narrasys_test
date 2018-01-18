@@ -144,7 +144,7 @@ class ItemEditorController implements IItemEditorBindings {
   }
 
   $onChanges(changes) {
-    // console.log('huh', changes);
+    console.log('huh', changes);
   }
 
   onItemFormUpdates() {
