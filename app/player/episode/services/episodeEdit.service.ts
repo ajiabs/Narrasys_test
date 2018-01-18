@@ -143,10 +143,10 @@ export interface IEpisodeEditService {
   episodeLangForm: ILangformFlags;
   canAccess: boolean;
   showAssetPicker: boolean;
-  episodeContainerId: boolean;
   showUploadButtons: boolean;
   showUploadField: boolean;
   mimes: any;
+  resetUploadView(): void;
   endChooseAsset(): void;
   replaceAsset(): void;
   detachAsset(): void;
@@ -179,7 +179,6 @@ export class EpisodeEditService implements IEpisodeEditService {
     'it': false
   };
   showAssetPicker: boolean;
-  episodeContainerId: boolean;
   showUploadButtons: boolean;
   showUploadField: boolean;
   mimes = MIMES;
@@ -212,6 +211,12 @@ export class EpisodeEditService implements IEpisodeEditService {
 
   get canAccess() {
     return this.userHasRole('admin') || this.authSvc.userHasRole('customer admin');
+  }
+
+  resetUploadView() {
+    this.showUploadButtons = true;
+    this.showUploadField = false;
+    this.showAssetPicker = false;
   }
 
   endChooseAsset() {
@@ -365,7 +370,6 @@ export class EpisodeEditService implements IEpisodeEditService {
   }
 
   cancelEpisodeEdit(originalEvent: IEpisode): void {
-    console.log('cancel edpisode edit?');
     this.modelSvc.episodes[this.appState.episodeId] = originalEvent;
 
     this.modelSvc.deriveEpisode(this.modelSvc.episodes[originalEvent._id]);
@@ -716,11 +720,14 @@ export class EpisodeEditService implements IEpisodeEditService {
       }
       angular.forEach(itemsToSave, (item) => {
         this.dataSvc.storeItem(item)
-          .then(() => {
-            console.log('updated transcript item', item);
-          }, (data) => {
-            console.error('FAILED TO STORE EVENT', data);
-          });
+          .then(
+            () => {
+              console.log('updated transcript item', item);
+            },
+            (data) => {
+              console.error('FAILED TO STORE EVENT', data);
+            }
+          );
       });
     }
   }
@@ -746,7 +753,7 @@ export class EpisodeEditService implements IEpisodeEditService {
     }
     scenes = scenes.sort(sortByStartTime);
 
-    for (var i = 1, len = scenes.length; i < len; i++) {
+    for (let i = 1, len = scenes.length; i < len; i += 1) {
       if (i === len - 1) {
         if (scenes[i].end_time !== duration) {
           scenes[i].end_time = duration;

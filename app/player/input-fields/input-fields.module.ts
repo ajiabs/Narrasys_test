@@ -4,14 +4,11 @@ import { ColorSelect } from './components/ittColorSelect';
 import { DescriptionField } from './components/ittDescriptionField';
 import { DisplaySelect } from './components/ittDisplaySelect';
 import { DynamicModel } from './directives/ittDynamicModel';
-import { FileField } from './components/ittFileField';
 import { Flags } from './components/ittFlags';
 import { HighlightSelect } from './components/ittHighlightSelect';
-import { ImageField } from './components/ittImageField';
 import { LanguageFlags } from './components/ittLanguageFlags';
 import { LanguageSelect }  from './components/ittLanguageSelect';
 import { SpeakerField } from './components/ittSpeakerField';
-import { SpeakerThumbField } from './components/ittSpeakerThumbField';
 import { TemplateSelect } from './components/ittTemplateSelect';
 import { TimeField } from './components/ittTimeField';
 import { TimestampSelect } from './components/ittTimestampSelect';
@@ -41,11 +38,13 @@ import { UploadPosterTemplate } from './templates/upload-poster/upload-poster.te
 import { UploadProducerTemplate } from './templates/upload-producer/upload-producer.template';
 import { UploadSxsTemplate } from './templates/upload-sxs/upload-sxs.template';
 import { IEpisode, IEvent } from '../../models';
+import { ProducerUploadField } from './components/producer-upload-field.component';
 
 export interface IProducerInputFieldController extends ng.IComponentController {
   data: IEvent | IEpisode;
   onUpdate?: () => void;
 }
+
 
 const npInputFieldsModule = angular.module('np.inputFields', []);
 
@@ -74,14 +73,11 @@ const components = [
   ColorSelect,
   DescriptionField,
   DisplaySelect,
-  FileField,
   Flags,
   HighlightSelect,
-  ImageField,
   LanguageFlags,
   LanguageSelect,
   SpeakerField,
-  SpeakerThumbField,
   TemplateSelect,
   TimeField,
   TimestampSelect,
@@ -95,7 +91,8 @@ const components = [
   AddContent,
   AnnotatorAutocomplete,
   InputI18n,
-  InputTime
+  InputTime,
+  ProducerUploadField
 ];
 
 templates.forEach((t: any) => {
