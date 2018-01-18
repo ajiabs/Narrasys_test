@@ -1,5 +1,13 @@
 // @npUpgrade-episode-true
-import { IDataSvc, IEpisodeTheme, IModelSvc, Partial, ITimelineSvc, TDataCacheItem, } from '../../../interfaces';
+import {
+  IDataSvc,
+  IEpisodeTheme,
+  IModelSvc,
+  Partial,
+  ITimelineSvc,
+  TDataCacheItem,
+  IItemForm
+} from '../../../interfaces';
 import { createInstance, IContainer, IEpisode, IEpisodeTemplate, IEvent, IScene } from '../../../models';
 import { EventTemplates, MIMES } from '../../../constants';
 
@@ -134,6 +142,16 @@ export interface ILangformFlags {
 export interface IEpisodeEditService {
   episodeLangForm: ILangformFlags;
   canAccess: boolean;
+  showAssetPicker: boolean;
+  episodeContainerId: boolean;
+  showUploadButtons: boolean;
+  showUploadField: boolean;
+  mimes: any;
+  endChooseAsset(): void;
+  replaceAsset(): void;
+  detachAsset(): void;
+  attachChosenAsset(assetId: string, itemForm: IItemForm): void;
+  assetUploaded(assetId: string): void;
   userHasRole(role: string): boolean;
   updateEpisodeTemplate(episode: IEpisode, templateId: string): ng.IPromise<IEpisode>;
   addEpisodeToContainer(newContainer: IContainer): ng.IPromise<IContainer>;
@@ -160,6 +178,11 @@ export class EpisodeEditService implements IEpisodeEditService {
     'de': false,
     'it': false
   };
+  showAssetPicker: boolean;
+  episodeContainerId: boolean;
+  showUploadButtons: boolean;
+  showUploadField: boolean;
+  mimes = MIMES;
   static Name = 'episodeEdit'; // tslint:disable-line
   static $inject = [
     '$timeout',
@@ -189,6 +212,92 @@ export class EpisodeEditService implements IEpisodeEditService {
 
   get canAccess() {
     return this.userHasRole('admin') || this.authSvc.userHasRole('customer admin');
+  }
+
+  endChooseAsset() {
+    this.showAssetPicker = false;
+  }
+
+  replaceAsset() {
+    console.log('replace asset!');
+    this.showUploadButtons = true;
+
+    if (this.appState.editEvent.sxs) { // we will delete assets atached to editor items, not from producer items
+      this.appState.editEvent.removedAssets = this.appState.editEvent.removedAssets || [];
+      // removedAsset will be used by editController on save to delete the old asset (if we're in editor)
+      if (this.appState.editEvent._type === 'Link') {
+        this.appState.editEvent.removedAssets.push(this.appState.editEvent.link_image_id);
+      } else if (this.appState.editEvent._type === 'Annotation') {
+        this.appState.editEvent.removedAssets.push(this.appState.editEvent.annotation_image_id);
+      } else {
+        this.appState.editEvent.removedAssets.push(this.appState.editEvent.asset_id);
+      }
+    }
+  }
+
+  detachAsset(): void {
+    // console.log(
+    // 	'item:', scope.item,
+    // 	'asset:', scope.item.asset,
+    // 	'link_image_id:', scope.item.link_image_id,
+    // 	'asset_id:', scope.item.asset_id,
+    // 	'annotation_image_id:', scope.item.annotation_image_id
+    // );
+    if (this.appState.editEvent.asset) {
+      switch (this.appState.editEvent.producerItemType) {
+        case 'link':
+          this.appState.editEvent.asset = null;
+          this.appState.editEvent.link_image_id = null;
+          this.appState.editEvent.asset_id = null;
+          this.appState.editEvent.annotation_image_id = null;
+          break;
+        case 'transcript':
+          this.appState.editEvent.asset = null;
+          this.appState.editEvent.annotation_image_id = null;
+          break;
+        case 'image':
+        case 'question':
+        case 'file':
+          this.appState.editEvent.asset = null;
+          this.appState.editEvent.asset_id = null;
+          break;
+      }
+    }
+  }
+
+  attachChosenAsset(asset_id: string, itemForm): void {
+    // console.log(scope.item);
+    const asset = this.modelSvc.assets[asset_id];
+    if (this.appState.editEvent) {
+      this.appState.editEvent.asset = asset;
+      this.selectService.onSelectChange(this.appState.editEvent, itemForm);
+      if (this.appState.editEvent._type === 'Upload' || this.appState.editEvent._type === 'Plugin') {
+        this.appState.editEvent.asset_id = asset_id;
+      } else if (this.appState.editEvent._type === 'Link') {
+        this.appState.editEvent.link_image_id = asset_id;
+        this.appState.editEvent.asset_id = asset_id;
+      } else if (this.appState.editEvent._type === 'Annotation') {
+        console.log('you are actually getting here!!');
+        this.appState.editEvent.asset_id = asset_id;
+        this.appState.editEvent.annotation_image_id = asset_id;
+      } else {
+        console.error('Tried to select asset for unknown item type', this.appState.editEvent);
+      }
+    }
+  }
+
+  assetUploaded(assetId: string) {
+    this.appState.editEvent.asset = this.modelSvc.assets[assetId];
+    // TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
+    if (this.appState.editEvent._type === 'Link') {
+      this.appState.editEvent.link_image_id = assetId;
+    } else if (this.appState.editEvent._type === 'Annotation') {
+      this.appState.editEvent.annotation_image_id = assetId;
+    } else {
+      this.appState.editEvent.asset_id = assetId;
+    }
+    this.showUploadButtons = false;
+    this.showUploadField = false;
   }
 
   userHasRole(role: string) {

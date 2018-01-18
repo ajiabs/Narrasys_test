@@ -1,11 +1,15 @@
 <!-- producer item assets-->
 
-<div ng-if="$ctrl.showAssetPicker" class="floatAssetPicker">
+<div ng-if="$ctrl.episodeEdit.showAssetPicker" class="floatAssetPicker">
 	<div class="scrollContainer">
-    <sxs-container-assets container-id="{{$ctrl.episodeContainerId}}" mime-key="{{$ctrl.data.producerItemType}}"></sxs-container-assets>
+    <sxs-container-assets
+      container-id="{{$ctrl.episodeContainerId}}"
+      on-asset-select="$ctrl.episodeEdit.attachChosenAsset($assetId, $ctrl.itemForm)"
+      mime-key="{{$ctrl.data.producerItemType}}">
+    </sxs-container-assets>
 	</div>
 	<div class="controlsContainer">
-		<button ng-click="$ctrl.endChooseAsset();">Cancel</button>
+		<button ng-click="$ctrl.episodeEdit.showAssetPicker = false;">Cancel</button>
 	</div>
 </div>
 
@@ -16,24 +20,28 @@
     name="itemAsset"
     np-valid-asset item="$ctrl.data" component-name="{{$ctrl.data.component_name}}">
   </ng-model>
-	<div ng-if="$ctrl.data.asset && !$ctrl.showUploadButtons">
+	<div ng-if="$ctrl.data.asset && !$ctrl.episodeEdit.showUploadButtons">
 		{{$ctrl.data.asset.display_name}}
-		<button class="button" ng-click="$ctrl.replaceAsset()">Replace</button>
-		<button class="button" ng-click="$ctrl.detachAsset(); $ctrl.selectService.onSelectChange($ctrl.data, itemForm)">Remove</button>
+		<button class="button" ng-click="$ctrl.episodeEdit.replaceAsset()">Replace</button>
+		<button
+      class="button"
+      ng-click="$ctrl.episodeEdit.detachAsset(); $ctrl.selectService.onSelectChange($ctrl.data, $ctrl.itemForm)">
+      Remove
+    </button>
 	</div>
-	<div ng-if="$ctrl.showUploadButtons || !$ctrl.data.asset">
-		<span ng-if="$ctrl.showUploadField">
+	<div ng-if="$ctrl.episodeEdit.showUploadButtons || !$ctrl.data.asset">
+		<span ng-if="$ctrl.episodeEdit.showUploadField">
 
 			<itt-asset-uploader
         container-id="{{$ctrl.episodeContainerId}}"
-        ng-if="$ctrl.canAccess"
-        callback="$ctrl.assetUploaded(data)"
-        mime-types="{{$ctrl.mimes}}">
+        ng-if="$ctrl.episodeEdit.canAccess"
+        callback="$ctrl.episodeEdit.assetUploaded(data)"
+        mime-types="{{$ctrl.episodeEdit.mimes['default']}}">
       </itt-asset-uploader>
 		</span>
-		<span ng-if="!$ctrl.showUploadField">
-			<button class="button" ng-click="$ctrl.chooseAsset()">Browse uploaded</button>
-			<button class="button" ng-click="$ctrl.toggleUpload()">Upload new</button>
+		<span ng-if="!$ctrl.episodeEdit.showUploadField">
+			<button class="button" ng-click="$ctrl.episodeEdit.showAssetPicker = true">Browse uploaded</button>
+			<button class="button" ng-click="$ctrl.episodeEdit.showUploadField = true">Upload new</button>
 		</span>
 	</div>
 </div>

@@ -1,5 +1,7 @@
 // @npUpgrade-inputFields-true
 import { IEvent } from '../../../models';
+import { IEpisodeEditService } from '../../../interfaces';
+import { IItemForm } from '../../services/select/selectService';
 
 /**
  * Created by githop on 6/30/16.
@@ -16,14 +18,18 @@ const TEMPLATE = `
 
 interface IImageFieldBindings extends ng.IComponentController {
   data: IEvent;
-  itemForm: ng.IFormController;
+  validationForm: ng.IFormController;
+  itemForm: IItemForm;
+  episodeContainerId: string;
 }
 
 class ImageFieldController implements IImageFieldBindings {
   data: IEvent;
-  itemForm: ng.IFormController;
-  static $inject = ['selectService'];
-  constructor(public selectService) {
+  validationForm: ng.IFormController;
+  itemForm: IItemForm;
+  episodeContainerId: string;
+  static $inject = ['selectService', 'episodeEdit', 'appState'];
+  constructor(public selectService, public episodeEdit: IEpisodeEditService, public appState) {
     //
   }
 
@@ -43,7 +49,9 @@ interface IComponentBindings {
 export class ImageField implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     data: '<',
-    itemForm: '<'
+    validationForm: '<',
+    itemForm: '<',
+    episodeContainerId: '@'
   };
   template: string = TEMPLATE;
   controller = ImageFieldController;

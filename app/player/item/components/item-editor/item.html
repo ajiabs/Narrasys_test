@@ -125,7 +125,7 @@
               <np-flags
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
-                item-form="itemForm"
+                item-form="$ctrl.itemForm"
                 flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
               </np-flags>
             </div>
@@ -157,7 +157,7 @@
               <np-flags
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
-                item-form="itemForm"
+                item-form="$ctrl.itemForm"
                 flags="['required', 'stop', 'cosmetic']">
               </np-flags>
             </div>
@@ -175,7 +175,9 @@
                 itt-item-form="ittItemForm">
               </np-title-field>
               <np-image-field
-                item-form="ittItemForm"
+                episode-container-id="{{$ctrl.episodeContainerId}}"
+                validation-form="ittItemForm"
+                item-form="$ctrl.itemForm"
                 data="$ctrl.item">
               </np-image-field>
               <np-description-field
@@ -189,13 +191,13 @@
               <np-display-select
                 data="$ctrl.item"
                 on-update="$ctrl.deriveEvent(true)"
-                item-form="itemForm">
+                item-form="$ctrl.itemForm">
               </np-display-select>
               <!--TODO reccommend moving orientation into layout tab-->
               <np-flags
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
-                item-form="itemForm"
+                item-form="$ctrl.itemForm"
                 flags="['required', 'stop', 'cosmetic']">
               </np-flags>
             </div>
@@ -303,12 +305,12 @@
               <np-display-select
                 data="$ctrl.item"
                 on-update="$ctrl.deriveEvent(true)"
-                item-form="itemForm">
+                item-form="$ctrl.itemForm">
               </np-display-select>
               <np-flags
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
-                item-form="itemForm"
+                item-form="$ctrl.itemForm"
                 flags="['required', 'stop', 'cosmetic']"></np-flags>
             </div>
             <div ng-switch-when="chapter">
