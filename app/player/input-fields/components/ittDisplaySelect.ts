@@ -1,7 +1,7 @@
 // @npUpgrade-inputFields-true
 import { EventTemplates } from '../../../constants';
 import { IEvent } from '../../../models';
-import { IItemForm, IModelSvc } from '../../../interfaces';
+import { IItemForm } from '../../../interfaces';
 
 const TEMPLATE = `
 <div class="field" ng-if="$ctrl.displayVisibility">
