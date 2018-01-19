@@ -1,5 +1,5 @@
 // @npUpgrade-question-true
-import { IEvent } from '../../../models';
+import { IEvent, IPlugin } from '../../../models';
 
 /**
  * Created by githop on 6/30/16.
@@ -17,6 +17,7 @@ const TEMPLATE = `
 	  class="input"
 	  do-validate="$ctrl.doValidate"
 	  on-emit-name="$ctrl.onName($taName)"
+	  on-field-change="$ctrl.emitUpdate($field)"
 	  field="$ctrl.data.data._plugin.questiontext"
 	  inputtype="textarea">
   </np-input-i18n>
@@ -24,29 +25,34 @@ const TEMPLATE = `
 `;
 
 interface IQuestionTextFieldBindings extends ng.IComponentController {
-  data: IEvent;
+  data: IPlugin;
   doValidate: boolean;
   itemForm: ng.IFormController;
+  onUpdate: () => void;
 }
 
 class QuestionTextFieldController implements IQuestionTextFieldBindings {
-  data: IEvent;
+  data: IPlugin;
   doValidate: boolean;
   itemForm: ng.IFormController;
+  onUpdate: () => void;
   //
   textAreaName: string;
-  static $inject = [];
+  static $inject = ['$timeout'];
 
-  constructor() {
-    //
-  }
-
-  $onInit() {
+  constructor(private $timeout: ng.ITimeoutService) {
     //
   }
 
   onName(v) {
     this.textAreaName = v;
+  }
+
+  emitUpdate($field) {
+    this.$timeout(() => {
+      this.data.data._plugin.questiontext = $field;
+      this.onUpdate();
+    });
   }
 }
 
@@ -55,39 +61,44 @@ interface IComponentBindings {
 }
 
 export class QuestionTextField implements ng.IComponentOptions {
-  bindings: IComponentBindings = {};
+  bindings: IComponentBindings = {
+    data: '<',
+    doValidate: '<',
+    ittItemForm: '<',
+    onUpdate: '&'
+  };
   template: string = TEMPLATE;
   controller = QuestionTextFieldController;
   static Name: string = 'npQuestionTextField'; // tslint:disable-line
 }
-
-export default function ittQuestionTextField() {
-  return {
-    restrict: 'EA',
-    scope: {
-      data: "=",
-      doValidate: '=?',
-      ittItemForm: '=?'
-    },
-    template: [
-      '<div class="field">',
-      '	<div class="label">Question text',
-      '		<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Question Text is a required field"></itt-validation-tip>',
-      '	</div>',
-      '	<div class="input" do-validate="$ctrl.doValidate" on-emit-name="$ctrl.onName($taName)" sxs-input-i18n="$ctrl.data.data._plugin.questiontext" x-inputtype="\'textarea\'"></div>',
-      '</div>'
-    ].join(' '),
-    controller: [function () {
-      var ctrl = this;
-      ctrl.onName = onName;
-
-      function onName(v) {
-        console.log("name!", v);
-        ctrl.textAreaName = v;
-      }
-    }],
-    controllerAs: '$ctrl',
-    bindToController: true
-  };
-}
+/* tslint:disable */
+// export default function ittQuestionTextField() {
+//   return {
+//     restrict: 'EA',
+//     scope: {
+//       data: "=",
+//       doValidate: '=?',
+//       ittItemForm: '=?'
+//     },
+//     template: [
+//       '<div class="field">',
+//       '	<div class="label">Question text',
+//       '		<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Question Text is a required field"></itt-validation-tip>',
+//       '	</div>',
+//       '	<div class="input" do-validate="$ctrl.doValidate" on-emit-name="$ctrl.onName($taName)" sxs-input-i18n="$ctrl.data.data._plugin.questiontext" x-inputtype="\'textarea\'"></div>',
+//       '</div>'
+//     ].join(' '),
+//     controller: [function () {
+//       var ctrl = this;
+//       ctrl.onName = onName;
+//
+//       function onName(v) {
+//         console.log("name!", v);
+//         ctrl.textAreaName = v;
+//       }
+//     }],
+//     controllerAs: '$ctrl',
+//     bindToController: true
+//   };
+// }
 

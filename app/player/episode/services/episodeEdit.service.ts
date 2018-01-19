@@ -271,7 +271,6 @@ export class EpisodeEditService implements IEpisodeEditService {
   }
 
   attachChosenAsset(asset_id: string, itemForm): void {
-    // console.log(scope.item);
     const asset = this.modelSvc.assets[asset_id];
     if (this.appState.editEvent) {
       this.appState.editEvent.asset = asset;
@@ -282,13 +281,14 @@ export class EpisodeEditService implements IEpisodeEditService {
         this.appState.editEvent.link_image_id = asset_id;
         this.appState.editEvent.asset_id = asset_id;
       } else if (this.appState.editEvent._type === 'Annotation') {
-        console.log('you are actually getting here!!');
         this.appState.editEvent.asset_id = asset_id;
         this.appState.editEvent.annotation_image_id = asset_id;
       } else {
         console.error('Tried to select asset for unknown item type', this.appState.editEvent);
       }
     }
+    this.showAssetPicker = false;
+    this.showUploadButtons = false;
   }
 
   assetUploaded(assetId: string) {

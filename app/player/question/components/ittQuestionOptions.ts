@@ -19,7 +19,7 @@ const TEMPLATE = `
   <np-input-i18n
     class="input"
     field="distractor.text"
-    on-field-change="$ctrl.onUpdate()"
+    on-field-change="$ctrl.updateDistractor($field, distractor)"
     inputtype="textarea">
   </np-input-i18n>
 </div>
@@ -33,7 +33,7 @@ const TEMPLATE = `
   <np-input-i18n
     class="input"
     field="$ctrl.data.data._plugin.correctfeedback"
-    on-field-change="$ctrl.onUpdate()"
+    on-field-change="$ctrl.updateField($field, 'correctfeedback')"
     inputtype="textarea">
   </np-input-i18n>
 </div>
@@ -42,7 +42,7 @@ const TEMPLATE = `
   <np-input-i18n
     class="input"
     field="$ctrl.data.data._plugin.incorrectfeedback"
-    on-field-change="$ctrl.onUpdate()"
+    on-field-change="$ctrl.updateField($field, 'incorrectfeedback')"
     inputtype="textarea">
   </np-input-i18n>
 </div>
@@ -56,14 +56,30 @@ interface IQuestionOptionsBindings extends IProducerInputFieldController {
 class QuestionOptionsController implements IQuestionOptionsBindings {
   data: IPlugin;
   onUpdate: () => void;
-  static $inject = [];
+  static $inject = ['$timeout'];
 
-  constructor() {
+  constructor(private $timeout: ng.ITimeoutService) {
     //
   }
 
   $onInit() {
     //
+  }
+
+  emitUpdate() {
+    this.$timeout(() => {
+      this.onUpdate();
+    });
+  }
+
+  updateDistractor($field, distractor: any) {
+    distractor.text = $field;
+    this.emitUpdate();
+  }
+
+  updateField($field, key) {
+    this.data.data._plugin[key] = $field;
+    this.emitUpdate();
   }
 
   addDistractor() {
@@ -98,32 +114,32 @@ export class QuestionOptions implements ng.IComponentOptions {
   static Name: string = 'npQuestionOptions'; // tslint:disable-line
 }
 
-export default function ittQuestionOptions() {
-  return {
-    restrict: 'EA',
-    scope: true,
-    template: [
-      '<div class="field"><div class="label">Answers</div></div>',
-      '<div class="field" ng-repeat="distractor in item.data._plugin.distractors track by $index">',
-      '	<div class="label">',
-      '		{{$index | alpha}} &nbsp;',
-      '		<input type="checkbox" ng-model="distractor.correct" ng-change="onFormativeChecked(distractor)" ng-if="item.data._plugin.questiontype == \'mc-formative\'">',
-      '	</div>',
-      '	<div class="input" sxs-input-i18n="distractor.text" x-inputtype="\'textarea\'"></div>',
-      '</div>',
-      '<div class="field">',
-      '	<div class="input">',
-      '		<button ng-click="addDistractor($event)">Add distractor</button>',
-      '	</div>',
-      '</div>',
-      '<div class="field" ng-if="item.data._plugin.questiontype == \'mc-formative\'">',
-      '	<div class="label">Feedback when correct</div>',
-      '	<div class="input" sxs-input-i18n="item.data._plugin.correctfeedback" x-inputtype="\'textarea\'"></div>',
-      '</div>',
-      '<div class="field" ng-if="item.data._plugin.questiontype == \'mc-formative\'">',
-      '	<div class="label">Feedback when incorrect</div>',
-      '	<div class="input" sxs-input-i18n="item.data._plugin.incorrectfeedback" x-inputtype="\'textarea\'"></div>',
-      '</div>'
-    ].join(' ')
-  };
-}
+// export default function ittQuestionOptions() {
+//   return {
+//     restrict: 'EA',
+//     scope: true,
+//     template: [
+//       '<div class="field"><div class="label">Answers</div></div>',
+//       '<div class="field" ng-repeat="distractor in item.data._plugin.distractors track by $index">',
+//       '	<div class="label">',
+//       '		{{$index | alpha}} &nbsp;',
+//       '		<input type="checkbox" ng-model="distractor.correct" ng-change="onFormativeChecked(distractor)" ng-if="item.data._plugin.questiontype == \'mc-formative\'">',
+//       '	</div>',
+//       '	<div class="input" sxs-input-i18n="distractor.text" x-inputtype="\'textarea\'"></div>',
+//       '</div>',
+//       '<div class="field">',
+//       '	<div class="input">',
+//       '		<button ng-click="addDistractor($event)">Add distractor</button>',
+//       '	</div>',
+//       '</div>',
+//       '<div class="field" ng-if="item.data._plugin.questiontype == \'mc-formative\'">',
+//       '	<div class="label">Feedback when correct</div>',
+//       '	<div class="input" sxs-input-i18n="item.data._plugin.correctfeedback" x-inputtype="\'textarea\'"></div>',
+//       '</div>',
+//       '<div class="field" ng-if="item.data._plugin.questiontype == \'mc-formative\'">',
+//       '	<div class="label">Feedback when incorrect</div>',
+//       '	<div class="input" sxs-input-i18n="item.data._plugin.incorrectfeedback" x-inputtype="\'textarea\'"></div>',
+//       '</div>'
+//     ].join(' ')
+//   };
+// }

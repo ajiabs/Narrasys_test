@@ -446,8 +446,8 @@ export class IPluginData {
     selected?: boolean;
   }[];
   incorrectfeedback: ILangForm;
-  questionText: ILangForm;
-  questionType: string;
+  questiontext: ILangForm;
+  questiontype: string;
 }
 
 export class IPlugin extends IEvent {

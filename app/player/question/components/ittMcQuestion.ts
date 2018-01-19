@@ -117,21 +117,24 @@ class McQuestionController implements IMcQuestionBindings {
 
   scorePoll(i: number) {
     console.log('scorePoll');
-    this.questionAnswersSvc.saveAnswer('question-answered', this.qid, {
-      'answer': this.plugin.distractors[i].text,
-      'index': this.plugin.distractors[i].index,
-      'correct': !!(this.plugin.distractors[i].correct)
-    })
-      .then(() => {
-        this.plugin.answer_counts = (typeof this.plugin.answer_counts === 'undefined') ? {} : this.plugin.answer_counts;
-        this.questionAnswersSvc.incrementAnswerCount(this.plugin.answer_counts, this.plugin.distractors[i].index);
-        const grouped = this.plugin.answer_counts;
-        const chartData = this.formatAnswersForFlotPieChart(grouped);
-        this.chartData = chartData;
-        this.plugin.distractors[i].selected = true;
-        this.plugin.hasBeenAnswered = true;
-        this.plugin.selectedDistractor = this.plugin.distractors[i].index;
-      });
+    this.questionAnswersSvc.saveAnswer(
+      'question-answered',
+      this.qid,
+      {
+        'answer': this.plugin.distractors[i].text,
+        'index': this.plugin.distractors[i].index,
+        'correct': !!(this.plugin.distractors[i].correct)
+      }
+    ).then(() => {
+      this.plugin.answer_counts = (typeof this.plugin.answer_counts === 'undefined') ? {} : this.plugin.answer_counts;
+      this.questionAnswersSvc.incrementAnswerCount(this.plugin.answer_counts, this.plugin.distractors[i].index);
+      const grouped = this.plugin.answer_counts;
+      const chartData = this.formatAnswersForFlotPieChart(grouped);
+      this.chartData = chartData;
+      this.plugin.distractors[i].selected = true;
+      this.plugin.hasBeenAnswered = true;
+      this.plugin.selectedDistractor = this.plugin.distractors[i].index;
+    });
 
   }
 

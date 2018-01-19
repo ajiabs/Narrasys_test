@@ -29,9 +29,8 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
   onlyImages: boolean;
   gridView: boolean;
   assetToDelete: IAsset;
-  static $inject = ['$rootScope', '$q', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'authSvc'];
+  static $inject = ['$q', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'authSvc'];
   constructor(
-    public $rootScope: ng.IRootScopeService,
     private $q: ng.IQService,
     public dataSvc: IDataSvc,
     public modelSvc: IModelSvc,
@@ -103,14 +102,7 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
   }
 
   assetClick(assetId) {
-    console.log('User clicked on asset ', assetId);
-    //when it comes time to emit data from a component
-    //"isolate scope &" is a better fit than pubsub with $rootScope
-    if (this.context && (this.context === 'narrative' || this.context === 'episode')) {
-      this.onAssetSelect({ $assetId: assetId });
-      return;
-    }
-    this.$rootScope.$emit('UserSelectedAsset', assetId);
+    this.onAssetSelect({ $assetId: assetId });
   }
 
   requestDeleteAsset($asset: IAsset, $ev: ng.IAngularEvent) {

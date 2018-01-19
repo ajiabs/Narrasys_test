@@ -3,19 +3,18 @@
 const TEMPLATE = `
 <input
   ng-if="$ctrl.inputtype=='input'"
-  ng-change="$ctrl.onFieldChange()"
+  ng-change="$ctrl.emitUpdate()"
   ng-model="$ctrl.field[$ctrl.appState.lang]"
   name="{{$ctrl.textangularname}}"
   ng-required="$ctrl.doValidate">
 <text-angular
-  ng-change="$ctrl.onFieldChange()"
   ng-if="$ctrl.inputtype == 'textarea'"
   name="{{$ctrl.textangularname}}"
   ng-required="$ctrl.doValidate"
   ng-model="$ctrl.field[$ctrl.appState.lang]"
   ta-paste="$ctrl.sanitizePastedHtml($html)"
   ta-default-wrap="span"
-  ng-blur="$ctrl.trim()">
+  ng-change="$ctrl.trim()">
 </text-angular>
 
 `;
@@ -25,7 +24,7 @@ interface IInputI18nBindings extends ng.IComponentController {
   inputtype: string;
   doValidate: boolean;
   onEmitName: ($ev: { $taName: string }) => ({$taName: string});
-  onFieldChange: () => void;
+  onFieldChange: ($ev: { $field: any }) => ({ $field: any });
 }
 
 class InputI18nController implements IInputI18nBindings {
@@ -33,7 +32,7 @@ class InputI18nController implements IInputI18nBindings {
   inputtype: string;
   doValidate: boolean;
   onEmitName: ($ev: { $taName: string }) => ({$taName: string});
-  onFieldChange: () => void;
+  onFieldChange: ($ev: { $field: any }) => ({ $field: any });
   //
   textangularname: string;
   static $inject = ['$timeout', '$attrs', 'appState', 'textAngularManager'];
@@ -86,6 +85,12 @@ class InputI18nController implements IInputI18nBindings {
     }
   }
 
+  emitUpdate() {
+    if (this.field[this.appState.lang] !== '') {
+      this.onFieldChange({ $field: this.field });
+    }
+  }
+
   trim() {
     // Let's prevent users from throwing extra whitespace at beginning and end:
     let txt = this.field[this.appState.lang];
@@ -103,7 +108,8 @@ class InputI18nController implements IInputI18nBindings {
     txt = txt.replace(/(<br>)*$/, ''); // kill extra linebreaks at end of entered text
 
     // console.log("AFTER", txt);
-    this.field[this.appState.lang] = txt;
+    this.field[this.appState.lang] = txt.trim();
+    this.emitUpdate();
   }
 
   sanitizePastedHtml(pasted: string) {

@@ -207,7 +207,8 @@ export class AnalyticsService implements IAnalyticsSvc {
 
       // console.log('flushing queue!', eventUserActions, episodeUserMetrics);
 
-      return this.$q.all(posts);
+      return this.$q.all(posts)
+        .then((posts: any) => resolve(posts));
     });
   }
 
