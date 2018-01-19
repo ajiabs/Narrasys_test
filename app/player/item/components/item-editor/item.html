@@ -200,6 +200,7 @@
               </np-template-select>
               <np-display-select
                 data="$ctrl.item"
+                component-name="{{$ctrl.item.component_name}}"
                 on-update="$ctrl.deriveEvent(true)"
                 item-form="$ctrl.itemForm">
               </np-display-select>
@@ -291,6 +292,7 @@
             <div ng-switch-when="annotation">
               <!--Display-->
               <np-display-select
+                component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
                 on-update="$ctrl.deriveEvent(true)"
                 data="$ctrl.item">
@@ -298,10 +300,24 @@
             </div>
             <div ng-switch-when="scene">
               <!--time, template, position, display-->
-              <np-time-field data="$ctrl.item" item-form="ittItemForm" on-update="$ctrl.resolveEvents()"></np-time-field>
-              <np-template-select data="$ctrl.item" item-form="$ctrl.itemForm"></np-template-select>
-              <np-video-position-select data="$ctrl.item" on-update="$ctrl.resolveEvents()"></np-video-position-select>
-              <np-display-select on-update="$ctrl.deriveEvent(true)" data="$ctrl.item"></np-display-select>
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm"
+                on-update="$ctrl.resolveEvents()">
+              </np-time-field>
+              <np-template-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm">
+              </np-template-select>
+              <np-video-position-select
+                data="$ctrl.item"
+                on-update="$ctrl.resolveEvents()">
+              </np-video-position-select>
+              <np-display-select
+                component-name="{{$ctrl.item.component_name}}"
+                on-update="$ctrl.deriveEvent(true)"
+                data="$ctrl.item">
+              </np-display-select>
             </div>
             <!--file hidden in style tab-->
             <!--<div ng-switch-when="file">-->
@@ -316,6 +332,7 @@
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select
+                component-name="{{$ctrl.item.component_name}}"
                 data="$ctrl.item"
                 on-update="$ctrl.deriveEvent(true)"
                 item-form="$ctrl.itemForm">

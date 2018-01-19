@@ -38,6 +38,7 @@ class DisplaySelectController implements IDisplaySelectBindings {
   onUpdate: () => void;
   componentName: string;
   isImageFillTemplate: boolean;
+  layoutIndex: number;
   static $inject = ['selectService'];
 
   constructor(private selectService) {
@@ -52,6 +53,10 @@ class DisplaySelectController implements IDisplaySelectBindings {
     return this.selectService.getVisibility('bgImagePosition');
   }
 
+  getSelectOpts(selectOptType: string) {
+    return this.selectService.getSelectOpts(selectOptType);
+  }
+
   setNgOpts(selectOptTyp: string) {
     return `option.value as option.name 
         disable when option.isDisabled
@@ -62,6 +67,10 @@ class DisplaySelectController implements IDisplaySelectBindings {
     this.selectService.onSelectChange(evt, form);
     this.data.styles = this.selectService.handleEventItemFormUpdate(form);
     this.onUpdate();
+  }
+
+  $onInit() {
+    this.layoutIndex = this.data.producerItemType === 'image' ? 0 : 1;
   }
 
 
@@ -81,7 +90,7 @@ export class DisplaySelect implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     data: '<',
     itemForm: '<',
-    componentName: '<',
+    componentName: '@',
     onUpdate: '&'
   };
   template: string = TEMPLATE;
