@@ -11,9 +11,10 @@ const TEMPLATE = `
 <div class="field">
 	<div class="label">Description [{{$ctrl.lang}}]</div>
 	<np-input-i18n
+		ng-model-options="$ctrl.modelOpts"
 	  class="input"
 	  field="$ctrl.data.description"
-	  on-field-change="$ctrl.onFieldChange()"
+	  on-field-change="$ctrl.onUpdate()"
 	  inputtype="textarea">
   </np-input-i18n>
 </div>

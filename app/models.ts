@@ -134,7 +134,7 @@ export class IEpisode {
   children: any[];
   container_id: string;
   created_at: Date;
-  defaultLanguage: ILangformKeys | false;
+  defaultLanguage: ILangformKeys | boolean;
   description: ILangForm;
   display_description: string;
   display_title: string;
