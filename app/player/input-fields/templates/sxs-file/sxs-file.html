@@ -1,11 +1,16 @@
 <span class="eventIcon icon-file"></span>
-<div class="field">
-	<div class="label">Title
-	</div>
-	<div class="input">
-		<input type="text" ng-model="item.title.en" np-autofocus>
-	</div>
-</div>
+<!--<div class="field">-->
+	<!--<div class="label">Title-->
+	<!--</div>-->
+	<!--<div class="input">-->
+		<!--<input type="text" ng-model="item.title.en" np-autofocus>-->
+	<!--</div>-->
+<!--</div>-->
+<np-input-i18n
+  class="input"
+  field="$ctrl.data.title"
+  np-autofocus>
+</np-input-i18n>
 <div class="field">
 	<div class="label">File
 	</div>
@@ -17,6 +22,8 @@
 	</div>
 	<np-input-i18n
     class="input"
-    field="item.description"
-    inputtype="textarea"></np-input-i18n>
+    field="$ctrl.data.description"
+
+    inputtype="textarea">
+  </np-input-i18n>
 </div>

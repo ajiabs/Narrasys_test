@@ -3,7 +3,11 @@
     <div ng-if="$ctrl.appState.product == 'sxs'" class="authoringFormScrollContainer">
       <!-- begin sxs -->
       <np-time-field data="$ctrl.item" item-form="ittItemForm" on-time-change=""></np-time-field>
-      <div np-dynamic-event-template component-name="{{$ctrl.sxsItemComponentFieldName}}"></div>
+      <div
+        np-dynamic-editor-template
+        on-update="$ctrl.deriveEvent()"
+        component-name="{{$ctrl.sxsItemComponentFieldName}}">
+      </div>
       <!-- end sxs -->
     </div>
 

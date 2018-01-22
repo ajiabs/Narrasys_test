@@ -3,9 +3,10 @@
 <div class="field">
 	<div class="label">Comment
 	</div>
-	<np-input-i18n
+  <np-input-i18n
     class="input"
-    field="item.annotation"
+    field="$ctrl.item.annotation"
+    on-field-change="$ctrl.onUpdate()"
     np-autofocus
     inputtype="textarea">
   </np-input-i18n>

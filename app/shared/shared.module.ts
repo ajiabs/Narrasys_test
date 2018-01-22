@@ -26,7 +26,7 @@ import { ErrorNotice } from './components/error-notice/npErrorNotice.component';
 
 import './filters/filters';
 import { Loading } from './components/ittLoading';
-import { DynamicEventTemplate } from './directives/dynamic-event-template';
+import { DynamicEventTemplate, DynamicEditorTemplate } from './directives/dynamic-event-template';
 import { AuthTemplate } from './templates/auth/auth.template';
 import { Error404Template } from './templates/error-404/error-404.template';
 import { RootTemplate } from './templates/root/root.template';
@@ -72,6 +72,7 @@ npSharedModule
   .directive('ittFilesHandler', ittFilesHandler)
   .directive('ittLogin', ittLogin)
   .directive(DynamicEventTemplate.Name, DynamicEventTemplate.factory())
+  .directive(DynamicEditorTemplate.Name, DynamicEditorTemplate.factory())
   .component(Loading.Name, new Loading())
   .component(AssetsResolve.Name, new AssetsResolve())
   .component(ErrorNotice.Name, new ErrorNotice());
