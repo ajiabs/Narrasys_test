@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 69, Needs Upgrade: 52, 57% complete
+  ### Upgraded Files: 66, Needs Upgrade: 52, 55% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -85,9 +85,9 @@ Needs Upgrade:
 * ittTab.ts
 * selectService.ts
 ### inputFields - :white_check_mark:
-Completed: 32,
+Completed: 29,
     Needs Upgrade: 0,
-    total: 32,
+    total: 29,
     percent complete: 100%
 
 Completed:
@@ -107,16 +107,13 @@ Completed:
 * ittVideoPositionSelect.ts
 * ittTitleField.ts
 * ittDisplaySelect.ts
-* ittFileField.ts
 * sxsInputTime.ts
 * ittLanguageSelect.ts
 * sxsAddContent.ts
 * ittLanguageFlags.ts
 * ittTranscriptField.ts
-* ittImageField.ts
 * ittDescriptionField.ts
 * ittTransitionSelect.ts
-* ittSpeakerThumbField.ts
 * npUrlField.ts
 * ittTimestampSelect.ts
 * ittColorSelect.ts
