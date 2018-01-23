@@ -3,10 +3,125 @@
     <div ng-if="$ctrl.appState.product == 'sxs'" class="authoringFormScrollContainer">
       <!-- begin sxs -->
       <np-time-field data="$ctrl.item" item-form="ittItemForm" on-time-change=""></np-time-field>
-      <div
-        np-dynamic-editor-template
-        on-update="$ctrl.deriveEvent()"
-        component-name="{{$ctrl.sxsItemComponentFieldName}}">
+      <!--<div-->
+        <!--np-dynamic-editor-template-->
+        <!--on-update="$ctrl.deriveEvent()"-->
+        <!--component-name="{{$ctrl.sxsItemComponentFieldName}}">-->
+      <!--</div>-->
+      <div ng-switch on="$ctrl.item.component_name">
+        <div ng-switch-when="item-sxs-annotation">
+          <span class="eventIcon icon-comment"></span>
+          <div class="field">
+            <div class="label">Comment
+            </div>
+            <np-input-i18n
+              class="input"
+              field="$ctrl.item.annotation"
+              on-field-change="$ctrl.deriveEvent()"
+              np-autofocus
+              inputtype="textarea">
+            </np-input-i18n>
+          </div>
+        </div>
+        <div ng-switch-when="item-sxs-file">
+          <span class="eventIcon icon-file"></span>
+          <np-title-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-producer-upload-field
+            context="editor"
+            label="File"
+            episode-container-id="{{$ctrl.episodeContainerId}}"
+            item-form="$ctrl.itemForm"
+            data="$ctrl.item">
+          </np-producer-upload-field>
+          <np-description-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-description-field>
+        </div>
+        <div ng-switch-when="item-sxs-link">
+          <span class="eventIcon icon-link"></span>
+          <np-title-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-url-field
+            data="$ctrl.item"
+            context="editor"
+            itt-item-form="ittItemForm">
+          </np-url-field>
+          <np-description-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-description-field>
+        </div>
+        <div ng-switch-when="item-sxs-image">
+          <span class="eventIcon icon-image"></span>
+          <np-title-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-producer-upload-field
+            context="editor"
+            label="Image"
+            episode-container-id="{{$ctrl.episodeContainerId}}"
+            item-form="$ctrl.itemForm"
+            data="$ctrl.item">
+          </np-producer-upload-field>
+          <np-description-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-description-field>
+        </div>
+        <div ng-switch-when="item-sxs-question">
+          <span class="eventIcon icon-question"></span>
+          <np-title-field
+            data="$ctrl.item"
+            do-validate="true"
+            itt-item-form="ittItemForm"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-question-text-field
+            data="$ctrl.item"
+            do-validate="false"
+            on-update="$ctrl.deriveEvent()"
+            itt-item-form="ittItemForm">
+          </np-question-text-field>
+          <itt-question-type-select
+            data="$ctrl.item">
+          </itt-question-type-select>
+          <np-producer-upload-field
+            context="producer"
+            label="Image"
+            episode-container-id="{{$ctrl.episodeContainerId}}"
+            validation-form="ittItemForm"
+            item-form="$ctrl.itemForm"
+            data="$ctrl.item">
+          </np-producer-upload-field>
+          <np-question-options
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-question-options>
+        </div>
+        <div ng-switch-when="item-sxs-video">
+          <span class="eventIcon icon-video"></span>
+          <np-url-field
+            data="$ctrl.item"
+            label="Video url"
+            context="editor-video"
+            itt-item-form="ittItemForm">
+          </np-url-field>
+          <np-title-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-description-field
+            on-upate="$ctrl.deriveEvent()"
+            data="item">
+          </np-description-field>
+        </div>
       </div>
       <!-- end sxs -->
     </div>
@@ -72,6 +187,7 @@
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-producer-upload-field
+                context="producer"
                 label="Image"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 validation-form="ittItemForm"
@@ -102,6 +218,7 @@
                 on-update="$ctrl.deriveEvent()">
               </np-transcript-field>
               <np-producer-upload-field
+                context="producer"
                 label="Speaker thumbnail"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 item-form="$ctrl.itemForm"
@@ -156,6 +273,7 @@
                 itt-item-form="ittItemForm">
               </np-title-field>
               <np-producer-upload-field
+                context="producer"
                 label="File"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 validation-form="ittItemForm"
@@ -188,6 +306,7 @@
                 itt-item-form="ittItemForm">
               </np-title-field>
               <np-producer-upload-field
+                context="producer"
                 label="Image"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 validation-form="ittItemForm"
@@ -240,6 +359,7 @@
                 data="$ctrl.item">
               </itt-question-type-select>
               <np-producer-upload-field
+                context="producer"
                 label="Image"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 validation-form="ittItemForm"

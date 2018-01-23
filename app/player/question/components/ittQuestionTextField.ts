@@ -1,5 +1,5 @@
 // @npUpgrade-question-true
-import { IEvent, IPlugin } from '../../../models';
+import { IPlugin } from '../../../models';
 
 /**
  * Created by githop on 6/30/16.

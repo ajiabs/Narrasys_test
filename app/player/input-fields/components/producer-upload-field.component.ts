@@ -6,11 +6,13 @@ const TEMPLATE = `
 	<div class="label">{{$ctrl.label}}
 		<itt-validation-tip ng-if="$ctrl.showValidationTip" text="{{$ctrl.label}} is required"></itt-validation-tip>
 	</div>
-	<div class="input" np-upload-producer-template></div>
+	<div ng-if="$ctrl.context === 'producer'" class="input" np-upload-producer-template></div>
+	<div ng-if="$ctrl.context === 'editor'" class="input" np-upload-sxs-template></div>
 </div>
 `;
 
 interface IProducerUploadFieldBindings extends ng.IComponentController {
+  context: 'editor' | 'producer';
   label: 'Image' | 'File' | 'Speaker thumbnail';
   data: IEvent;
   validationForm: ng.IFormController;
@@ -19,6 +21,7 @@ interface IProducerUploadFieldBindings extends ng.IComponentController {
 }
 
 class ProducerUploadFieldController implements IProducerUploadFieldBindings {
+  context: 'editor' | 'producer';
   label: 'Image' | 'File' | 'Speaker thumbnail';
   data: IEvent;
   validationForm: ng.IFormController;
@@ -38,7 +41,11 @@ class ProducerUploadFieldController implements IProducerUploadFieldBindings {
   }
 
   get showValidationTip() {
-    return (this.validationForm != null && this.validationForm.itemAsset.$invalid);
+    return (
+      this.validationForm != null &&
+      this.validationForm.itemAsset &&
+      this.validationForm.itemAsset.$invalid
+    );
   }
 
   $onDestroy() {
@@ -52,6 +59,7 @@ interface IComponentBindings {
 
 export class ProducerUploadField implements ng.IComponentOptions {
   bindings: IComponentBindings = {
+    context: '@',
     label: '@',
     data: '<',
     validationForm: '<?',

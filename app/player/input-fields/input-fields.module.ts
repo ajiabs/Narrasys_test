@@ -25,12 +25,6 @@ import { VideoPositionSelect } from './components/ittVideoPositionSelect';
 import { UrlField } from './components/npUrlField';
 import { AddContent } from './components/add-content/sxsAddContent';
 import { AnnotatorAutocomplete } from './components/annotator-autocomplete/sxsAnnotatorAutocomplete';
-import { SxsAnnotationFieldTemplate } from './templates/sxs-annotation/sxs-annotation-field.template';
-import { SxsFileFieldTemplate } from './templates/sxs-file/sxs-file-field.template';
-import { SxsImageFieldTemplate } from './templates/sxs-image/sxs-image-field.template';
-import { SxsLinkFieldTemplate } from './templates/sxs-link/sxs-link-field.template';
-import { SxsQuestionFieldTemplate } from './templates/sxs-question/sxs-question-field.template';
-import { SxsVideoFieldTemplate } from './templates/sxs-video/sxs-video-field.template';
 import { InputI18n } from './components/input-i18n/sxsInputI18n';
 import { InputTime } from './components/input-time/sxsInputTime';
 import { UploadMasterassetTemplate } from './templates/upload-masterasset/upload-masterasset.template';
@@ -50,12 +44,6 @@ const npInputFieldsModule = angular.module('np.inputFields', []);
 
 const templates = [
   Autofocus,
-  SxsAnnotationFieldTemplate,
-  SxsFileFieldTemplate,
-  SxsImageFieldTemplate,
-  SxsLinkFieldTemplate,
-  SxsQuestionFieldTemplate,
-  SxsVideoFieldTemplate,
   UploadMasterassetTemplate,
   UploadPosterTemplate,
   UploadProducerTemplate,

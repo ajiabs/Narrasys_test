@@ -907,7 +907,7 @@ export class EpisodeEditService implements IEpisodeEditService {
         'file': EventTemplates.SXS_FILE_TEMPLATE,
         'video': EventTemplates.SXS_VIDEO_TEMPLATE
       };
-
+      console.log('vas ghibt?', type);
     } else {
       defaultTemplateNames = {
         'scene': EventTemplates.CENTERED_TEMPLATE,
