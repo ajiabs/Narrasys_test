@@ -1,16 +1,16 @@
 <!-- editor: no master assets, no 'browse', and use userspace instead of container id -->
 
 <div>
-	<div ng-if="(item.asset) && !showUploadButtons">
-		{{item.asset.display_name}}
-		<button class="button" ng-click="replaceAsset(item.asset._id)"> Replace this asset </button>
+	<div ng-if="($ctrl.data.asset) && !$ctrl.showUploadButtons">
+		{{$ctrl.data.asset.display_name}}
+		<button class="button" ng-click="$ctrl.replaceAsset($ctrl.data.asset._id)"> Replace this asset </button>
 	</div>
-	<div ng-if="showUploadButtons || !(item.asset)">
-		<itt-asset-uploader ng-if="item.producerItemType === 'image'" callback="assetUploaded(data)"></itt-asset-uploader>
+	<div ng-if="$ctrl.showUploadButtons || !($ctrl.data.asset)">
+		<itt-asset-uploader ng-if="$ctrl.data.producerItemType === 'image'" callback="$ctrl.assetUploaded(data)"></itt-asset-uploader>
 
 		<itt-asset-uploader
-      ng-if="item.producerItemType === 'file'"
-      callback="assetUploaded(data)" mime-types="application/*, text/*, audio/*, model/*"
+      ng-if="$ctrl.data.producerItemType === 'file'"
+      callback="$ctrl.assetUploaded(data)" mime-types="application/*, text/*, audio/*, model/*"
       instructions="We currently accept all non-image or non-video files."
       error-text="Please make sure you are not trying to upload an image or video file.">
     </itt-asset-uploader>

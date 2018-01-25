@@ -27,6 +27,10 @@ class ProducerUploadFieldController implements IProducerUploadFieldBindings {
   validationForm: ng.IFormController;
   itemForm: IItemForm;
   episodeContainerId: string;
+  //
+  showAssetPicker: boolean;
+  showUploadButtons: boolean;
+  showUploadField: boolean;
   static $inject = ['selectService', 'episodeEdit'];
 
   constructor(public selectSerivce, public episodeEdit: IEpisodeEditService) {
@@ -48,8 +52,21 @@ class ProducerUploadFieldController implements IProducerUploadFieldBindings {
     );
   }
 
-  $onDestroy() {
-    this.episodeEdit.resetUploadView();
+  replaceAsset() {
+    this.showUploadButtons = true;
+    this.episodeEdit.replaceAsset();
+  }
+
+  attachChosenAsset(assetId: string, itemform: IItemForm) {
+    this.showAssetPicker = false;
+    this.showUploadButtons = false;
+    this.episodeEdit.attachChosenAsset(assetId, itemform);
+  }
+
+  assetUploaded(assetId: string) {
+    this.episodeEdit.assetUploaded(assetId);
+    this.showUploadButtons = false;
+    this.showUploadField = false;
   }
 }
 

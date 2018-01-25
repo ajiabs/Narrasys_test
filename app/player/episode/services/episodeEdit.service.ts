@@ -142,12 +142,7 @@ export interface ILangformFlags {
 export interface IEpisodeEditService {
   episodeLangForm: ILangformFlags;
   canAccess: boolean;
-  showAssetPicker: boolean;
-  showUploadButtons: boolean;
-  showUploadField: boolean;
   mimes: any;
-  resetUploadView(): void;
-  endChooseAsset(): void;
   replaceAsset(): void;
   detachAsset(): void;
   attachChosenAsset(assetId: string, itemForm: IItemForm): void;
@@ -178,9 +173,6 @@ export class EpisodeEditService implements IEpisodeEditService {
     'de': false,
     'it': false
   };
-  showAssetPicker: boolean;
-  showUploadButtons: boolean;
-  showUploadField: boolean;
   mimes = MIMES;
   static Name = 'episodeEdit'; // tslint:disable-line
   static $inject = [
@@ -213,20 +205,7 @@ export class EpisodeEditService implements IEpisodeEditService {
     return this.userHasRole('admin') || this.authSvc.userHasRole('customer admin');
   }
 
-  resetUploadView() {
-    this.showUploadButtons = true;
-    this.showUploadField = false;
-    this.showAssetPicker = false;
-  }
-
-  endChooseAsset() {
-    this.showAssetPicker = false;
-  }
-
   replaceAsset() {
-    console.log('replace asset!');
-    this.showUploadButtons = true;
-
     if (this.appState.editEvent.sxs) { // we will delete assets atached to editor items, not from producer items
       this.appState.editEvent.removedAssets = this.appState.editEvent.removedAssets || [];
       // removedAsset will be used by editController on save to delete the old asset (if we're in editor)
@@ -287,8 +266,7 @@ export class EpisodeEditService implements IEpisodeEditService {
         console.error('Tried to select asset for unknown item type', this.appState.editEvent);
       }
     }
-    this.showAssetPicker = false;
-    this.showUploadButtons = false;
+
   }
 
   assetUploaded(assetId: string) {
@@ -301,8 +279,6 @@ export class EpisodeEditService implements IEpisodeEditService {
     } else {
       this.appState.editEvent.asset_id = assetId;
     }
-    this.showUploadButtons = false;
-    this.showUploadField = false;
   }
 
   userHasRole(role: string) {
