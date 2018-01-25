@@ -291,10 +291,8 @@ class ItemEditorController implements IItemEditorBindings {
   deriveEvent(doResolveEvents?: boolean | IEvent) {
     let _newEv;
     _newEv = this.appState.editEvent;
-    if (doResolveEvents != null) {
-      if (typeof doResolveEvents !== 'boolean') {
-        _newEv = doResolveEvents;
-      }
+    if (doResolveEvents != null && typeof doResolveEvents !== 'boolean') {
+      _newEv = doResolveEvents;
     }
     const newEv = this.modelSvc.cache('event', _newEv);
     newEv.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
