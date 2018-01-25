@@ -198,7 +198,8 @@
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
-                flags="['required', 'stop', 'cosmetic']">
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
               </np-flags>
             </div>
             <div ng-switch-when="transcript">
@@ -254,6 +255,7 @@
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)"
                 flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
               </np-flags>
             </div>
@@ -290,7 +292,8 @@
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
-                flags="['required', 'stop', 'cosmetic']">
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
               </np-flags>
             </div>
             <div ng-switch-when="image">
@@ -334,7 +337,8 @@
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
-                flags="['required', 'stop', 'cosmetic']">
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
               </np-flags>
             </div>
             <div ng-switch-when="question">
@@ -471,7 +475,9 @@
                 data="$ctrl.item"
                 component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
-                flags="['required', 'stop', 'cosmetic']"></np-flags>
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
+              </np-flags>
             </div>
             <div ng-switch-when="chapter">
               <h4>{{$ctrl.item.producerItemType}}</h4>
