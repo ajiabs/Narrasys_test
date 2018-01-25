@@ -75,7 +75,7 @@ class DisplaySelectController implements IDisplaySelectBindings {
 
 
   $onChanges(changes: { componentName: ng.IChangesObject }) {
-    if (changes && !changes.componentName.isFirstChange()) {
+    if (changes && changes.componentName && !changes.componentName.isFirstChange()) {
       const nv = changes.componentName.currentValue;
       this.isImageFillTemplate = (nv && nv === EventTemplates.IMAGE_FILL_TEMPLATE);
     }

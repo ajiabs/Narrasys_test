@@ -89,6 +89,7 @@ class ItemEditorController implements IItemEditorBindings {
   mimes: any;
   static $inject = [
     '$rootScope',
+    '$timeout',
     'errorSvc',
     'appState',
     'modelSvc',
@@ -99,6 +100,7 @@ class ItemEditorController implements IItemEditorBindings {
   ];
   constructor(
     private $rootScope,
+    private $timeout: ng.ITimeoutService,
     private errorSvc,
     private appState,
     private modelSvc: IModelSvc,
@@ -143,9 +145,14 @@ class ItemEditorController implements IItemEditorBindings {
     }
   }
 
-  $onChanges(changes) {
-    console.log('huh', changes);
-  }
+  // $onChanges(changes: { item: ng.IChangesObject }) {
+  //   console.log('huh', changes);
+  //   if (changes && changes.item && changes.item && !changes.item.isFirstChange()) {
+  //     const { item: { currentValue } }  = changes;
+  //     this.resolveEvents()
+  //     console.log('on changes assign');
+  //   }
+  // }
 
   onItemFormUpdates() {
     // this.item.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
@@ -281,14 +288,25 @@ class ItemEditorController implements IItemEditorBindings {
     this.modelSvc.resolveEpisodeEvents(this.appState.episodeId);
   }
 
-  deriveEvent(doResolveEvents: boolean = false) {
-    const newEv = this.modelSvc.cache('event', this.appState.editEvent);
+  deriveEvent(doResolveEvents?: boolean | IEvent) {
+    let _newEv;
+    _newEv = this.appState.editEvent;
+    if (doResolveEvents != null) {
+      if (typeof doResolveEvents !== 'boolean') {
+        _newEv = doResolveEvents;
+      }
+    }
+    const newEv = this.modelSvc.cache('event', _newEv);
     newEv.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
-    this.appState.editEvent = newEv;
-    if (doResolveEvents) {
+    if (doResolveEvents != null) {
       this.resolveEvents();
     }
+    this.appState.editEvent = newEv;
     console.log('derived!', this.appState.editEvent);
+    this.appState.editEvent.renderTemplate = false;
+    this.$timeout(() => {
+      this.appState.editEvent.renderTemplate = true;
+    });
   }
 
   private getCurrentScene(item: IEvent) {

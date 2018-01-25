@@ -30,6 +30,7 @@ interface ITemplateSelectBindings extends IProducerInputFieldController {
   data: IEvent | IEpisode;
   itemForm?: ng.IFormController;
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
+  onUpdate: ($ev: { $item: IEvent }) => ({ $item: IEvent });
 }
 
 
@@ -40,8 +41,9 @@ class TemplateSelectController implements ITemplateSelectBindings {
   isEpisode: boolean;
   context: 'episode' | 'event' = 'event';
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
-  static $inject = ['$timeout', 'selectService', 'modelSvc'];
-  constructor(private $timeout: ng.ITimeoutService, public selectService, public modelSvc: IModelSvc) {
+  onUpdate: ($ev: { $item: IEvent }) => ({ $item: IEvent });
+  static $inject = ['selectService', 'modelSvc'];
+  constructor(public selectService, public modelSvc: IModelSvc) {
     //
   }
 
@@ -74,16 +76,12 @@ class TemplateSelectController implements ITemplateSelectBindings {
   }
 
   onSelectChange(item: IEvent, form: ng.IFormController) {
-    const newEvent = this.modelSvc.cache('event', item);
+    const newEvent = this.modelSvc.deriveEvent(createInstance(item._type, item));
     this.selectService.onSelectChange(newEvent, form);
-    if (item instanceof IScene) {
-      this.modelSvc.resolveEpisodeEvents(item.episode_id);
-    }
     this.data = newEvent;
-    this.data.renderTemplate = false;
-    this.$timeout(() => void 0, 5).then(() => {
-      (this.data as IEvent).renderTemplate = true;
-    });
+    // bubble new event to ItemEditorController to handle
+    // caching and re-rendering the new event template
+    this.onUpdate({ $item: newEvent });
   }
 
   onEpisodeTemplateChange() {

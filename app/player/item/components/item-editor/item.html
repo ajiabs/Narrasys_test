@@ -183,7 +183,7 @@
               </np-description-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent()"
+                on-update="$ctrl.deriveEvent($item)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-producer-upload-field
@@ -243,6 +243,7 @@
               </np-annotation-field>
               <np-template-select
                 data="$ctrl.item"
+                on-update="$ctrl.deriveEvent($item)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-speaker-field
@@ -319,6 +320,7 @@
               </np-description-field>
               <np-template-select
                 data="$ctrl.item"
+                on-update="$ctrl.deriveEvent($item)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select
@@ -432,6 +434,7 @@
               </np-time-field>
               <np-template-select
                 data="$ctrl.item"
+                on-update="$ctrl.deriveEvent($item)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-video-position-select
@@ -441,6 +444,7 @@
               <np-display-select
                 component-name="{{$ctrl.item.component_name}}"
                 on-update="$ctrl.deriveEvent(true)"
+                item-form="$ctrl.itemForm"
                 data="$ctrl.item">
               </np-display-select>
             </div>
@@ -454,6 +458,7 @@
               <!--Template, Display, Flags-->
               <np-template-select
                 data="$ctrl.item"
+                on-update="$ctrl.deriveEvent($item)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select

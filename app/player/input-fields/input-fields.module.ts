@@ -36,7 +36,7 @@ import { ProducerUploadField } from './components/producer-upload-field.componen
 
 export interface IProducerInputFieldController extends ng.IComponentController {
   data: IEvent | IEpisode;
-  onUpdate?: () => void;
+  onUpdate?: ($ev?: { $item: IEvent }) => void | ({ $item: IEvent }) | boolean;
 }
 
 
