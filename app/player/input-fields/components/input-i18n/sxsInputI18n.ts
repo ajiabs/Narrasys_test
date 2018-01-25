@@ -14,7 +14,8 @@ const TEMPLATE = `
   ng-model="$ctrl.field[$ctrl.appState.lang]"
   ta-paste="$ctrl.sanitizePastedHtml($html)"
   ta-default-wrap="span"
-  ng-change="$ctrl.trim()">
+  ng-change="$ctrl.emitUpdate()"
+  ng-blur="$ctrl.trim()">
 </text-angular>
 
 `;
@@ -109,7 +110,6 @@ class InputI18nController implements IInputI18nBindings {
 
     // console.log("AFTER", txt);
     this.field[this.appState.lang] = txt.trim();
-    this.emitUpdate();
   }
 
   sanitizePastedHtml(pasted: string) {
