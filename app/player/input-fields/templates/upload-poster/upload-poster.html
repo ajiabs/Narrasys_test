@@ -1,6 +1,6 @@
 <!-- producer episode poster asset-->
 
-<div ng-if="$ctrl.showAssetPicker" class="floatAssetPicker">
+<div ng-if="$ctrl.showAssetPickerPoster" class="floatAssetPicker">
 	<div class="scrollContainer">
     <sxs-container-assets
       context="episode"
@@ -26,7 +26,7 @@
       </itt-asset-uploader>
 		</span>
 		<span ng-if="!showUploadFieldPoster">
-			<button class="button" ng-click="$ctrl.showAssetPicker = true;">Browse uploaded</button>
+			<button class="button" ng-click="$ctrl.toggleAssetSelect('Poster')">Browse uploaded</button>
 			<button class="button" ng-click="$ctrl.toggleUpload('Poster')">Upload new</button>
 		</span>
 	</div>

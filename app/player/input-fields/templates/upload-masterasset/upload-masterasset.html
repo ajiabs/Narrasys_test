@@ -1,6 +1,6 @@
 <!-- producer master asset -->
 
-<div ng-if="$ctrl.showAssetPicker" class="floatAssetPicker">
+<div ng-if="$ctrl.showAssetPickerMaster" class="floatAssetPicker">
 	<div class="scrollContainer">
     <sxs-container-assets
       on-asset-select="$ctrl.attachChosenAsset($assetId)"
@@ -23,7 +23,7 @@
       <itt-asset-uploader container-id="{{$ctrl.episodeContainerId}}" callback="$ctrl.assetUploaded(data)"></itt-asset-uploader>
 		</span>
 		<span ng-if="!$ctrl.showUploadFieldMaster">
-			<button class="button" ng-click="$ctrl.showAssetPicker = true;">Browse uploaded assets</button>
+			<button class="button" ng-click="$ctrl.toggleAssetSelect('Master')">Browse uploaded assets</button>
 			<button class="button" ng-click="$ctrl.toggleUpload('Master')">Upload new asset</button>
 		</span>
 	</div>

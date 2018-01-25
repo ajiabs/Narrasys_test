@@ -59,6 +59,8 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
   showUploadField: boolean;
   showUploadButtonsPoster: boolean;
   showUploadFieldPoster: boolean;
+  showAssetPickerPoster: boolean;
+  showAssetPickerMaster: boolean;
   languageCount: number;
   showAssetPicker: boolean;
   private container: IContainer;
@@ -132,6 +134,10 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
     this[`showUploadField${assetType}`] = !this[`showUploadField${assetType}`];
   }
 
+  toggleAssetSelect(assetType: 'Poster' | 'Master') {
+    this[`showAssetPicker${assetType}`] = !this[`showAssetPicker${assetType}`];
+  }
+
   translationMessage(langArr: any[]) {
     let prefix = '';
     const langs = langArr
@@ -195,6 +201,8 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
     this.masterAsset = asset;
     this.episode.masterAsset = createInstance('MasterAsset',asset);
     this.modelSvc.deriveEpisode(this.episode);
+    this.showAssetPickerMaster = false;
+
   }
 
   attachPosterAsset(assetId: string) {
@@ -204,6 +212,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
     this.modelSvc.deriveEpisode(this.episode);
     this.showAssetPicker = false;
     this.showUploadButtonsPoster = false;
+    this.showAssetPickerPoster = false;
   }
 
   assetUploaded(assetId) {
