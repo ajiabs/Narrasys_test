@@ -846,16 +846,16 @@ export class EpisodeEditService implements IEpisodeEditService {
             'questiontype': 'mc-formative',
             'distractors': [{
               'index': 1,
-              'text': ''
+              'text': null
             }, {
               'index': 2,
-              'text': ''
+              'text': null
             }, {
               'index': 3,
-              'text': ''
+              'text': null
             }, {
               'index': 4,
-              'text': ''
+              'text': null
             }],
             'correctfeedback': '',
             'incorrectfeedback': ''
