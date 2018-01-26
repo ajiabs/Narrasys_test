@@ -1,27 +1,5 @@
 // @npUpgrade-item-false
-/*
- TODO: right now we're re-building the episode structure on every keystroke.
- That's a tiny bit wasteful of cpu :)
-  At the very least, debounce input to a more reasonable interval
- */
 
-/**
- * @ngDoc directive
- * @name iTT.directive:ittItemEditor
- * @restrict 'A'
- * @scope
- * @description
- * Directive for editing items in the producer / editor interface
- * @requires $rootScope
- * @requires $timeOut
- * @requires errorSvc
- * @requires appState
- * @requires modelSvc
- * @requires timelineSvc
- * @requires awsSvc
- * @requires dataSvc
- * @param {Object} Item object representing an Event object from the DB to be edited.
- */
 
 import itemHtml from './item.html';
 import { EventTemplates, MIMES } from '../../../../constants';
@@ -145,20 +123,6 @@ class ItemEditorController implements IItemEditorBindings {
     }
   }
 
-  // $onChanges(changes: { item: ng.IChangesObject }) {
-  //   console.log('huh', changes);
-  //   if (changes && changes.item && changes.item && !changes.item.isFirstChange()) {
-  //     const { item: { currentValue } }  = changes;
-  //     this.resolveEvents()
-  //     console.log('on changes assign');
-  //   }
-  // }
-
-  onItemFormUpdates() {
-    // this.item.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
-    this.deriveEvent();
-  }
-
   userHasRole(role: string) {
     return this.authSvc.userHasRole(role);
   }
@@ -190,100 +154,6 @@ class ItemEditorController implements IItemEditorBindings {
       .finally(() => this.blockDoubleClicks = false);
   }
 
-  assetUploaded(assetId: string) {
-    this.item.asset = this.modelSvc.assets[assetId];
-    // TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
-    if (this.item._type === 'Link') {
-      this.item.link_image_id = assetId;
-    } else if (this.item._type === 'Annotation') {
-      this.item.annotation_image_id = assetId;
-    } else {
-      this.item.asset_id = assetId;
-    }
-    this.showUploadButtons = false;
-    this.showUploadField = false;
-  }
-
-  // replaceAsset() {
-  //   console.log('replace asset!');
-  //   this.showUploadButtons = true;
-  //
-  //   if (this.item.sxs) { // we will delete assets atached to editor items, not from producer items
-  //     this.appState.editEvent.removedAssets = this.appState.editEvent.removedAssets || [];
-  //     // removedAsset will be used by editController on save to delete the old asset (if we're in editor)
-  //     if (this.appState.editEvent._type === 'Link') {
-  //       this.appState.editEvent.removedAssets.push(this.appState.editEvent.link_image_id);
-  //     } else if (this.appState.editEvent._type === 'Annotation') {
-  //       this.appState.editEvent.removedAssets.push(this.appState.editEvent.annotation_image_id);
-  //     } else {
-  //       this.appState.editEvent.removedAssets.push(this.appState.editEvent.asset_id);
-  //     }
-  //   }
-  // }
-
-  detachAsset(): void {
-    // console.log(
-    // 	'item:', scope.item,
-    // 	'asset:', scope.item.asset,
-    // 	'link_image_id:', scope.item.link_image_id,
-    // 	'asset_id:', scope.item.asset_id,
-    // 	'annotation_image_id:', scope.item.annotation_image_id
-    // );
-    if (this.item.asset) {
-      switch (this.item.producerItemType) {
-        case 'link':
-          this.item.asset = null;
-          this.item.link_image_id = null;
-          this.item.asset_id = null;
-          this.item.annotation_image_id = null;
-          break;
-        case 'transcript':
-          this.item.asset = null;
-          this.item.annotation_image_id = null;
-          break;
-        case 'image':
-        case 'question':
-        case 'file':
-          this.item.asset = null;
-          this.item.asset_id = null;
-          break;
-      }
-    }
-  }
-
-  attachChosenAsset(asset_id: string): void {
-    // console.log(scope.item);
-    const asset = this.modelSvc.assets[asset_id];
-    if (this.item) {
-      this.item.asset = asset;
-      this.selectService.onSelectChange(this.item, this.itemForm);
-      if (this.item._type === 'Upload' || this.item._type === 'Plugin') {
-        this.item.asset_id = asset_id;
-      } else if (this.item._type === 'Link') {
-        this.item.link_image_id = asset_id;
-        this.item.asset_id = asset_id;
-      } else if (this.item._type === 'Annotation') {
-        console.log('you are actually getting here!!');
-        this.item.asset_id = asset_id;
-        this.item.annotation_image_id = asset_id;
-      } else {
-        console.error('Tried to select asset for unknown item type', this.item);
-      }
-    }
-  }
-
-  toggleUpload(assetType = '') {
-    this['showUploadField' + assetType] = !this['showUploadField' + assetType];
-  }
-
-  // chooseAsset() {
-  //   this.showAssetPicker = true;
-  // }
-
-  // onAssetSelected(assetId) {
-  //   this.attachChosenAsset(assetId);
-  // }
-
   resolveEvents() {
     this.modelSvc.resolveEpisodeEvents(this.appState.episodeId);
   }
@@ -300,7 +170,6 @@ class ItemEditorController implements IItemEditorBindings {
       this.resolveEvents();
     }
     this.appState.editEvent = newEv;
-    console.log('derived!', this.appState.editEvent);
     this.appState.editEvent.renderTemplate = false;
     this.$timeout(() => {
       this.appState.editEvent.renderTemplate = true;

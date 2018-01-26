@@ -120,9 +120,11 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
       this.masterAssetType = 'Video';
     }
 
-    this.episode.description = {
-      [this.episode.defaultLanguage as string || 'en' as string]: ''
-    };
+    if (this.episode && this.episode.description == null) {
+      this.episode.description = {
+        [this.episode.defaultLanguage as string || 'en' as string]: ''
+      };
+    }
   }
 
   forcePreview() {
@@ -131,6 +133,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
 
 
   toggleUpload(assetType = '') {
+    console.log('toggle upload?', assetType);
     this[`showUploadField${assetType}`] = !this[`showUploadField${assetType}`];
   }
 
@@ -253,6 +256,7 @@ class EpisodeEditorController implements IEpisodeEditorBindings {
   }
 
   replaceAsset(_assetType: string) {
+    console.log('replace asset', _assetType);
     const assetType = _assetType || '';
     this['showUploadButtons' + assetType] = true;
     this['showUploadField' + assetType] = false;
