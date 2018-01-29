@@ -10,4 +10,4 @@ tmp
 npm-debug.log
 .DS_Store
 
-utils/https-dev-server/certs/*
+utils/https-dev-server/certs/**
