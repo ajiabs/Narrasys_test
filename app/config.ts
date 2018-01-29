@@ -9,7 +9,8 @@ export interface INpAppConfig {
 
 export const config: INpAppConfig = {
   localStorageKey: 'storyToken',
-  apiDataBaseUrl: '//' + window.location.host,
+  // apiDataBaseUrl: '//' + window.location.host,
+  apiDataBaseUrl: '//np-dev.narrasys.com',
   youtube: {
     domain: '//gdata.youtube.com/',
     timeout: 5000
