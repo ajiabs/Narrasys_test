@@ -14,13 +14,21 @@
     
     <client-dir>/utils/https-dev-sever/certs/ssl-bundle-2017.crt
     
+
+3.  add entry to hosts file
+
+    in <code>/etc/hosts</code>
     
-3. start server (since we're serving on ports 80 and 443, we need to run the server as root)
+    127.0.0.1		localhost.narrasys.com
+  
+    
+    
+4. start server (since we're serving on ports 80 and 443, we need to run the server as root)
 
 
     sudo node index.js
     
    
-4. Access local version of app at: https://localhost.narrasys.com     
+5. Access local version of app at: https://localhost.narrasys.com     
         
 
