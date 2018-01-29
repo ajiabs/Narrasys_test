@@ -10,4 +10,5 @@ tmp
 npm-debug.log
 .DS_Store
 
-utils/https-dev-server/certs/**
+utils/https-dev-server/certs/private-2017.key
+utils/https-dev-server/certs/ssl-bundle-2017.crt
