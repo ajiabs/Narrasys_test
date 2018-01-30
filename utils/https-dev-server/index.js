@@ -6,7 +6,8 @@ const express = require('express'),
   https = require('https'),
   path = require('path'),
   fs = require('fs'),
-  baseUrl = 'https://np-dev.narrasys.com',
+  // baseUrl = 'https://np-dev.narrasys.com',
+  baseUrl = 'http://localhost:3000',
   dir = path.resolve(__dirname, '../../tmp'),
   server = express();
 
@@ -43,7 +44,7 @@ https.createServer(sslOpts, server)
 server.use(express.static(dir));
 
 function doProxy(req, res) {
-  var url = baseUrl + req.url;
+  const url = baseUrl + req.url;
   req
     .pipe(request(url))
     .on('error', logErrors)

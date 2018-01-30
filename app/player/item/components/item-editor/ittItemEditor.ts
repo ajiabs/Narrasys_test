@@ -167,12 +167,16 @@ class ItemEditorController implements IItemEditorBindings {
     const newEv = this.modelSvc.cache('event', _newEv);
     newEv.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
     if (doResolveEvents != null) {
-      this.resolveEvents();
+      // if we are 'true' or an object (typeof null === 'object' but we already null checked above)
+      if ((typeof doResolveEvents === 'boolean' && doResolveEvents === true) || (typeof doResolveEvents === 'object')) {
+        this.resolveEvents();
+      }
     }
     this.appState.editEvent = newEv;
     this.appState.editEvent.renderTemplate = false;
     this.$timeout(() => {
       this.appState.editEvent.renderTemplate = true;
+      this.appState.editEvent = angular.copy(newEv);
     });
   }
 

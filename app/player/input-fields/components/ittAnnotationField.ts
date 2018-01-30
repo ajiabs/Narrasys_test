@@ -1,6 +1,6 @@
 // @npUpgrade-inputFields-true
 import { IProducerInputFieldController } from '../input-fields.module';
-import { IEvent } from '../../../models';
+import { IAnnotation, IEvent } from '../../../models';
 
 /**
  *
@@ -18,7 +18,7 @@ const TEMPLATE = `
 	<np-input-i18n 
 	  class="input"
 	  field="$ctrl.data.annotation"
-	  on-field-change="$ctrl.onUpdate()"
+	  on-field-change="$ctrl.dispatchUpdate($field)"
 	  do-validate="true"
 	  inputtype="textarea"
 	  on-emit-name="$ctrl.onName($taName)"
@@ -29,12 +29,12 @@ const TEMPLATE = `
 
 interface IAnnotationFieldBindings extends IProducerInputFieldController {
   data: IEvent;
-  onUpdate: () => void;
+  onUpdate?: ($ev: { $item: IEvent }) => ({ $item: IEvent });
 }
 
 class AnnotationFieldController implements IAnnotationFieldBindings {
   data: IEvent;
-  onUpdate: () => void;
+  onUpdate?: ($ev: { $item: IEvent }) => ({ $item: IEvent });
   //
   textAreaName: string;
   static $inject = ['appState'];
@@ -49,6 +49,12 @@ class AnnotationFieldController implements IAnnotationFieldBindings {
 
   onName(name: string) {
     this.textAreaName = name;
+  }
+
+  dispatchUpdate($field) {
+    this.data.description = $field;
+    (this.data as IAnnotation).annotation = $field;
+    this.onUpdate({ $item: this.data });
   }
 }
 
