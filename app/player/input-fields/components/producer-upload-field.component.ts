@@ -60,8 +60,6 @@ class ProducerUploadFieldController implements IProducerUploadFieldBindings {
     } else {
       this.mimes = MIMES['default'];
     }
-
-    console.log('mimes what!', this.mimes);
   }
 
   replaceAsset() {
