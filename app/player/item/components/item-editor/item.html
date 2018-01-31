@@ -50,6 +50,7 @@
           <np-url-field
             data="$ctrl.item"
             context="editor"
+            on-update="$ctrl.deriveEvent()"
             itt-item-form="ittItemForm">
           </np-url-field>
           <np-description-field
@@ -110,6 +111,7 @@
           <np-url-field
             data="$ctrl.item"
             label="Video url"
+            on-update="$ctrl.deriveEvent()"
             context="editor-video"
             itt-item-form="ittItemForm">
           </np-url-field>
@@ -175,6 +177,7 @@
               </np-title-field>
               <np-url-field
                 data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()"
                 itt-item-form="ittItemForm">
               </np-url-field>
               <np-description-field

@@ -6,7 +6,7 @@ import {
   IXFrameOptsResult,
   Partial
 } from '../../../interfaces';
-import { IEpisode, ILink, ILinkStatus } from '../../../models';
+import { IEpisode, IEvent, ILink, ILinkStatus } from '../../../models';
 import { EventTemplates } from '../../../constants';
 
 /**
@@ -27,8 +27,8 @@ const TEMPLATE = `
       <input
         id="urlEscapeLink"
         type="checkbox"
-        ng-change="$ctrl.updateTemplateOpts()"
-        ng-true-value="'_blank'"
+        ng-change="$ctrl.onForceNewTabChange()"
+        NG-TRUe-value="'_blank'"
         ng-false-value="'_self'"
         ng-disabled="!$ctrl.canEmbed"
         ng-model="$ctrl.data.target"/>
@@ -60,6 +60,7 @@ interface IUrlFieldBindings extends ng.IComponentController {
   context: 'episode' | 'producer' | 'editor' | 'editor-video';
   label: string;
   onAttach: (ev) => ({$url: string});
+  onUpdate: () => void;
   ittItemForm: ng.IFormController;
 }
 
@@ -69,6 +70,7 @@ class UrlFieldController implements IUrlFieldBindings {
   label: string;
   eventUrl: string;
   onAttach: (ev) => ({$url: string});
+  onUpdate: () => void;
   ittItemForm: ng.IFormController;
   validatedFields: Partial<ILinkValidFields> = {
     url: null,
@@ -84,8 +86,9 @@ class UrlFieldController implements IUrlFieldBindings {
   };
   canEmbed: boolean;
 
-  static $inject = ['validationSvc'];
+  static $inject = ['$timeout','validationSvc'];
   constructor(
+    private $timeout: ng.ITimeoutService,
     private validationSvc: IValidationSvc) {
     //
   }
@@ -114,6 +117,11 @@ class UrlFieldController implements IUrlFieldBindings {
     this._setValidity(false);
   }
 
+  onForceNewTabChange() {
+    this.updateTemplateOpts();
+    this.onUpdate();
+  }
+
   onUrlFieldChange(url: string, urlStatus?: ILinkStatus): void {
     if (url === 'https://') {
       this._setValidity(false);
@@ -121,6 +129,9 @@ class UrlFieldController implements IUrlFieldBindings {
     }
 
     this._itemUrlValidationPipeline(url, urlStatus, this.context);
+    // this.$timeout(() => {
+    //
+    // });
   }
 
   handleEpisodeValidationMessage(notice) {
@@ -164,7 +175,10 @@ class UrlFieldController implements IUrlFieldBindings {
     const isValidUrl = this._setValidity(this.validationSvc.validateUrl(url, this));
 
     if (isValidUrl) { //only do async stuff if necessary
-      this._inspectHeaders(url, cachedResults, context);
+      this._inspectHeaders(url, cachedResults, context)
+        .then(() => this.onUpdate());
+    } else {
+      this.onUpdate();
     }
   }
 
@@ -202,11 +216,12 @@ class UrlFieldController implements IUrlFieldBindings {
 
 export class UrlField implements ng.IComponentOptions {
   bindings: any = {
-    data: '=',
+    data: '<',
     context: '@?',
     label: '@',
     onAttach: '&',
-    ittItemForm: '<?'
+    ittItemForm: '<?',
+    onUpdate: '&?'
   };
   template: string = TEMPLATE;
   controller = UrlFieldController;
