@@ -1,5 +1,6 @@
 import { IEvent } from '../../../models';
 import { IEpisodeEditService, IItemForm } from '../../../interfaces';
+import { MIMES } from '../../../constants';
 
 const TEMPLATE = `
 <div class="field" ng-show="$ctrl.visibility">
@@ -31,6 +32,7 @@ class ProducerUploadFieldController implements IProducerUploadFieldBindings {
   showAssetPicker: boolean;
   showUploadButtons: boolean;
   showUploadField: boolean;
+  mimes: string;
   static $inject = ['selectService', 'episodeEdit'];
 
   constructor(public selectSerivce, public episodeEdit: IEpisodeEditService) {
@@ -50,6 +52,16 @@ class ProducerUploadFieldController implements IProducerUploadFieldBindings {
       this.validationForm.itemAsset &&
       this.validationForm.itemAsset.$invalid
     );
+  }
+
+  $onInit() {
+    if (MIMES[this.data.producerItemType]) {
+      this.mimes = MIMES[this.data.producerItemType];
+    } else {
+      this.mimes = MIMES['default'];
+    }
+
+    console.log('mimes what!', this.mimes);
   }
 
   replaceAsset() {

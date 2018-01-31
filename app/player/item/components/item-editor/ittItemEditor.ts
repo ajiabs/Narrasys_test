@@ -2,7 +2,7 @@
 
 
 import itemHtml from './item.html';
-import { EventTemplates, MIMES } from '../../../../constants';
+import { EventTemplates } from '../../../../constants';
 import { IModelSvc, ITimelineSvc } from '../../../../interfaces';
 import { IEvent, IScene } from '../../../../models';
 
@@ -115,12 +115,6 @@ class ItemEditorController implements IItemEditorBindings {
 
     this.sxsItemComponentFieldName = `${this.appState.product}-${this.item.producerItemType}-field`;
     this.uneditedItem = angular.copy(this.item);
-
-    if (MIMES[this.item.producerItemType]) {
-      this.mimes = MIMES[this.item.producerItemType];
-    } else {
-      this.mimes = MIMES.default;
-    }
   }
 
   userHasRole(role: string) {

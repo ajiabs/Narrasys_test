@@ -142,7 +142,6 @@ export interface ILangformFlags {
 export interface IEpisodeEditService {
   episodeLangForm: ILangformFlags;
   canAccess: boolean;
-  mimes: any;
   replaceAsset(): void;
   detachAsset(): void;
   attachChosenAsset(assetId: string, itemForm: IItemForm): void;
@@ -173,7 +172,6 @@ export class EpisodeEditService implements IEpisodeEditService {
     'de': false,
     'it': false
   };
-  mimes = MIMES;
   static Name = 'episodeEdit'; // tslint:disable-line
   static $inject = [
     '$timeout',

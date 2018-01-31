@@ -36,7 +36,7 @@
         container-id="{{$ctrl.episodeContainerId}}"
         ng-if="$ctrl.episodeEdit.canAccess"
         callback="$ctrl.assetUploaded(data)"
-        mime-types="{{$ctrl.episodeEdit.mimes['default']}}">
+        mime-types="{{$ctrl.mimes}}">
       </itt-asset-uploader>
 		</span>
 		<span ng-if="!$ctrl.showUploadField">

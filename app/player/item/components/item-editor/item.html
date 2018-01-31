@@ -443,7 +443,7 @@
               </np-template-select>
               <np-video-position-select
                 data="$ctrl.item"
-                on-update="$ctrl.resolveEvents()">
+                on-update="$ctrl.deriveEvent(true)">
               </np-video-position-select>
               <np-display-select
                 component-name="{{$ctrl.item.component_name}}"
@@ -698,7 +698,7 @@
       <button ng-if="
 			$ctrl.item._id != 'internal:editing' &&
 			!($ctrl.item._type == 'Scene' && $ctrl.item.start_time <= 0.01)
-		" ng-click="$ctrl.deleteEvent($ctrl.item._id)">Delete
+		" ng-click="$ctrl.episodeEdit.deleteEvent($ctrl.item._id)">Delete
       </button>
       <button ng-click="$ctrl.saveEvent()" ng-disabled="$ctrl.blockDoubleClicks || ittItemForm.$invalid">Save</button>
     </div>

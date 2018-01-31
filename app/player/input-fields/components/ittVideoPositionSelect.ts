@@ -8,7 +8,7 @@ import { IProducerInputFieldController } from '../input-fields.module';
 
 const TEMPLATE = `
 <div class="field" ng-if="$ctrl.selectService.getVisibility('videoPosition')">
-  <div class="label">Video Postion</div>
+  <div class="label">Video Position</div>
   <div class="input">
     <select
       ng-change="$ctrl.onUpdate()"
@@ -27,11 +27,9 @@ interface IVideoPositionSelectBindings extends IProducerInputFieldController {
 class VideoPositionSelectController implements IVideoPositionSelectBindings {
   data: IEvent;
   onUpdate: () => void;
-  static $inject = ['$rootScope', '$timeout', 'selectService'];
+  static $inject = ['selectService'];
 
-  constructor(public $rootScope: ng.IRootScopeService,
-              public $timeout: ng.ITimeoutService,
-              public selectService) {
+  constructor(public selectService) {
     //
   }
 }
