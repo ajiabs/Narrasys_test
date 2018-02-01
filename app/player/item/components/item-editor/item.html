@@ -32,6 +32,7 @@
           <np-producer-upload-field
             context="editor"
             label="File"
+            on-update="$ctrl.deriveEvent()"
             episode-container-id="{{$ctrl.episodeContainerId}}"
             item-form="$ctrl.itemForm"
             data="$ctrl.item">
@@ -67,6 +68,7 @@
           <np-producer-upload-field
             context="editor"
             label="Image"
+            on-update="$ctrl.deriveEvent()"
             episode-container-id="{{$ctrl.episodeContainerId}}"
             item-form="$ctrl.itemForm"
             data="$ctrl.item">
@@ -96,6 +98,7 @@
           <np-producer-upload-field
             context="producer"
             label="Image"
+            on-update="$ctrl.deriveEvent()"
             episode-container-id="{{$ctrl.episodeContainerId}}"
             validation-form="ittItemForm"
             item-form="$ctrl.itemForm"
@@ -192,6 +195,7 @@
               <np-producer-upload-field
                 context="producer"
                 label="Image"
+                on-update="$ctrl.deriveEvent()"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 validation-form="ittItemForm"
                 item-form="$ctrl.itemForm"
@@ -224,6 +228,7 @@
               </np-transcript-field>
               <np-producer-upload-field
                 context="producer"
+                on-update="$ctrl.deriveEvent()"
                 label="Speaker thumbnail"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 item-form="$ctrl.itemForm"
@@ -283,6 +288,7 @@
               <np-producer-upload-field
                 context="producer"
                 label="File"
+                on-update="$ctrl.deriveEvent()"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 validation-form="ittItemForm"
                 item-form="$ctrl.itemForm"
@@ -373,6 +379,7 @@
               <np-producer-upload-field
                 context="producer"
                 label="Image"
+                on-update="$ctrl.deriveEvent()"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 validation-form="ittItemForm"
                 item-form="$ctrl.itemForm"
