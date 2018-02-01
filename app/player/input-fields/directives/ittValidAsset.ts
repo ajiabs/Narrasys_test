@@ -1,11 +1,10 @@
 // @npUpgrade-inputFields-true
 import { EventTemplates } from '../../../constants';
-import { IPlugin } from '../../../models';
+import { IUpload } from '../../../models';
 
 /**
  * Created by githop on 7/12/16.
  */
-
 
 export class ValidAsset implements ng.IDirective {
   restrict: string = 'A';
@@ -13,25 +12,27 @@ export class ValidAsset implements ng.IDirective {
     ngModel: '^ngModel'
   };
   scope = {
-    item: '<',
-    componentName: '@'
+    item: '<'
   };
   bindToController = true;
   controller = class ValidAssetController implements ng.IComponentController {
     componentName: string;
-    item: IPlugin;
+    item: IUpload;
     ngModel: ng.INgModelController;
     constructor() {
       //
     }
 
-    $onChanges(changes: { componentName: ng.IChangesObject }) {
-      if (changes && changes.componentName && !changes.componentName.isFirstChange() && this.ngModel != null) {
-        this.handleNameChanges(changes.componentName.currentValue);
+    $onChanges(changes: { item: ng.IChangesObject }) {
+      if (changes && changes.item && this.ngModel != null) {
+        const { item } = changes;
+        const currentItem = item.currentValue;
+        const componentName = currentItem.component_name;
+        this.handleNameChanges(componentName, currentItem.asset);
       }
     }
 
-    private handleNameChanges(componentName) {
+    private handleNameChanges(componentName, asset) {
       switch (componentName) {
         case EventTemplates.FILE_TEMPLATE:
         case EventTemplates.IMAGE_PLAIN_TEMPLATE:
@@ -39,7 +40,7 @@ export class ValidAsset implements ng.IDirective {
         case EventTemplates.SLIDING_CAPTION:
         case EventTemplates.IMAGE_FILL_TEMPLATE:
         case EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE:
-          if (this.item.asset != null) {
+          if (asset != null) {
             this.ngModel.$setValidity('itemAsset', true);
           } else {
             this.ngModel.$setValidity('itemAsset', false);
