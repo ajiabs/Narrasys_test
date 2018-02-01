@@ -66,7 +66,11 @@ const TEMPLATE = `
 	</div>
 </div>
 <div style="position:relative;" ng-show="$ctrl.hasAnnotator()">
-	<np-input-i18n field="$ctrl.item.annotator" inputtype="input"></np-input-i18n>
+	<np-input-i18n
+	  on-field-change="$ctrl.onUpdate()"
+	  field="$ctrl.item.annotator"
+	  inputtype="input">
+</np-input-i18n>
 	<a style="position: absolute; top: 3px; right: 10px" ng-click="$ctrl.item.annotator={}">(x)</a>
 </div>
 `;
@@ -74,11 +78,13 @@ const TEMPLATE = `
 interface IAnnotatorAutocompleteBindings extends ng.IComponentController {
   annotators: any;
   item: IAnnotation;
+  onUpdate: () => void;
 }
 
 class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings {
   annotators: { [name: string]: IAnnotator };
   item: IAnnotation;
+  onUpdate: () => void;
   //
   ngModelController: ng.INgModelController;
   autoCompleting: boolean;
@@ -260,7 +266,8 @@ export class AnnotatorAutocomplete implements ng.IComponentOptions {
   };
   bindings: IComponentBindings = {
     annotators: '<',
-    item: '<'
+    item: '<',
+    onUpdate: '&'
   };
   template: string = TEMPLATE;
   controller = AnnotatorAutocompleteController;

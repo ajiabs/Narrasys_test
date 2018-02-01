@@ -31,7 +31,7 @@ export const MIMES: TMimes = {
   'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
   'file': 'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
   'default': 'image/*',
-  'image': 'image/png,image/jpg',
+  'image': 'image/png,image/jpg,image/jpeg',
   'transcripts': 'text/vtt,text/srt'
 };
 /* tslint:enable */

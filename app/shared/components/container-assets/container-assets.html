@@ -1,5 +1,8 @@
 <div ng-if="$ctrl.showParent">
-  <sxs-container-assets container-id="{{$ctrl.container.parent_id}}"></sxs-container-assets>
+  <sxs-container-assets
+    on-asset-select="$ctrl.assetClick($assetId)"
+    container-id="{{$ctrl.container.parent_id}}">
+  </sxs-container-assets>
 </div>
 <div class="containerAssets">
 	<div ng-if="$ctrl.appState.product != 'sxs' && $ctrl.container.parent_id && !$ctrl.showParent">

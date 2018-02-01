@@ -19,6 +19,7 @@ interface IProducerUploadFieldBindings extends ng.IComponentController {
   validationForm: ng.IFormController;
   itemForm: IItemForm;
   episodeContainerId: string;
+  onUpdate: () => void;
 }
 
 class ProducerUploadFieldController implements IProducerUploadFieldBindings {
@@ -28,6 +29,7 @@ class ProducerUploadFieldController implements IProducerUploadFieldBindings {
   validationForm: ng.IFormController;
   itemForm: IItemForm;
   episodeContainerId: string;
+  onUpdate: () => void;
   //
   showAssetPicker: boolean;
   showUploadButtons: boolean;
@@ -65,18 +67,27 @@ class ProducerUploadFieldController implements IProducerUploadFieldBindings {
   replaceAsset() {
     this.showUploadButtons = true;
     this.episodeEdit.replaceAsset();
+    this.onUpdate();
   }
 
   attachChosenAsset(assetId: string, itemform: IItemForm) {
     this.showAssetPicker = false;
     this.showUploadButtons = false;
     this.episodeEdit.attachChosenAsset(assetId, itemform);
+    this.onUpdate();
   }
 
   assetUploaded(assetId: string) {
     this.episodeEdit.assetUploaded(assetId);
     this.showUploadButtons = false;
     this.showUploadField = false;
+    this.onUpdate();
+  }
+
+  detachAsset() {
+    this.episodeEdit.detachAsset();
+    this.selectSerivce.onSelectChange(this.data, this.itemForm);
+    this.onUpdate();
   }
 }
 
@@ -91,7 +102,8 @@ export class ProducerUploadField implements ng.IComponentOptions {
     data: '<',
     validationForm: '<?',
     itemForm: '<',
-    episodeContainerId: '@'
+    episodeContainerId: '@',
+    onUpdate: '&?'
   };
   template: string = TEMPLATE;
   controller = ProducerUploadFieldController;

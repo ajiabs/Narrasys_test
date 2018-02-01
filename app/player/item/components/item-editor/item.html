@@ -202,7 +202,7 @@
                 component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
                 on-update="$ctrl.deriveEvent(true)"
-                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
+                flags="['required', 'stop', 'cosmetic']">
               </np-flags>
             </div>
             <div ng-switch-when="transcript">
@@ -214,6 +214,7 @@
               </np-time-field>
               <np-speaker-field
                 data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()"
                 annotators="$ctrl.annotators">
               </np-speaker-field>
               <np-transcript-field
@@ -252,6 +253,7 @@
               </np-template-select>
               <np-speaker-field
                 data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()"
                 annotators="$ctrl.annotators">
               </np-speaker-field>
               <np-flags
@@ -296,7 +298,7 @@
                 component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
                 on-update="$ctrl.deriveEvent(true)"
-                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
+                flags="['required', 'stop', 'cosmetic']">
               </np-flags>
             </div>
             <div ng-switch-when="image">
@@ -315,6 +317,7 @@
               <np-producer-upload-field
                 context="producer"
                 label="Image"
+                on-update="$ctrl.deriveEvent()"
                 episode-container-id="{{$ctrl.episodeContainerId}}"
                 validation-form="ittItemForm"
                 item-form="$ctrl.itemForm"
@@ -341,7 +344,7 @@
                 component-name="{{$ctrl.item.component_name}}"
                 item-form="$ctrl.itemForm"
                 on-update="$ctrl.deriveEvent(true)"
-                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
+                flags="['required', 'stop', 'cosmetic']">
               </np-flags>
             </div>
             <div ng-switch-when="question">

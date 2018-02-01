@@ -15,6 +15,7 @@ const TEMPLATE = `
     	ng-model="$ctrl.data.annotator"
     	ng-change="$ctrl.onUpdate()"
     	item="$ctrl.data"
+    	on-update="$ctrl.onUpdate()"
       annotators="$ctrl.annotators">
     </np-annotator-autocomplete>
 	</div>
