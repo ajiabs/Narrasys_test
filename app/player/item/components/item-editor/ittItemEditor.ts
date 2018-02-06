@@ -1,4 +1,4 @@
-// @npUpgrade-item-false
+// @npUpgrade-item-true
 
 
 import itemHtml from './item.html';
@@ -154,9 +154,10 @@ class ItemEditorController implements IItemEditorBindings {
 
   deriveEvent(doResolveEvents?: boolean | IEvent) {
     let _newEv;
-    _newEv = this.appState.editEvent;
     if (doResolveEvents != null && typeof doResolveEvents !== 'boolean') {
       _newEv = doResolveEvents;
+    } else {
+      _newEv = this.appState.editEvent;
     }
     const newEv = this.modelSvc.cache('event', _newEv);
     newEv.styles = this.selectService.handleEventItemFormUpdate(this.itemForm);
@@ -166,13 +167,42 @@ class ItemEditorController implements IItemEditorBindings {
         this.resolveEvents();
       }
     }
-    this.appState.editEvent = newEv;
-    this.appState.editEvent.renderTemplate = false;
+    return newEv;
+  }
+
+  onTemplateChange(componentName: string) {
+    this.item.component_name = componentName;
+    this.selectService.onSelectChange(this.item, this.itemForm);
+    this.updateEventTemplate(this.deriveEvent(this.item));
+  }
+
+  private updateEventTemplate(newEv: any) {
+    if (this.item instanceof IScene) {
+      this.updateLayoutTemplate(newEv);
+      this.updateItemTemplate();
+    } else {
+      this.updateItemTemplate();
+    }
+  }
+
+  private updateItemTemplate() {
+    this.item.renderTemplate = false;
     this.$timeout(() => {
-      this.appState.editEvent.renderTemplate = true;
-      this.appState.editEvent = angular.copy(newEv);
+      this.item.renderTemplate = true;
     });
   }
+
+  private updateLayoutTemplate(layout: any) {
+    this.appState.editEvent = layout;
+    this.appState.editEvent.renderTemplate = false;
+    this.$timeout(
+      () => {
+        this.appState.editEvent.renderTemplate = true;
+        this.appState.editEvent = angular.copy(layout);
+      },
+      10);
+  }
+
 
   private getCurrentScene(item: IEvent) {
     if (item._type === 'Scene') {

@@ -2,7 +2,7 @@
   <form name="ittItemForm" class="doValidate">
     <div ng-if="$ctrl.appState.product == 'sxs'" class="authoringFormScrollContainer">
       <!-- begin sxs -->
-      <np-time-field data="$ctrl.item" item-form="ittItemForm" on-time-change=""></np-time-field>
+      <np-time-field data="$ctrl.item" item-form="ittItemForm" on-update="$ctrl.deriveEvent(true)"></np-time-field>
       <!--<div-->
         <!--np-dynamic-editor-template-->
         <!--on-update="$ctrl.deriveEvent()"-->
@@ -189,7 +189,7 @@
               </np-description-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-producer-upload-field
@@ -218,7 +218,7 @@
               </np-time-field>
               <np-speaker-field
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent()"
+                on-update="$ctrl.deriveEvent(true)"
                 annotators="$ctrl.annotators">
               </np-speaker-field>
               <np-transcript-field
@@ -240,7 +240,7 @@
               <np-time-field
                 data="$ctrl.item"
                 item-form="ittItemForm"
-                on-update="$ctrl.resolveEvents()">
+                on-update="$ctrl.deriveEvent(true)">
               </np-time-field>
               <np-title-field
                 data="$ctrl.item"
@@ -253,12 +253,12 @@
               </np-annotation-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-speaker-field
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent()"
+                on-update="$ctrl.deriveEvent(true)"
                 annotators="$ctrl.annotators">
               </np-speaker-field>
               <np-flags
@@ -335,7 +335,7 @@
               </np-description-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select
@@ -447,11 +447,11 @@
               <np-time-field
                 data="$ctrl.item"
                 item-form="ittItemForm"
-                on-update="$ctrl.resolveEvents()">
+                on-update="$ctrl.deriveEvent(true)">
               </np-time-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-video-position-select
@@ -475,7 +475,7 @@
               <!--Template, Display, Flags-->
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select

@@ -14,7 +14,7 @@ const TEMPLATE = `
 		ng-model-options="$ctrl.modelOpts"
 	  class="input"
 	  field="$ctrl.data.description"
-	  on-field-change="$ctrl.onUpdate()"
+	  on-field-change="$ctrl.emitUpdate($field)"
 	  inputtype="textarea">
   </np-input-i18n>
 </div>
@@ -38,6 +38,11 @@ class DescriptionFieldController implements IDescriptionFieldBindings {
 
   get lang() {
     return this.appState.lang;
+  }
+
+  emitUpdate($field) {
+    this.data.description = $field;
+    this.onUpdate();
   }
 
   $onInit() {
