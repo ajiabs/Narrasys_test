@@ -18,3 +18,4 @@ export class DynamicEventTemplate implements ng.IDirective {
     elm.append(compiled);
   }
 }
+

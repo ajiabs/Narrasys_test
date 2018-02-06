@@ -772,12 +772,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       });
   };
 
-  var SANE_POST = function (path, data, _config?) {
-    const completeUrl = config.apiDataBaseUrl + path;
+  var SANE_POST = function (_path, data, _config?) {
+    const path = config.apiDataBaseUrl + _path;
     if (_config) {
-      return $http.post(completeUrl, data, _config);
+      return $http.post(path, data, _config);
     }
-    return $http.post(completeUrl, data);
+    return $http.post(path, data);
   };
 
   var SANE_PUT = function (path, data) {

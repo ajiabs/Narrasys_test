@@ -71,15 +71,9 @@ source maps in a separate directory. prod:watch will rebundle on file edits.
  client template in the database. 
     
     
-### Create a Release with <code>itt-releaser</code>
+### Create a Release with <code>ts-releaser</code>
 
 1. start on the branch where you intend to create the build; e.g. a feature branch or dev
-2. cd into <code>/utils/itt-releaser</code> and invoke index.js
-
-
-    node index.js
-
-    
-
+2. run <code>npm run release</code>
 3. Follow the prompts 
 4. Provide a diff between versions on github for review.

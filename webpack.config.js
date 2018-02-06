@@ -137,6 +137,9 @@ function configWp(env) {
           }
         }
       }),
+      new webpack.EnvironmentPlugin({
+        NODE_ENV: env,
+      }),
       env.dev ? new WebpackNotifierPlugin({alwaysNotify: true}) : undefined,
       env.prod ? new ExtractTextPlugin('[name].[contenthash].min.css') : undefined,
       env.prod ? new webpack.SourceMapDevToolPlugin({

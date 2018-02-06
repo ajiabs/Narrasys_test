@@ -7,10 +7,14 @@ export interface INpAppConfig {
   debugInBrowser: boolean;
 }
 
+const env = process.env.NODE_ENV;
+const url = env.prod
+  ? '//' + window.location.host
+  :'//np-dev.narrasys.com';
+
 export const config: INpAppConfig = {
   localStorageKey: 'storyToken',
-  // apiDataBaseUrl: '//' + window.location.host,
-  apiDataBaseUrl: '//np-dev.narrasys.com',
+  apiDataBaseUrl: url,
   youtube: {
     domain: '//gdata.youtube.com/',
     timeout: 5000

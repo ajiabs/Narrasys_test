@@ -82,7 +82,7 @@
 
       <div ng-if="$ctrl.container.addingContainer">
         <label>Name:&nbsp;
-          <input ng-model="$ctrl.container.newContainerTitle" type="text" autofocus>&nbsp;
+          <input ng-model="$ctrl.container.newContainerTitle" type="text" np-autofocus>&nbsp;
         </label>
         <button ng-click="$ctrl.container.addingContainer = false">Cancel</button>
         <button
@@ -110,7 +110,7 @@
 
       <div ng-if="$ctrl.container.addingContainer">
         <label>Name:&nbsp;
-          <input ng-model="$ctrl.container.newContainerTitle" type="text" autofocus>&nbsp;
+          <input ng-model="$ctrl.container.newContainerTitle" type="text" np-autofocus>&nbsp;
         </label>
         <button ng-click="$ctrl.container.addingContainer = false">Cancel</button>
         <button
@@ -135,7 +135,7 @@
       </div>
       <div ng-if="$ctrl.container.addingContainer">
         <label>Name:&nbsp;
-          <input ng-model="$ctrl.container.newContainerTitle" type="text" autofocus>&nbsp;
+          <input ng-model="$ctrl.container.newContainerTitle" type="text" np-autofocus>&nbsp;
         </label>
         <button ng-click="$ctrl.container.addingContainer = false">Cancel</button>
         <button ng-disabled="!$ctrl.container.newContainerTitle" ng-click="$ctrl.addContainer($ctrl.container)">Add</button>
@@ -147,7 +147,7 @@
 				<input
           ng-model="$ctrl.container.newContainerName"
           ng-init="$ctrl.container.newContainerName = $ctrl.container.name.en"
-          type="text" autofocus>&nbsp;
+          type="text" np-autofocus>&nbsp;
 			</label>
 			<button ng-click="$ctrl.container.editingContainer = false">Cancel</button>
 			<button ng-disabled="!$ctrl.container.newContainerName || $ctrl.container.newContainerName == $ctrl.container.name.en"

@@ -4,9 +4,9 @@
 import {IModelSvc, IDataSvc} from '../../../interfaces';
 import { UPDATE_MAGNET } from '../../../constants';
 import { config } from '../../../config';
-PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService', 'episodeTheme'];
+PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService', 'episodeTheme', 'episodeEdit'];
 
-export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService, episodeTheme) {
+export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService, episodeTheme, episodeEdit) {
   // console.log("playerController", $scope);
 
   $scope.episodeTheme = episodeTheme;
@@ -47,6 +47,11 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
       $scope.viewMode($routeParams.viewMode);
     });
   }
+
+  $scope.episodeEdit = episodeEdit;
+  //episodeLangFormdd
+  //episodeItemForm
+  //episodeDefaultLanguage
 
 
   // $scope.changeProducerEditLayer = function (newLayer) {
@@ -161,6 +166,9 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
         appState.videoControlsLocked = true;
       }
 
+      const episode = modelSvc.episodes[appState.episodeId];
+      setupEpisodeEditor(episode);
+
       if (appState.productLoadedAs === 'producer' && !(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
         // TODO redirect instead?
         appState.product = 'player';
@@ -176,6 +184,9 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
     document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
     if (modelSvc.episodes[appState.episodeId].master_asset_id) {
       timelineSvc.init(appState.episodeId);
+      const episode = modelSvc.episodes[appState.episodeId];
+      setupEpisodeEditor(episode);
+
     } else {
       // TODO add help screen for new users. For now, just pop the 'edit episode' pane:
       if (appState.product === 'producer') {
@@ -210,6 +221,10 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
   $scope.showIframeIOSOverlay = appState.isIframedIOS();
   $scope.iframeIOSOverlayHandler = iframeIOSOverlayHandler;
   $scope.calcNewWindowUrl = calcNewWindowUrl;
+
+  function setupEpisodeEditor(episode) {
+    $scope.defaultLanguage = episode.defaultLanguage;
+  }
 
   function calcNewWindowUrl() {
     const entityId = appState.narrativeId || appState.episodeId;

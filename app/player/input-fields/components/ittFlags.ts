@@ -1,4 +1,4 @@
-// @npUpgrade-inputFields-false
+// @npUpgrade-inputFields-true
 /**
  * Created by githop on 6/30/16.
  */
@@ -15,7 +15,7 @@ const TEMPLATE = `
         <label for="{{$ctrl._ids[flag]}}"></label>
         <input id="{{$ctrl._ids[flag]}}"
           type="checkbox"
-          itt-dynamic-model="'$ctrl.data.' + flag"
+          np-dynamic-model="'$ctrl.data.' + flag"
           ng-change="$ctrl.handleChange()"/>{{$ctrl._displays[flag]}}
       </span>
       <span ng-if="flag === 'invertColor'">
@@ -37,6 +37,7 @@ interface IFlagsBindings extends ng.IComponentController {
   data: IEvent;
   componentName: string;
   itemForm?: ng.IFormController;
+  onUpdate: () => void;
 }
 
 class FlagsController implements IFlagsBindings {
@@ -44,6 +45,7 @@ class FlagsController implements IFlagsBindings {
   data: IEvent;
   componentName: string;
   itemForm?: ng.IFormController;
+  onUpdate: () => void;
   _flags: any;
   _displays = {
     required: 'Required',
@@ -80,6 +82,7 @@ class FlagsController implements IFlagsBindings {
     if (this.data.hasOwnProperty('stop')) {
       this.selectService.onSelectChange(this.data, this.itemForm);
     }
+    this.emitUpdate();
   }
 
   setFlags(newVal, oldVal) {
@@ -114,11 +117,18 @@ class FlagsController implements IFlagsBindings {
           this.itemForm.color = 'Invert';
         }
       }
+      this.emitUpdate();
     }
   }
 
   private static _h1OrH2(url) {
     return (url === EventTemplates.HEADER_TWO_TEMPLATE || url === EventTemplates.HEADER_ONE_TEMPLATE);
+  }
+
+  private emitUpdate() {
+    this.$timeout(() => {
+      this.onUpdate();
+    });
   }
 
   private _isEditingItemForm() {
@@ -129,11 +139,12 @@ class FlagsController implements IFlagsBindings {
 
 export class Flags implements ng.IComponentOptions {
   bindings: any = {
-    flags: '=',
-    data: '=',
+    flags: '<',
+    data: '<',
     componentName: '@',
     //for the invertColor option
-    itemForm: '=?'
+    itemForm: '<?',
+    onUpdate: '&'
   };
   template: string = TEMPLATE;
   controller = FlagsController;
