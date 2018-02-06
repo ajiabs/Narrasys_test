@@ -202,7 +202,7 @@ class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings 
       this.filteredAnnotators = angular.copy(this.annotators);
       this.preselectedItem = -1;
     }
-
+    this.onUpdate();
   }
 
   hideAutocomplete() {

@@ -18,14 +18,13 @@ export class ValidAsset implements ng.IDirective {
   bindToController = true;
   controller = class ValidAssetController implements ng.IComponentController {
     componentName: string;
-    item: IUpload;
+    asset: {};
     ngModel: ng.INgModelController;
     constructor() {
       //
     }
 
     $onChanges(changes: { componentName: ng.IChangesObject, asset: ng.IChangesObject }) {
-      console.log('valid asset changes!', changes);
       if (changes && this.ngModel != null) {
         const { componentName, asset } = changes;
         let cmpName;
@@ -36,9 +35,6 @@ export class ValidAsset implements ng.IDirective {
         }
 
         this.handleNameChanges(cmpName, asset.currentValue);
-        // if (componentName.currentValue && asset.currentValue) {
-        //
-        // }
       }
     }
 
