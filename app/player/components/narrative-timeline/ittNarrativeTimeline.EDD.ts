@@ -7,19 +7,22 @@ import playerTimelineHtml from './player-timeline.html';
 
 
 
-
   export interface INPNarrativeTimeline {
+    // return {
     restrict: string;
     replace: boolean,
     template: string;
+    controller: NarrativeTimelineCtrl,
+    Name: string;
+    // };
   }
- 
-export class NarrativeTimelineCtrl implements /* ng.IDirective */INPNarrativeTimeline {
+  
+export class NarrativeTimelineCtrl implements INPNarrativeTimeline {
 
     restrict: string = 'A';
-    static Name = 'ittNarrativeTimelineCtrl'; // tslint:disable-line
     replace = true;
-
+    controller;
+    Name = 'NarrativeTimelineCtrl'; // tslint:disable-line
     // static $inject = ['$q', 'awsSvc'];
     static $inject = [
         '$scope',
@@ -123,4 +126,6 @@ export class NarrativeTimelineCtrl implements /* ng.IDirective */INPNarrativeTim
   }
 
 }
+
+// ittNarrativeTimeline.$inject = ['$routeParams', '$location', 'dataSvc', 'appState', 'authSvc', 'errorSvc'];
 

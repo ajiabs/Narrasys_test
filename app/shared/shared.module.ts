@@ -2,7 +2,9 @@ import authSvc from './services/authSvc/authSvc';
 import { AppState } from './services/appState';
 import awsSvc from './services/awsSvc';
 import errorSvc from './services/errorSvc';
-import imageResize from './services/imageResizeSvc';
+// changed from
+// import imageResize from './/services/imageResizeSvc';
+import {ImageResize} from './services/imageResizeSvc';
 import { ittUtils } from './services/ittUtils';
 import mockSvc from './services/mockSvc';
 import { UploadsService } from './services/uploadsService';
@@ -49,11 +51,13 @@ sharedTemplates.forEach((t: any) => {
 npSharedModule
   .service(AppState.Name, AppState)
   .service(UploadsService.Name, UploadsService)
+  // added as service...
+  .service(ImageResize.Name, ImageResize)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
   .factory('dataSvc', dataSvc)
   .factory('errorSvc', errorSvc)
-  .factory('imageResize', imageResize)
+  //.factory('imageResize', imageResize)
   .factory('ittUtils', ittUtils)
   .factory('mockSvc', mockSvc)
   .factory('modelSvc', modelSvc)

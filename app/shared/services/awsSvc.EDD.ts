@@ -16,7 +16,7 @@ export default function awsSvc($http, $q) {
   var COMPLETE = "complete";
   var svc = {};
   var awsCache = {
-    s3: {} 
+    s3: {}
   };
   var fiveMB = 1024 * 1024 * 5;
   var chunkSize = 0;

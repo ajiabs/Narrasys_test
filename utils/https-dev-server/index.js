@@ -7,7 +7,8 @@ const express = require('express'),
   path = require('path'),
   fs = require('fs'),
   // baseUrl = 'https://np-dev.narrasys.com',
-  baseUrl = 'http://localhost:3000',
+  baseUrl = 'https://np-dev.narrasys.com',
+  // baseUrl = 'http://localhost:3000',
   dir = path.resolve(__dirname, '../../tmp'),
   server = express();
 

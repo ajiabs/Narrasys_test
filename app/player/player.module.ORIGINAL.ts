@@ -1,7 +1,7 @@
 import { AnalyticsService } from './services/analytics/analytics.service';
 import { ValidationService } from './services/validation/validation.service';
 import selectService from './services/select/selectService';
-import { NarrativeTimelineCtrl} from './components/narrative-timeline/ittNarrativeTimeline';
+import ittNarrativeTimeline from './components/narrative-timeline/ittNarrativeTimeline';
 import { ittPlayerContainer } from './components/player-container/ittPlayerContainer';
 import PlayerController from './components/player-container/PlayerController';
 import ittSearchPanel from './components/search-panel/ittSearchPanel';
@@ -51,7 +51,7 @@ const services = [
 
 npPlayerModule
   .factory('selectService', selectService)
-  .directive( NarrativeTimelineCtrl.Name ,  NarrativeTimelineCtrl.factory()/* ittNarrativeTimeline */)
+  .directive('ittNarrativeTimeline', ittNarrativeTimeline)
   .directive('ittPlayerContainer', ittPlayerContainer)
   .controller('PlayerController', PlayerController)
   .directive('ittSearchPanel', ittSearchPanel)

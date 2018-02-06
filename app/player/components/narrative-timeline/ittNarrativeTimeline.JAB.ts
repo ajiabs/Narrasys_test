@@ -5,66 +5,28 @@ import { IDataSvc } from '../../../interfaces';
 import { INarrative } from '../../../models';
 import playerTimelineHtml from './player-timeline.html';
 
+export class NarrativeTimelineCtrl implements ittNarrativeTimeline {
+  // static $inject = [
+  //   '$scope',
+  //   '$routeParams',
+  //   '$location',
+  //   'dataSvc',
+  //   'appState',
+  //   'authSvc',
+  //   'errorSvc'
+  // ];
 
-
-
-  export interface INPNarrativeTimeline {
-    restrict: string;
-    replace: boolean,
-    template: string;
-  }
- 
-export class NarrativeTimelineCtrl implements /* ng.IDirective */INPNarrativeTimeline {
-
-    restrict: string = 'A';
-    static Name = 'ittNarrativeTimelineCtrl'; // tslint:disable-line
-    replace = true;
-
-    // static $inject = ['$q', 'awsSvc'];
-    static $inject = [
-        '$scope',
-        '$routeParams',
-        '$location',
-        'dataSvc',
-        'appState',
-        'authSvc',
-        'errorSvc'
-    ];
-
-    template: `<span>
-	<div ng-if="showPlayer">
-    <itt-player-container></itt-player-container>
-  </div>
-</span>`;
-
-    constructor(
-        public $scope: ng.IScope,
-        private $routeParams,
-        private $location: ng.ILocationService,
-        private dataSvc: IDataSvc,
-        private appState,
-        private authSvc,
-        private errorSvc
-    ) {
-    }
-
-    private narrative;
-    private showPlayer: boolean;
-    private socialShareInfo: {};
-    private enableSocialSharing: boolean;
-    
-
-
-
-
-  static factory(): ng.IDirectiveFactory {
-    const directiveInstance =
-      ($scope, $routeParams, $location, dataSvc, appState, authSvc, errorSvc) => new NarrativeTimelineCtrl($scope, $routeParams, $location, dataSvc, appState, authSvc, errorSvc);
-    directiveInstance.$inject = NarrativeTimelineCtrl.$inject;
-    return directiveInstance;
+  constructor(
+    // public $scope: ng.IScope,
+    private $routeParams,
+    private $location: ng.ILocationService,
+    private dataSvc: IDataSvc,
+    private appState,
+    private authSvc,
+    private errorSvc) {
   }
 
-  $onInit() {
+  // $onInit() {
   this.disableSocialShareOnDev();
   // this.appState.init();
   console.log('narrative timeline init!');
@@ -116,11 +78,22 @@ export class NarrativeTimelineCtrl implements /* ng.IDirective */INPNarrativeTim
         });
       }
     });
-   }
+  // }
 
+  
   private disableSocialShareOnDev() {
     this.enableSocialSharing = !(/api-dev|np-dev|demo/.test(this.$location.host()));
   }
 
 }
 
+// ittNarrativeTimeline.$inject = ['$routeParams', '$location', 'dataSvc', 'appState', 'authSvc', 'errorSvc'];
+
+export interface ittNarrativeTimeline {
+  // return {
+  restrict: 'A',
+  replace: true,
+  template: playerTimelineHtml,
+  controller: NarrativeTimelineCtrl
+  // };
+}
