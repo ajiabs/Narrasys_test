@@ -46,7 +46,7 @@ export function handleBuildAnswer(
 
 export function tryWebpackTest(releaseType: string): Promise<void> {
   if (releaseType !== 'DEVELOPMENT') {
-    return pSpawn('yarn', ['test'])
+    return pSpawn('npm', ['run','test'])
       .catch((e: any) => Promise.reject('Unit Test Suite Failed!'));
   }
   return prompt(questions.unitTests[0])
@@ -55,7 +55,7 @@ export function tryWebpackTest(releaseType: string): Promise<void> {
       if (!confirm) {
         return void 0;
       } else {
-        return pSpawn('yarn', ['test']);
+        return pSpawn('npm', ['run','test']);
       }
     })
     .catch((e: any) => Promise.reject('Unit Test Suite Failed!'));
@@ -64,7 +64,7 @@ export function tryWebpackTest(releaseType: string): Promise<void> {
 /* attempt a webpack build */
 export function tryWebpackBuild(): Promise<void> {
   inform('attempting webpack build');
-  return pSpawn('yarn', ['prod']);
+  return pSpawn('npm', ['run','prod']);
 }
 
 /*

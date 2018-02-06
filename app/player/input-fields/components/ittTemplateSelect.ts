@@ -29,7 +29,9 @@ interface ITemplateSelectBindings extends ng.IComponentController {
   data: IEvent | IEpisode;
   itemForm?: ng.IFormController;
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
+  onUpdate: ($ev: { $componentName: string }) => string;
 }
+
 
 class TemplateSelectController implements ITemplateSelectBindings {
   data: IEvent | IEpisode;
@@ -38,10 +40,15 @@ class TemplateSelectController implements ITemplateSelectBindings {
   isEpisode: boolean;
   context: 'episode' | 'event' = 'event';
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
+  onUpdate: ($ev: { $componentName: string }) => string;
   static $inject = ['selectService', 'modelSvc'];
   constructor(public selectService, public modelSvc: IModelSvc) {
     //
   }
+
+  // $onChanges(changes: { data: ng.IChangesObject }) {
+  //   console.log('changes!', changes);
+  // }
 
   $onInit() {
     this.isAnnotation = this.data instanceof IAnnotation;
@@ -72,7 +79,10 @@ class TemplateSelectController implements ITemplateSelectBindings {
   }
 
   onSelectChange(item: IEvent, form: ng.IFormController) {
-    this.selectService.onSelectChange(this.modelSvc.deriveEvent(item), form);
+    const newEvent = this.modelSvc.deriveEvent(createInstance(item._type, item));
+    // send the newly selected component name to ItemEditor and allow it to
+    // to handle the rest.
+    this.onUpdate({ $componentName: newEvent.component_name });
   }
 
   onEpisodeTemplateChange() {
@@ -89,9 +99,10 @@ class TemplateSelectController implements ITemplateSelectBindings {
 
 export class TemplateSelect implements ng.IComponentOptions {
   bindings: any = {
-    data: '=',
-    itemForm: '=?',
-    onEpisodeEdit: '&'
+    data: '<',
+    itemForm: '<?',
+    onEpisodeEdit: '&',
+    onUpdate: '&'
   };
   template: string = TEMPLATE;
   controller = TemplateSelectController;

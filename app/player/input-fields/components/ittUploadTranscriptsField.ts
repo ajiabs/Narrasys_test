@@ -2,7 +2,7 @@
 import { IModelSvc, Partial } from '../../../interfaces';
 import { IDataSvc } from '../../../shared/services/dataSvc/dataSvc';
 import { existy } from '../../../shared/services/ittUtils';
-
+import { MIMES } from '../../../constants';
 /**
  * Created by githop on 1/31/17.
  */
@@ -77,9 +77,8 @@ class UploadTranscriptsController implements ng.IComponentController {
   transcripts: Partial<ITranscriptPayload> = {};
   private _maxDurParam: string = 'max_subtitle_duration';
   private files: FileList | null;
-  static $inject = ['MIMES', 'modelSvc', 'dataSvc', 'timelineSvc'];
+  static $inject = ['modelSvc', 'dataSvc', 'timelineSvc'];
   constructor(
-    public MIMES,
     public modelSvc: IModelSvc,
     public dataSvc: IDataSvc,
     public timelineSvc) {
@@ -87,7 +86,7 @@ class UploadTranscriptsController implements ng.IComponentController {
   }
 
   $onInit() {
-    this.mimes = this.MIMES.transcripts;
+    this.mimes = MIMES.transcripts;
   }
 
   cancelUpload() {

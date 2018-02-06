@@ -3,12 +3,12 @@
  NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
  so they get logged properly: don't draw plain hrefs
  */
-import { IValidationSvc } from '../../../interfaces';
+import { IValidationSvc, IEpisodeEditService } from '../../../interfaces';
 import { EventTemplates } from '../../../constants';
 import { config } from '../../../config';
-ittItem.$inject = ['$http', '$timeout', '$interval', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc'];
+ittItem.$inject = ['$http', '$timeout', '$interval', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc', 'episodeEdit'];
 
-export default function ittItem($http, $timeout, $interval, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService, validationSvc: IValidationSvc) {
+export default function ittItem($http, $timeout, $interval, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService, validationSvc: IValidationSvc, episodeEdit: IEpisodeEditService) {
   return {
     restrict: 'A',
     replace: false,
@@ -150,18 +150,7 @@ export default function ittItem($http, $timeout, $interval, authSvc, appState, a
       };
 
       scope.editItem = function () {
-        appState.editEvent = scope.item;
-        appState.editEvent.templateOpts = selectService.getTemplates(scope.item.producerItemType);
-        //second arg to onSelectChange is the itemForm, which is created in ittItemEditor and
-        //we do not have access here. Note that itemForm is only really used in background Images.
-        //hack fix is to pass in an empty object, and selectService will add the necessary itemForm
-        //props.
-
-        var itemForm = selectService.setupItemForm(appState.editEvent.styles, 'item');
-
-        selectService.onSelectChange(appState.editEvent, itemForm);
-        appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-        appState.videoControlsLocked = true;
+        episodeEdit.editEvent(scope.item);
       };
 
       scope.captureInteraction = function () {

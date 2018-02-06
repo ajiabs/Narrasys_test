@@ -1,6 +1,6 @@
 import ittItem from './components/ittItem';
 import ItemController from './components/ItemController';
-import ittItemEditor from './components/item-editor/ittItemEditor';
+import { ItemEditor } from './components/item-editor/ittItemEditor';
 import ittItemDetailModal from './components/item-detail-modal/ittItemDetailModal';
 import ittIframe from './components/iframe/ittIframe';
 import { FileTemplate } from './templates/file/file.template';
@@ -68,7 +68,7 @@ const templateDirectives = [
 npItemModule
   .directive('ittItem', ittItem)
   .controller('ItemController', ItemController)
-  .directive('ittItemEditor', ittItemEditor)
+  .component(ItemEditor.Name, new ItemEditor())
   .directive('ittItemDetailModal', ittItemDetailModal)
   .directive('ittIframe', ittIframe);
 

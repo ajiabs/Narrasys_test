@@ -1,13 +1,137 @@
 <div class="itemEdit authoringForm">
-	<form name="ittItemForm" class="doValidate">
-		<div ng-if="appState.product == 'sxs'" class="authoringFormScrollContainer">
-			<!-- begin sxs -->
-			<itt-time-field></itt-time-field>
-			<div np-dynamic-event-template component-name="{{sxsItemComponentFieldName}}"></div>
-			<!-- end sxs -->
-		</div>
+  <form name="ittItemForm" class="doValidate">
+    <div ng-if="$ctrl.appState.product == 'sxs'" class="authoringFormScrollContainer">
+      <!-- begin sxs -->
+      <np-time-field data="$ctrl.item" item-form="ittItemForm" on-update="$ctrl.deriveEvent(true)"></np-time-field>
+      <!--<div-->
+        <!--np-dynamic-editor-template-->
+        <!--on-update="$ctrl.deriveEvent()"-->
+        <!--component-name="{{$ctrl.sxsItemComponentFieldName}}">-->
+      <!--</div>-->
+      <div ng-switch on="$ctrl.item.component_name">
+        <div ng-switch-when="item-sxs-annotation">
+          <span class="eventIcon icon-comment"></span>
+          <div class="field">
+            <div class="label">Comment
+            </div>
+            <np-input-i18n
+              class="input"
+              field="$ctrl.item.annotation"
+              on-field-change="$ctrl.deriveEvent()"
+              np-autofocus
+              inputtype="textarea">
+            </np-input-i18n>
+          </div>
+        </div>
+        <div ng-switch-when="item-sxs-file">
+          <span class="eventIcon icon-file"></span>
+          <np-title-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-producer-upload-field
+            context="editor"
+            label="File"
+            on-update="$ctrl.deriveEvent()"
+            episode-container-id="{{$ctrl.episodeContainerId}}"
+            item-form="$ctrl.itemForm"
+            data="$ctrl.item">
+          </np-producer-upload-field>
+          <np-description-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-description-field>
+        </div>
+        <div ng-switch-when="item-sxs-link">
+          <span class="eventIcon icon-link"></span>
+          <np-title-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-url-field
+            data="$ctrl.item"
+            context="editor"
+            on-update="$ctrl.deriveEvent()"
+            itt-item-form="ittItemForm">
+          </np-url-field>
+          <np-description-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-description-field>
+        </div>
+        <div ng-switch-when="item-sxs-image">
+          <span class="eventIcon icon-image"></span>
+          <np-title-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-producer-upload-field
+            context="editor"
+            label="Image"
+            on-update="$ctrl.deriveEvent()"
+            episode-container-id="{{$ctrl.episodeContainerId}}"
+            item-form="$ctrl.itemForm"
+            data="$ctrl.item">
+          </np-producer-upload-field>
+          <np-description-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-description-field>
+        </div>
+        <div ng-switch-when="item-sxs-question">
+          <span class="eventIcon icon-question"></span>
+          <np-title-field
+            data="$ctrl.item"
+            do-validate="true"
+            itt-item-form="ittItemForm"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-question-text-field
+            data="$ctrl.item"
+            do-validate="false"
+            on-update="$ctrl.deriveEvent()"
+            itt-item-form="ittItemForm">
+          </np-question-text-field>
+          <itt-question-type-select
+            data="$ctrl.item">
+          </itt-question-type-select>
+          <np-producer-upload-field
+            context="producer"
+            label="Image"
+            on-update="$ctrl.deriveEvent()"
+            episode-container-id="{{$ctrl.episodeContainerId}}"
+            validation-form="ittItemForm"
+            item-form="$ctrl.itemForm"
+            data="$ctrl.item">
+          </np-producer-upload-field>
+          <np-question-options
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-question-options>
+        </div>
+        <div ng-switch-when="item-sxs-video">
+          <span class="eventIcon icon-video"></span>
+          <np-url-field
+            data="$ctrl.item"
+            label="Video url"
+            on-update="$ctrl.deriveEvent()"
+            context="editor-video"
+            itt-item-form="ittItemForm">
+          </np-url-field>
+          <np-title-field
+            data="$ctrl.item"
+            on-update="$ctrl.deriveEvent()">
+          </np-title-field>
+          <np-description-field
+            on-upate="$ctrl.deriveEvent()"
+            data="item">
+          </np-description-field>
+        </div>
+      </div>
+      <!-- end sxs -->
+    </div>
 
-		<!--i plan to tidy this up after it's fully implemented but the basic layout is as follows:
+    <!--i plan to tidy this up after it's fully implemented but the basic layout is as follows:
         each tab contains an ng-switch set to switch on item.producerItemType.
         <div itt-tabs>
             <div itt-tab>
@@ -21,256 +145,576 @@
             </div>
         </div>
         -->
-		<div ng-if="appState.product == 'producer'">
-			<div itt-tabs class="ittTabs">
-				<!--ITEM/SCENE TAB BEGIN-->
-				<div itt-tab class="ittTab"
-					 ng-if="selectService.showTab(item.producerItemType, 'Item')"
-					 title="{{item.producerItemType | capitalize}}">
-					<!--current lang select-->
-					<label ng-if="languages.length > 1" style="float:right; padding-right: 24px" for="itemLangSelect">Current Language
-                        <select
-                            id="itemLangSelect"
-                            size="1"
-                            ng-model="appState.lang"
-                            ng-change="forcePreview()"
-                            ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
-                        </select>
-					</label>
+    <div ng-if="$ctrl.appState.product == 'producer'">
+      <div itt-tabs class="ittTabs">
+        <!--ITEM/SCENE TAB BEGIN-->
+        <div itt-tab class="ittTab"
+             ng-if="$ctrl.selectService.showTab($ctrl.item.producerItemType, 'Item')"
+             title="{{$ctrl.item.producerItemType | capitalize}}">
+          <!--current lang select-->
+          <label ng-if="$ctrl.languages.length > 1" style="float:right; padding-right: 24px" for="itemLangSelect">Current
+            Language
+            <select
+              id="itemLangSelect"
+              size="1"
+              ng-model="$ctrl.appState.lang"
+              ng-change="$ctrl.forcePreview()"
+              ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in $ctrl.languages">
+            </select>
+          </label>
 
-					<div ng-switch on="item.producerItemType">
-						<div ng-switch-when="link">
-							<!--Time, Title, URL, Description, Template, Image, Flags-->
-							<!--these are impure component directives that depend inherited scope from item-->
-							<itt-time-field></itt-time-field>
-							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
-							<np-url-field data="item" itt-item-form="ittItemForm"></np-url-field>
-							<itt-description-field data="item"></itt-description-field>
-							<np-template-select data="item" item-form="itemForm"></np-template-select>
-							<itt-image-field></itt-image-field>
-							<np-flags
-                data="item"
-                component-name="{{item.component_name}}"
-                item-form="itemForm"
-                flags="['required', 'stop', 'cosmetic']"></np-flags>
-						</div>
-						<div ng-switch-when="transcript">
-							<!--time, speaker, transcript-->
-							<itt-time-field></itt-time-field>
-							<itt-speaker-field></itt-speaker-field>
-							<itt-transcript-field data="item" itt-item-form="ittItemForm"></itt-transcript-field>
-							<itt-speaker-thumb-field></itt-speaker-thumb-field>
-						</div>
-						<div ng-switch-when="annotation">
-							<!--Time, Annotation Text, Template, Speaker, Title, Flags-->
-							<itt-time-field></itt-time-field>
-							<itt-title-field data="item"></itt-title-field>
-							<itt-annotation-field data="item" itt-item-form="ittItemForm"></itt-annotation-field>
-							<np-template-select data="item" item-form="itemForm"></np-template-select>
-							<itt-speaker-field></itt-speaker-field>
-							<np-flags
-                data="item"
-                component-name="{{item.component_name}}"
-                item-form="itemForm"
-                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']"></np-flags>
-						</div>
-						<!--scenes are layouts; hidden in this tab-->
-						<!--<div ng-switch-when="scene">-->
-						<!--</div>-->
-						<div ng-switch-when="file">
-							<!--Time, Title, File, Description, Template, Flags-->
-							<itt-time-field></itt-time-field>
-							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
-							<itt-file-field></itt-file-field>
-							<!--<itt-template-select data="item"></itt-template-select>-->
-							<itt-description-field data="item"></itt-description-field>
-							<np-flags
-                data="item"
-                component-name="{{item.component_name}}"
-                item-form="itemForm"
-                flags="['required', 'stop', 'cosmetic']"></np-flags>
-						</div>
-						<div ng-switch-when="image">
-							<!--Time, Title, Image, Description, Template, Display, Position, Orientation, Flags-->
-							<itt-time-field></itt-time-field>
-							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
-							<itt-image-field></itt-image-field>
-							<itt-description-field data="item"></itt-description-field>
-							<np-template-select data="item" item-form="itemForm"></np-template-select>
-							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
-							<!--TODO reccommend moving orientation into layout tab-->
-							<np-flags
-                data="item"
-                component-name="{{item.component_name}}"
-                item-form="itemForm"
-                flags="['required', 'stop', 'cosmetic']"></np-flags>
-						</div>
-						<div ng-switch-when="question">
-							<!--Time, Question type, Title, Question Text, Image, Answers, Feedback when correct, Feedback when incorrect-->
-							<span class="eventIcon icon-question"></span>
-							<itt-time-field></itt-time-field>
-							<!--investigate log error regarding undefined input for itt-title-->
-							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
-							<itt-question-text-field data="item" do-validate="false" itt-item-form="ittItemForm"></itt-question-text-field>
-							<itt-question-type-select data="item"></itt-question-type-select>
-							<itt-image-field></itt-image-field>
-							<itt-question-options></itt-question-options>
-						</div>
-						<div ng-switch-when="chapter">
-							<!--Time, Title, Description-->
-							<itt-time-field></itt-time-field>
-							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
-							<itt-description-field data="item"></itt-description-field>
-						</div>
-						<div ng-switch-when="video">
-							<h4>{{item.producerItemType}}</h4>
-						</div>
-						<div ng-switch-default>
-							<h4>Default!</h4>
-						</div>
-					</div>
-					<!--ITEM TAB END-->
-				</div>
+          <div ng-switch on="$ctrl.item.producerItemType">
+            <div ng-switch-when="link">
+              <!--Time, Title, URL, Description, Template, Image, Flags-->
+              <!--these are impure component directives that depend inherited scope from item-->
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-time-field>
+              <np-title-field
+                do-validate="true"
+                data="$ctrl.item"
+                itt-item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent()">
+              </np-title-field>
+              <np-url-field
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()"
+                itt-item-form="ittItemForm">
+              </np-url-field>
+              <np-description-field
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()">
+              </np-description-field>
+              <np-template-select
+                data="$ctrl.item"
+                on-update="$ctrl.onTemplateChange($componentName)"
+                item-form="$ctrl.itemForm">
+              </np-template-select>
+              <np-producer-upload-field
+                context="producer"
+                label="Image"
+                on-update="$ctrl.deriveEvent()"
+                episode-container-id="{{$ctrl.episodeContainerId}}"
+                validation-form="ittItemForm"
+                item-form="$ctrl.itemForm"
+                data="$ctrl.item">
+              </np-producer-upload-field>
+              <np-flags
+                data="$ctrl.item"
+                component-name="{{$ctrl.item.component_name}}"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['required', 'stop', 'cosmetic']">
+              </np-flags>
+            </div>
+            <div ng-switch-when="transcript">
+              <!--time, speaker, transcript-->
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-time-field>
+              <np-speaker-field
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent(true)"
+                annotators="$ctrl.annotators">
+              </np-speaker-field>
+              <np-transcript-field
+                data="$ctrl.item"
+                itt-item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent()">
+              </np-transcript-field>
+              <np-producer-upload-field
+                context="producer"
+                on-update="$ctrl.deriveEvent()"
+                label="Speaker thumbnail"
+                episode-container-id="{{$ctrl.episodeContainerId}}"
+                item-form="$ctrl.itemForm"
+                data="$ctrl.item">
+              </np-producer-upload-field>
+            </div>
+            <div ng-switch-when="annotation">
+              <!--Time, title, Annotation Text, Template, Speaker, Title, Flags-->
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-time-field>
+              <np-title-field
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()">
+              </np-title-field>
+              <np-annotation-field
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent($item)"
+                itt-item-form="ittItemForm">
+              </np-annotation-field>
+              <np-template-select
+                data="$ctrl.item"
+                on-update="$ctrl.onTemplateChange($componentName)"
+                item-form="$ctrl.itemForm">
+              </np-template-select>
+              <np-speaker-field
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent(true)"
+                annotators="$ctrl.annotators">
+              </np-speaker-field>
+              <np-flags
+                data="$ctrl.item"
+                component-name="{{$ctrl.item.component_name}}"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
+              </np-flags>
+            </div>
+            <!--scenes are layouts; hidden in this tab-->
+            <!--<div ng-switch-when="scene">-->
+            <!--</div>-->
+            <div ng-switch-when="file">
+              <!--Time, Title, File, Description, Template, Flags-->
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-time-field>
+              <np-title-field
+                do-validate="true"
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()"
+                itt-item-form="ittItemForm">
+              </np-title-field>
+              <np-producer-upload-field
+                context="producer"
+                label="File"
+                on-update="$ctrl.deriveEvent()"
+                episode-container-id="{{$ctrl.episodeContainerId}}"
+                validation-form="ittItemForm"
+                item-form="$ctrl.itemForm"
+                data="$ctrl.item">
+              </np-producer-upload-field>
+              <!--<itt-template-select data="$ctrl.item"></itt-template-select>-->
+              <np-description-field
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()">
+              </np-description-field>
+              <np-flags
+                data="$ctrl.item"
+                component-name="{{$ctrl.item.component_name}}"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['required', 'stop', 'cosmetic']">
+              </np-flags>
+            </div>
+            <div ng-switch-when="image">
+              <!--Time, Title, Image, Description, Template, Display, Position, Orientation, Flags-->
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-time-field>
+              <np-title-field
+                do-validate="true"
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()"
+                itt-item-form="ittItemForm">
+              </np-title-field>
+              <np-producer-upload-field
+                context="producer"
+                label="Image"
+                on-update="$ctrl.deriveEvent()"
+                episode-container-id="{{$ctrl.episodeContainerId}}"
+                validation-form="ittItemForm"
+                item-form="$ctrl.itemForm"
+                data="$ctrl.item">
+              </np-producer-upload-field>
+              <np-description-field
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()">
+              </np-description-field>
+              <np-template-select
+                data="$ctrl.item"
+                on-update="$ctrl.onTemplateChange($componentName)"
+                item-form="$ctrl.itemForm">
+              </np-template-select>
+              <np-display-select
+                data="$ctrl.item"
+                component-name="{{$ctrl.item.component_name}}"
+                on-update="$ctrl.deriveEvent(true)"
+                item-form="$ctrl.itemForm">
+              </np-display-select>
+              <!--TODO reccommend moving orientation into layout tab-->
+              <np-flags
+                data="$ctrl.item"
+                component-name="{{$ctrl.item.component_name}}"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['required', 'stop', 'cosmetic']">
+              </np-flags>
+            </div>
+            <div ng-switch-when="question">
+              <!--Time, Question type, Title, Question Text, Image, Answers, Feedback when correct, Feedback when incorrect-->
+              <span class="eventIcon icon-question"></span>
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm" on-update="$ctrl.deriveEvent(true)">
+              </np-time-field>
+              <!--investigate log error regarding undefined input for itt-title-->
+              <np-title-field
+                data="$ctrl.item"
+                do-validate="true"
+                itt-item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent()">
+              </np-title-field>
+              <np-question-text-field
+                data="$ctrl.item"
+                do-validate="false"
+                on-update="$ctrl.deriveEvent()"
+                itt-item-form="ittItemForm">
+              </np-question-text-field>
+              <itt-question-type-select
+                data="$ctrl.item">
+              </itt-question-type-select>
+              <np-producer-upload-field
+                context="producer"
+                label="Image"
+                on-update="$ctrl.deriveEvent()"
+                episode-container-id="{{$ctrl.episodeContainerId}}"
+                validation-form="ittItemForm"
+                item-form="$ctrl.itemForm"
+                data="$ctrl.item">
+              </np-producer-upload-field>
+              <np-question-options
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()">
+              </np-question-options>
+            </div>
+            <div ng-switch-when="chapter">
+              <!--Time, Title, Description-->
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-time-field>
+              <np-title-field
+                do-validate="true"
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent()"
+                itt-item-form="ittItemForm">
+              </np-title-field>
+              <np-description-field
+                on-update="$ctrl.deriveEvent()"
+                data="$ctrl.item">
+              </np-description-field>
+            </div>
+            <div ng-switch-when="video">
+              <h4>{{$ctrl.item.producerItemType}}</h4>
+            </div>
+            <div ng-switch-default>
+              <h4>Default!</h4>
+            </div>
+          </div>
+          <!--ITEM TAB END-->
+        </div>
 
-				<!--STYLE TAB BEGIN-->
-				<div itt-tab class="ittTab"
-					 ng-if="selectService.showTab(item.producerItemType, 'Style')"
-					 title="{{item.producerItemType === 'scene' ? 'Layout' : 'Style'}}">
-					<div ng-switch on="item.producerItemType">
-						<!--hidden across the board-->
-						<div ng-switch-when="link">
-							<itt-display-select></itt-display-select>
-						</div>
-						<!--hidden accross the board-->
-						<div ng-switch-when="transcript">
-							<!--Template, Speaker Thumb, timestamp, highlight-->
-							<np-template-select data="item" item-form="itemForm"></np-template-select>
+        <!--STYLE TAB BEGIN-->
+        <div itt-tab class="ittTab"
+             ng-if="$ctrl.selectService.showTab($ctrl.item.producerItemType, 'Style')"
+             title="{{$ctrl.item.producerItemType === 'scene' ? 'Layout' : 'Style'}}">
+          <div ng-switch on="$ctrl.item.producerItemType">
+            <!--hidden across the board-->
+            <div ng-switch-when="link">
+              <!--<itt-display-select></itt-display-select>-->
+            </div>
+            <!--hidden accross the board-->
+            <div ng-switch-when="transcript">
+              <!--Template, Speaker Thumb, timestamp, highlight-->
+              <!--<np-template-select data="$ctrl.item" item-form="itemForm"></np-template-select>-->
 
-						</div>
-						<div ng-switch-when="annotation">
-							<!--Display-->
-							<itt-display-select></itt-display-select>
-						</div>
-						<div ng-switch-when="scene">
-							<!--time, template, position, display-->
-							<itt-time-field></itt-time-field>
-							<np-template-select data="item" item-form="itemForm"></np-template-select>
-							<itt-video-position-select data="item"></itt-video-position-select>
-							<itt-display-select data="item"></itt-display-select>
-						</div>
-						<!--file hidden in style tab-->
-						<!--<div ng-switch-when="file">-->
-						<!--</div>-->
-						<!--image style tab hidden for all roles-->
-						<!--<div ng-switch-when="image">-->
-						<!--</div>-->
-						<div ng-switch-when="question">
-							<!--Template, Display, Flags-->
-							<np-template-select data="item" item-form="itemForm"></np-template-select>
-							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
-							<np-flags
-                data="item"
-                component-name="{{item.component_name}}"
-                item-form="itemForm"
-                flags="['required', 'stop', 'cosmetic']"></np-flags>
-						</div>
-						<div ng-switch-when="chapter">
-							<h4>{{item.producerItemType}}</h4>
-						</div>
-						<div ng-switch-when="video">
-							<h4>{{item.producerItemType}}</h4>
-						</div>
-						<div ng-switch-default>
-							<h4>Default!</h4>
-						</div>
-					</div>
-					<!--STYLE TAB END-->
-				</div>
+            </div>
+            <div ng-switch-when="annotation">
+              <!--Display-->
+              <np-display-select
+                component-name="{{$ctrl.item.component_name}}"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)"
+                data="$ctrl.item">
+              </np-display-select>
+            </div>
+            <div ng-switch-when="scene">
+              <!--time, template, position, display-->
+              <np-time-field
+                data="$ctrl.item"
+                item-form="ittItemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-time-field>
+              <np-template-select
+                data="$ctrl.item"
+                on-update="$ctrl.onTemplateChange($componentName)"
+                item-form="$ctrl.itemForm">
+              </np-template-select>
+              <np-video-position-select
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-video-position-select>
+              <np-display-select
+                component-name="{{$ctrl.item.component_name}}"
+                on-update="$ctrl.deriveEvent(true)"
+                item-form="$ctrl.itemForm"
+                data="$ctrl.item">
+              </np-display-select>
+            </div>
+            <!--file hidden in style tab-->
+            <!--<div ng-switch-when="file">-->
+            <!--</div>-->
+            <!--image style tab hidden for all roles-->
+            <!--<div ng-switch-when="image">-->
+            <!--</div>-->
+            <div ng-switch-when="question">
+              <!--Template, Display, Flags-->
+              <np-template-select
+                data="$ctrl.item"
+                on-update="$ctrl.onTemplateChange($componentName)"
+                item-form="$ctrl.itemForm">
+              </np-template-select>
+              <np-display-select
+                component-name="{{$ctrl.item.component_name}}"
+                data="$ctrl.item"
+                on-update="$ctrl.deriveEvent(true)"
+                item-form="$ctrl.itemForm">
+              </np-display-select>
+              <np-flags
+                data="$ctrl.item"
+                component-name="{{$ctrl.item.component_name}}"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)"
+                flags="['stop', 'cosmetic', 'chapter_marker', 'invertColor']">
+              </np-flags>
+            </div>
+            <div ng-switch-when="chapter">
+              <h4>{{$ctrl.item.producerItemType}}</h4>
+            </div>
+            <div ng-switch-when="video">
+              <h4>{{$ctrl.item.producerItemType}}</h4>
+            </div>
+            <div ng-switch-default>
+              <h4>Default!</h4>
+            </div>
+          </div>
+          <!--STYLE TAB END-->
+        </div>
 
-				<!--CUSTOMIZE TAB BEGIN-->
-				<div itt-tab class="ittTab"
-					 ng-if="selectService.showTab(item.producerItemType, 'Customize')"
-					 title="Customize">
-					<div ng-switch on="item.producerItemType">
-						<div ng-switch-when="link">
-							<!--Typography	Color	Timestamp	Highlight	Transition-->
-							<itt-typography-select></itt-typography-select>
-							<itt-color-select></itt-color-select>
-							<itt-timestamp-select></itt-timestamp-select>
-							<itt-highlight-select></itt-highlight-select>
-							<itt-transition-select></itt-transition-select>
-						</div>
-						<div ng-switch-when="transcript">
-							<!--Typography,	Color,	Timestamp,	Highlight,	Transition-->
-							<itt-typography-select></itt-typography-select>
-							<itt-color-select></itt-color-select>
-							<itt-timestamp-select></itt-timestamp-select>
-							<itt-highlight-select></itt-highlight-select>
-							<itt-transition-select></itt-transition-select>
-						</div>
-						<div ng-switch-when="annotation">
-							<!--Typography, Color, Timestamp, Highlight, Transition-->
-							<itt-typography-select></itt-typography-select>
-							<itt-color-select></itt-color-select>
-							<itt-timestamp-select></itt-timestamp-select>
-							<itt-highlight-select></itt-highlight-select>
-							<itt-transition-select></itt-transition-select>
-						</div>
-						<div ng-switch-when="scene">
-							<!--typography, color, timestamp, highlight, transition-->
-							<itt-typography-select></itt-typography-select>
-							<itt-color-select></itt-color-select>
-							<itt-timestamp-select></itt-timestamp-select>
-							<itt-highlight-select></itt-highlight-select>
-							<itt-transition-select></itt-transition-select>
-						</div>
-						<div ng-switch-when="file">
-							<!--Typography, Color, Timestamp, Highlight, Transition-->
-							<itt-typography-select></itt-typography-select>
-							<itt-color-select></itt-color-select>
-							<itt-timestamp-select></itt-timestamp-select>
-							<itt-highlight-select></itt-highlight-select>
-							<itt-transition-select></itt-transition-select>
-						</div>
-						<div ng-switch-when="image">
-							<!--Typography, Color, Timestamp, Highlight, Transition-->
-							<itt-typography-select></itt-typography-select>
-							<itt-color-select></itt-color-select>
-							<itt-timestamp-select></itt-timestamp-select>
-							<itt-highlight-select></itt-highlight-select>
-							<itt-transition-select></itt-transition-select>
-						</div>
-						<div ng-switch-when="question">
-							<!--Typography	Color	Timestamp	Highlight	Transition-->
-							<itt-typography-select></itt-typography-select>
-							<itt-color-select></itt-color-select>
-							<itt-timestamp-select></itt-timestamp-select>
-							<itt-highlight-select></itt-highlight-select>
-							<itt-transition-select></itt-transition-select>
-						</div>
-						<div ng-switch-when="chapter">
-							<h4>{{item.producerItemType}}</h4>
-						</div>
-						<div ng-switch-when="video">
-							<h4>{{item.producerItemType}}</h4>
-						</div>
-						<div ng-switch-default>
-							<h4>Default!</h4>
-						</div>
-					</div>
-					<!--CUSTOMIZE TAB END-->
-				</div>
-			</div>
-		</div>
-		<div class="ittTabFoot">
-			<a ng-click="cancelEdit()">Cancel</a> &nbsp; &nbsp;
-			<button ng-if="
-			item._id != 'internal:editing' &&
-			!(item._type == 'Scene' && item.start_time <= 0.01)
-		" ng-click="deleteEvent(item._id)">Delete
-			</button>
-			<button ng-click="saveEvent()" ng-disabled="blockDoubleClicks || ittItemForm.$invalid">Save</button>
-		</div>
-	</form>
+        <!--CUSTOMIZE TAB BEGIN-->
+        <div itt-tab class="ittTab"
+             ng-if="$ctrl.selectService.showTab($ctrl.item.producerItemType, 'Customize')"
+             title="Customize">
+          <div ng-switch on="$ctrl.item.producerItemType">
+            <div ng-switch-when="link">
+              <!--Typography	Color	Timestamp	Highlight	Transition-->
+              <np-typography-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-typography-select>
+              <np-color-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-color-select>
+              <np-timestamp-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-timestamp-select>
+              <np-highlight-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-highlight-select>
+              <np-transition-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-transition-select>
+            </div>
+            <div ng-switch-when="transcript">
+              <!--Typography,	Color,	Timestamp,	Highlight,	Transition-->
+              <np-typography-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-typography-select>
+              <np-color-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-color-select>
+              <np-timestamp-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-timestamp-select>
+              <np-highlight-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-highlight-select>
+              <np-transition-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-transition-select>
+            </div>
+            <div ng-switch-when="annotation">
+              <!--Typography, Color, Timestamp, Highlight, Transition-->
+              <np-typography-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-typography-select>
+              <np-color-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-color-select>
+              <np-timestamp-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-timestamp-select>
+              <np-highlight-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-highlight-select>
+              <np-transition-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-transition-select>
+            </div>
+            <div ng-switch-when="scene">
+              <!--typography, color, timestamp, highlight, transition-->
+              <np-typography-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-typography-select>
+              <np-color-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-color-select>
+              <np-timestamp-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-timestamp-select>
+              <np-highlight-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-highlight-select>
+              <np-transition-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-transition-select>
+            </div>
+            <div ng-switch-when="file">
+              <!--Typography, Color, Timestamp, Highlight, Transition-->
+              <np-typography-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-typography-select>
+              <np-color-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-color-select>
+              <np-timestamp-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-timestamp-select>
+              <np-highlight-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-highlight-select>
+              <np-transition-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-transition-select>
+            </div>
+            <div ng-switch-when="image">
+              <!--Typography, Color, Timestamp, Highlight, Transition-->
+              <np-typography-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-typography-select>
+              <np-color-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-color-select>
+              <np-timestamp-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-timestamp-select>
+              <np-highlight-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-highlight-select>
+              <np-transition-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-transition-select>
+            </div>
+            <div ng-switch-when="question">
+              <!--Typography	Color	Timestamp	Highlight	Transition-->
+              <np-typography-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-typography-select>
+              <np-color-select
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-color-select>
+              <np-timestamp-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-timestamp-select>
+              <np-highlight-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-highlight-select>
+              <np-transition-select
+                data="$ctrl.item"
+                item-form="$ctrl.itemForm"
+                on-update="$ctrl.deriveEvent(true)">
+              </np-transition-select>
+            </div>
+            <div ng-switch-when="chapter">
+              <h4>{{$ctrl.item.producerItemType}}</h4>
+            </div>
+            <div ng-switch-when="video">
+              <h4>{{$ctrl.item.producerItemType}}</h4>
+            </div>
+            <div ng-switch-default>
+              <h4>Default!</h4>
+            </div>
+          </div>
+          <!--CUSTOMIZE TAB END-->
+        </div>
+      </div>
+    </div>
+    <div class="ittTabFoot">
+      <a ng-click="$ctrl.cancelEdit()">Cancel</a> &nbsp; &nbsp;
+      <button ng-if="
+			$ctrl.item._id != 'internal:editing' &&
+			!($ctrl.item._type == 'Scene' && $ctrl.item.start_time <= 0.01)
+		" ng-click="$ctrl.episodeEdit.deleteEvent($ctrl.item._id)">Delete
+      </button>
+      <button ng-click="$ctrl.saveEvent()" ng-disabled="$ctrl.blockDoubleClicks || ittItemForm.$invalid">Save</button>
+    </div>
+  </form>
 
 </div>

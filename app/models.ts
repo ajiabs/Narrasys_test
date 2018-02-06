@@ -1,10 +1,11 @@
-import { IAnnotators, ILangForm, ILangformKeys } from './interfaces';
+import { IAnnotators, ILangForm, ILangformKeys, IMasterAssetVideoObject } from './interfaces';
 
 
 import {
   EventTemplates, TAnnotationItemNames, TFileItemNames, TImageItemNames, TLayoutNames, TLinkItemNames,
   TSocialTagTypes
 } from './constants';
+
 /**
  * Created by githop on 5/1/17.
  */
@@ -23,6 +24,7 @@ export class NpComponentTemplateDirective implements ng.IDirective {
   restrict: string = 'A';
   static Name; // tslint:disable-line
   static $inject = [];
+
   static factory(): ng.IDirectiveFactory {
     const instance = (...args) => new NpComponentTemplateDirective(...args);
     instance.$inject = NpComponentTemplateDirective.$inject;
@@ -30,8 +32,11 @@ export class NpComponentTemplateDirective implements ng.IDirective {
   }
 }
 
-export class IStyle extends UIAsset { }
-export class ILayout extends UIAsset { }
+export class IStyle extends UIAsset {
+}
+
+export class ILayout extends UIAsset {
+}
 
 export class ITemplateImage {
   src: string;
@@ -85,6 +90,43 @@ export class ILayoutTemplate extends ITemplate {
   url: string;
 }
 
+export class IMasterAsset {
+  _id: string;
+  _type: string;
+  container_id: string;
+  user_id: string;
+  filename: string;
+  original_filename: string;
+  extension: string;
+  content_type: string;
+  size: number;
+  name: ILangForm;
+  description: ILangForm;
+  url: string;
+  episodes_count: number;
+  episode_poster_frames_count: number;
+  links_count: number;
+  annotations_count: number;
+  narratives_count: number;
+  timelines_count: number;
+  uploads_count: number;
+  plugins_count: number;
+  tags: string[];
+  alternate_urls: string[];
+  you_tube_url: string | null;
+  frame_rate: string;
+  frame_rate_n: number;
+  frame_rate_d: number;
+  start_time: string;
+  duration: number;
+  width: number;
+  height: number;
+  urls:  IMasterAssetVideoObject;
+  mediaSrcArr: string[];
+  cssBgUrl: string;
+  display_name: string;
+}
+
 export class IEpisode {
   _id: string;
   annotators: IAnnotators;
@@ -92,14 +134,16 @@ export class IEpisode {
   children: any[];
   container_id: string;
   created_at: Date;
-  defaultLanguage: ILangformKeys;
+  defaultLanguage: ILangformKeys | boolean;
   description: ILangForm;
   display_description: string;
   display_title: string;
   items: NEvent[];
-  languages: {code: string, default: boolean}[];
-  masterAsset: IAsset;
+  languages: { code: string, default: boolean }[];
+  masterAsset: IMasterAsset;
   master_asset_id: string;
+  _master_asset_was_changed?: boolean;
+  replacingMasterAsset?: boolean;
   parent_id: string;
   scenes: IScene[];
   status: string;
@@ -111,6 +155,10 @@ export class IEpisode {
   template?: IEpisodeTemplate;
   title: ILangForm;
   updated_at: Date;
+  poster?: IAsset;
+  poster_frame_id?: string;
+  swap?: any;
+
   get producerItemType(): string {
     return 'episode';
   }
@@ -282,12 +330,20 @@ export class IEvent {
   template_id: string;
   layout_id: string;
   style_id: string;
+  styles: string[];
   layouts: string[] = ['inline'];
   component_name?: string;
   cur_episode_id?: string;
   renderTemplate?: boolean = true;
-  //group ??
-  //event_category ??
+  producerItemType: string;
+  asset?: IAsset;
+  asset_id?: string;
+  link_image_id?: string;
+  annotation_image_id: string;
+  sxs?: any;
+  removedAssets?: string[];
+  validationMessage?: string;
+  invalid_end_time?: boolean;
 
   setFuture(): void {
     this.state = 'isFuture';
@@ -323,13 +379,14 @@ export class ILink extends IEvent {
   url: string;
   display_title?: string;
   display_description?: string;
-  styles?: string[];
+  styles: string[];
   showInlineDetail?: boolean;
   //relations
   link_image_id: string;
   url_status?: ILinkStatus;
   isVideoUrl: boolean;
   mixedContent?: boolean;
+
   get producerItemType() {
     return 'link';
   }
@@ -340,7 +397,7 @@ export class ILink extends IEvent {
 export class IAnnotation extends IEvent {
   type: 'Annotation';
   _type: 'Annotation';
-  annotator: ILangForm;
+  annotator: { name };
   annotation: ILangForm;
   chapter_marker: boolean = false;
   //belongs_to annotation image;
@@ -365,6 +422,7 @@ export class IBookmark extends IEvent {
 export class IChapter extends IEvent {
   type: 'Chapter';
   _type: 'Chapter';
+
   get producerItemType() {
     return 'chapter';
   }
@@ -376,12 +434,20 @@ export class IImage extends IEvent {
   component_name?: TImageItemNames;
 }
 
-class IPluginData {
-  correctFeedback: ILangForm;
-  distractors: { index: number, text: string }[];
-  incorrectFeedback: ILangForm;
-  questionText: ILangForm;
-  questionType: string;
+export class IPluginData {
+  hasBeenAnswered: boolean;
+  correctfeedback: ILangForm;
+  selectedDistractor: number;
+  answer_counts: any;
+  distractors: {
+    index: number;
+    text: ILangForm | string;
+    correct?: boolean;
+    selected?: boolean;
+  }[];
+  incorrectfeedback: ILangForm;
+  questiontext: ILangForm;
+  questiontype: string;
 }
 
 export class IPlugin extends IEvent {
@@ -393,6 +459,7 @@ export class IPlugin extends IEvent {
     _version: number
     _plugin: IPluginData;
   };
+
   get producerItemType() {
     if (this.component_name && /question/.test(this.component_name)) {
       return 'question';
@@ -407,6 +474,7 @@ export class IScene extends IEvent {
   cur_episode_id: string;
   scene_id: string;
   component_name?: TLayoutNames;
+
   get producerItemType() {
     return 'scene';
   }
@@ -422,6 +490,7 @@ export class IUpload extends IEvent {
   _type: 'Upload';
   asset_id: string;
   component_name?: TFileItemNames;
+
   get producerItemType() {
     if (this.component_name) {
       if (this.component_name === EventTemplates.FILE_TEMPLATE) {
@@ -452,8 +521,10 @@ type TInstance =
   | 'LayoutTemplate'
   | 'ItemTemplate'
   | 'Layout'
-  | 'Style';
-export function createInstance<T>(type: TInstance, data: any): T {
+  | 'Style'
+  | 'MasterAsset';
+
+export function createInstance<T extends NRecord>(type: string, data: any) {
   let model;
   switch (type) {
     case 'Link':
@@ -497,6 +568,13 @@ export function createInstance<T>(type: TInstance, data: any): T {
       break;
     case 'Episode':
       model = new IEpisode();
+      Object.assign(model, data);
+      if (data.masterAsset) {
+        model.masterAsset = Object.assign(new IMasterAsset(), data.masterAsset);
+      }
+      return model;
+    case 'MasterAsset':
+      model = new IMasterAsset();
       break;
     case 'Container':
       model = new IContainer();
@@ -543,9 +621,9 @@ export type NEvent = IEvent
   | IUpload;
 
 export type NRecord = NEvent
-   | INarrative
-   | IAsset
-   | ICustomer
-   | ITimeline
-   | IEpisode
-   | IContainer;
+  | INarrative
+  | IAsset
+  | ICustomer
+  | ITimeline
+  | IEpisode
+  | IContainer;

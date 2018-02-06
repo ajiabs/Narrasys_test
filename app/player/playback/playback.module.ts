@@ -7,7 +7,6 @@ import './html5/html5.module';
 import './youtube/youtube.module';
 import './kaltura/kaltura.module';
 import './wistia/wistia.module';
-import '../../shared/shared.module';
 
 const npPlaybackModule = angular.module('np.playback', [
   'np.html5',

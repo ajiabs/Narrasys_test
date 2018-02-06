@@ -1,2 +1,5 @@
-<input ng-if="inputtype=='input'" ng-model="field[appState.lang]" name="{{textangularname}}" ng-required="doValidate">
-<text-angular ng-if="inputtype=='textarea'" name="{{textangularname}}" ng-required="doValidate" ng-model="field[appState.lang]" ta-paste="sanitizePastedHtml($html)" ta-default-wrap="span" ng-blur="trim()"></text-angular>
+<input ng-change="onFieldChange()" ng-if="inputtype=='input'" ng-model="field[appState.lang]" name="{{textangularname}}"
+       ng-required="doValidate">
+<text-angular ng-change="onFieldChange()" ng-if="inputtype=='textarea'" name="{{textangularname}}"
+              ng-required="doValidate" ng-model="field[appState.lang]" ta-paste="sanitizePastedHtml($html)"
+              ta-default-wrap="span" ng-blur="trim()"></text-angular>

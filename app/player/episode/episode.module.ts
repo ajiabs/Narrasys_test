@@ -1,5 +1,5 @@
 import ittEpisode from './components/episode/ittEpisode';
-import ittEpisodeEditor from './components/episode-editor/ittEpisodeEditor';
+import ittEpisodeEditor, { EpisodeEditor } from './components/episode-editor/ittEpisodeEditor';
 import { EpisodeTheme } from './services/episodeTheme.service';
 import { EpisodeEditService } from './services/episodeEdit.service';
 import { Copyright } from './components/copyright/npCopyright';
@@ -13,7 +13,8 @@ const services = [
 
 const components = [
   Copyright,
-  EpisodeFooter
+  EpisodeFooter,
+  EpisodeEditor
 ];
 
 services.forEach((service) => {
@@ -25,7 +26,7 @@ components.forEach((cmp) => {
 });
 
 npEpisodeModule
-  .directive('ittEpisode', ittEpisode)
-  .directive('ittEpisodeEditor', ittEpisodeEditor);
+  .directive('ittEpisode', ittEpisode);
+  // .directive('ittEpisodeEditor', ittEpisodeEditor);
 
 export default npEpisodeModule;

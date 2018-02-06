@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 38, Needs Upgrade: 84, 31% complete
+  ### Upgraded Files: 67, Needs Upgrade: 51, 56% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -84,43 +84,37 @@ Needs Upgrade:
 * PlayerController.ts
 * ittTab.ts
 * selectService.ts
-### inputFields - :x:
-Completed: 4,
-    Needs Upgrade: 29,
-    total: 33,
-    percent complete: 12%
+### inputFields - :white_check_mark:
+Completed: 29,
+    Needs Upgrade: 0,
+    total: 29,
+    percent complete: 100%
 
 Completed:
-* ittUploadTranscriptsField.ts
-* ittTemplateSelect.ts
-* ittVideoPositionSelect.ts
-* npUrlField.ts
-
-Needs Upgrade:
 * autofocus.ts
 * ittValidAsset.ts
-* ittShowFocus.ts
 * ittValidUrl.ts
 * ittValidPathslug.ts
 * ittValidEpisodeUrl.ts
 * ittDynamicModel.ts
 * ittAnnotationField.ts
+* ittUploadTranscriptsField.ts
 * sxsAnnotatorAutocomplete.ts
+* ittTemplateSelect.ts
 * sxsInputI18n.ts
 * ittSpeakerField.ts
 * ittHighlightSelect.ts
+* ittVideoPositionSelect.ts
 * ittTitleField.ts
 * ittDisplaySelect.ts
-* ittFileField.ts
 * sxsInputTime.ts
 * ittLanguageSelect.ts
 * sxsAddContent.ts
 * ittLanguageFlags.ts
 * ittTranscriptField.ts
-* ittImageField.ts
 * ittDescriptionField.ts
 * ittTransitionSelect.ts
-* ittSpeakerThumbField.ts
+* npUrlField.ts
 * ittTimestampSelect.ts
 * ittColorSelect.ts
 * ittTypographySelect.ts
@@ -151,17 +145,19 @@ Needs Upgrade:
 * ittEpisodeEditor.ts
 * ittEpisode.ts
 ### question - :x:
-Completed: 0,
-    Needs Upgrade: 6,
+Completed: 3,
+    Needs Upgrade: 3,
     total: 6,
-    percent complete: 0%
+    percent complete: 50%
+
+Completed:
+* ittMcQuestion.ts
+* ittQuestionTextField.ts
+* ittQuestionOptions.ts
 
 Needs Upgrade:
-* ittQuestionTextField.ts
 * ittFlotChart.ts
-* ittQuestionOptions.ts
 * ittQuestionTypeSelect.ts
-* ittMcQuestion.ts
 * questionAnswersSvc.ts
 ### html5 - :x:
 Completed: 0,
@@ -217,16 +213,18 @@ Needs Upgrade:
 * playbackService.ts
 * playerManagerCommons.ts
 ### item - :x:
-Completed: 0,
-    Needs Upgrade: 5,
+Completed: 1,
+    Needs Upgrade: 4,
     total: 5,
-    percent complete: 0%
+    percent complete: 20%
+
+Completed:
+* ittItemEditor.ts
 
 Needs Upgrade:
 * ittIframe.ts
 * ItemController.ts
 * ittItem.ts
-* ittItemEditor.ts
 * ittItemDetailModal.ts
 ### timeline - :x:
 Completed: 0,

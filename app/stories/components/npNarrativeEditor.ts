@@ -75,7 +75,7 @@ const TEMPLATE = `
     <label for="nSupportUrl">Support Url
       <itt-validation-tip ng-if="nEditForm.supportUrl.$invalid" text="Not a valid URL"></itt-validation-tip>
     </label>
-    <input id="nSupportUrl" type="text" name="supportUrl" itt-valid-url placeholder="link for support"
+    <input id="nSupportUrl" type="text" name="supportUrl" np-valid-url placeholder="link for support"
            ng-model="$ctrl.narrative.support_url"/>
     <div class="narrative-flags">
       <div>

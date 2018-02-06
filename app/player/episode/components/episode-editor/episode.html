@@ -1,6 +1,6 @@
 <div class="itemEdit authoringForm">
   <form name="ittEpisodeForm" class="doValidate">
-    <div ng-if="appState.product == 'producer'">
+    <div ng-if="$ctrl.appState.product == 'producer'">
       <!-- <span class="eventIcon icon-episode"></span> -->
 
       <div class="ittTabs" itt-tabs>
@@ -9,36 +9,46 @@
         <div class="ittTab" itt-tab title="Episode">
           <!-- begin episode content tab -->
 
-          <div class="field" ng-hide="!userHasRole('admin')">
+          <div class="field" ng-hide="!$ctrl.isAdmin">
             <div class="label">Master asset type</div>
             <div class="input">
-              <select size="1" ng-model="masterAssetType">
+              <select size="1" ng-model="$ctrl.masterAssetType">
                 <option value="Video">Native Video</option>
                 <option value="WebUrl">Youtube / Kaltura / Wistia</option>
               </select>
             </div>
           </div>
-          <div class="field" ng-if="masterAssetType == 'Video' && userHasRole('admin')">
+          <div class="field" ng-if="$ctrl.masterAssetType == 'Video' && $ctrl.isAdmin">
             <div class="label">Video</div>
             <div class="input" np-upload-masterasset-template></div>
           </div>
 
           <np-url-field
             label="Video URL"
-            ng-if="masterAssetType === 'WebUrl'"
-            data="::masterAsset.mediaSrcArr[0]"
+            ng-if="$ctrl.masterAssetType === 'WebUrl'"
+            data="::$ctrl.masterAsset.mediaSrcArr[0]"
             context="episode"
-            on-attach="attachMediaSrc($url)">
+            on-attach="$ctrl.attachMediaSrc($url)">
           </np-url-field>
 
-          <div class="field" ng-if="showmessage">
-            <div class="input" ng-bind-html="showmessage"></div>
+          <div class="field" ng-if="$ctrl.showmessage">
+            <div class="input" ng-bind-html="$ctrl.showmessage"></div>
           </div>
-          <itt-title-field data="episode" model-opts="{ debounce: 500 }" do-validate="true" itt-item-form="ittEpisodeForm"></itt-title-field>
-          <itt-description-field data="episode" model-opts="{debounce: 50}"></itt-description-field>
+          <np-title-field
+            data="$ctrl.episode"
+            model-opts="{ debounce: 500 }"
+            do-validate="true"
+            itt-item-form="ittEpisodeForm"
+            on-update="$ctrl.onTitleOrDescriptionChange()">
+          </np-title-field>
 
+          <np-description-field
+            data="$ctrl.episode"
+            model-opts="{ debounce: 50 }"
+            on-update="$ctrl.onTitleOrDescriptionChange()">
+          </np-description-field>
 
-          <div class="field" ng-if="userHasRole('admin')">
+          <div class="field" ng-if="$ctrl.isAdmin">
             <div class="label">Poster image
             </div>
             <div class="input" np-upload-poster-template>
@@ -48,63 +58,79 @@
           <div class="field">
             <div class="label">Status</div>
             <div class="input">
-              <select size="1" ng-model="episode.status">
+              <select size="1" ng-model="$ctrl.episode.status">
                 <option value="Published">Published</option>
                 <option value="Unpublished">Unpublished</option>
               </select>
             </div>
           </div>
 
-          <itt-language-flags></itt-language-flags>
-          <itt-language-select
-            ng-if="languageCount > 1"
-            data="episode"
-            lang-form="langForm">
-          </itt-language-select>
-          <div class="field" ng-if="episode.languages.length > 1">
+          <np-language-flags
+            lang-form="$ctrl.langForm"
+            on-langflag-change="$ctrl.onLangFlagChange()">
+          </np-language-flags>
+          <np-language-select
+            ng-if="$ctrl.languageCount > 1"
+            data="$ctrl.episode"
+            on-select-change="$ctrl.onLangFlagChange()"
+            lang-form="$ctrl.episodeEdit.episodeLangForm">
+          </np-language-select>
+          <div class="field" ng-if="$ctrl.episode.languages.length > 1">
             <div class="label">Current Language</div>
             <div class="input">
-              <select size="1" ng-model="appState.lang" ng-change="forcePreview()"
-                      ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
+              <select size="1" ng-model="$ctrl.appState.lang" ng-change="$ctrl.forcePreview()"
+                      ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in $ctrl.episode.languages">
               </select>
             </div>
           </div>
 
-          <div class="field" ng-if="userHasRole('admin') && episode.languages.length > 1">
+          <div class="field" ng-if="$ctrl.isAdmin && $ctrl.episode.languages.length > 1">
             <div class="label">Translations</div>
-            <div class="input" ng-if="doCheckForTranslations == null">
-              {{translationMessage(episode.languages)}}
-              <button ng-click="beginBackgroundTranslations(episode._id)">Begin translation</button>
+            <div class="input" ng-if="$ctrl.doCheckForTranslations == null">
+              {{$ctrl.translationMessage($ctrl.episode.languages)}}
+              <button ng-click="$ctrl.beginBackgroundTranslations($ctrl.episode._id)">Begin translation</button>
             </div>
-            <div ng-if="doCheckForTranslations === true">
-              {{afterTranslationAttempt}}
+            <div ng-if="$ctrl.doCheckForTranslations === true">
+              {{$ctrl.afterTranslationAttempt}}
             </div>
           </div>
 
           <itt-upload-transcripts
-            ng-if="episode.master_asset_id && !episode._master_asset_was_changed  && (userHasRole('admin') || userHasRole('customer admin'))"
-            episode-id="{{episode._id}}">
+            ng-if="$ctrl.episode.master_asset_id && !$ctrl.episode._master_asset_was_changed  && ($ctrl.isAdmin || $ctrl.isCustomerAdmin)"
+            episode-id="{{$ctrl.episode._id}}">
           </itt-upload-transcripts>
 
           <!-- end episode content tab -->
         </div>
         <div class="ittTab" itt-tab title="Style">
           <!-- begin styles tab -->
-          <np-template-select data="episode" on-episode-edit="updateEpisodeTemplate($data)"></np-template-select>
-          <!--<itt-typography-select></itt-typography-select>-->
-          <!--<itt-color-select></itt-color-select>-->
-          <itt-timestamp-select></itt-timestamp-select>
-          <itt-highlight-select></itt-highlight-select>
-          <itt-transition-select></itt-transition-select>
+          <np-template-select
+            data="$ctrl.episode"
+            on-episode-edit="$ctrl.updateEpisodeTemplate($data)">
+          </np-template-select>
+          <np-timestamp-select
+            data="$ctrl.episode"
+            item-form="$ctrl.itemForm"
+            on-update="$ctrl.updateItemForm()">
+          </np-timestamp-select>
+          <np-highlight-select
+            data="$ctrl.episode"
+            item-form="$ctrl.itemForm"
+            on-update="$ctrl.updateItemForm()">
+          </np-highlight-select>
+          <np-transition-select
+            data="$ctrl.episode"
+            item-form="$ctrl.itemForm"
+            on-update="$ctrl.updateItemForm()">
+          </np-transition-select>
           <!-- end styles tab -->
         </div>
         <!-- end of tabset -->
       </div>
     </div>
     <div class="ittTabFoot">
-      <a ng-click="cancelEdit()">Cancel</a> &nbsp; &nbsp;
-
-      <button ng-click="saveEpisode()" ng-disabled="blockDoubleClicks || ittEpisodeForm.$invalid">Save</button>
+      <a ng-click="$ctrl.cancelEpisodeEdit()">Cancel</a> &nbsp; &nbsp;
+      <button ng-click="$ctrl.saveEpisode()" ng-disabled="ittEpisodeForm.$invalid">Save</button>
     </div>
   </form>
 </div>

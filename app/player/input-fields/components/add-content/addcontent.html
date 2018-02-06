@@ -5,7 +5,7 @@
 
 	<div ng-if="appState.product == 'producer'" class="editButtonPanel">
 		<a class="button button-episode" ng-click="editEpisode()">Edit episode</a>
-		<a class="button button-scene" ng-if="playbackService.getMetaProp('time') > 0  && playbackService.getMetaProp('time') < (playbackService.getMetaProp('duration') - 0.1) && appState.viewMode == 'discover'" ng-click="editCurrentScene()">Edit Layout</a>
+		<a class="button button-scene" ng-if="playbackService.getMetaProp('time') > 0  && playbackService.getMetaProp('time') < (playbackService.getMetaProp('duration') - 0.1) && appState.viewMode == 'discover'" ng-click="episodeEdit.editCurrentScene()">Edit Layout</a>
 	</div>
 
 	<div class="producer addButtonPanel" ng-show="!item && playbackService.getMetaProp('time') > 0 && playbackService.getMetaProp('time') < (playbackService.getMetaProp('duration') - 0.1) ">

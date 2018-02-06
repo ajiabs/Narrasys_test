@@ -14,7 +14,7 @@
 				<a ng-if="!$ctrl.user.login_via_top_window_only" ng-click="$ctrl.logout();" ng-href="{{$ctrl.user.login_url}}">click here</a> to log back in.
 			</span>
 			<span ng-if="!$ctrl.user.login_url">
-				<a ng-click="logout();">reset your session</a> and start over.
+				<a ng-click="$ctrl.logout();">reset your session</a> and start over.
 			</span>
 		</p>
 

@@ -5,7 +5,7 @@
 import { IAnnotators, Partial } from '../../../interfaces';
 import {
   createInstance, IAsset, IContainer, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, TTemplate,
-  NEvent, IEvent, IPlugin
+  NEvent, IEvent, IPlugin, NRecord
 } from '../../../models';
 import { EventTemplates } from '../../../constants';
 import { config } from '../../../config';
@@ -41,7 +41,7 @@ export interface IModelSvc {
   deriveEpisode(episode: any): IEpisode;
   deriveAsset(asset: any): any;
   deriveContainer(container: any): any;
-  deriveEvent(event: Partial<NEvent>): NEvent;
+  deriveEvent<T extends IEvent>(event: Partial<T>): T;
   setLanguageStrings(): void;
   resolveEpisodeEvents(epId: string): IEpisode;
   resolveEpisodeContainers(epId: string): void;
@@ -197,17 +197,16 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
   svc.cache = function <T>(cacheType: string, item: T): T {
     if (cacheType === 'narrative') {
       // NOTE no deriveNarrative used here, not needed so far
-      const instance = createInstance('Narrative', item);
+      const instance = createInstance('Narrative', item) as INarrative;
 
       if (instance.timelines && instance.timelines.length > 0) {
         instance.timelines = instance.timelines.map(tl => createInstance('Timeline', tl));
       }
-      console.log("cache nar?", instance);
 
       if (svc.narratives[item._id]) {
         angular.extend(svc.narratives[item._id], instance);
       } else {
-        svc.narratives[item._id] = angular.copy(instance);
+        svc.narratives[item._id] = angular.copy(instance) as INarrative;
       }
     }
     if (cacheType === 'customer') {
@@ -216,7 +215,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       if (svc.customers[item._id]) {
         angular.extend(svc.customers[item._id], instance);
       } else {
-        svc.customers[item._id] = angular.copy(instance);
+        svc.customers[item._id] = angular.copy(instance) as ICustomer;
       }
     }
     if (cacheType === 'episode') {
@@ -227,10 +226,10 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
         svc.episodes[item._id] = svc.deriveEpisode(angular.copy(instance));
       }
     } else if (cacheType === 'event') {
-      const instance = createInstance(item._type, item);
+      const instance = createInstance(item._type, item) as IEvent;
       // TEMP fix for events without titles:
-      if (!item.title) {
-        item.title = {};
+      if (!instance.title) {
+        instance.title = {};
       }
       if (svc.events[item._id]) {
         angular.extend(svc.events[item._id], svc.deriveEvent(angular.copy(instance)));
@@ -254,7 +253,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
     }
 
-    return svc[cacheType + 's'][item._id];
+    return svc[cacheType + 's'][item._id] as T;
   };
 
   // svc.deriveFoo() are for efficiency precalculations.
@@ -383,7 +382,8 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     }
   };
 
-  svc.deriveEvent = function (event: Partial<NEvent>): NEvent {
+  svc.deriveEvent = function deriveEvent<T extends IEvent>(_event: Partial<T>): T {
+    let event = _event;
     const cmpTemplate = readCache('template', 'id', event.template_id);
     if (cmpTemplate != null) {
       event.component_name = cmpTemplate.component_name;
@@ -512,7 +512,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     }
 
     event.displayStartTime = $filter('asTime')(event.start_time);
-    return event;
+    return event as T;
   };
 
   var setLang = function (obj) {
@@ -1121,7 +1121,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       var master_asset_id = svc.episodes[episodeId].master_asset_id;
       if (master_asset_id) {
         if (svc.assets[master_asset_id]) {
-          svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
+          svc.episodes[episodeId].masterAsset = createInstance('MasterAsset',svc.assets[master_asset_id]);
         }
       }
       var poster_frame_id = svc.episodes[episodeId].poster_frame_id;

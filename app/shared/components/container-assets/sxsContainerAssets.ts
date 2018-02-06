@@ -1,7 +1,7 @@
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
 
 import { IDataSvc, IModelSvc } from '../../../interfaces';
-import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../../constants';
+import { MIMES, SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../../constants';
 import containerAssetsHtml from './container-assets.html';
 import { IAsset } from '../../../models';
 import { omit } from '../../services/ittUtils';
@@ -29,15 +29,13 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
   onlyImages: boolean;
   gridView: boolean;
   assetToDelete: IAsset;
-  static $inject = ['$rootScope', '$q', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'MIMES', 'authSvc'];
+  static $inject = ['$q', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'authSvc'];
   constructor(
-    public $rootScope: ng.IRootScopeService,
     private $q: ng.IQService,
     public dataSvc: IDataSvc,
     public modelSvc: IModelSvc,
     public awsSvc,
     public appState,
-    public MIMES,
     public authSvc) { }
 
   $onInit() {
@@ -80,13 +78,13 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
       this.isAdmin = this.authSvc.userHasRole('admin');
       this.canAccess = this.isCustAdmin || this.isAdmin;
 
-      if (this.MIMES[this.mimeKey]) {
-        this.mimes = this.MIMES[this.mimeKey];
+      if (MIMES[this.mimeKey]) {
+        this.mimes = MIMES[this.mimeKey];
         if (this.isAdmin) {
           this.mimes += ',video/*';
         }
       } else {
-        this.mimes = this.MIMES.default;
+        this.mimes = MIMES.default;
       }
     });
   }
@@ -104,14 +102,7 @@ class SxsContainerAssetsController implements ng.IComponentController, ISxsConta
   }
 
   assetClick(assetId) {
-    console.log('User clicked on asset ', assetId);
-    //when it comes time to emit data from a component
-    //"isolate scope &" is a better fit than pubsub with $rootScope
-    if (this.context && this.context === 'narrative') {
-      this.onAssetSelect({ $assetId: assetId });
-      return;
-    }
-    this.$rootScope.$emit('UserSelectedAsset', assetId);
+    this.onAssetSelect({ $assetId: assetId });
   }
 
   requestDeleteAsset($asset: IAsset, $ev: ng.IAngularEvent) {

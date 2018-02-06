@@ -35,13 +35,6 @@ angular.module('np.client', [
   'np.stories',
   'np.player'
 ])
-  .constant('MIMES', {
-    'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
-    'file': 'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
-    'default': 'image/*',
-    'transcripts': 'text/vtt,text/srt'
-  })
-  //TODO merge constants below into playbackservice/index as exports
   .constant('PLAYERSTATES', {
     '-1': 'unstarted',
     '0': 'ended',

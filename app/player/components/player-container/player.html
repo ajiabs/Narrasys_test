@@ -22,8 +22,14 @@
 		<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
 			<div class="toolbar-bottom-fill">
 				<div ng-show="appState.editEvent || appState.editEpisode" class="navPanel editPanel">
-					<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
-					<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
+					<!--<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>-->
+          <np-item-editor ng-if="appState.editEvent" item="appState.editEvent"></np-item-editor>
+          <np-episode-editor
+            ng-if="appState.editEpisode"
+            episode="appState.editEpisode"
+            default-language="episodeDefaultLanguage">
+          </np-episode-editor>
+					<!--<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>-->
 				</div>
 
 				<div itt-timeline></div>
@@ -32,7 +38,14 @@
 		<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()"></div>
 	</div>
 
-	<div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
+	<np-add-content
+    class="animate transitionFade"
+    item="appState.editEvent"
+    ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')"
+    ng-mouseenter="showControls();"
+    ng-click="showControls();"
+    ng-focus="showControls()">
+  </np-add-content>
 
 	<div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
 		<img src="/images/autoscroll.svg" width="32" height="32">

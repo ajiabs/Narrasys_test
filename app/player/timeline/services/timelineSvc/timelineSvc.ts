@@ -795,10 +795,7 @@ export default function timelineSvc($window, $timeout, $interval, $filter, model
       }
       return true;
     });
-    // and from the markedEvents, with its inexplicably inconsistent ID naming:
-    svc.markedEvents = $filter('filter')(svc.markedEvents, {
-      _id: '!' + removeId
-    });
+    svc.markedEvents = svc.markedEvents.filter((e: any) => e._id !== removeId);
     //TS-1154 - remove the event from the displayMarkedEvents
     var groupedEvents = groupByStartTime(svc.markedEvents);
     svc.displayMarkedEvents = prepGroupedEvents(groupedEvents);
