@@ -18,7 +18,9 @@
 	<ng-model
     ng-model="$ctrl.data.asset"
     name="itemAsset"
-    np-valid-asset item="$ctrl.data">
+    asset="$ctrl.data.asset"
+    component-name="{{$ctrl.data.component_name}}"
+    np-valid-asset>
   </ng-model>
 	<div ng-if="$ctrl.data.asset && !$ctrl.showUploadButtons">
 		{{$ctrl.data.asset.display_name}}

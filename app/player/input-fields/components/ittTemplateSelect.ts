@@ -4,7 +4,6 @@
  */
 import { IModelSvc } from '../../../interfaces';
 import { createInstance, IAnnotation, IEpisode, IEvent, IScene } from '../../../models';
-import { IProducerInputFieldController } from '../input-fields.module';
 
 const TEMPLATE = `
 <div class="field" ng-if="$ctrl.isVisible">
