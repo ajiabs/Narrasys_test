@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 66, Needs Upgrade: 52, 55% complete
+  ### Upgraded Files: 67, Needs Upgrade: 51, 56% complete
   ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -213,16 +213,18 @@ Needs Upgrade:
 * playbackService.ts
 * playerManagerCommons.ts
 ### item - :x:
-Completed: 0,
-    Needs Upgrade: 5,
+Completed: 1,
+    Needs Upgrade: 4,
     total: 5,
-    percent complete: 0%
+    percent complete: 20%
+
+Completed:
+* ittItemEditor.ts
 
 Needs Upgrade:
 * ittIframe.ts
 * ItemController.ts
 * ittItem.ts
-* ittItemEditor.ts
 * ittItemDetailModal.ts
 ### timeline - :x:
 Completed: 0,
