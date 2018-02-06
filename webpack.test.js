@@ -102,6 +102,11 @@ const wpConfig =  {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'test'
+    })
+  ]
 };
 module.exports = wpConfig;
