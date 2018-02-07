@@ -8,21 +8,33 @@
  */
 
 
+export interface ErrorServices {
+  error(exception:{}, cause:string):{};
+  notify(note:string):{};
+}
 
-errorSvc.$inject = ['$location'];
+export class ErrorSvc implements ErrorServices {
 
-export default function errorSvc($location) {
-  var svc = {};
+  static Name = 'errorSvc'; // tslint:disable-line
+  svc = {
+    errors:[],
+    notifications:[]
+  };
+
+  static $inject = ['$location'];
+  
+  constructor( private $location: ng.ILocationService) {
+  }
 
   // TODO This is a mess.  make the field names less ridiculously inconsistent.
 
-  svc.init = function () {
-    svc.errors = [];
-    svc.notifications = [];
-  };
-  svc.init();
+  // svc() {
+  //   svc.errors = [];
+  //   svc.notifications = [];
+  // };
+  // svc.init();
 
-  svc.error = function (exception, cause) {
+  error(exception, cause):{} {
     if (exception && (exception.status === 401 || exception.status === 403)) {
       // "unauthorized" errors will clear login state for now.
       // TODO in future there may be cases where this isn't desirable (i.e. when we support more roles,
@@ -30,7 +42,7 @@ export default function errorSvc($location) {
       console.warn(exception.status, " detected");
 
       // hacky special case for login page
-      if ($location.path() === '/') {
+      if (this.$location.path() === '/') {
         exception = undefined;
       }
     }
@@ -40,25 +52,25 @@ export default function errorSvc($location) {
       if (typeof exception.data === "string") {
         // hide ruby stack trace:
         exception.data = exception.data.replace(/\n/g, '').replace(/==/g, '').replace(/-----.*/g, '');
-        svc.errors.push({
+        this.svc.errors.push({
           "exception": exception
         });
       } else {
-        svc.errors.push({
+        this.svc.errors.push({
           "exception": exception
         });
       }
     } else {
       // generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
-      console.warn("ErrorSvc caught error: ", exception, cause);
+      console.log("ErrorSvc caught error: ", exception, cause);
     }
-  };
+    return this.svc;
+  }
 
-  svc.notify = function (note) {
-    svc.notifications.push({
+  notify(note):{} {
+    this.svc.notifications.push({
       'text': note
     });
-  };
-
-  return svc;
+    return this.svc;
+  }
 }

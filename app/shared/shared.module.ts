@@ -1,7 +1,9 @@
 import authSvc from './services/authSvc/authSvc';
 import { AppState } from './services/appState';
 import awsSvc from './services/awsSvc';
-import errorSvc from './services/errorSvc';
+// changed from:
+// import errorSvc from './services/errorSvc';
+import {ErrorSvc} from './services/errorSvc';
 // changed from
 // import imageResize from './/services/imageResizeSvc';
 import {ImageResize} from './services/imageResizeSvc';
@@ -51,14 +53,17 @@ sharedTemplates.forEach((t: any) => {
 npSharedModule
   .service(AppState.Name, AppState)
   .service(UploadsService.Name, UploadsService)
+  // was: .factory('imageResize', imageResize)
   // added as service...
   .service(ImageResize.Name, ImageResize)
+
+  // was:  .factory('errorSvc', errorSvc)
+  // added as service.
+  .service( ErrorSvc.Name, ErrorSvc)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
   .factory('dataSvc', dataSvc)
-  .factory('errorSvc', errorSvc)
-  //.factory('imageResize', imageResize)
-  .factory('ittUtils', ittUtils)
+   .factory('ittUtils', ittUtils)
   .factory('mockSvc', mockSvc)
   .factory('modelSvc', modelSvc)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())
