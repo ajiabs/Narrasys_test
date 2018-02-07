@@ -16,17 +16,14 @@ export interface ErrorServices {
 export class ErrorSvc implements ErrorServices {
 
   static Name = 'errorSvc'; // tslint:disable-line
-  var svc = {
+  svc = {
     errors:[],
     notifications:[]
   };
-  // var $location;
-  // svc.errors = [];
-  // svc.notifications = [];
+
   static $inject = ['$location'];
-  constructor(
-    $location: ng.ILocationService
-  ) {
+  
+  constructor( private $location: ng.ILocationService) {
   }
 
   // TODO This is a mess.  make the field names less ridiculously inconsistent.
@@ -45,7 +42,7 @@ export class ErrorSvc implements ErrorServices {
       console.warn(exception.status, " detected");
 
       // hacky special case for login page
-      if ($location.path() === '/') {
+      if (this.$location.path() === '/') {
         exception = undefined;
       }
     }
@@ -55,11 +52,11 @@ export class ErrorSvc implements ErrorServices {
       if (typeof exception.data === "string") {
         // hide ruby stack trace:
         exception.data = exception.data.replace(/\n/g, '').replace(/==/g, '').replace(/-----.*/g, '');
-        svc.errors.push({
+        this.svc.errors.push({
           "exception": exception
         });
       } else {
-        svc.errors.push({
+        this.svc.errors.push({
           "exception": exception
         });
       }
@@ -67,13 +64,13 @@ export class ErrorSvc implements ErrorServices {
       // generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
       console.warn("ErrorSvc caught error: ", exception, cause);
     }
-    return svc;
+    return this.svc;
   }
 
   notify(note):{} {
-    svc.notifications.push({
+    this.svc.notifications.push({
       'text': note
     });
-    return svc;
+    return this.svc;
   }
 }
