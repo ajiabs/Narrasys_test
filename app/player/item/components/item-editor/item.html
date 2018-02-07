@@ -711,7 +711,7 @@
       <button ng-if="
 			$ctrl.item._id != 'internal:editing' &&
 			!($ctrl.item._type == 'Scene' && $ctrl.item.start_time <= 0.01)
-		" ng-click="$ctrl.episodeEdit.deleteEvent($ctrl.item._id)">Delete
+		" ng-click="$ctrl.episodeEdit.deleteEvent($ctrl.item._id, $ctrl.uneditedItem)">Delete
       </button>
       <button ng-click="$ctrl.saveEvent()" ng-disabled="$ctrl.blockDoubleClicks || ittItemForm.$invalid">Save</button>
     </div>
