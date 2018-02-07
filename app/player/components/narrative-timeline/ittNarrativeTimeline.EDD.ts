@@ -1,5 +1,6 @@
 // @npUpgrade-player-false
 // test update by Joseph Bowik -- only for testing of Angular upgrade
+// and by Eddie D. at Curve10
 /* For now this is just a thin wrapper around the playerController */
 import { IDataSvc } from '../../../interfaces';
 import { INarrative } from '../../../models';
