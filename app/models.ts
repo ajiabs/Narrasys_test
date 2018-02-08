@@ -344,6 +344,8 @@ export class IEvent {
   removedAssets?: string[];
   validationMessage?: string;
   invalid_end_time?: boolean;
+  showAsHeader?: boolean; // used in search mode
+  editableByThisUser?: boolean; // used in search mode set in ittItem
 
   setFuture(): void {
     this.state = 'isFuture';
