@@ -7,12 +7,8 @@ set :new_relic_application_id, "4211337"
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
-#role :app, %w{deploy@example.com}
-#role :web, %w{deploy@example.com}
-#role :db,  %w{deploy@example.com}
-#role :app, %w{deploy@story.inthetelling.com}
-server 'deploy@vpc-web-02.inthetelling.com', roles: [:app]
-server 'deploy@vpc-web-03.inthetelling.com', roles: [:app]
+server 'deploy@10.0.100.140', roles: [:app], ssh_options: { :forward_agent => true, :keys => [File.join(ENV["HOME"], ".ssh", "tellit.pem")], :proxy => Net::SSH::Proxy::Command.new('ssh -i ~/.ssh/tellit.pem -l deploy util01.narrasys.com -W %h:%p') }
+server 'deploy@10.0.101.140', roles: [:app], ssh_options: { :forward_agent => true, :keys => [File.join(ENV["HOME"], ".ssh", "tellit.pem")], :proxy => Net::SSH::Proxy::Command.new('ssh -i ~/.ssh/tellit.pem -l deploy util01.narrasys.com -W %h:%p') }
 
 # Extended Server Syntax
 # ======================

@@ -11,7 +11,7 @@ const TEMPLATE = `
 <div class="field">
 	<div class="label">Annotation Text [{{$ctrl.appState.lang}}]
 		<itt-validation-tip
-		  ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid"
+		  ng-if="$ctrl.validationForm[$ctrl.textAreaName].$invalid"
 		  text="Annotation Text is a required field">
     </itt-validation-tip>
 	</div>
@@ -29,11 +29,13 @@ const TEMPLATE = `
 
 interface IAnnotationFieldBindings extends IProducerInputFieldController {
   data: IAnnotation;
+  validationForm: ng.IFormController;
   onUpdate?: ($ev: { $item: IEvent }) => ({ $item: IEvent });
 }
 
 class AnnotationFieldController implements IAnnotationFieldBindings {
   data: IAnnotation;
+  validationForm: ng.IFormController;
   onUpdate?: ($ev: { $item: IEvent }) => ({ $item: IEvent });
   //
   textAreaName: string;
@@ -63,6 +65,7 @@ interface IComponentBindings {
 export class AnnotationField implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     data: '<',
+    validationForm: '<',
     onUpdate: '&'
   };
   template: string = TEMPLATE;

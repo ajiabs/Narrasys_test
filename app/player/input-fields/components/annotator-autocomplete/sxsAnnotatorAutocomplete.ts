@@ -110,7 +110,12 @@ class AnnotatorAutocompleteController implements IAnnotatorAutocompleteBindings 
       name: this.item.annotator
     } as any;
 
-    if (this.annotators[this.item.annotator.name] && this.annotators[this.item.annotator.name].annotation_image_id) {
+    const hasAnnotator = this.item.annotator
+      && this.item.annotator.name
+      && this.annotators[this.item.annotator.name]
+      && this.annotators[this.item.annotator.name].annotation_image_id;
+
+    if (hasAnnotator) {
       this.annotator.imageUrl = this.modelSvc.assets[this.annotators[this.item.annotator.name].annotation_image_id].url;
     }
 

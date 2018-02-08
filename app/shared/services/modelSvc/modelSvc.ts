@@ -480,6 +480,11 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
         event.target = '_blank';
       }
 
+      event.showAsHeader = !(
+        event.component_name === EventTemplates.TEXT_DEFINITION_TEMPLATE ||
+        event.component_name === EventTemplates.TEXT_TRANSMEDIA_TEMPLATE
+      );
+
     }
 
     //it is helpful for UI purposes to know what type of annotation an event is
