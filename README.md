@@ -77,3 +77,6 @@ source maps in a separate directory. prod:watch will rebundle on file edits.
 2. run <code>npm run release</code>
 3. Follow the prompts 
 4. Provide a diff between versions on github for review.
+
+Note: If the test suite fails due to a 'module not found' error. Run 'npm run start', once completed cancel the 
+task then run 'npm run release'
