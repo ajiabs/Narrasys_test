@@ -1,6 +1,6 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 67, Needs Upgrade: 51, 56% complete
+  ### Upgraded Files: 66, Needs Upgrade: 51, 56% complete
   ### player - :x:
 Completed: 4,
     Needs Upgrade: 12,
@@ -42,9 +42,9 @@ Needs Upgrade:
 * ittEpisode.ts
 * ittEpisodeEditor.ts
 ### inputFields - :white_check_mark:
-Completed: 29,
+Completed: 28,
     Needs Upgrade: 0,
-    total: 29,
+    total: 28,
     percent complete: 100%
 
 Completed:
@@ -65,7 +65,6 @@ Completed:
 * ittTimeField.ts
 * ittTimestampSelect.ts
 * ittTitleField.ts
-* ittTranscriptField.ts
 * ittTransitionSelect.ts
 * ittTypographySelect.ts
 * ittUploadTranscriptsField.ts
