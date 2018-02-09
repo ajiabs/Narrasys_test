@@ -92,9 +92,7 @@ class InputI18nController implements IInputI18nBindings {
   }
 
   emitUpdate() {
-    if (this.field[this.appState.lang] != null) {
-      this.onFieldChange({ $field: this.field });
-    }
+    this.onFieldChange({ $field: this.field });
   }
 
   trim() {
@@ -112,7 +110,7 @@ class InputI18nController implements IInputI18nBindings {
     txt = txt.replace(/<div>/g, '<br>');
     txt = txt.replace(/<\/?(span|div)>/g, '');
     txt = txt.replace(/(<br>)*$/, ''); // kill extra linebreaks at end of entered text
-
+    // console.log('AFTER', txt);
     this.field[this.appState.lang] = txt.trim();
   }
 

@@ -221,11 +221,12 @@
                 on-update="$ctrl.deriveEvent(true)"
                 annotators="$ctrl.annotators">
               </np-speaker-field>
-              <np-transcript-field
+              <np-annotation-field
                 data="$ctrl.item"
-                itt-item-form="ittItemForm"
-                on-update="$ctrl.deriveEvent()">
-              </np-transcript-field>
+                label="Transcript"
+                on-update="$ctrl.deriveEvent($item)"
+                validation-form="ittItemForm">
+              </np-annotation-field>
               <np-producer-upload-field
                 context="producer"
                 on-update="$ctrl.deriveEvent()"
@@ -248,6 +249,7 @@
               </np-title-field>
               <np-annotation-field
                 data="$ctrl.item"
+                label="Annotation Text"
                 on-update="$ctrl.deriveEvent($item)"
                 validation-form="ittItemForm">
               </np-annotation-field>

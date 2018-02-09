@@ -9,7 +9,7 @@ import { IAnnotation, IEvent } from '../../../models';
 
 const TEMPLATE = `
 <div class="field">
-	<div class="label">Annotation Text [{{$ctrl.appState.lang}}]
+	<div class="label">{{$ctrl.label}} [{{$ctrl.appState.lang}}]
 		<itt-validation-tip
 		  ng-if="$ctrl.validationForm[$ctrl.textAreaName].$invalid"
 		  text="Annotation Text is a required field">
@@ -18,7 +18,7 @@ const TEMPLATE = `
 	<np-input-i18n 
 	  class="input"
 	  field="$ctrl.data.annotation"
-	  on-field-change="$ctrl.dispatchUpdate()"
+	  on-field-change="$ctrl.dispatchUpdate($field)"
 	  do-validate="true"
 	  inputtype="textarea"
 	  on-emit-name="$ctrl.onName($taName)"
@@ -29,12 +29,14 @@ const TEMPLATE = `
 
 interface IAnnotationFieldBindings extends IProducerInputFieldController {
   data: IAnnotation;
+  label: 'Annotation Text' | 'Transcript';
   validationForm: ng.IFormController;
   onUpdate?: ($ev: { $item: IEvent }) => ({ $item: IEvent });
 }
 
 class AnnotationFieldController implements IAnnotationFieldBindings {
   data: IAnnotation;
+  label: 'Annotation Text' | 'Transcript';
   validationForm: ng.IFormController;
   onUpdate?: ($ev: { $item: IEvent }) => ({ $item: IEvent });
   //
@@ -53,7 +55,9 @@ class AnnotationFieldController implements IAnnotationFieldBindings {
     this.textAreaName = name;
   }
 
-  dispatchUpdate() {
+  dispatchUpdate($field) {
+    // $field is the value emitted from InputI18n
+    this.data.annotation = $field;
     this.onUpdate({ $item: this.data });
   }
 }
@@ -65,6 +69,7 @@ interface IComponentBindings {
 export class AnnotationField implements ng.IComponentOptions {
   bindings: IComponentBindings = {
     data: '<',
+    label: '@',
     validationForm: '<',
     onUpdate: '&'
   };
