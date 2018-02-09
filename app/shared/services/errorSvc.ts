@@ -7,6 +7,18 @@
  throw() or other js errors also get sent here by $exceptionHandler (though we're ignoring them for now)
  */
 
+ // ********************************
+ // 
+ // updated 2/7/18 
+ // by Joseph B. and Eddie D. 
+ // from Curve10
+ // converted to interface->class structure
+ // NOTE: had to adjust ../shared.module.ts
+ //       to attach as a service and not a factory
+ //
+ // ***********************************************
+
+
 
 export interface ErrorServices {
   error(exception:{}, cause:string):{};
