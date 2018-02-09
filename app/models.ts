@@ -317,6 +317,8 @@ export class IEvent {
   end_time: number;
   title: ILangForm;
   description: ILangForm;
+  display_description?: string;
+  display_title?: string;
   cosmetic: boolean;
   stop: boolean;
 //props not in any schema but added dynamically either on the backend somewhere client-side;
@@ -346,6 +348,7 @@ export class IEvent {
   invalid_end_time?: boolean;
   showAsHeader?: boolean; // used in search mode
   editableByThisUser?: boolean; // used in search mode set in ittItem
+  searchableText?: string;
 
   setFuture(): void {
     this.state = 'isFuture';
@@ -401,6 +404,8 @@ export class IAnnotation extends IEvent {
   _type: 'Annotation';
   annotator: { name };
   annotation: ILangForm;
+  display_annotation?: string;
+  display_annotator?: string;
   chapter_marker: boolean = false;
   //belongs_to annotation image;
   annotation_image_id: string;
