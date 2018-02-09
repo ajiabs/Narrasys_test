@@ -196,7 +196,7 @@ export function pushTag(finalVersion: string, currentSha: string): Promise<void>
           .then(() => Promise.reject('Build Aborted!'));
       }
     })
-    .then(() => runCmd('git push --tags'))
+    .then(() => runCmd(`git push origin :refs/tags/${finalVersion}`))
     .then(() => {
       success('tag pushed.');
       success(`build ${finalVersion} ready for release!`);
