@@ -7,7 +7,10 @@ import {ErrorSvc} from './services/errorSvc';
 // changed from
 // import imageResize from './/services/imageResizeSvc';
 import {ImageResize} from './services/imageResizeSvc';
-import { ittUtils } from './services/ittUtils';
+// changed from
+// import { ittUtils } from './services/ittUtils';
+import {NPUtilServices} from './services/ittUtils';
+
 import mockSvc from './services/mockSvc';
 import { UploadsService } from './services/uploadsService';
 import { AssetUploader } from './components/asset-uploader/ittAssetUploader';
@@ -59,11 +62,15 @@ npSharedModule
 
   // was:  .factory('errorSvc', errorSvc)
   // added as service.
+
+  // was:  .factory('ittUtils', ittUtils)
+  // added as service:
+  .service(NPUtilServices.Name, NPUtilServices)
   .service( ErrorSvc.Name, ErrorSvc)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
   .factory('dataSvc', dataSvc)
-   .factory('ittUtils', ittUtils)
+  
   .factory('mockSvc', mockSvc)
   .factory('modelSvc', modelSvc)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())

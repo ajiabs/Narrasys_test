@@ -7,7 +7,9 @@ import { createInstance, ICustomer, INarrative } from '../../models';
 
 import { SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE } from '../../constants';
 import { IUploadsService, Partial } from '../../interfaces';
-import { existy, pick } from '../../shared/services/ittUtils';
+// import { existy, pick } from '../../shared/services/ittUtils';
+import { INPUtilServices } from '../../shared/services/ittUtils';
+
 /* tslint:disable */
 /**
  * @ngdoc directive
@@ -217,7 +219,7 @@ class NarrativeEditorController implements INarrativeEditorBindings {
       '_id'
     ];
 
-    const narrative = createInstance<INarrative>('Narrative', pick(n, fields));
+    const narrative = createInstance<INarrative>('Narrative', ittUtils.pick(n, fields));
     const socialImagesToUpload: Array<{file: FileList, tag: string}> = [];
     if (n.social_image_square) {
       socialImagesToUpload.push({ file: n.social_image_square.file, tag: SOCIAL_IMAGE_SQUARE });

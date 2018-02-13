@@ -7,7 +7,8 @@ import {
   ITemplate
 } from '../../../models';
 import { IEmailFields, IEpisodeTheme, Partial, IDataCache, TDataCacheItem } from '../../../interfaces';
-import { existy, intersection, pick } from '../ittUtils';
+// import { existy, intersection, pick } from '../ittUtils';
+import { INPUtilServices } from '../ittUtils';
 import { config } from '../../../config';
 
 /**
@@ -313,6 +314,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       '_id'
     ];
     var timeline = ittUtils.pick(origTimeline, permitted);
+
+    
 
     if (timeline._id) {
       return PUT('/v3/timelines/' + timeline._id, timeline, function (ret) {
@@ -1210,7 +1213,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
     ];
 
-    const prepped: Partial<IEpisode> = pick(epData, fields);
+
+    const prepped: Partial<IEpisode> = ittUtils.pick(epData, fields);
     prepped.style_id = get_id_values('style', epData.styles);
 
     const template = svc.readCache('template', 'id', epData.template_id) as ITemplate;
