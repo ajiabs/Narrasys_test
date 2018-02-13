@@ -14,7 +14,6 @@ import { Magnet } from './directives/ittMagnet';
 import { Magnetized } from './directives/ittMagnetized';
 import { ittShowHideVisualOnly, visualHideAnimation } from './directives/ittShowHideVisualOnly';
 import ittWidthWatch from './directives/ittWidthWatch';
-import EditController from './services/EditController';
 
 //text angular
 import 'rangy';
@@ -64,8 +63,7 @@ npPlayerModule
   .directive(Magnetized.Name, Magnetized.factory())
   .directive('ittShowHideVisualOnly', ittShowHideVisualOnly)
   .animation('.visualHideAnimation', visualHideAnimation)
-  .directive('ittWidthWatch', ittWidthWatch)
-  .controller('EditController', EditController);
+  .directive('ittWidthWatch', ittWidthWatch);
 
 services.forEach((svc: any) => {
   npPlayerModule.service(svc.Name, svc);

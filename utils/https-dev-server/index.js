@@ -9,6 +9,7 @@ const express = require('express'),
   baseUrl = 'https://np-dev.narrasys.com',
   // baseUrl = 'http://localhost:3000',
   dir = path.resolve(__dirname, '../../tmp'),
+  sourceMaps = path.resolve(__dirname, '../../sourcemaps'),
   server = express();
 
 const key = fs.readFileSync('./certs/private-2017.key');
@@ -42,6 +43,9 @@ https.createServer(sslOpts, server)
   .on('error', logErrors);
 
 server.use(express.static(dir));
+// serve the /sourcemaps directory for debugging builds on
+// np-dev, demo, or np.narrasys.com (or any other production environment).
+server.use('/sourcemaps', express.static(sourceMaps));
 
 function doProxy(req, res) {
   const url = baseUrl + req.url;

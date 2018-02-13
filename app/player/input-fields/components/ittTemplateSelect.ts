@@ -4,7 +4,6 @@
  */
 import { IModelSvc } from '../../../interfaces';
 import { createInstance, IAnnotation, IEpisode, IEvent, IScene } from '../../../models';
-import { IProducerInputFieldController } from '../input-fields.module';
 
 const TEMPLATE = `
 <div class="field" ng-if="$ctrl.isVisible">
@@ -26,11 +25,11 @@ const TEMPLATE = `
 	</div>
 </div>`;
 
-interface ITemplateSelectBindings extends IProducerInputFieldController {
+interface ITemplateSelectBindings extends ng.IComponentController {
   data: IEvent | IEpisode;
   itemForm?: ng.IFormController;
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
-  onUpdate: ($ev: { $item: IEvent }) => ({ $item: IEvent });
+  onUpdate: ($ev: { $componentName: string }) => string;
 }
 
 
@@ -41,11 +40,15 @@ class TemplateSelectController implements ITemplateSelectBindings {
   isEpisode: boolean;
   context: 'episode' | 'event' = 'event';
   onEpisodeEdit: (ev: any) => ({ $data: { episode: IEpisode, templateId: string } });
-  onUpdate: ($ev: { $item: IEvent }) => ({ $item: IEvent });
+  onUpdate: ($ev: { $componentName: string }) => string;
   static $inject = ['selectService', 'modelSvc'];
   constructor(public selectService, public modelSvc: IModelSvc) {
     //
   }
+
+  // $onChanges(changes: { data: ng.IChangesObject }) {
+  //   console.log('changes!', changes);
+  // }
 
   $onInit() {
     this.isAnnotation = this.data instanceof IAnnotation;
@@ -77,11 +80,9 @@ class TemplateSelectController implements ITemplateSelectBindings {
 
   onSelectChange(item: IEvent, form: ng.IFormController) {
     const newEvent = this.modelSvc.deriveEvent(createInstance(item._type, item));
-    this.selectService.onSelectChange(newEvent, form);
-    this.data = newEvent;
-    // bubble new event to ItemEditorController to handle
-    // caching and re-rendering the new event template
-    this.onUpdate({ $item: newEvent });
+    // send the newly selected component name to ItemEditor and allow it to
+    // to handle the rest.
+    this.onUpdate({ $componentName: newEvent.component_name });
   }
 
   onEpisodeTemplateChange() {

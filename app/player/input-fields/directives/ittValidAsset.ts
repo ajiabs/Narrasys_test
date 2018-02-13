@@ -12,23 +12,29 @@ export class ValidAsset implements ng.IDirective {
     ngModel: '^ngModel'
   };
   scope = {
-    item: '<'
+    asset: '<',
+    componentName: '@'
   };
   bindToController = true;
   controller = class ValidAssetController implements ng.IComponentController {
     componentName: string;
-    item: IUpload;
+    asset: {};
     ngModel: ng.INgModelController;
     constructor() {
       //
     }
 
-    $onChanges(changes: { item: ng.IChangesObject }) {
-      if (changes && changes.item && this.ngModel != null) {
-        const { item } = changes;
-        const currentItem = item.currentValue;
-        const componentName = currentItem.component_name;
-        this.handleNameChanges(componentName, currentItem.asset);
+    $onChanges(changes: { componentName: ng.IChangesObject, asset: ng.IChangesObject }) {
+      if (changes && this.ngModel != null) {
+        const { componentName, asset } = changes;
+        let cmpName;
+        if (componentName == null) {
+          cmpName = this.componentName;
+        } else {
+          cmpName = componentName.currentValue;
+        }
+
+        this.handleNameChanges(cmpName, asset.currentValue);
       }
     }
 

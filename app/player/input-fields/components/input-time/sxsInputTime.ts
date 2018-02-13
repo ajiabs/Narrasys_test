@@ -174,6 +174,7 @@ class InputTimeController implements IInputTimeBindings {
     this.item[this.$attrs.inputField] = this.realValue;
     this.model = this.format(t);
     this.item.invalid_end_time = (this.item.start_time > this.item.end_time);
+    this.onFieldChange();
   }
 
   showTools(x: any) {

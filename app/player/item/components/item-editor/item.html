@@ -2,7 +2,7 @@
   <form name="ittItemForm" class="doValidate">
     <div ng-if="$ctrl.appState.product == 'sxs'" class="authoringFormScrollContainer">
       <!-- begin sxs -->
-      <np-time-field data="$ctrl.item" item-form="ittItemForm" on-time-change=""></np-time-field>
+      <np-time-field data="$ctrl.item" item-form="ittItemForm" on-update="$ctrl.deriveEvent(true)"></np-time-field>
       <!--<div-->
         <!--np-dynamic-editor-template-->
         <!--on-update="$ctrl.deriveEvent()"-->
@@ -123,8 +123,8 @@
             on-update="$ctrl.deriveEvent()">
           </np-title-field>
           <np-description-field
-            on-upate="$ctrl.deriveEvent()"
-            data="item">
+            on-update="$ctrl.deriveEvent()"
+            data="$ctrl.item">
           </np-description-field>
         </div>
       </div>
@@ -189,7 +189,7 @@
               </np-description-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-producer-upload-field
@@ -218,14 +218,15 @@
               </np-time-field>
               <np-speaker-field
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent()"
+                on-update="$ctrl.deriveEvent(true)"
                 annotators="$ctrl.annotators">
               </np-speaker-field>
-              <np-transcript-field
+              <np-annotation-field
                 data="$ctrl.item"
-                itt-item-form="ittItemForm"
-                on-update="$ctrl.deriveEvent()">
-              </np-transcript-field>
+                label="Transcript"
+                on-update="$ctrl.deriveEvent($item)"
+                validation-form="ittItemForm">
+              </np-annotation-field>
               <np-producer-upload-field
                 context="producer"
                 on-update="$ctrl.deriveEvent()"
@@ -240,7 +241,7 @@
               <np-time-field
                 data="$ctrl.item"
                 item-form="ittItemForm"
-                on-update="$ctrl.resolveEvents()">
+                on-update="$ctrl.deriveEvent(true)">
               </np-time-field>
               <np-title-field
                 data="$ctrl.item"
@@ -248,17 +249,18 @@
               </np-title-field>
               <np-annotation-field
                 data="$ctrl.item"
+                label="Annotation Text"
                 on-update="$ctrl.deriveEvent($item)"
-                itt-item-form="ittItemForm">
+                validation-form="ittItemForm">
               </np-annotation-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-speaker-field
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent()"
+                on-update="$ctrl.deriveEvent(true)"
                 annotators="$ctrl.annotators">
               </np-speaker-field>
               <np-flags
@@ -335,7 +337,7 @@
               </np-description-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select
@@ -447,11 +449,11 @@
               <np-time-field
                 data="$ctrl.item"
                 item-form="ittItemForm"
-                on-update="$ctrl.resolveEvents()">
+                on-update="$ctrl.deriveEvent(true)">
               </np-time-field>
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-video-position-select
@@ -475,7 +477,7 @@
               <!--Template, Display, Flags-->
               <np-template-select
                 data="$ctrl.item"
-                on-update="$ctrl.deriveEvent($item)"
+                on-update="$ctrl.onTemplateChange($componentName)"
                 item-form="$ctrl.itemForm">
               </np-template-select>
               <np-display-select
@@ -711,7 +713,7 @@
       <button ng-if="
 			$ctrl.item._id != 'internal:editing' &&
 			!($ctrl.item._type == 'Scene' && $ctrl.item.start_time <= 0.01)
-		" ng-click="$ctrl.episodeEdit.deleteEvent($ctrl.item._id)">Delete
+		" ng-click="$ctrl.episodeEdit.deleteEvent($ctrl.item._id, $ctrl.uneditedItem)">Delete
       </button>
       <button ng-click="$ctrl.saveEvent()" ng-disabled="$ctrl.blockDoubleClicks || ittItemForm.$invalid">Save</button>
     </div>

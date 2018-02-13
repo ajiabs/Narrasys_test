@@ -13,7 +13,6 @@ import { TemplateSelect } from './components/ittTemplateSelect';
 import { TimeField } from './components/ittTimeField';
 import { TimestampSelect } from './components/ittTimestampSelect';
 import { TitleField } from './components/ittTitleField';
-import { TranscriptField } from './components/ittTranscriptField';
 import { TransitionSelect } from './components/ittTransitionSelect';
 import { TypographySelect } from './components/ittTypographySelect';
 import { UploadTranscripts } from './components/ittUploadTranscriptsField';
@@ -70,7 +69,6 @@ const components = [
   TimeField,
   TimestampSelect,
   TitleField,
-  TranscriptField,
   TransitionSelect,
   TypographySelect,
   UploadTranscripts,
