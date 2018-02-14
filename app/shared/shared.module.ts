@@ -1,6 +1,6 @@
 import authSvc from './services/authSvc/authSvc';
 import { AppState } from './services/appState';
-import awsSvc from './services/awsSvc';
+import { awsSvc } from './services/awsSvc';
 // changed from:
 // import errorSvc from './services/errorSvc';
 import {ErrorSvc} from './services/errorSvc';
@@ -8,8 +8,8 @@ import {ErrorSvc} from './services/errorSvc';
 // import imageResize from './/services/imageResizeSvc';
 import {ImageResize} from './services/imageResizeSvc';
 // changed from
-// import { ittUtils } from './services/ittUtils';
-import {NPUtilServices} from './services/ittUtils';
+import { ittUtils } from './services/ittUtils';
+// import {NPUtilServices} from './services/ittUtils';
 
 import mockSvc from './services/mockSvc';
 import { UploadsService } from './services/uploadsService';
@@ -38,6 +38,7 @@ import { AuthTemplate } from './templates/auth/auth.template';
 import { Error404Template } from './templates/error-404/error-404.template';
 import { RootTemplate } from './templates/root/root.template';
 import { SxsContainerAssets } from './components/container-assets/sxsContainerAssets';
+
 const npSharedModule = angular.module('np.shared', [
   'np.filters'
 ]);
@@ -63,16 +64,21 @@ npSharedModule
   // was:  .factory('errorSvc', errorSvc)
   // added as service.
 
-  // was:  .factory('ittUtils', ittUtils)
+
   // added as service:
-  .service(NPUtilServices.Name, NPUtilServices)
+ // .service(NPUtilServices.Name, NPUtilServices)
   .service( ErrorSvc.Name, ErrorSvc)
   .factory('authSvc', authSvc)
-  .factory('awsSvc', awsSvc)
+  // was .factory('awsSvc', awsSvc)
+  // added as service:
+  .service( awsSvc.Name, awsSvc)
+
   .factory('dataSvc', dataSvc)
   
   .factory('mockSvc', mockSvc)
   .factory('modelSvc', modelSvc)
+    // was:  
+    .factory('ittUtils', ittUtils)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .component(AssetUploader.Name, new AssetUploader())
   .component(Container.Name, new Container())
@@ -91,5 +97,6 @@ npSharedModule
   .component(Loading.Name, new Loading())
   .component(AssetsResolve.Name, new AssetsResolve())
   .component(ErrorNotice.Name, new ErrorNotice());
+  
 
 export default npSharedModule;

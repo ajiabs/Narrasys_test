@@ -23,15 +23,16 @@
 export interface ErrorServices {
   error(exception:{}, cause:string):{};
   notify(note:string):{};
+  init(): void;
 }
 
 export class ErrorSvc implements ErrorServices {
 
   static Name = 'errorSvc'; // tslint:disable-line
-  svc = {
-    errors:[],
-    notifications:[]
-  };
+  errors = [];
+  notifications = [];
+
+ 
 
   static $inject = ['$location'];
   
@@ -45,6 +46,13 @@ export class ErrorSvc implements ErrorServices {
   //   svc.notifications = [];
   // };
   // svc.init();
+
+  init(): void {
+    // added 2/18... resets errors and notifications to empty
+    this.errors = [];
+    this. notifications = [];
+
+  }
 
   error(exception, cause):{} {
     if (exception && (exception.status === 401 || exception.status === 403)) {
@@ -64,11 +72,11 @@ export class ErrorSvc implements ErrorServices {
       if (typeof exception.data === "string") {
         // hide ruby stack trace:
         exception.data = exception.data.replace(/\n/g, '').replace(/==/g, '').replace(/-----.*/g, '');
-        this.svc.errors.push({
+        this.errors.push({
           "exception": exception
         });
       } else {
-        this.svc.errors.push({
+        this.errors.push({
           "exception": exception
         });
       }
@@ -76,13 +84,13 @@ export class ErrorSvc implements ErrorServices {
       // generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
       console.log("ErrorSvc caught error: ", exception, cause);
     }
-    return this.svc;
+    return this.errors;
   }
 
   notify(note):{} {
-    this.svc.notifications.push({
+    this.notifications.push({
       'text': note
     });
-    return this.svc;
+    return this.notifications;
   }
 }
