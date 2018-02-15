@@ -1,11 +1,11 @@
 
   # Upgrade Progress
-  ### Upgraded Files: 66, Needs Upgrade: 51, 56% complete
+  ### Upgraded Files: 66, Needs Upgrade: 61, 51% complete
   ### player - :x:
 Completed: 4,
-    Needs Upgrade: 12,
-    total: 16,
-    percent complete: 25%
+    Needs Upgrade: 15,
+    total: 19,
+    percent complete: 21%
 
 Completed:
 * ittMagnet.ts
@@ -17,6 +17,9 @@ Needs Upgrade:
 * ittTab.ts
 * ittTabs.ts
 * ittVolumeSlider.ts
+* ittNarrativeTimeline.EDD.ts
+* ittNarrativeTimeline.JAB.ts
+* ittNarrativeTimeline.ORIGINAL.ts
 * ittNarrativeTimeline.ts
 * ittPlayerContainer.ts
 * PlayerController.ts
@@ -187,9 +190,9 @@ Completed:
 * npProjectsContainer.ts
 ### shared - :x:
 Completed: 9,
-    Needs Upgrade: 13,
-    total: 22,
-    percent complete: 40%
+    Needs Upgrade: 20,
+    total: 29,
+    percent complete: 31%
 
 Completed:
 * ittAssetUploader.ts
@@ -209,10 +212,17 @@ Needs Upgrade:
 * ittFilesHandler.ts
 * ittLogin.ts
 * authSvc.ts
+* awsSvc.JAB.ts
+* awsSvc.ORIGINAL.ts
 * awsSvc.ts
 * dataSvc.ts
+* errorSvc.JAB.ts
+* errorSvc.ORIGINAL.ts
 * errorSvc.ts
+* imageResizeSvc.ORIGINAL.ts
 * imageResizeSvc.ts
+* ittUtils.EDD.ts
+* ittUtils.ORIGINAL.ts
 * ittUtils.ts
 * mockSvc.ts
 * modelSvc.ts
