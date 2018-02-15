@@ -6,6 +6,7 @@
 import { config } from '../../config';
 
 export interface awsServices {
+  
   awsCache();
   getBucketListing();
   uploadContainerFiles(containerId, fileList, tag?);
@@ -19,23 +20,7 @@ export interface awsServices {
   getMultipartUploads();
   getMultipartUploadParts(index, multipartUpload);
   cancelMultipartUpload(multipartUpload);
-  getUploadSession();
-  startNextUpload(assetEndpoint);
-  ensureUniqueFilename(deferred);
-  generateUUID();
-  isSmallUpload();
-  uploadSmallFile();
-  putObject();
-  uploadBigFile();
-  createMultipartUpload();
-  prepareUploadParts(awsMultipartUpload);
-  startNextUploadPart();
-  getMD5ForFileOrBlob(fileOrBlob, hashType);
-  uploadPart(partNumber, blob, defer);
-  completePart(data);
-  handleFailedPart(err);
-  cancelCurrentUploadRequests();
-  createAsset(assetEndpoint);
+
 }
 
 
@@ -302,9 +287,9 @@ export class awsSvc implements awsServices {
     return defer.promise;
   };
 
-  //Internal functions
+  //Internal methods
 
-  uploadSuccess(data) {
+  private uploadSuccess(data) {
     if (data.access_key_id) {
       AWS.config.update({
       accessKeyId: data.access_key_id,
@@ -328,7 +313,7 @@ export class awsSvc implements awsServices {
 };
 
 
-  getUploadSession() {
+private getUploadSession() {
     if (this._awsCache.hasOwnProperty('sessionDeferred')) {
       return this._awsCache.sessionDeferred.promise;
     } else {
@@ -343,7 +328,7 @@ export class awsSvc implements awsServices {
     return this._awsCache.sessionDeferred.promise;
   };
 
-  startNextUpload(assetEndpoint) {
+  private startNextUpload(assetEndpoint) {
     // console.log('START NEXT UPLOAD: ', files.length, ', ', fileIndex, ', ', fileBeingUploaded);
     if (this.files.length > this.fileIndex && !this.fileBeingUploaded) {
       this.fileBeingUploaded = this.files[this.fileIndex];
@@ -385,7 +370,7 @@ export class awsSvc implements awsServices {
 
   
 
-  ensureUniqueFilename(deferred) {
+  private ensureUniqueFilename(deferred) {
     deferred = deferred || this.$q.defer();
     this.fileBeingUploaded.uniqueName = this.generateUUID();
 
@@ -440,7 +425,7 @@ export class awsSvc implements awsServices {
     return deferred.promise;
   };
 
-  generateUUID() {
+  private generateUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (d + Math.random() * 16) % 16 | 0;
@@ -461,7 +446,7 @@ export class awsSvc implements awsServices {
   //    return basename+"_"+date.getTime()+fileExt;
   //};
 
-  isSmallUpload() {
+  private isSmallUpload() {
     if (this.fileBeingUploaded.size <= this.fiveMB) {
       return true;
     } else {
@@ -469,7 +454,7 @@ export class awsSvc implements awsServices {
     }
   };
 
-  uploadSmallFile() {
+  private uploadSmallFile() {
     var context = this;
     // console.log('awsSvc uploading small file');
     this.deferredUpload = this.$q.defer();
@@ -484,7 +469,7 @@ export class awsSvc implements awsServices {
     return this.deferredUpload.promise;
   };
 
-  putObject() {
+  private putObject() {
     var defer = this.$q.defer();
 
     // **************** maintain the context (this) for the callback(s)
@@ -532,7 +517,7 @@ export class awsSvc implements awsServices {
     return defer.promise;
   };
 
-  uploadBigFile() {
+  private uploadBigFile() {
     // console.log('awsSvc uploading big file');
     this.deferredUpload = this.$q.defer();
     
@@ -550,7 +535,7 @@ export class awsSvc implements awsServices {
     return this.deferredUpload.promise;
   };
 
-  createMultipartUpload() {
+  private createMultipartUpload() {
     var defer = this.$q.defer();
 
     // ******************* maintain context for callbacks ********************
@@ -576,7 +561,7 @@ export class awsSvc implements awsServices {
     return defer.promise;
   };
 
-  prepareUploadParts(awsMultipartUpload) {
+  private prepareUploadParts(awsMultipartUpload) {
     var defer = this.$q.defer();
     this.multipartUpload = awsMultipartUpload;
     this.chunks = [];
@@ -606,7 +591,7 @@ export class awsSvc implements awsServices {
     return defer.promise;
   };
 
-  startNextUploadPart() {
+  private startNextUploadPart() {
     var context = this;
     var defer = this.$q.defer();
     var chunkIndex = this.chunkSearchIndex;
@@ -654,7 +639,7 @@ export class awsSvc implements awsServices {
     return defer.promise;
   };
 
-  getMD5ForFileOrBlob(fileOrBlob, hashType) {
+  private getMD5ForFileOrBlob(fileOrBlob, hashType) {
     var defer = this.$q.defer();
     var reader = new FileReader();
     reader.onload = function () {
@@ -723,7 +708,7 @@ export class awsSvc implements awsServices {
     return defer.promise;
   };
 
-  completePart(data) {
+  private completePart(data) {
     var context = this;
     var defer = this.$q.defer();
     this.chunks[data.partNumber - 1].status = this.COMPLETE;
@@ -763,13 +748,13 @@ export class awsSvc implements awsServices {
     return defer.promise;
   };
 
-  handleFailedPart(err) {
+  private handleFailedPart(err) {
     console.error("PART OF MULTIPART UPLOAD FAILED, CANCELLING UPLOAD", err);
     this.cancelMultipartUpload(this.multipartUpload);
     this.deferredUpload.reject(err);
   };
 
-  cancelCurrentUploadRequests() {
+  private cancelCurrentUploadRequests() {
     if (this.isSmallUpload()) {
       this.currentRequest.abort();
     } else {
@@ -788,14 +773,14 @@ export class awsSvc implements awsServices {
     }
   };
 
-  createAssetSuccess = function( data, assetEndpoint ) {
+  private createAssetSuccess = function( data, assetEndpoint ) {
     this.deferredUploads[this.fileIndex].resolve(data);
     this.fileBeingUploaded = null;
     this.fileIndex++;
     this.startNextUpload(assetEndpoint);
   }
 
-  createAsset = function (assetEndpoint) {
+  private createAsset = function (assetEndpoint) {
     var context = this;
     var deferred = this.$q.defer();
     var assetData = {
