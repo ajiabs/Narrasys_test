@@ -5,7 +5,7 @@
 //
 import { config } from '../../config';
 
-export interface awsServices {
+export interface IAWSServices {
   
   awsCache();
   getBucketListing();
@@ -24,7 +24,7 @@ export interface awsServices {
 }
 
 
-export class awsSvc implements awsServices {
+export class awsSvc implements IAWSServices {
   static Name = 'awsSvc'; // tslint:disable-line
   static $inject = ['$http', '$q'];
 
@@ -38,7 +38,7 @@ export class awsSvc implements awsServices {
   private MAX_CHUNKS = 1000;
   private MAX_RETRIES = 4;
   private MAX_SIMUL_PARTS_UPLOADING = 3;
-  REQUEST_TIMEOUT = 30000; //30 seconds (default is 2 minutes)
+  private REQUEST_TIMEOUT = 30000; //30 seconds (default is 2 minutes)
   private PUBLIC_READ = "public-read";
   private PENDING = "pending";
   private UPLOADING = "uploading";

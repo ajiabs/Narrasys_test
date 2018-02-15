@@ -20,13 +20,13 @@
 
 
 
-export interface ErrorServices {
+export interface IErrorServices {
   error(exception:{}, cause:string):{};
   notify(note:string):{};
   init(): void;
 }
 
-export class ErrorSvc implements ErrorServices {
+export class ErrorSvc implements IErrorServices {
 
   static Name = 'errorSvc'; // tslint:disable-line
   errors = [];
