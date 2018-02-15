@@ -87,18 +87,20 @@ export class awsSvc implements awsServices {
   };
 
   getBucketListing() {
+    var context = this;
     var defer = this.$q.defer();
-    this.getUploadSession().then(function listObjects() {
-      this._awsCache.s3.listObjects(function (err, data) {
-        if (err) {
-          console.error(err, err.stack); // an error occurred
-          defer.reject();
-        } else {
-          // console.log('awsSvc, got bucket listing!', data);
-          defer.resolve(data); // successful response
-        }
+    this.getUploadSession()
+      .then(function listObjects() {
+        context._awsCache.s3.listObjects(function (err, data) {
+          if (err) {
+            console.error(err, err.stack); // an error occurred
+            defer.reject();
+          } else {
+            // console.log('awsSvc, got bucket listing!', data);
+            defer.resolve(data); // successful response
+          }
+        });
       });
-    });
 
     return defer.promise;
   };
@@ -206,88 +208,96 @@ export class awsSvc implements awsServices {
   };
 
   deleteObject(bucketObject) {
+    var context = this;
     var defer = this.$q.defer();
-    this.getUploadSession().then(function deleteObject() {
-      var params = {
-        Bucket: bucketObject.bucket,
-        Key: bucketObject.Key
-      };
-      this._awsCache.s3.deleteObject(params, function (err, data) {
-        if (err) {
-          console.error(err, err.stack); // an error occurred
-          defer.reject();
-        } else {
-          // console.log('awsSvc, deleted object!', data);
-          defer.resolve(data); // successful response
-        }
+    this.getUploadSession()
+      .then(function deleteObject() {
+        var params = {
+          Bucket: bucketObject.bucket,
+          Key: bucketObject.Key
+        };
+        context._awsCache.s3.deleteObject(params, function (err, data) {
+          if (err) {
+            console.error(err, err.stack); // an error occurred
+            defer.reject();
+          } else {
+            // console.log('awsSvc, deleted object!', data);
+            defer.resolve(data); // successful response
+          }
+        });
       });
-    });
 
     return defer.promise;
   };
 
   getMultipartUploads() {
+    var context = this;
     var defer = this.$q.defer();
-    this.getUploadSession().then(function listMultipartUploads() {
-      this._awsCache.s3.listMultipartUploads(function (err, data) {
-        if (err) {
-          console.error(err, err.stack); // an error occurred
-          defer.reject();
-        } else {
-          // console.log('awsSvc, got mulipart upload listing!', data);
-          defer.resolve(data); // successful response
-        }
+    this.getUploadSession()
+      .then(function listMultipartUploads() {
+        context._awsCache.s3.listMultipartUploads(function (err, data) {
+          if (err) {
+            console.error(err, err.stack); // an error occurred
+            defer.reject();
+          } else {
+            // console.log('awsSvc, got mulipart upload listing!', data);
+            defer.resolve(data); // successful response
+          }
+        });
       });
-    });
 
     return defer.promise;
 
   };
 
   getMultipartUploadParts(index, multipartUpload) {
+    var context = this;
     var defer = this.$q.defer();
-    this.getUploadSession().then(function listParts() {
-      var params = {
-        Bucket: multipartUpload.bucket,
-        Key: multipartUpload.Key,
-        UploadId: multipartUpload.UploadId
-      };
-      this._awsCache.s3.listParts(params, function (err, data) {
-        if (err) {
-          console.error(err, err.stack); // an error occurred
-          defer.reject();
-        } else {
-          // console.log('awsSvc, got mulipart upload listing!', data);
-          defer.resolve({
-            i: index,
-            parts: data
-          }); // successful response
-        }
+    this.getUploadSession()
+      .then(function listParts() {
+        var params = {
+          Bucket: multipartUpload.bucket,
+          Key: multipartUpload.Key,
+          UploadId: multipartUpload.UploadId
+        };
+        context._awsCache.s3.listParts(params, function (err, data) {
+          if (err) {
+            console.error(err, err.stack); // an error occurred
+            defer.reject();
+          } else {
+            // console.log('awsSvc, got mulipart upload listing!', data);
+            defer.resolve({
+              i: index,
+              parts: data
+            }); // successful response
+          }
+        });
       });
-    });
 
     return defer.promise;
 
   };
 
   cancelMultipartUpload(multipartUpload) {
+    var context = this;
     var defer = this.$q.defer();
-    this.getUploadSession().then(function abortMultipartUpload() {
-      var params = {
-        Bucket: multipartUpload.bucket,
-        Key: multipartUpload.Key,
-        UploadId: multipartUpload.UploadId
-      };
-      this._awsCache.s3.abortMultipartUpload(params, function (err, data) {
-        if (err) {
-          console.error(err, err.stack); // an error occurred
-          defer.reject();
-        } else {
-          // console.log('awsSvc, deleted mulipart upload!', data);
-          defer.resolve(data); // successful response
-        }
+    this.getUploadSession()
+      .then(function abortMultipartUpload() {
+        var params = {
+          Bucket: multipartUpload.bucket,
+          Key: multipartUpload.Key,
+          UploadId: multipartUpload.UploadId
+        };
+        context._awsCache.s3.abortMultipartUpload(params, function (err, data) {
+          if (err) {
+            console.error(err, err.stack); // an error occurred
+            defer.reject();
+          } else {
+            // console.log('awsSvc, deleted mulipart upload!', data);
+            defer.resolve(data); // successful response
+          }
+        });
       });
-    });
 
     return defer.promise;
   };
@@ -352,22 +362,23 @@ export class awsSvc implements awsServices {
       var context = this;
 
       this.ensureUniqueFilename(this.$q.deferred)
-       .then(function () {
-        var fileUploadPromise;
-        if (context.isSmallUpload()) {
-          fileUploadPromise = context.uploadSmallFile();
-        } else {
-          fileUploadPromise = this.uploadBigFile();
-        }
-        fileUploadPromise.then(function () {
-          context.createAsset(assetEndpoint);
-          },
-          function (reason) {
-            context.deferredUploads[context.fileIndex].reject(reason);
-          },
-          function (update) {
-            context.deferredUploads[context.fileIndex].notify(update);
-          });
+        .then(function () {
+          var fileUploadPromise;
+          if (context.isSmallUpload()) {
+            fileUploadPromise = context.uploadSmallFile();
+          } else {
+            fileUploadPromise = context.uploadBigFile();
+          }
+          fileUploadPromise
+            .then(function () {
+              context.createAsset(assetEndpoint);
+            },
+            function (reason) {
+              context.deferredUploads[context.fileIndex].reject(reason);
+            },
+            function (update) {
+              context.deferredUploads[context.fileIndex].notify(update);
+            });
       });
     }
   };
@@ -397,23 +408,24 @@ export class awsSvc implements awsServices {
             if (context.isSmallUpload()) {
               deferred.resolve();
             } else {
-              context.getMultipartUploads().then(function (data) {
+              context.getMultipartUploads()
+                .then(function (data) {
 
-                var findUnique = function (name) {
-                  // console.log("Looking for a unique name", name);
-                  for (var i = 0; i < data.Uploads.length; i++) {
-                    // console.log("trying ", data.Uploads[i].Key);
-                    if (data.Uploads[i].Key === context._awsCache.s3.config.params.Prefix + name) {
-                      // console.log("Not unique; try again");
-                      return findUnique(context.generateUUID());
+                  var findUnique = function (name) {
+                    // console.log("Looking for a unique name", name);
+                    for (var i = 0; i < data.Uploads.length; i++) {
+                      // console.log("trying ", data.Uploads[i].Key);
+                      if (data.Uploads[i].Key === context._awsCache.s3.config.params.Prefix + name) {
+                        // console.log("Not unique; try again");
+                        return findUnique(context.generateUUID());
+                      }
                     }
-                  }
-                  return name;
-                };
+                    return name;
+                  };
 
-                context.fileBeingUploaded.uniqueName = findUnique(context.fileBeingUploaded.uniqueName);
-                deferred.resolve();
-              });
+                  context.fileBeingUploaded.uniqueName = findUnique(context.fileBeingUploaded.uniqueName);
+                  deferred.resolve();
+                });
             }
           }
         } else {
@@ -458,15 +470,17 @@ export class awsSvc implements awsServices {
   };
 
   uploadSmallFile() {
+    var context = this;
     // console.log('awsSvc uploading small file');
     this.deferredUpload = this.$q.defer();
-    this.putObject().then(function (data) {
-      console.log('UPLOAD SMALL FILE COMPLETE', data);
-    }, function (reason) {
-      console.error('UPLOAD SMALL FILE FAILED: ', reason);
-    }, function (update) {
-      console.log('UPLOAD SMALL FILE UPDATE: ', update);
-    });
+    this.putObject()
+      .then(function (data) {
+        console.log('UPLOAD SMALL FILE COMPLETE', data);
+      }, function (reason) {
+        console.error('UPLOAD SMALL FILE FAILED: ', reason);
+      }, function (update) {
+        console.log('UPLOAD SMALL FILE UPDATE: ', update);
+      });
     return this.deferredUpload.promise;
   };
 
@@ -477,42 +491,44 @@ export class awsSvc implements awsServices {
     var context = this;
 
     this.getUploadSession()
-    .then(function putObject() {
-      // console.log('awsSvc, putting object with key: ', this._awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName);
-      context.getMD5ForFileOrBlob(context.fileBeingUploaded, 'base64').then(function (md5) {
-        var params = {
-          Key: context._awsCache.s3.config.params.Prefix + context.fileBeingUploaded.uniqueName,
-          ContentType: context.fileBeingUploaded.type,
-          Body: context.fileBeingUploaded,
-          ContentMD5: md5,
-          ACL: context.PUBLIC_READ
-        };
+      .then(function putObject() {
+        // console.log('awsSvc, putting object with key: ', this._awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName);
+        context.getMD5ForFileOrBlob(context.fileBeingUploaded, 'base64')
+          .then(function (md5) {
+            var params = {
+              Key: context._awsCache.s3.config.params.Prefix + context.fileBeingUploaded.uniqueName,
+              ContentType: context.fileBeingUploaded.type,
+              Body: context.fileBeingUploaded,
+              ContentMD5: md5,
+              ACL: context.PUBLIC_READ
+            };
 
-        context.currentRequest = context._awsCache.s3.putObject(params, function (err, data) {
-          if (err) {
-            console.error(err, err.stack); // an error occurred
-            context.deferredUpload.reject();
-          } else {
-            // console.log('awsSvc, uploaded file!', data);
-            context.deferredUpload.resolve(data); // successful response
-          }
-        });
-        context.currentRequest.on('httpUploadProgress', function (progress) {
-          context.deferredUpload.notify({
-            bytesSent: progress.loaded,
-            bytesTotal: progress.total
+            context.currentRequest = context._awsCache.s3.putObject(params, function (err, data) {
+              if (err) {
+                console.error(err, err.stack); // an error occurred
+                context.deferredUpload.reject();
+              } else {
+                // console.log('awsSvc, uploaded file!', data);
+                context.deferredUpload.resolve(data); // successful response
+              }
+            });
+            context.currentRequest
+              .on('httpUploadProgress', function (progress) {
+                context.deferredUpload.notify({
+                  bytesSent: progress.loaded,
+                  bytesTotal: progress.total
+                });
+              })
+              .on('error', function (err, response) {
+                console.error('error: ', err, response);
+                context.deferredUpload.reject("An error occured while uploading the file, please try again.");
+              });
           });
-        })
-        .on('error', function (err, response) {
-          console.error('error: ', err, response);
-          context.deferredUpload.reject("An error occured while uploading the file, please try again.");
-        });
+      }, function (reason) {
+        console.error('PUT OBJECT FAILED: ', reason);
+      }, function (update) {
+        console.log('PUT OBJECT UPDATE: ', update);
       });
-    }, function (reason) {
-      console.error('PUT OBJECT FAILED: ', reason);
-    }, function (update) {
-      console.log('PUT OBJECT UPDATE: ', update);
-    });
     return defer.promise;
   };
 
@@ -524,11 +540,12 @@ export class awsSvc implements awsServices {
     var context = this;
 
     this.createMultipartUpload()
-    .then(context.prepareUploadParts).then(function startUpload() {
-      for (var i = 0; i < this.MAX_SIMUL_PARTS_UPLOADING; i++) {
-        context.startNextUploadPart();
-      }
-    });
+      .then(context.prepareUploadParts)
+      .then(function startUpload() {
+        for (var i = 0; i < context.MAX_SIMUL_PARTS_UPLOADING; i++) {
+          context.startNextUploadPart();
+        }
+      });
     return this.deferredUpload.promise;
   };
 
@@ -538,22 +555,23 @@ export class awsSvc implements awsServices {
     // ******************* maintain context for callbacks ********************
     var context = this;
     
-    this.getUploadSession().then(function createMultipartUpload() {
-      var params = {
-        Key: context._awsCache.s3.config.params.Prefix + context.fileBeingUploaded.uniqueName,
-        ContentType: context.fileBeingUploaded.type,
-        ACL: context.PUBLIC_READ
-      };
-      context._awsCache.s3.createMultipartUpload(params, function (err, data) {
-        if (err) {
-          console.error(err, err.stack); // an error occurred
-          defer.reject();
-        } else {
-          // console.log('awsSvc, created multipart upload!', data);
-          defer.resolve(data); // successful response
-        }
+    this.getUploadSession()
+      .then(function createMultipartUpload() {
+        var params = {
+          Key: context._awsCache.s3.config.params.Prefix + context.fileBeingUploaded.uniqueName,
+          ContentType: context.fileBeingUploaded.type,
+          ACL: context.PUBLIC_READ
+        };
+        context._awsCache.s3.createMultipartUpload(params, function (err, data) {
+          if (err) {
+            console.error(err, err.stack); // an error occurred
+            defer.reject();
+          } else {
+            // console.log('awsSvc, created multipart upload!', data);
+            defer.resolve(data); // successful response
+          }
+        });
       });
-    });
     return defer.promise;
   };
 
@@ -588,6 +606,7 @@ export class awsSvc implements awsServices {
   };
 
   startNextUploadPart() {
+    var context = this;
     var defer = this.$q.defer();
     var chunkIndex = this.chunkSearchIndex;
     var foundNextChunk = false;
@@ -607,14 +626,16 @@ export class awsSvc implements awsServices {
           this.$q.all({
             partNumber: this.$q.when(chunkIndex + 1),
             eTag: this.uploadPart(chunkIndex + 1, blob)
-          }).then(this.completePart, this.handleFailedPart).then(function (data) {
-            defer.resolve(data);
-          }, function (reason) {
-            console.error("UPLOAD PART FAILED: ", reason);
-            defer.reject(reason);
-          }, function (update) {
-            defer.update(update);
-          });
+          })
+            .then(context.completePart, context.handleFailedPart)
+            .then(function (data) {
+              defer.resolve(data);
+            }, function (reason) {
+              console.error("UPLOAD PART FAILED: ", reason);
+              defer.reject(reason);
+            }, function (update) {
+              defer.update(update);
+            });
         } else if (chunk.status === this.COMPLETE && chunkIndex === this.chunkSearchIndex) {
           this.chunkSearchIndex++;
         }
@@ -642,55 +663,60 @@ export class awsSvc implements awsServices {
   };
 
   uploadPart(partNumber, blob, defer) {
+    var context = this;
     // console.log('awsSvc, Uploading part: ', partNumber);
     if (!defer) {
       defer = this.$q.defer();
     }
-    this.getUploadSession().then(function () {
-      this.getMD5ForFileOrBlob(blob, 'base64').then(function (md5) {
-        //console.log("MD5 for part '", partNumber, "' of size '", blob.size,"' is ", md5);
-        var params = {
-          Bucket: this.multipartUpload.Bucket,
-          Key: this.multipartUpload.Key,
-          UploadId: this.multipartUpload.UploadId,
-          PartNumber: partNumber,
-          ContentMD5: md5,
-          Body: blob
-        };
-        this.chunks[partNumber - 1].request = this._awsCache.s3.uploadPart(params, function (err, data) {
-          if (err) {
-            if (this.chunks[partNumber - 1].retries < this.MAX_RETRIES) {
-              console.error("RETRYING PART UPLOAD FOR CHUNK ", partNumber);
-              this.chunks[partNumber - 1].request.abort();
-              this.chunks[partNumber - 1].retries++;
-              this.uploadPart(partNumber, blob, defer);
-            } else {
-              console.error("PART UPLOAD FAILED FOR CHUNK ", partNumber, err, err.stack); // an error occurred
-              this.chunks[partNumber - 1].status = this.FAILED;
-              defer.reject(err);
-            }
-          } else {
-            //console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
-            defer.resolve(data.ETag); // successful response
-          }
-        });
-        this.chunks[partNumber - 1].request.on('httpUploadProgress', function (progress) {
-          this.bytesUploaded += progress.loaded - this.chunks[partNumber - 1].uploaded;
-          this.chunks[partNumber - 1].uploaded = progress.loaded;
-          this.deferredUpload.notify({
-            bytesSent: this.bytesUploaded,
-            bytesTotal: this.fileBeingUploaded.size
+    this.getUploadSession()
+      .then(function () {
+        context.getMD5ForFileOrBlob(blob, 'base64')
+          .then(function (md5) {
+            //console.log("MD5 for part '", partNumber, "' of size '", blob.size,"' is ", md5);
+            var params = {
+              Bucket: context.multipartUpload.Bucket,
+              Key: context.multipartUpload.Key,
+              UploadId: context.multipartUpload.UploadId,
+              PartNumber: partNumber,
+              ContentMD5: md5,
+              Body: blob
+            };
+            context.chunks[partNumber - 1].request = context._awsCache.s3.uploadPart(params, function (err, data) {
+              if (err) {
+                if (context.chunks[partNumber - 1].retries < context.MAX_RETRIES) {
+                  console.error("RETRYING PART UPLOAD FOR CHUNK ", partNumber);
+                  context.chunks[partNumber - 1].request.abort();
+                  context.chunks[partNumber - 1].retries++;
+                  context.uploadPart(partNumber, blob, defer);
+                } else {
+                  console.error("PART UPLOAD FAILED FOR CHUNK ", partNumber, err, err.stack); // an error occurred
+                  context.chunks[partNumber - 1].status = context.FAILED;
+                  defer.reject(err);
+                }
+              } else {
+                //console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
+                defer.resolve(data.ETag); // successful response
+              }
+            });
+            context.chunks[partNumber - 1].request
+              .on('httpUploadProgress', function (progress) {
+                context.bytesUploaded += progress.loaded - context.chunks[partNumber - 1].uploaded;
+                context.chunks[partNumber - 1].uploaded = progress.loaded;
+                context.deferredUpload.notify({
+                  bytesSent: context.bytesUploaded,
+                  bytesTotal: context.fileBeingUploaded.size
+                });
+              })
+              .on('error', function (err, response) {
+                console.log('PART UPLOAD FAILED ON UPDATE: ', err, response);
+                //defer.reject(err);
+                //}).on('httpError', function (err, response) {
+                //	console.log('HTTP ERROR: ', err, response);
+                //}).on('httpDone', function (response) {
+                //	console.log('HTTP DONE: ', response);
+              });
           });
-        }).on('error', function (err, response) {
-          console.log('PART UPLOAD FAILED ON UPDATE: ', err, response);
-          //defer.reject(err);
-          //}).on('httpError', function (err, response) {
-          //	console.log('HTTP ERROR: ', err, response);
-          //}).on('httpDone', function (response) {
-          //	console.log('HTTP DONE: ', response);
-        });
       });
-    });
     return defer.promise;
   };
 
@@ -766,6 +792,7 @@ export class awsSvc implements awsServices {
   }
 
   createAsset = function (assetEndpoint) {
+    var context = this;
     var deferred = this.$q.defer();
     var assetData = {
       'url': 'https://s3.amazonaws.com/' + this._awsCache.s3.config.params.Bucket + '/' + this._awsCache.s3.config.params.Prefix + this.fileBeingUploaded.uniqueName,
@@ -780,7 +807,7 @@ export class awsSvc implements awsServices {
     }
 
     this.$http.post(config.apiDataBaseUrl + assetEndpoint, assetData)
-    .success((data) => this.createAssetSuccess(data, assetEndpoint))
+      .success((data) => context.createAssetSuccess(data, assetEndpoint))
     /*
       .success(function (data) {
         this.deferredUploads[this.fileIndex].resolve(data);
@@ -790,10 +817,10 @@ export class awsSvc implements awsServices {
       })
       */
       .error(function () {
-        this.deferredUploads[this.fileIndex].reject();
-        this.fileBeingUploaded = null;
-        this.fileIndex++;
-        this.startNextUpload(assetEndpoint);
+        context.deferredUploads[context.fileIndex].reject();
+        context.fileBeingUploaded = null;
+        context.fileIndex++;
+        context.startNextUpload(assetEndpoint);
       });
     return deferred.promise;
   };
