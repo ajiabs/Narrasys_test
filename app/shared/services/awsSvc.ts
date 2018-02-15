@@ -629,8 +629,8 @@ export class awsSvc implements awsServices {
             eTag: this.uploadPart(chunkIndex + 1, blob)
           })
         //  .then(context.completePart, context.handleFailedPart)
-          .then((data) => context.completePart(data))
-
+        //  .then((data) => context.completePart(data))
+        .then(data => context.completePart(data), err => context.handleFailedPart(err))
             .then(function (data) {
               defer.resolve(data);
             }, function (reason) {
