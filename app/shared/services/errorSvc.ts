@@ -39,9 +39,7 @@ export class ErrorSvc implements ErrorServices {
   constructor( private $location: ng.ILocationService) {
   }
 
-  // TODO This is a mess.  make the field names less ridiculously inconsistent.
-
-  // svc() {
+   // svc() {
   //   svc.errors = [];
   //   svc.notifications = [];
   // };

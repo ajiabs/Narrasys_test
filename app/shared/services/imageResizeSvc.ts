@@ -2,7 +2,7 @@
 /**
  *
  * Created by githop on 3/23/16.
- * 
+ * Updated by Curve10:
  * updated to Angular by EDD on 2/5/18.
  */
 import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../../constants'

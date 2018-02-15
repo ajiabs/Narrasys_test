@@ -1,3 +1,12 @@
+// ***********************************
+// set of imports and service,component declarations for the shared section of code
+// in process of updating to angular from angularJS
+// this includes changing factories into services
+//
+// Updates by Curve10
+//
+// ***********************************************************************************
+
 import authSvc from './services/authSvc/authSvc';
 import { AppState } from './services/appState';
 import { awsSvc } from './services/awsSvc';
@@ -64,9 +73,9 @@ npSharedModule
   // was:  .factory('errorSvc', errorSvc)
   // added as service.
 
-
   // added as service:
  // .service(NPUtilServices.Name, NPUtilServices)
+
   .service( ErrorSvc.Name, ErrorSvc)
   .factory('authSvc', authSvc)
   // was .factory('awsSvc', awsSvc)
@@ -77,7 +86,6 @@ npSharedModule
   
   .factory('mockSvc', mockSvc)
   .factory('modelSvc', modelSvc)
-    // was:  
     .factory('ittUtils', ittUtils)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .component(AssetUploader.Name, new AssetUploader())

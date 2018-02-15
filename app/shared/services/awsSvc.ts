@@ -540,7 +540,8 @@ export class awsSvc implements awsServices {
     var context = this;
 
     this.createMultipartUpload()
-      .then(context.prepareUploadParts)
+   //   .then(context.prepareUploadParts)
+       .then((awsMultipartUpload) => context.prepareUploadParts(awsMultipartUpload))
       .then(function startUpload() {
         for (var i = 0; i < context.MAX_SIMUL_PARTS_UPLOADING; i++) {
           context.startNextUploadPart();
@@ -627,7 +628,9 @@ export class awsSvc implements awsServices {
             partNumber: this.$q.when(chunkIndex + 1),
             eTag: this.uploadPart(chunkIndex + 1, blob)
           })
-            .then(context.completePart, context.handleFailedPart)
+        //  .then(context.completePart, context.handleFailedPart)
+          .then((data) => context.completePart(data))
+
             .then(function (data) {
               defer.resolve(data);
             }, function (reason) {
@@ -721,6 +724,7 @@ export class awsSvc implements awsServices {
   };
 
   completePart(data) {
+    var context = this;
     var defer = this.$q.defer();
     this.chunks[data.partNumber - 1].status = this.COMPLETE;
     this.chunks[data.partNumber - 1].part = {
@@ -744,10 +748,10 @@ export class awsSvc implements awsServices {
       this._awsCache.s3.completeMultipartUpload(params, function (err, data) {
         if (err) {
           console.error(err, err.stack); // an error occurred
-          this.deferredUpload.reject(err);
+          context.deferredUpload.reject(err);
           defer.reject(err);
         } else {
-          this.deferredUpload.resolve(data);
+          context.deferredUpload.resolve(data);
           defer.resolve(data);
         }
       });
