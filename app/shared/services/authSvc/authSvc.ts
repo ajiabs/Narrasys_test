@@ -56,11 +56,17 @@ export class AuthSvc implements IAuthServices {
     CUSTOMER: 'Customer'
   };
 
-  private _isTrueGuest = this.isTrueGuest;
+ // private _isTrueGuest = this.isTrueGuest;
+  //isTrueGuest() {
+
   isTrueGuest() {
     var _isGuest = true;
-    angular.forEach(this.appState.user.roles, function(r) {
-      if (r.role !== this.Roles.GUEST) {
+    var context = this;
+    if( this.authSvc) {
+      context = this.authSvc;
+    } 
+    angular.forEach(context.appState.user.roles, function(r) {
+      if (r.role !== context.Roles.GUEST) {
         _isGuest = false;
       }
     });
@@ -69,15 +75,19 @@ export class AuthSvc implements IAuthServices {
   }
 
   userHasRole(role) {
-    if (this.appState.user && this.appState.user.roles) {
-      for (var i = 0; i < this.appState.user.roles.length; i++) {
-        if (this.appState.user.roles[i].role === role) {
-          if (!(role === this.Roles.ADMINISTRATOR && this.ittUtils.existy(this.appState.user.roles[i].resource_id))) {
+    var context = this;
+    if( this.authSvc) {
+      context = this.authSvc;
+    } 
+    if (context.appState.user && context.appState.user.roles) {
+      for (var i = 0; i < context.appState.user.roles.length; i++) {
+        if (context.appState.user.roles[i].role === role) {
+          if (!(role === context.Roles.ADMINISTRATOR && context.ittUtils.existy(context.appState.user.roles[i].resource_id))) {
             return true;
           }
-        } else if (role === this.Roles.CUSTOMER_ADMINISTRATOR && this.appState.user.roles[i].role === this.Roles.ADMINISTRATOR &&
-          this.ittUtils.existy(this.appState.user.roles[i].resource_id) &&
-          this.appState.user.roles[i].resource_type === this.Resources.CUSTOMER) {
+        } else if (role === context.Roles.CUSTOMER_ADMINISTRATOR && context.appState.user.roles[i].role === context.Roles.ADMINISTRATOR &&
+          context.ittUtils.existy(context.appState.user.roles[i].resource_id) &&
+          context.appState.user.roles[i].resource_type === context.Resources.CUSTOMER) {
           return true;
         }
       }
@@ -213,7 +223,7 @@ export class AuthSvc implements IAuthServices {
     })
       .success(function (data) {
         context.$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
-        resolveUserData(data);
+        context.resolveUserData(data);
         context.getCurrentUser()
           .then(function () {
             defer.resolve(data);

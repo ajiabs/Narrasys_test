@@ -17,7 +17,11 @@ export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc
       scope.appState = appState;
       scope.loading = true;
       scope.logout = authSvc.logout;
-      scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+      scope.authSvc = authSvc;
+      scope.canAccess = scope.authSvc.userHasRole('admin') || scope.authSvc.userHasRole('customer admin');
+
+
+   //   scope.canAccess =  authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 
       authSvc.authenticate().then(function () {
         scope.loading = false;

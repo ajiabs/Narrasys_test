@@ -916,7 +916,7 @@ export class ModelSvc implements IModelSvc {
           (!context.ittUtils.existy(currentScene) || !context.ittUtils.existy(currentScene.styles) || context.ittUtils.intersection(currentScene.styles, potentialTransitions).length === 0) &&
           (!context.ittUtils.existy(event.styles) || context.ittUtils.intersection(event.styles, potentialTransitions).length === 0)) {
           if (isImgPlain || isInlineImgWText || isImgCap || isImgThumb || isPq || isBgImage) {
-            if (!contextthis.ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
+            if (!context.ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
               event.styleCss += ' transitionFade';
             } else {
               event.styleCss += ' transitionPop';
@@ -1133,6 +1133,8 @@ export class ModelSvc implements IModelSvc {
   resolveEpisodeAssets = function (episodeId) {
     // console.log("resolveEpisodeAssets");
     // attaches assets to this.events
+    var context = this;
+    
     angular.forEach(this.events, function (item) {
       if (item.cur_episode_id !== episodeId) {
         return;
@@ -1141,8 +1143,8 @@ export class ModelSvc implements IModelSvc {
       if (!assetId) {
         return;
       }
-      if (this.assets[assetId]) {
-        this.events[item._id].asset = this.assets[assetId];
+      if (context.assets[assetId]) {
+        context.events[item._id].asset = context.assets[assetId];
       }
     });
     // Do episode's master asset and poster, too.  If they're not here, do nothing; this will get called again after assets load
