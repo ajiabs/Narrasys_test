@@ -7,7 +7,10 @@
 //
 // ***********************************************************************************
 
-import authSvc from './services/authSvc/authSvc';
+// import authSvc, { AuthSvc } from './services/authSvc/authSvc';
+// import { AuthSvc } from './services/authSvc/authSvc';
+import {AuthSvc} from './services/authSvc/authSvc';
+
 import { AppState } from './services/appState';
 import { awsSvc } from './services/awsSvc';
 // changed from:
@@ -35,6 +38,7 @@ import { Tooltip } from './components/ittTooltip';
 import ittValidationTip from './components/ittValidationTip';
 import ittFilesHandler from './directives/ittFilesHandler';
 import ittLogin from './directives/ittLogin';
+// import {DataSvc} from './services/dataSvc/dataSvc';
 import dataSvc from './services/dataSvc/dataSvc';
 import { ModelSvc } from './services/modelSvc/modelSvc';
 import { AssetsResolve } from './components/npAssetsResolve.component';
@@ -47,6 +51,7 @@ import { AuthTemplate } from './templates/auth/auth.template';
 import { Error404Template } from './templates/error-404/error-404.template';
 import { RootTemplate } from './templates/root/root.template';
 import { SxsContainerAssets } from './components/container-assets/sxsContainerAssets';
+
 
 const npSharedModule = angular.module('np.shared', [
   'np.filters'
@@ -77,12 +82,15 @@ npSharedModule
  // .service(NPUtilServices.Name, NPUtilServices)
 
   .service( ErrorSvc.Name, ErrorSvc)
-  .factory('authSvc', authSvc)
+  // was .factory('authSvc', authSvc)
+  .service( AuthSvc.Name, AuthSvc)
+
   // was .factory('awsSvc', awsSvc)
   // added as service:
   .service( awsSvc.Name, awsSvc)
 
   .factory('dataSvc', dataSvc)
+  //.service( DataSvc.Name, DataSvc)
   
   .factory('mockSvc', mockSvc)
   // was .factory('modelSvc', modelSvc)

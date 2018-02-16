@@ -1,5 +1,9 @@
 // @npUpgrade-shared-false
 
+// ** Updated by Curve10 (JAB/EDD)
+//    Feb 2018 
+//
+
 import { config } from '../../../config';
 
 export interface IAuthServices {
@@ -22,7 +26,7 @@ export interface IAuthServices {
 }
 
 
-export class authSvc implements IAuthServices {
+export class AuthSvc implements IAuthServices {
 
   static Name = 'authSvc'; // tslint:disable-line
   static $inject = ['$routeParams', '$http', '$q', '$location', 'ittUtils', 'appState', 'modelSvc', 'errorSvc'];
@@ -236,6 +240,7 @@ export class authSvc implements IAuthServices {
   private authenticateDefer = this.$q.defer();
   authenticate(nonceParam) {
     var context = this;
+
     if (this.$http.defaults.headers.common.Authorization) {
       //appState#init will initialize an empty object as the user property, which will always make
       //appState.user truthy, thus need to check to see if we actually have a loaded user by looking for the id.
