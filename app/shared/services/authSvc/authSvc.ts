@@ -178,6 +178,9 @@ export class AuthSvc implements IAuthServices {
     // Clear these even if the logout call fails (which it will if the token in localStorage has expired).
     // DO NOT clear the Authorization header yet (it's needed for the logout server call)
     var context = this;
+    if( this.authSvc) {
+      context = this.authSvc;
+    } 
     try {
       localStorage.removeItem(config.localStorageKey);
       document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -185,9 +188,9 @@ export class AuthSvc implements IAuthServices {
     } catch (e) {
       // user disabled cookies, so no need to try to remove them...
     }
-    this.appState.user = {};
+    context.appState.user = {};
 
-    this.$http({
+    context.$http({
       method: 'GET',
       url: config.apiDataBaseUrl + "/logout"
     })

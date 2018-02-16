@@ -84,7 +84,8 @@ function routerConfig($routeProvider) {
         '</div>'
       ].join(''),
       controller: ['$scope', 'authSvc', function ($scope, authSvc) {
-        $scope.logout = authSvc.logout;
+        $scope.authSvc = authSvc;
+        $scope.logout = $scope.authSvc.logout;
       }]
     })
     .when('/stories', {

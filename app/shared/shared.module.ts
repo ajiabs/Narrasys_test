@@ -38,8 +38,8 @@ import { Tooltip } from './components/ittTooltip';
 import ittValidationTip from './components/ittValidationTip';
 import ittFilesHandler from './directives/ittFilesHandler';
 import ittLogin from './directives/ittLogin';
-// import {DataSvc} from './services/dataSvc/dataSvc';
-import dataSvc from './services/dataSvc/dataSvc';
+import {DataSvc} from './services/dataSvc/dataSvc';
+// import dataSvc from './services/dataSvc/dataSvc';
 import { ModelSvc } from './services/modelSvc/modelSvc';
 import { AssetsResolve } from './components/npAssetsResolve.component';
 import { ErrorNotice } from './components/error-notice/npErrorNotice.component';
@@ -89,8 +89,8 @@ npSharedModule
   // added as service:
   .service( awsSvc.Name, awsSvc)
 
-  .factory('dataSvc', dataSvc)
-  //.service( DataSvc.Name, DataSvc)
+  // was .factory('dataSvc', dataSvc)
+  .service( DataSvc.Name, DataSvc)
   
   .factory('mockSvc', mockSvc)
   // was .factory('modelSvc', modelSvc)
