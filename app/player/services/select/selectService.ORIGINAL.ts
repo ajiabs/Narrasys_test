@@ -2,12 +2,6 @@
 /**
  * Created by githop on 6/7/16.
  */
-
-/***********************************
- **** Updated by Curve10 (JAB/EDD)
- **** Feb 2018
- ***********************************/
-
 import { IDataSvc, IModelSvc, Partial, TDataCacheItem, ILangformKeys } from '../../../interfaces';
 import { EventTemplates, TEventTemplateNames } from '../../../constants';
 import { TTemplate } from '../../../models';
@@ -33,36 +27,13 @@ export interface ILangOpt {
   isDisabled: boolean;
 }
 
-export interface ISelectService {
-  _setVisibility(prop, bool);
-  _partialVis(prop);
-  _setAvailableImageOptsForLayout(sceneType, item, itemForm);
-  getSceneName(scene);
-  getSelectOpts(type);
-  getVisibility(prop);
-  setupItemForm(stylesArr, type): IItemForm;
-  handleEpisodeItemFormUpdates(itemForm: IItemForm);
-  handleEventItemFormUpdate(itemForm: IItemForm): string[];
-  getTemplates(type, customerIds?: string[]);
-  onSelectChange(item, itemForm);
-  showTab(itemType, tabTitle);
-}
+selectService.$inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
 
-export class SelectService implements ISelectService {
-  static Name = 'selectService'; // tslint:disable-line
-  static $inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
+export default function selectService(authSvc, modelSvc: IModelSvc, dataSvc: IDataSvc, ittUtils) {
+  var _userHasRole = authSvc.userHasRole;
+  var _existy = ittUtils.existy;
 
-  constructor (
-    private authSvc,
-    private modelSvc:IModelSvc,
-    private dataSvc:IDataSvc,
-    private ittUtils) {
-  }
-
-  private _userHasRole = this.authSvc.userHasRole;
-  private _existy = this.ittUtils.existy;
-
-  private _langOpts = [
+  var _langOpts = [
     { value: 'en', name: 'English', isDisabled: false },
     { value: 'es', name: 'Spanish', isDisabled: false },
     { value: 'zh', name: 'Chinese', isDisabled: false },
@@ -73,16 +44,16 @@ export class SelectService implements ISelectService {
   ];
 
   //select opts map
-  private _select = {
+  var _select = {
     video: [],
     display: [],
     imagePosition: [],
     imagePin: [],
     questionType: [],
-    language: this._langOpts
+    language: _langOpts
   };
   //use visibility map with getVisibility() and component directives
-  private _visibility = {
+  var _visibility = {
     templateSelect: true,
     imageUpload: false,
     display: false,
@@ -94,7 +65,7 @@ export class SelectService implements ISelectService {
 
   //moved into a map because we will need to use this
   //when we are handing updates on background images.
-  private _scenes = {
+  var _scenes = {
     centered: EventTemplates.CENTERED_TEMPLATE,      			        //Center 1
     centeredPro: EventTemplates.CENTERED_PRO_TEMPLATE,			      //Center 2
     '1col': EventTemplates.ONECOL_TEMPLATE,						            //Center 3
@@ -106,7 +77,7 @@ export class SelectService implements ISelectService {
     pip: EventTemplates.PIP_TEMPLATE                              //Split 6
   };
 
-  private _bgImageTitles = {
+  var _bgImageTitles = {
     windowBg: 'Full window background',
     videoOverlay: 'Video overlay (16:9)',
     textBg: 'Text pane background',
@@ -115,50 +86,50 @@ export class SelectService implements ISelectService {
     transmediaFg: 'Transmedia pane foreground'
   };
 
-  private _D1 = {
+  var _D1 = {
     a: { value: 'showCurrent', name: 'show only current transmedia items' },
     b: { value: '', name: 'Show all transmedia items, highlight current ones' }
   };
-  private _D2 = {
+  var _D2 = {
     a: { value: 'showCurrent', name: 'Show only current text items' },
     b: { value: '', name: 'Show all text items, highlight current ones' }
   };
-  private _D3 = {
+  var _D3 = {
     a: { value: 'showCurrent', name: 'Show only current items' },
     b: { value: '', name: 'Show all items, highlight current ones' }
   };
 
-  private _imageFieldVisibility = this._partialVis('imageUpload');
-  private _displaySelectVisibility = this._partialVis('display');
-  private _videoPositionSelectVisibility = this._partialVis('videoPosition');
-  private _titleFieldVisibility = this._partialVis('titleField');
-  private _speakerFieldVisibility = this._partialVis('speakerField');
-  private _templateSelectVisibility = this._partialVis('templateSelect');
-  private _bgImagePositionSelectVisibility = this._partialVis('bgImagePosition');
+  var _imageFieldVisibility = _partialVis('imageUpload');
+  var _displaySelectVisibility = _partialVis('display');
+  var _videoPositionSelectVisibility = _partialVis('videoPosition');
+  var _titleFieldVisibility = _partialVis('titleField');
+  var _speakerFieldVisibility = _partialVis('speakerField');
+  var _templateSelectVisibility = _partialVis('templateSelect');
+  var _bgImagePositionSelectVisibility = _partialVis('bgImagePosition');
 
-  // return {
-  //   handleEpisodeItemFormUpdates,
-  //   handleEventItemFormUpdate,
-  //   showTab,
-  //   onSelectChange,
-  //   getTemplates,
-  //   getVisibility,
-  //   getSelectOpts,
-  //   setupItemForm,
-  //   getSceneName
-  // };
+  return {
+    handleEpisodeItemFormUpdates,
+    handleEventItemFormUpdate,
+    showTab,
+    onSelectChange,
+    getTemplates,
+    getVisibility,
+    getSelectOpts,
+    setupItemForm,
+    getSceneName
+  };
 
-  _setVisibility(prop, bool) {
-    this._visibility[prop] = bool;
+  function _setVisibility(prop, bool) {
+    _visibility[prop] = bool;
   }
 
-  _partialVis(prop) {
+  function _partialVis(prop) {
     return function (bool) {
-      return this._setVisibility(prop, bool);
+      return _setVisibility(prop, bool);
     };
   }
 
-  _setAvailableImageOptsForLayout(sceneType, item, itemForm) {
+  function _setAvailableImageOptsForLayout(sceneType, item, itemForm) {
     //if we are set to the default layout,
     //overwrite it back to an empty array
     var isInline = item.layouts[0] === 'inline';
@@ -166,21 +137,21 @@ export class SelectService implements ISelectService {
     //TS-1147 - hide video position for videoOverlay
     //TS-1139 - all layouts, if vidOverlay, forced to fill/stretch.
     if (item.layouts.indexOf('videoOverlay') !== -1) {
-      this._bgImagePositionSelectVisibility(false);
+      _bgImagePositionSelectVisibility(false);
       itemForm.position = 'fill';
     }
     // altPane = transmedia pane, mainPane = text pane.
     switch (sceneType) {
       case 'centeredPro':
-        this._displaySelectVisibility(true);
-        this._videoPositionSelectVisibility(true);
-        this._select.display = [
-          { value: 'windowBg', name: this._bgImageTitles.windowBg, isDisabled: false },
-          { value: 'videoOverlay', name: this._bgImageTitles.videoOverlay, isDisabled: false },
-          { value: 'mainBg', name: this._bgImageTitles.textBg, isDisabled: true },
-          { value: 'mainFg', name: this._bgImageTitles.textFg, isDisabled: true },
-          { value: 'altBg', name: this._bgImageTitles.transmediaBg, isDisabled: true },
-          { value: 'altFg', name: this._bgImageTitles.transmediaFg, isDisabled: true }
+        _displaySelectVisibility(true);
+        _videoPositionSelectVisibility(true);
+        _select.display = [
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: true },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: true },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true }
         ];
 
         if (isInline) {
@@ -192,15 +163,15 @@ export class SelectService implements ISelectService {
         break;
       case '1col':
       case 'centered':
-        var isAdmin = this._userHasRole('admin');
-        this._displaySelectVisibility(true);
-        this._select.display = [
-          { value: 'windowBg', name: this._bgImageTitles.windowBg, isDisabled: false },
-          { value: 'videoOverlay', name: this._bgImageTitles.videoOverlay, isDisabled: false },
-          { value: 'mainBg', name: this._bgImageTitles.textBg, isDisabled: !isAdmin },
-          { value: 'mainFg', name: this._bgImageTitles.textFg, isDisabled: !isAdmin },
-          { value: 'altBg', name: this._bgImageTitles.transmediaBg, isDisabled: true },
-          { value: 'altFg', name: this._bgImageTitles.transmediaFg, isDisabled: true },
+        var isAdmin = _userHasRole('admin');
+        _displaySelectVisibility(true);
+        _select.display = [
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: !isAdmin },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: !isAdmin },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true },
         ];
         if (isInline) {
           item.layouts = ['windowBg'];
@@ -209,14 +180,14 @@ export class SelectService implements ISelectService {
         item.layouts = item.layouts || ['windowBg'];
         break;
       case 'mirroredTwoCol':
-        this._displaySelectVisibility(true);
-        this._select.display = [
-          { value: 'windowBg', name: this._bgImageTitles.windowBg, isDisabled: false },
-          { value: 'videoOverlay', name: this._bgImageTitles.videoOverlay, isDisabled: false },
-          { value: 'mainBg', name: this._bgImageTitles.textBg, isDisabled: false },
-          { value: 'mainFg', name: this._bgImageTitles.textFg, isDisabled: false },
-          { value: 'altBg', name: this._bgImageTitles.transmediaBg, isDisabled: false },
-          { value: 'altFg', name: this._bgImageTitles.transmediaFg, isDisabled: false }
+        _displaySelectVisibility(true);
+        _select.display = [
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false }
         ];
 
         if (isInline) {
@@ -228,14 +199,14 @@ export class SelectService implements ISelectService {
       case 'cornerV':
       case 'centerVV':
       case 'cornerH':
-        this._displaySelectVisibility(true);
-        this._select.display = [
-          { value: 'windowBg', name: this._bgImageTitles.windowBg, isDisabled: false },
-          { value: 'videoOverlay', name: this._bgImageTitles.videoOverlay, isDisabled: false },
-          { value: 'mainBg', name: this._bgImageTitles.textBg, isDisabled: false },
-          { value: 'mainFg', name: this._bgImageTitles.textFg, isDisabled: false },
-          { value: 'altBg', name: this._bgImageTitles.transmediaBg, isDisabled: false },
-          { value: 'altFg', name: this._bgImageTitles.transmediaFg, isDisabled: false }
+        _displaySelectVisibility(true);
+        _select.display = [
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: false },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false }
         ];
 
         if (isInline) {
@@ -246,14 +217,14 @@ export class SelectService implements ISelectService {
         item.layouts = item.layouts || ['altBg'];
         break;
       case 'pip':
-        this._displaySelectVisibility(true);
-        this._select.display = [
-          { value: 'windowBg', name: this._bgImageTitles.windowBg, isDisabled: true },
-          { value: 'videoOverlay', name: this._bgImageTitles.videoOverlay, isDisabled: false },
-          { value: 'mainBg', name: this._bgImageTitles.textBg, isDisabled: true },
-          { value: 'mainFg', name: this._bgImageTitles.textFg, isDisabled: true },
-          { value: 'altBg', name: this._bgImageTitles.transmediaBg, isDisabled: false },
-          { value: 'altFg', name: this._bgImageTitles.transmediaFg, isDisabled: false }
+        _displaySelectVisibility(true);
+        _select.display = [
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: true },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: true },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: true },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: false },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: false }
         ];
 
         if (isInline) {
@@ -263,13 +234,13 @@ export class SelectService implements ISelectService {
         item.layouts = item.layouts || ['altBg'];
         break;
       case 'centerVVMondrian':
-        this._select.display = [
-          { value: 'windowBg', name: this._bgImageTitles.windowBg, isDisabled: true },
-          { value: 'videoOverlay', name: this._bgImageTitles.videoOverlay, isDisabled: false },
-          { value: 'mainBg', name: this._bgImageTitles.textBg, isDisabled: false },
-          { value: 'mainFg', name: this._bgImageTitles.textFg, isDisabled: false },
-          { value: 'altBg', name: this._bgImageTitles.transmediaBg, isDisabled: true },
-          { value: 'altFg', name: this._bgImageTitles.transmediaFg, isDisabled: true }
+        _select.display = [
+          { value: 'windowBg', name: _bgImageTitles.windowBg, isDisabled: true },
+          { value: 'videoOverlay', name: _bgImageTitles.videoOverlay, isDisabled: false },
+          { value: 'mainBg', name: _bgImageTitles.textBg, isDisabled: false },
+          { value: 'mainFg', name: _bgImageTitles.textFg, isDisabled: false },
+          { value: 'altBg', name: _bgImageTitles.transmediaBg, isDisabled: true },
+          { value: 'altFg', name: _bgImageTitles.transmediaFg, isDisabled: true }
         ];
         if (isInline) {
           item.layouts = ['mainBg'];
@@ -285,18 +256,18 @@ export class SelectService implements ISelectService {
   }
 
   //not the display name, but the key of the scene map as string.
-  getSceneName(scene) {
-    return Object.keys(this._scenes).filter(function (key) {
-      return this._scenes[key] === scene.component_name;
+  function getSceneName(scene) {
+    return Object.keys(_scenes).filter(function (key) {
+      return _scenes[key] === scene.component_name;
     })[0];
   }
 
-  getSelectOpts(type) {
-    return this._select[type];
+  function getSelectOpts(type) {
+    return _select[type];
   }
 
-  getVisibility(prop) {
-    return this._visibility[prop];
+  function getVisibility(prop) {
+    return _visibility[prop];
   }
 
   /*
@@ -312,7 +283,7 @@ export class SelectService implements ISelectService {
    We do the inverse of this inside of watchStyleEdits below, which watches the itemForm, and builds up the styles array
    from the itemForm props. It also formats background URLs.
    */
-  setupItemForm(stylesArr, type): IItemForm {
+  function setupItemForm(stylesArr, type): IItemForm {
 
     //global for episode and item
     var _itemFormStub: IItemForm = {
@@ -330,7 +301,7 @@ export class SelectService implements ISelectService {
       _itemFormStub = angular.extend(_itemSpecificOpts, _itemFormStub);
     }
     //return stub object if no array is passed.
-    if (!this._existy(stylesArr)) {
+    if (!_existy(stylesArr)) {
       return _itemFormStub;
     }
     // do this in both cases, i.e. for item and episode
@@ -359,7 +330,7 @@ export class SelectService implements ISelectService {
     return _itemFormStub;
   }
 
-  handleEpisodeItemFormUpdates(itemForm: IItemForm) {
+  function handleEpisodeItemFormUpdates(itemForm: IItemForm) {
     return Object.keys(itemForm).reduce(
       (stylesArr: string[], styleKey: string) => {
         if (itemForm[styleKey]) {
@@ -371,7 +342,7 @@ export class SelectService implements ISelectService {
     );
   }
 
-  handleEventItemFormUpdate(itemForm: IItemForm): string[] {
+  function handleEventItemFormUpdate(itemForm: IItemForm): string[] {
     return Object.keys(itemForm).reduce(
       (stylesArr: string[], styleKey: string) => {
         if (itemForm[styleKey]) {
@@ -387,12 +358,12 @@ export class SelectService implements ISelectService {
     );
   }
 
-  getTemplates(type, customerIds?: string[]) {
+  function getTemplates(type, customerIds?: string[]) {
 
     const mergeTemplateProps = (templateOptsArr: Partial<ISelectOpt>[]): ISelectOpt[] => {
       return templateOptsArr.reduce(
         (sOptsArr: ISelectOpt[], o: ISelectOpt) => {
-          const template = this.modelSvc.readDataCache(
+          const template = modelSvc.readDataCache(
             'template',
             ('component_name' as keyof TDataCacheItem),
             o.component_name
@@ -419,40 +390,40 @@ export class SelectService implements ISelectService {
             return 0;
           }
         };
-        this._titleFieldVisibility(true); // NP-1159
+        _titleFieldVisibility(true); // NP-1159
 
-        return this.dataSvc.getEpisodeTemplatesByCustomerIds(customerIds).sort(_sortAlpha);
+        return dataSvc.getEpisodeTemplatesByCustomerIds(customerIds).sort(_sortAlpha);
 
       case 'scene':
-        this._displaySelectVisibility(false);
-        this._videoPositionSelectVisibility(false);
-        this._templateSelectVisibility(true);
-        this._bgImagePositionSelectVisibility(false);
+        _displaySelectVisibility(false);
+        _videoPositionSelectVisibility(false);
+        _templateSelectVisibility(true);
+        _bgImagePositionSelectVisibility(false);
         const scenes = [ //\u2022 = bullet point
-          { component_name: this._scenes.centered },
-          { component_name: this._scenes.centeredPro },
-          { component_name: this._scenes['1col'] },
-          { component_name: this._scenes.cornerV },
-          { component_name: this._scenes.mirroredTwoCol },
-          { component_name: this._scenes.centerVV },
-          { component_name: this._scenes.centerVVMondrian },
-          { component_name: this._scenes.cornerH },
-          { component_name: this._scenes.pip  }
+          { component_name: _scenes.centered },
+          { component_name: _scenes.centeredPro },
+          { component_name: _scenes['1col'] },
+          { component_name: _scenes.cornerV },
+          { component_name: _scenes.mirroredTwoCol },
+          { component_name: _scenes.centerVV },
+          { component_name: _scenes.centerVVMondrian },
+          { component_name: _scenes.cornerH },
+          { component_name: _scenes.pip  }
         ] as Partial<ISelectOpt>[];
 
         return mergeTemplateProps(scenes);
       case 'transcript':
-        this._speakerFieldVisibility(true);
-        this._templateSelectVisibility(true);
-        this._bgImagePositionSelectVisibility(false);
+        _speakerFieldVisibility(true);
+        _templateSelectVisibility(true);
+        _bgImagePositionSelectVisibility(false);
         return mergeTemplateProps([
           { component_name: EventTemplates.TRANSCRIPT_TEMPLATE }
         ]);
       case 'annotation':
-        this._speakerFieldVisibility(false);
-        this._titleFieldVisibility(false);
-        this._templateSelectVisibility(true);
-        this._bgImagePositionSelectVisibility(false);
+        _speakerFieldVisibility(false);
+        _titleFieldVisibility(false);
+        _templateSelectVisibility(true);
+        _bgImagePositionSelectVisibility(false);
         const annotationTemplateOpts: Partial<ISelectOpt>[] = [
           { component_name: EventTemplates.HEADER_ONE_TEMPLATE },
           { component_name: EventTemplates.HEADER_TWO_TEMPLATE },
@@ -462,31 +433,31 @@ export class SelectService implements ISelectService {
         ];
         return mergeTemplateProps(annotationTemplateOpts);
       case 'link':
-        this._displaySelectVisibility(true);
-        this._videoPositionSelectVisibility(false);
-        this._imageFieldVisibility(true);
-        this._titleFieldVisibility(true);
-        this._templateSelectVisibility(true);
-        this._bgImagePositionSelectVisibility(false);
+        _displaySelectVisibility(true);
+        _videoPositionSelectVisibility(false);
+        _imageFieldVisibility(true);
+        _titleFieldVisibility(true);
+        _templateSelectVisibility(true);
+        _bgImagePositionSelectVisibility(false);
         const linkTemplates = [
           { component_name: EventTemplates.LINK_TEMPLATE },
           { component_name: EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE },
           { component_name: EventTemplates.LINK_MODAL_THUMB_TEMPLATE },
           { component_name: EventTemplates.LINK_EMBED_TEMPLATE }
         ] as Partial<ISelectOpt>[];
-        if (this._userHasRole('admin')) {
+        if (_userHasRole('admin')) {
           linkTemplates.splice(3, 0, {
             component_name: EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE
           });
         }
         return mergeTemplateProps(linkTemplates);
       case 'image':
-        this._imageFieldVisibility(true);
-        this._displaySelectVisibility(false);
-        this._videoPositionSelectVisibility(false);
-        this._titleFieldVisibility(true);
-        this._templateSelectVisibility(true);
-        this._bgImagePositionSelectVisibility(false);
+        _imageFieldVisibility(true);
+        _displaySelectVisibility(false);
+        _videoPositionSelectVisibility(false);
+        _titleFieldVisibility(true);
+        _templateSelectVisibility(true);
+        _bgImagePositionSelectVisibility(false);
         const imgTemplates = [
           { component_name: EventTemplates.IMAGE_PLAIN_TEMPLATE },
           { component_name: EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE },
@@ -496,50 +467,50 @@ export class SelectService implements ISelectService {
         ] as Partial<ISelectOpt>[];
         return mergeTemplateProps(imgTemplates);
       case 'file':
-        this._titleFieldVisibility(true);
-        this._templateSelectVisibility(false);
-        this._bgImagePositionSelectVisibility(false);
+        _titleFieldVisibility(true);
+        _templateSelectVisibility(false);
+        _bgImagePositionSelectVisibility(false);
         return mergeTemplateProps([
           { component_name: EventTemplates.FILE_TEMPLATE }
         ]);
       case 'question':
-        this._displaySelectVisibility(true);
-        this._imageFieldVisibility(true);
-        this._titleFieldVisibility(true);
-        this._templateSelectVisibility(true);
-        this._bgImagePositionSelectVisibility(false);
+        _displaySelectVisibility(true);
+        _imageFieldVisibility(true);
+        _titleFieldVisibility(true);
+        _templateSelectVisibility(true);
+        _bgImagePositionSelectVisibility(false);
         return mergeTemplateProps([
           { component_name: EventTemplates.QUESTION_TEMPLATE  }
         ]);
       case 'chapter':
         //chapters have no template, but need to do side-effects
-        this._titleFieldVisibility(true);
+        _titleFieldVisibility(true);
         break;
     }
   }
 
-  onSelectChange(item, itemForm) {
-    this._displaySelectVisibility(false);
+  function onSelectChange(item, itemForm) {
+    _displaySelectVisibility(false);
     switch (item.producerItemType) {
       case 'scene':
         var isInline = item.layouts[0] === 'inline';
         switch (item.component_name) {
           case EventTemplates.CENTERED_TEMPLATE: //centered
           case EventTemplates.CENTERED_PRO_TEMPLATE: //Centered Pro, Hide Transcript & Transmedia
-            this._videoPositionSelectVisibility(false);
-            this._displaySelectVisibility(false);
+            _videoPositionSelectVisibility(false);
+            _displaySelectVisibility(false);
             item.layouts[0] = ''; //P1 Video Centered
-            item.layouts[1] = this._D1.a.value; //showCurrent;
+            item.layouts[1] = _D1.a.value; //showCurrent;
             break;
           case EventTemplates.CENTER_VV_TEMPLATE: //Vertical Pro, Hide Transcript
           case EventTemplates.CENTER_VV_MONDRIAN_TEMPLATE: //Vertical Pro Mondrian, Hide Transcript
-            this._displaySelectVisibility(false);
-            this._videoPositionSelectVisibility(true);
-            this._select.video = [
+            _displaySelectVisibility(false);
+            _videoPositionSelectVisibility(true);
+            _select.video = [
               { value: 'videoLeft', name: 'Video on Left' },
               { value: 'videoRight', name: 'Video on Right' }
             ];
-            item.layouts[1] = this._D1.a.value;
+            item.layouts[1] = _D1.a.value;
             if (isInline || item.layouts[0] === '') {
               item.layouts[0] = 'videoLeft'; //P2 video left
             }
@@ -547,57 +518,57 @@ export class SelectService implements ISelectService {
           case EventTemplates.CORNER_V_TEMPLATE: //Corner video, vertical
           case EventTemplates.CORNER_H_TEMPLATE: //Corner video, horizontal
           case EventTemplates.PIP_TEMPLATE: //picture in picture
-            this._displaySelectVisibility(true);
-            this._videoPositionSelectVisibility(true);
-            this._select.video = [
+            _displaySelectVisibility(true);
+            _videoPositionSelectVisibility(true);
+            _select.video = [
               { value: 'videoLeft', name: 'Video on Left' },
               { value: 'videoRight', name: 'Video on Right' }
             ];
-            this._select.display = [
-              { value: this._D1.a.value, name: this._D1.a.name },
-              { value: this._D1.b.value, name: this._D1.b.name }
+            _select.display = [
+              { value: _D1.a.value, name: _D1.a.name },
+              { value: _D1.b.value, name: _D1.b.name }
             ];
 
             if (isInline || item.layouts[0] === '') {
               item.layouts[0] = 'videoLeft'; //P2 video left
-              item.layouts[1] = this._D1.a.value;
+              item.layouts[1] = _D1.a.value;
             }
             break;
           case EventTemplates.MIRRORED_TWOCOL_TEMPLATE: // Two Columns (v2 mirrored vert)
-            this._displaySelectVisibility(true);
-            this._videoPositionSelectVisibility(true);
-            this._select.video = [
+            _displaySelectVisibility(true);
+            _videoPositionSelectVisibility(true);
+            _select.video = [
               { value: 'videoLeft', name: 'Video on Left' },
               { value: 'videoRight', name: 'Video on Right' }
             ];
-            this._select.display = [
-              { value: this._D2.a.value, name: this._D2.a.name },
-              { value: this._D2.b.value, name: this._D2.b.name }
+            _select.display = [
+              { value: _D2.a.value, name: _D2.a.name },
+              { value: _D2.b.value, name: _D2.b.name }
             ];
 
             if (isInline || item.layouts[0] === '') {
               item.layouts[0] = 'videoLeft'; //P2 video left
-              item.layouts[1] = this._D2.b.value; //show all + highlight current
+              item.layouts[1] = _D2.b.value; //show all + highlight current
             }
             break;
           case EventTemplates.ONECOL_TEMPLATE: //One Column
-            this._displaySelectVisibility(true);
-            this._videoPositionSelectVisibility(false);
-            this._select.display = [
-              { value: this._D3.a.value, name: this._D3.a.name },
-              { value: this._D3.b.value, name: this._D3.b.name }
+            _displaySelectVisibility(true);
+            _videoPositionSelectVisibility(false);
+            _select.display = [
+              { value: _D3.a.value, name: _D3.a.name },
+              { value: _D3.b.value, name: _D3.b.name }
             ];
             item.layouts[0] = ''; //P1 Video Centered
             if (isInline) {
-              item.layouts[1] = this._D3.b.value;
+              item.layouts[1] = _D3.b.value;
             }
             break;
         }
         break;
       case 'link':
-        this._displaySelectVisibility(true);
-        this._imageFieldVisibility(true);
-        this._templateSelectVisibility(true);
+        _displaySelectVisibility(true);
+        _imageFieldVisibility(true);
+        _templateSelectVisibility(true);
         if (item.stop === true) {
           item.layouts[0] = 'windowFg';
           //prevent link-modal template from opening on top of stop-item modal
@@ -615,17 +586,17 @@ export class SelectService implements ISelectService {
           case EventTemplates.LINK_TEMPLATE:
           case EventTemplates.LINK_WITHIMAGE_NOTITLE_TEMPLATE:
           case EventTemplates.LINK_MODAL_THUMB_TEMPLATE:
-            this._imageFieldVisibility(true);
+            _imageFieldVisibility(true);
             break;
           case EventTemplates.LINK_DESCRIPTION_FIRST_TEMPLATE:
           case EventTemplates.LINK_EMBED_TEMPLATE:
-            this._imageFieldVisibility(false);
+            _imageFieldVisibility(false);
             break;
         }
 
         break;
       case 'transcript':
-        this._displaySelectVisibility(false);
+        _displaySelectVisibility(false);
         item.layouts[0] = 'inline';
         break;
       case 'annotation':
@@ -633,17 +604,17 @@ export class SelectService implements ISelectService {
         switch (item.component_name) {
           case EventTemplates.HEADER_ONE_TEMPLATE:
           case EventTemplates.HEADER_TWO_TEMPLATE:
-            this._speakerFieldVisibility(false);
-            this._titleFieldVisibility(false);
+            _speakerFieldVisibility(false);
+            _titleFieldVisibility(false);
             break;
           case EventTemplates.PULLQUOTE_TEMPLATE:
-            this._speakerFieldVisibility(true);
-            this._titleFieldVisibility(false);
+            _speakerFieldVisibility(true);
+            _titleFieldVisibility(false);
             break;
           case EventTemplates.TEXT_TRANSMEDIA_TEMPLATE:
           case EventTemplates.TEXT_DEFINITION_TEMPLATE:
-            this._speakerFieldVisibility(false);
-            this._titleFieldVisibility(true);
+            _speakerFieldVisibility(false);
+            _titleFieldVisibility(true);
             break;
         }
         if (item.stop === true) {
@@ -651,7 +622,7 @@ export class SelectService implements ISelectService {
         }
         break;
       case 'question':
-        this._select.questionType = [
+        _select.questionType = [
           { value: 'mc-poll', name: 'Poll' },
           { value: 'mc-formative', name: 'Formative' }
         ];
@@ -660,8 +631,8 @@ export class SelectService implements ISelectService {
         break;
       case 'image':
         //will set to true in image fill
-        this._displaySelectVisibility(false);
-        var _currentSceneName = this.getSceneName(this.modelSvc.scene(item.scene_id));
+        _displaySelectVisibility(false);
+        var _currentSceneName = getSceneName(modelSvc.scene(item.scene_id));
         switch (item.component_name) {
           case EventTemplates.IMAGE_PLAIN_TEMPLATE:
           case EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE:
@@ -673,9 +644,9 @@ export class SelectService implements ISelectService {
             break;
           case EventTemplates.IMAGE_FILL_TEMPLATE:
             item.cosmetic = true;
-            this._displaySelectVisibility(true);
-            this._bgImagePositionSelectVisibility(true);
-            this._select.imagePosition = [
+            _displaySelectVisibility(true);
+            _bgImagePositionSelectVisibility(true);
+            _select.imagePosition = [
               { value: 'fill', name: 'Fill and stretch' },
               { value: 'contain', name: 'Contain' },
               { value: 'cover', name: 'Cover and crop' },
@@ -684,7 +655,7 @@ export class SelectService implements ISelectService {
               { value: 'bl', name: 'Bottom Left' },
               { value: 'br', name: 'Bottom Right' },
             ];
-            this._setAvailableImageOptsForLayout(_currentSceneName, item, itemForm);
+            _setAvailableImageOptsForLayout(_currentSceneName, item, itemForm);
         }
         if (item.stop === true) {
           item.layouts[0] = 'windowFg';
@@ -709,7 +680,7 @@ export class SelectService implements ISelectService {
     }
   }
 
-  showTab(itemType, tabTitle) {
+  function showTab(itemType, tabTitle) {
     switch (itemType) {
       case 'scene':
         switch (tabTitle) {
@@ -718,7 +689,7 @@ export class SelectService implements ISelectService {
           case 'Style':
             return true;
           case 'Customize':
-            return this._userHasRole('admin');
+            return _userHasRole('admin');
         }
         break;
       case 'transcript':
@@ -728,7 +699,7 @@ export class SelectService implements ISelectService {
           case 'Style':
             return false;
           case 'Customize':
-            return this._userHasRole('admin');
+            return _userHasRole('admin');
         }
         break;
       case 'annotation':
@@ -738,7 +709,7 @@ export class SelectService implements ISelectService {
           case 'Style':
             return false;
           case 'Customize':
-            return this._userHasRole('admin');
+            return _userHasRole('admin');
         }
         break;
       case 'link':
@@ -748,7 +719,7 @@ export class SelectService implements ISelectService {
           case 'Style':
             return false;
           case 'Customize':
-            return this._userHasRole('admin');
+            return _userHasRole('admin');
         }
         break;
       case 'image':
@@ -758,7 +729,7 @@ export class SelectService implements ISelectService {
           case 'Style':
             return false;
           case 'Customize':
-            return this._userHasRole('admin');
+            return _userHasRole('admin');
         }
         break;
       case 'file':
@@ -768,7 +739,7 @@ export class SelectService implements ISelectService {
           case 'Style':
             return false;
           case 'Customize':
-            return this._userHasRole('admin');
+            return _userHasRole('admin');
         }
         break;
       case 'question':
@@ -778,7 +749,7 @@ export class SelectService implements ISelectService {
           case 'Style':
             return false;
           case 'Customize':
-            return this._userHasRole('admin');
+            return _userHasRole('admin');
         }
         break;
       case 'chapter':
