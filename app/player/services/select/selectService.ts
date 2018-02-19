@@ -24,7 +24,7 @@ export interface IItemForm {
 export interface ISelectOpt {
   component_name: TEventTemplateNames;
   name: string;
-  template_id: string;
+  template_id: string; 
 }
 
 export interface ILangOpt {
@@ -34,9 +34,6 @@ export interface ILangOpt {
 }
 
 export interface ISelectService {
-  _setVisibility(prop, bool);
-  _partialVis(prop);
-  _setAvailableImageOptsForLayout(sceneType, item, itemForm);
   getSceneName(scene);
   getSelectOpts(type);
   getVisibility(prop);
@@ -148,17 +145,17 @@ export class SelectService implements ISelectService {
   //   getSceneName
   // };
 
-  _setVisibility(prop, bool) {
+ private  _setVisibility(prop, bool) {
     this._visibility[prop] = bool;
   }
 
-  _partialVis(prop) {
+ private  _partialVis(prop) {
     return function (bool) {
       return this._setVisibility(prop, bool);
     };
   }
 
-  _setAvailableImageOptsForLayout(sceneType, item, itemForm) {
+ private _setAvailableImageOptsForLayout(sceneType, item, itemForm) {
     //if we are set to the default layout,
     //overwrite it back to an empty array
     var isInline = item.layouts[0] === 'inline';
