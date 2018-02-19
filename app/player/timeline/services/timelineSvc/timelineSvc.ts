@@ -106,6 +106,8 @@ export class TimelineSvc implements ITimelineSvc {
     private analyticsSvc,
     private playbackService,
     private ittUtils) {
+
+      // *************************** initialization here ************************************* //
       if (!this.enforceSingletonPauseListener) {
         this.$window.addEventListener('message', function (e) {
           if (e.data === 'pauseEpisodePlayback') {
@@ -597,7 +599,12 @@ export class TimelineSvc implements ITimelineSvc {
     this.playbackService.setTimelineState('unstarted');
     this.playbackService.setMetaProp('duration', 0);
     this.injectEvents(this.modelSvc.episodeEvents(episodeId), 0);
-    this.playbackService.registerStateChangeListener(this._onPlayerStateChange);
+
+    var context = this;
+    this.playbackService.registerStateChangeListener( function () {
+      context._onPlayerStateChange(); 
+    });
+
     this.$interval.cancel(this.clock);
     this.stopEventClock();
   };
@@ -619,39 +626,41 @@ export class TimelineSvc implements ITimelineSvc {
     if (!injectionTime) {
       injectionTime = 0;
     }
+
+    var context = this;
     angular.forEach(events, function (event) {
       event.start_time = Number(event.start_time);
       event.end_time = Number(event.end_time);
       // add scenes to markedEvents[]:
       if (event._type === 'Scene') {
-        if (this.appState.product === 'producer') {
+        if (context.appState.product === 'producer') {
           // producer gets all scenes, even 'hidden' ones (which are now not 'hidden' but they indicate
           //change in layout).
-          this.addMarkedEvent(event);
+          context.addMarkedEvent(event);
         }
 
         if (/internal:(landing|ending)screen/.test(event._id)) {
-          this.addMarkedEvent(event);
+          context.addMarkedEvent(event);
         }
       }
       if (event._type === 'Chapter' || event.chapter_marker === true) {
-        this.addMarkedEvent(event);
+        context.addMarkedEvent(event);
       }
       if (event.start_time === 0 && !event._id.match('internal')) {
         event.start_time = 0.01;
-        this.modelSvc.events[event._id].start_time = 0.01;
+        context.modelSvc.events[event._id].start_time = 0.01;
       }
       // add start and end to timelineEvents array
       if (event.stop) {
-        this.addMarkedEvent(event); // give all stop items a timeline marker
+        context.addMarkedEvent(event); // give all stop items a timeline marker
 
-        this.timelineEvents.push({
+        context.timelineEvents.push({
           t: event.start_time + injectionTime,
           id: 'timeline',
           eventId: event._id, //Need to store the event id in case this event needs to get removed from the timeline
           action: 'pause'
         });
-        this.timelineEvents.push({
+        context.timelineEvents.push({
           t: event.start_time + injectionTime,
           id: event._id,
           action: 'enter'
@@ -659,14 +668,14 @@ export class TimelineSvc implements ITimelineSvc {
         // For now, ignore end_time on stop events; they always end immediately after user hits play again.
         // In future we may allow durations on stop events so the
         // video will start automatically after that elapses.
-        this.timelineEvents.push({
+        context.timelineEvents.push({
           t: (event.start_time + injectionTime + 0.01),
           id: event._id,
           action: 'exit'
         });
       } else {
         // not a stop event.
-        this.timelineEvents.push({
+        context.timelineEvents.push({
           t: event.start_time + injectionTime,
           id: event._id,
           action: 'enter'
@@ -677,7 +686,7 @@ export class TimelineSvc implements ITimelineSvc {
             // console.log('do not add exit event for ending screen.');
             return;
           }
-          this.timelineEvents.push({
+          context.timelineEvents.push({
             t: event.end_time + injectionTime,
             id: event._id,
             action: 'exit'
@@ -695,7 +704,7 @@ export class TimelineSvc implements ITimelineSvc {
 
       // allow preload of event assets:
       if (event.asset_id || event.annotation_image_id || event.link_image_id) {
-        this.timelineEvents.push({
+        context.timelineEvents.push({
           t: (event.start_time < 3) ? 0 : event.start_time - 3, // 3 seconds early
           id: event._id,
           action: 'preload'
@@ -844,8 +853,10 @@ export class TimelineSvc implements ITimelineSvc {
   updateSceneTimes(episodeId) {
     // HACK(ish): since editing a scene's timing has side effects on other scenes,
     // need to updateEventTimes for each scene in the episode when one changes
+
+    var context = this;
     angular.forEach(this.modelSvc.episodes[episodeId].scenes, function (scene) {
-      this.updateEventTimes(scene);
+      context.updateEventTimes(scene);
     });
   };
 
@@ -905,11 +916,13 @@ export class TimelineSvc implements ITimelineSvc {
     // DO NOT check event start and end times directly; they're relative to the episode, not the timeline!
     // instead preset everything to the future, then scan the timeline events up to now
     // and set state based on enter/exit events per the timeline
+
+    var context = this;
     var now = this.playbackService.getMetaProp('time');
     // put everything in the future state:
     angular.forEach(this.timelineEvents, function (tE) {
       if (tE.id !== 'timeline') {
-        var event = this.modelSvc.events[tE.id];
+        var event = context.modelSvc.events[tE.id];
         if (event) { // cancelling adding an event can leave "internal:editing" in the event list;
           // TODO keep that from happening but for now just ignore it if it doesn't exist
           event.setFuture();
@@ -920,7 +933,7 @@ export class TimelineSvc implements ITimelineSvc {
     // 2nd pass, step through all events before now:
     angular.forEach(this.timelineEvents, function (tE) {
       if (tE.t <= now) {
-        var event = this.modelSvc.events[tE.id];
+        var event = context.modelSvc.events[tE.id];
         if (event) {
           if (tE.action === 'enter') {
             event.setCurrent();
