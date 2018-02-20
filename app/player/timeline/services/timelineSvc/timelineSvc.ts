@@ -145,7 +145,7 @@ export class TimelineSvc implements ITimelineSvc {
   // '5': 'video cued'
   // '5': player ready
 
-  private _onPlayerStateChange(state) {
+  private _onPlayerStateChange(state?) {
 
     // console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
@@ -255,7 +255,7 @@ export class TimelineSvc implements ITimelineSvc {
     this.playbackService.play();
   };
 
-  pause(nocapture) {
+  pause(nocapture?) {
     this._resetClocks();
     this.playbackService.pause();
 
@@ -292,7 +292,7 @@ export class TimelineSvc implements ITimelineSvc {
 
   };
 
-  seek(t, method, eventID) {
+  seek(t, method?, eventID?) {
     if (this.playbackService.getMetaProp('ready') !== true) {
       return;
     }
