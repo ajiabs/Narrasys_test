@@ -163,9 +163,9 @@ export class ModelSvc implements IModelSvc {
   //add subdomain to each narrative then cache
   //add narratives to customer object then cache customer.
   assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer {
-    var context = this;
-    narratives.forEach(function (narrative) {
-      context.cache('narrative', narrative);
+  
+    narratives.forEach( (narrative) => {
+      this.cache('narrative', narrative);
     });
 
     customer.narratives = this.cachedNarrativesByCustomer(customer);
@@ -193,7 +193,7 @@ export class ModelSvc implements IModelSvc {
   }
 
    cachedNarrativesByCustomer(customer: ICustomer): INarrative[] {
-    return Object.keys(this.narratives).reduce(function (narratives, key) {
+    return Object.keys(this.narratives).reduce( (narratives, key) => {
       if (this.narratives[key].customer_id === customer._id) {
         narratives.push(this.narratives[key]);
       }
@@ -202,14 +202,14 @@ export class ModelSvc implements IModelSvc {
   }
 
   getCustomersAsArray() {
-    var context = this;
-    return Object.keys(this.customers).map(function (c) {
-      return context.customers[c];
+
+    return Object.keys(this.customers).map( (c) =>{
+      return this.customers[c];
     });
   }
 
    getNarrativesAsArray() {
-    return Object.keys(this.narratives).map(function (n) {
+    return Object.keys(this.narratives).map( (n) => {
       return this.narratives[n];
     });
   }
@@ -285,15 +285,15 @@ export class ModelSvc implements IModelSvc {
   deriveEpisode = function (episode) {
     // console.log("deriveEpisode:", episode);
 
-    var context = this;
-    angular.forEach(episode.languages, function (lang) {
+
+    angular.forEach(episode.languages,  (lang) => {
       if (lang.default) {
         // console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
-        context.episode.defaultLanguage = lang.code;
+        this.episode.defaultLanguage = lang.code;
       }
     });
-    if (context.episode.defaultLanguage === false) {
-      context.episode.defaultLanguage = 'en'; // last resort
+    if (this.episode.defaultLanguage === false) {
+      this.episode.defaultLanguage = 'en'; // last resort
     }
     this.setLanguageStrings();
 
@@ -368,23 +368,23 @@ export class ModelSvc implements IModelSvc {
     // first sort the children:
     if (container.children && container.children.length > 0) {
       // When we populate sort_order, we can remove this:
-      container.children = container.children.sort(function (a, b) {
+      container.children = container.children.sort( (a, b)  => {
         return (a.name.en > b.name.en) ? 1 : -1; // WARN always sorted by english
       });
       // This is the real one (for now sort_order always is zero, so this sort will have no effect):
-      container.children = container.children.sort(function (a, b) {
+      container.children = container.children.sort( (a, b) => {
         return a.sort_order - b.sort_order;
       });
 
       var childRefs = [];
-      var context = this;
-      angular.forEach(container.children, function (child) {
+   
+      angular.forEach(container.children,  (child) => {
         const instance = createInstance('Container', child);
-        if (context.containers[child._id]) {
-          childRefs.push(context.containers[child._id]);
+        if (this.containers[child._id]) {
+          childRefs.push(this.containers[child._id]);
         } else {
           instance.haveNotLoadedChildData = true; // not sure yet if this is necessary
-          context.containers[child._id] = angular.copy(context.setLang(instance));
+          this.containers[child._id] = angular.copy(this.setLang(instance));
         }
 
       });
@@ -549,7 +549,7 @@ export class ModelSvc implements IModelSvc {
     // TODO: keywords, customers/oauth2_message
     // TODO use episode default language instead of 'en'
     var langToSet = (this.appState.lang) ? this.appState.lang : 'en';
-    angular.forEach(['title', 'annotator', 'annotation', 'description', 'name'], function (field) {
+    angular.forEach(['title', 'annotator', 'annotation', 'description', 'name'],  (field) => {
       if (obj[field]) {
         if (typeof (obj[field]) === 'string') {
           // TODO can delete this after all data has been migrated to object form
@@ -567,15 +567,15 @@ export class ModelSvc implements IModelSvc {
   };
 
   setLanguageStrings = function () {
-    var context = this;
-    angular.forEach(this.events, function (evt) {
-      evt = context.setLang(evt);
+ 
+    angular.forEach(this.events,  (evt) => {
+      evt = this.setLang(evt);
     });
-    angular.forEach(this.episodes, function (ep) {
-      ep = context.setLang(ep);
+    angular.forEach(this.episodes,  (ep) => {
+      ep = this.setLang(ep);
     });
-    angular.forEach(this.containers, function (container) {
-      container = context.setLang(container);
+    angular.forEach(this.containers,  (container) => {
+      container = this.setLang(container);
     });
     // todo:  containers
   };
@@ -589,7 +589,7 @@ export class ModelSvc implements IModelSvc {
   //		- Document > Image
   //5. all other annotations
   _sortItems(items) {
-    return items.sort(function (a, b) {
+    return items.sort( (a, b) => {
       if (a.start_time === b.start_time) {
         if (a.producerItemType === 'chapter') {
           return -1;
@@ -656,7 +656,7 @@ export class ModelSvc implements IModelSvc {
     var items = [];
     var chapters = [];
     var episode = this.episodes[epId];
-    angular.forEach(this.events, function (event) {
+    angular.forEach(this.events,  (event) => {
       if (event.cur_episode_id !== epId) {
         return;
       }
@@ -677,7 +677,7 @@ export class ModelSvc implements IModelSvc {
     // This is imperfect -- a few will slip through if there is a missing translation in the default language -- but good enough for now
     // TODO replace all of this, have the API keep track of each annotator as a real, separate entity
     var annotators: IAnnotators = {};
-    angular.forEach(items, function (event) {
+    angular.forEach(items,  (event) => {
       if (event._type === 'Annotation' && event.chapter_marker === true) {
         chapters.push(event);
       }
@@ -728,14 +728,14 @@ export class ModelSvc implements IModelSvc {
     var duration = 0;
     if (episode.masterAsset) {
       duration = episode.masterAsset.duration;
-      angular.forEach(episode.scenes, function (scene) {
+      angular.forEach(episode.scenes,  (scene) => {
         if (scene.start_time > duration) {
           scene.start_time = duration - 0.2; // last resort HACK to catch bad scene data
         }
       });
     }
 
-    episode.scenes = scenes.sort(function (a, b) {
+    episode.scenes = scenes.sort( (a, b) =>{
       if (a._id.indexOf('internal:start') > -1 || b._id.indexOf('internal:end') > -1) {
         return -1;
       }
@@ -747,12 +747,12 @@ export class ModelSvc implements IModelSvc {
 
     // and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
 
-    episode.chapters = chapters.sort(function (a, b) {
+    episode.chapters = chapters.sort( (a, b) => {
       return a.start_time - b.start_time;
     });
 
     // Fix bad event timing data.  (see also this.deriveEvent())
-    angular.forEach(items, function (event) {
+    angular.forEach(items,  (event)  => {
 
       // We have some events whose start time is beyond the episode duration; they were winding up attached to the endingscene (and therefore invisible)
       // HACK just shove those into the end of the last (real) scene with a short duration
@@ -870,12 +870,12 @@ export class ModelSvc implements IModelSvc {
     if (episode.template && episode.template.displayName === 'Wiley') {
       episode.templateCss += ' wiley-endscreentext ';
     }
-    var context = this;
-    angular.forEach(this.events, function (event) {
+
+    angular.forEach(this.events,  (event) => {
       if (event.cur_episode_id !== epId) {
         return;
       }
-      event.styleCss = context.cascadeStyles(event);
+      event.styleCss = this.cascadeStyles(event);
       var isImgPlain = event.component_name === EventTemplates.IMAGE_PLAIN_TEMPLATE ;
       var isInlineImgWText = event.component_name === EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE;
       var isImgCap = event.component_name === EventTemplates.SLIDING_CAPTION;
@@ -892,11 +892,11 @@ export class ModelSvc implements IModelSvc {
       var currentScene;
 
       if (event._type !== 'Scene') {
-        currentScene = context.scene(event.scene_id);
+        currentScene = this.scene(event.scene_id);
         if (episode.styles.indexOf('timestampNone') === -1 && episode.styles.indexOf('timestampInline') === -1 &&
-          (!context.ittUtils.existy(currentScene) || !context.ittUtils.existy(currentScene.styles) || (currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
+          (!this.ittUtils.existy(currentScene) || !this.ittUtils.existy(currentScene.styles) || (currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
           if (isImgPlain || isLongText || isDef) {
-            if (!context.ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
+            if (!this.ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
               event.styleCss += ' timestampNone';
             }
           }
@@ -905,18 +905,18 @@ export class ModelSvc implements IModelSvc {
           event.styleCss += ' timestampNone';
         }
 
-        if ((!context.ittUtils.existy(event.layouts) || event.layouts.indexOf('showCurrent') === -1) &&
-          context.ittUtils.intersection(episode.styles, potentialHighlight).length === 0 &&
-          (!context.ittUtils.existy(currentScene) || !context.ittUtils.existy(currentScene.styles) || context.ittUtils.intersection(currentScene.styles, potentialHighlight).length === 0) &&
-          (!context.ittUtils.existy(event.styles) || context.ittUtils.intersection(event.styles, potentialHighlight).length === 0)) {
+        if ((!this.ittUtils.existy(event.layouts) || event.layouts.indexOf('showCurrent') === -1) &&
+        this.ittUtils.intersection(episode.styles, potentialHighlight).length === 0 &&
+          (!this.ittUtils.existy(currentScene) || !this.ittUtils.existy(currentScene.styles) || this.ittUtils.intersection(currentScene.styles, potentialHighlight).length === 0) &&
+          (!this.ittUtils.existy(event.styles) || this.ittUtils.intersection(event.styles, potentialHighlight).length === 0)) {
           event.styleCss += ' highlightSolid';
         }
 
-        if (context.ittUtils.intersection(episode.styles, potentialTransitions).length === 0 &&
-          (!context.ittUtils.existy(currentScene) || !context.ittUtils.existy(currentScene.styles) || context.ittUtils.intersection(currentScene.styles, potentialTransitions).length === 0) &&
-          (!context.ittUtils.existy(event.styles) || context.ittUtils.intersection(event.styles, potentialTransitions).length === 0)) {
+        if (this.ittUtils.intersection(episode.styles, potentialTransitions).length === 0 &&
+          (!this.ittUtils.existy(currentScene) || !this.ittUtils.existy(currentScene.styles) || this.ittUtils.intersection(currentScene.styles, potentialTransitions).length === 0) &&
+          (!this.ittUtils.existy(event.styles) || this.ittUtils.intersection(event.styles, potentialTransitions).length === 0)) {
           if (isImgPlain || isInlineImgWText || isImgCap || isImgThumb || isPq || isBgImage) {
-            if (!context.ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
+            if (!this.ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
               event.styleCss += ' transitionFade';
             } else {
               event.styleCss += ' transitionPop';
@@ -1013,7 +1013,7 @@ export class ModelSvc implements IModelSvc {
   episodeEvents = function (epId) {
     // console.log("modelSvc.episodeEvents");
     var ret = [];
-    angular.forEach(this.events, function (event) {
+    angular.forEach(this.events,  (event) => {
       if (event.cur_episode_id !== epId) {
         return;
       }
@@ -1023,13 +1023,13 @@ export class ModelSvc implements IModelSvc {
   };
 
   isOnExistingSceneStart(t) {
-    return this.getEpisodeScenes().some(function (scene) {
+    return this.getEpisodeScenes().some( (scene) =>{
       return scene.start_time === this.ittUtils.parseTime(t);
     });
   }
 
   getEpisodeScenes() {
-    return Object.keys(this.events).reduce(function (scenes, key) {
+    return Object.keys(this.events).reduce( (scenes, key) => {
       if (this.events[key]._type === 'Scene' && this.events[key].episode_id === this.appState.episodeId) {
         scenes.push(this.events[key]);
       }
@@ -1072,9 +1072,9 @@ export class ModelSvc implements IModelSvc {
 
     // start with the thing's own styles
 
-    angular.forEach(thing.styles, function (style) {
+    angular.forEach(thing.styles,  (style) => {
       cssArr.push(style); // keep all styles; not just the ones in a styleCategory
-      angular.forEach(styleCategories, function (categoryValue, categoryName) {
+      angular.forEach(styleCategories,  (categoryValue, categoryName) => {
         if (style.indexOf(categoryName) === 0) {
           styleCategories[categoryName] = style;
         }
@@ -1084,8 +1084,8 @@ export class ModelSvc implements IModelSvc {
     // add each sceneStyle, only if it is in a styleCategory the thing isn't already using
     if (thing.scene_id) {
       var sceneStyles = this.events[thing.scene_id].styles;
-      angular.forEach(sceneStyles, function (style) {
-        angular.forEach(styleCategories, function (categoryValue, categoryName) {
+      angular.forEach(sceneStyles,  (style) => {
+        angular.forEach(styleCategories,  (categoryValue, categoryName) => {
           if (!styleCategories[categoryName] && style.indexOf(categoryName) === 0) {
             cssArr.push(style);
             styleCategories[categoryName] = style;
@@ -1103,8 +1103,8 @@ export class ModelSvc implements IModelSvc {
     // add each episodeStyle, only if it is in a styleCategory the thing isn't already using
     if (thing.cur_episode_id) {
       var episodeStyles = this.episodes[thing.cur_episode_id].styles;
-      angular.forEach(episodeStyles, function (style) {
-        angular.forEach(styleCategories, function (categoryValue, categoryName) {
+      angular.forEach(episodeStyles,  (style) => {
+        angular.forEach(styleCategories,  (categoryValue, categoryName) => {
           if (!styleCategories[categoryName] && style.indexOf(categoryName) === 0) {
             cssArr.push(style);
           }
@@ -1133,9 +1133,9 @@ export class ModelSvc implements IModelSvc {
   resolveEpisodeAssets = function (episodeId) {
     // console.log("resolveEpisodeAssets");
     // attaches assets to this.events
-    var context = this;
+ 
     
-    angular.forEach(this.events, function (item) {
+    angular.forEach(this.events,  (item) => {
       if (item.cur_episode_id !== episodeId) {
         return;
       }
@@ -1143,8 +1143,8 @@ export class ModelSvc implements IModelSvc {
       if (!assetId) {
         return;
       }
-      if (context.assets[assetId]) {
-        context.events[item._id].asset = context.assets[assetId];
+      if (this.assets[assetId]) {
+        this.events[item._id].asset = this.assets[assetId];
       }
     });
     // Do episode's master asset and poster, too.  If they're not here, do nothing; this will get called again after assets load
@@ -1197,7 +1197,7 @@ export class ModelSvc implements IModelSvc {
     }
 
     //may not be sorted... so sort them
-    episode.scenes = episode.scenes.sort(function (a, b) {
+    episode.scenes = episode.scenes.sort( (a, b) => {
       return a.start_time - b.start_time;
     });
     var lastScene = episode.scenes[episode.scenes.length - 1];
@@ -1210,7 +1210,7 @@ export class ModelSvc implements IModelSvc {
 
     //coerce end of last scene (and its items) to match video duration:
     lastScene.end_time = duration - 0.1;
-    angular.forEach(lastScene.items, function (item) {
+    angular.forEach(lastScene.items,  (item) => {
       if (item.end_time > duration - 0.1) {
         item.end_time = duration - 0.1;
       }
