@@ -40,7 +40,7 @@ import { IPlayerManager, IUrlService, IWistiaPlayerManager } from '../../../../i
  * @requires PLAYERSTATES
  */
 
-export interface IPlaybackServics {
+export interface IPlaybackServices {
   handleTimelineEnd(pid: string),
   seedPlayer(mediaSrcArr, id:string, mainPlayera:boolean),
   createInstance(playerId: string),
@@ -48,10 +48,10 @@ export interface IPlaybackServics {
   pause( playerId: string),
   seek ( time:number, playerId:string),
   allowPlayback(state:string),
-  togglePlayback(pid:string, restartFn:(), analyticsFn?),
+  togglePlayback(pid:string, restartFn, analyticsFn?),
   pauseOtherPlayers( playerId: string),
-  registerStateChangeListener(cb:()),
-  unregisterStateChangeListener(cb:()),
+  registerStateChangeListener(cb),
+  unregisterStateChangeListener(cb),
   getCurrentTime(playerId: string),
   getPlayerDiv(playerId: string),
   getPlayerState(playerId: string),
@@ -69,7 +69,7 @@ export interface IPlaybackServics {
 
 }
 
-export class PlaybackServices implements IPlaybackServics {
+export class PlaybackServices implements IPlaybackServices {
   static Name = 'playbackService';
   static $inject = [
     '$interval',
@@ -203,7 +203,7 @@ export class PlaybackServices implements IPlaybackServics {
     angular.forEach(this._playerManagers, function (pm) {
       pm.pauseOtherPlayers(context._setPid(playerId));
     });
-    
+
     if (this.getMetaProp('ready', this._setPid(playerId)) === true) {
       this._playerInterfaces[this._setPid(playerId)].play(this._setPid(playerId));
     }

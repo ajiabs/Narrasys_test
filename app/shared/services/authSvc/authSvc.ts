@@ -43,7 +43,6 @@ export class AuthSvc implements IAuthServices {
   }
 
   // console.log('authSvc factory');
-  private svc = {};
   private Roles = {
     ADMINISTRATOR: "admin",
     INSTRUCTOR: "instructor",

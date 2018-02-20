@@ -393,6 +393,7 @@ export class EpisodeEditService implements IEpisodeEditService {
           const deletedScenes = [];
 
           const episode = this.modelSvc.episodes[toSave._id];
+          
           angular.forEach(episode.scenes, (scene) => {
 
             if (scene.start_time > duration) {
