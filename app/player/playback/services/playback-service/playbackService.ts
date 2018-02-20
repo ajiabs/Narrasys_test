@@ -99,11 +99,10 @@ export class PlaybackServices implements IPlaybackServices {
 
   // ******************************** initialization for the constructor ******************************* //
   private _init() {
-    var context = this;
-
-    angular.forEach(context._playerManagers, function (playerManager: IPlayerManager) {
-      playerManager.registerStateChangeListener(function (stateChangeEvent) {
-        context._stateChangeCB(stateChangeEvent)
+  
+    angular.forEach(this._playerManagers,  (playerManager: IPlayerManager) => {
+      playerManager.registerStateChangeListener( (stateChangeEvent) => {
+        this._stateChangeCB(stateChangeEvent)
       })
     });
   }
@@ -199,9 +198,9 @@ export class PlaybackServices implements IPlaybackServices {
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
   play(playerId) {
-    var context = this;
-    angular.forEach(this._playerManagers, function (pm) {
-      pm.pauseOtherPlayers(context._setPid(playerId));
+  
+    angular.forEach(this._playerManagers,  (pm) => {
+      pm.pauseOtherPlayers(this._setPid(playerId));
     });
 
     if (this.getMetaProp('ready', this._setPid(playerId)) === true) {
@@ -290,16 +289,16 @@ export class PlaybackServices implements IPlaybackServices {
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
   pauseOtherPlayers(playerId) {
-    var context = this;
 
-    angular.forEach(this._playerManagers, function (pm) {
-      pm.pauseOtherPlayers(context._setPid(playerId));
+
+    angular.forEach(this._playerManagers,  (pm) => {
+      pm.pauseOtherPlayers(this._setPid(playerId));
     });
 
     //on emebds, be sure to set the playerState to paused if the $destroy event pre-empts pause from being
     //set naturally
-    angular.forEach(this._playerInterfaces, function (pi: IWistiaPlayerManager, pid) {
-      if (pid !== playerId && pid !== context._mainPlayerId) {
+    angular.forEach(this._playerInterfaces,  (pi: IWistiaPlayerManager, pid) =>{
+      if (pid !== playerId && pid !== this._mainPlayerId) {
         pi.setMetaProp(pid, 'playerState', '2');
       }
     });
@@ -753,9 +752,9 @@ export class PlaybackServices implements IPlaybackServices {
    * @private
    */
   private _pollBufferedPercent() {
-    var context = this;
-    this._mainPlayerBufferingPoll = this.$interval(function () {
-      context.setMetaProp('bufferedPercent', context._getBufferedPercent(context._mainPlayerId), context._mainPlayerId);
+  
+    this._mainPlayerBufferingPoll = this.$interval( () => {
+      this.setMetaProp('bufferedPercent', this._getBufferedPercent(this._mainPlayerId), this._mainPlayerId);
     }, 200);
   }
 

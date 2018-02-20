@@ -148,10 +148,10 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
   //used in ittContainer
   generateNewNarrative = function (containerId, postData) {
     return this.SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
-      .then(function (resp) {
+      .then( (resp) => {
         return resp.data;
       })
-      .catch(function (e) {
+      .catch( (e) =>{
         console.error('Error generating new narrative:', e);
       });
   }
@@ -168,16 +168,15 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
       urlParams = '?customer=' + cachedNarrative.narrative_subdomain;
     }
 
-    var context = this;
-    this.authSvc.authenticate('narrative=' + narrativeId).then(function () {
-      context.$http.get(config.apiDataBaseUrl + '/v3/narratives/' + narrativeId + '/resolve' + urlParams)
-        .then(function (response) {
+     this.authSvc.authenticate('narrative=' + narrativeId).then( () => {
+      this.$http.get(config.apiDataBaseUrl + '/v3/narratives/' + narrativeId + '/resolve' + urlParams)
+        .then( (response) =>{
 
-          response.data.timelines.sort(function (a, b) {
+          response.data.timelines.sort( (a, b)  =>{
             return a.sort_order - b.sort_order;
           });
-          context.modelSvc.cache('narrative', context.resolveIDs(response.data));
-          defer.resolve(context.modelSvc.narratives[response.data._id]);
+          this.modelSvc.cache('narrative', this.resolveIDs(response.data));
+          defer.resolve(this.modelSvc.narratives[response.data._id]);
         });
     });
     return defer.promise;
@@ -204,7 +203,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
       defer.resolve(this.cachedPurchases);
       return defer.promise;
     } else {
-      return this.GET('/v3/users/' + userId + '/narrative_purchases', function (data) {
+      return this.GET('/v3/users/' + userId + '/narrative_purchases',  (data) => {
         this.cachedPurchases = data;
         return data;
       });
@@ -213,10 +212,10 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
   };
 
   getCustomerList = function () {
-    var context = this;
-    return this.GET('/v3/customers/', function (customers) {
-      angular.forEach(customers, function (customer) {
-        context.modelSvc.cache('customer', customer);
+  
+    return this.GET('/v3/customers/',  (customers) => {
+      angular.forEach(customers,  (customer) => {
+        this.modelSvc.cache('customer', customer);
       });
       return customers;
     });
@@ -225,25 +224,25 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
 
   getCustomer = function (customerId, retrieve) {
     if (!(this.authSvc.userHasRole('admin') || this.authSvc.userHasRole('customer admin'))) {
-      return this.$q(function (resolve) {
+      return this.$q( (resolve) =>{
         resolve({});
       });
     }
     if (this.modelSvc.customers[customerId]) {
 
       if (retrieve) {
-        return this.$q(function (resolve) {
+        return this.$q( (resolve) => {
           resolve(this.modelSvc.customers[customerId]);
         });
       }
       // have it already, or at least already getting it
     } else {
 
-      var context = this;
+
       return this.SANE_GET('/v3/customers/' + customerId)
         .then(customer => {
-          context.modelSvc.cache('customer', customer); // the real thing
-          return context.modelSvc.customers[customer._id];
+          this.modelSvc.cache('customer', customer); // the real thing
+          return this.modelSvc.customers[customer._id];
         })
         .catch(e => console.log('wtf mate?', e));
     }
@@ -267,19 +266,19 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
       _id: epId
     }); // init with empty object to be filled by asynch process
 
-    var context = this;
+
     if (this.$routeParams.local) {
       this.mockSvc.mockEpisode(epId);
       // console.log("Got all events");
       this.$rootScope.$emit('dataSvc.getEpisode.done');
     } else {
       this.authSvc.authenticate()
-        .then(function () {
-          return context.getCommon();
+        .then( () => {
+          return this.getCommon();
         })
-        .then(function () {
+        .then( () => {
           // call the local method for returning the fully realized episode
-          return context._getEpisode(epId, segmentId);
+          return this._getEpisode(epId, segmentId);
         });
     }
   };
@@ -293,10 +292,10 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
       return this.GET('/v3/narratives/');
     }
 
-    var context = this;
+
     return this.GET('/v3/narratives?customer_id=' + customer._id)
-      .then(function (narratives) {
-        context.modelSvc.assocNarrativesWithCustomer(customer, narratives);
+      .then( (narratives) => {
+        this.modelSvc.assocNarrativesWithCustomer(customer, narratives);
       });
   };
 
@@ -343,7 +342,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
     
 
     if (timeline._id) {
-      return this.PUT('/v3/timelines/' + timeline._id, timeline, function (ret) {
+      return this.PUT('/v3/timelines/' + timeline._id, timeline,  (ret) => {
         // TEMPORARY until api stops doing this
         if (typeof ret.name === 'string') {
           ret.name = {
@@ -358,7 +357,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
         return ret;
       });
     } else {
-      return this.POST('/v3/narratives/' + narrativeId + '/timelines', timeline, function (ret) {
+      return this.POST('/v3/narratives/' + narrativeId + '/timelines', timeline,  (ret) => {
         // TEMPORARY until api stops doing this
         if (typeof ret.name === 'string') {
           ret.name = {
@@ -377,7 +376,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
 
   // /v3/timelines/:id
  deleteTimeline = function  (tlId) {
-    return this.PDELETE('/v3/timelines/' + tlId).then(function (resp) {
+    return this.PDELETE('/v3/timelines/' + tlId).then( (resp) => {
       return resp;
     });
   };
@@ -386,7 +385,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
     if (assetId) {
       return this.GET('/v1/assets/' + assetId);
     } else {
-      return this.$q(function (resolve) {
+      return this.$q( (resolve) => {
         resolve(undefined);
       });
     }
@@ -404,7 +403,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
     }
 
 
-    var context = this;
+
     // console.log("dataSvc.getCommon");
     if (this.gettingCommon) {
       return this.getCommonDefer.promise;
@@ -416,17 +415,17 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
         this.$http.get(config.apiDataBaseUrl + '/v1/layouts'),
         this.$http.get(config.apiDataBaseUrl + '/v1/styles')
       ])
-        .then(function (responses) {
-          context.cache('templates', responses[0].data);
-          context.cache('layouts', responses[1].data);
-          context.cache('styles', responses[2].data);
+        .then( (responses) => {
+          this.cache('templates', responses[0].data);
+          this.cache('layouts', responses[1].data);
+          this.cache('styles', responses[2].data);
 
-          context.gettingCommon = true;
-          context.getCommonDefer.resolve();
-        }, function () {
+          this.gettingCommon = true;
+          this.getCommonDefer.resolve();
+        },  () =>{
           // console.error("getCommon failed", failure);
-          context.gettingCommon = false;
-          context.getCommonDefer.reject();
+          this.gettingCommon = false;
+          this.getCommonDefer.reject();
         });
     }
     return this.getCommonDefer.promise;
@@ -435,8 +434,8 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
 
   cache = function (cacheType, dataList) {
     // console.log("dataSvc.cache", cacheType, dataList);
-    var context = this;
-    angular.forEach(dataList, function (item) {
+  
+    angular.forEach(dataList,  (item) => {
       if (cacheType === 'templates') {
         /* API format:
          _id									"528d17ebba4f65e578000007"
@@ -449,7 +448,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
          type: string
          */
         if (item.applies_to_episodes) {
-          context.modelSvc.dataCache.template[item._id] = createInstance('EpisodeTemplate', {
+          this.modelSvc.dataCache.template[item._id] = createInstance('EpisodeTemplate', {
             id: item._id,
             url: item.url,
             type: 'Episode',
@@ -460,7 +459,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
             pro_episode_template: item.pro_episode_template
           });
         } else if (item.event_types && item.event_types && item.event_types[0] === 'Scene') {
-          context.modelSvc.dataCache.template[item._id] = createInstance('LayoutTemplate', {
+          this.modelSvc.dataCache.template[item._id] = createInstance('LayoutTemplate', {
             id: item._id,
             url: item.url,
             type: 'Scene',
@@ -468,7 +467,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
             component_name: item.component_name
           });
         } else {
-          context.modelSvc.dataCache.template[item._id] = createInstance('ItemTemplate', {
+          this.modelSvc.dataCache.template[item._id] = createInstance('ItemTemplate', {
             id: item._id,
             url: item.url,
             type: item.event_types && item.event_types[0],
@@ -486,7 +485,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
          display_name				"Video Left"
          updated_at					"2013-11-20T20:13:31Z"
          */
-        context.modelSvc.dataCache.layout[item._id] = createInstance('Layout', {
+        this.modelSvc.dataCache.layout[item._id] = createInstance('Layout', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
@@ -501,7 +500,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
          display_name	"Typography Serif"
          updated_at		"2013-11-20T20:13:37Z"
          */
-        context.modelSvc.dataCache.style[item._id] = createInstance('Style', {
+        this.modelSvc.dataCache.style[item._id] = createInstance('Style', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
@@ -532,7 +531,6 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
   // transform API common IDs into real values
  resolveIDs= function  (obj) {
     // console.log("resolving IDs", obj);
-    var context = this;
 
     if (obj.layout_id) {
       var layouts = [];
@@ -541,22 +539,22 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
       }
 
 
-      angular.forEach(obj.layout_id, function (id) {
-        if (context.modelSvc.dataCache.layout[id]) {
+      angular.forEach(obj.layout_id,  (id) => {
+        if (this.modelSvc.dataCache.layout[id]) {
           if (obj.type === 'Scene') {
             //conditions outside of 'showCurrent' necessary for USC scholar
-            if (context.modelSvc.dataCache.layout[id].css_name === 'showCurrent') {
-              layouts[1] = context.modelSvc.dataCache.layout[id].css_name;
-            } else if (context.modelSvc.dataCache.layout[id].css_name === 'splitRequired') {
-              layouts[2] = context.modelSvc.dataCache.layout[id].css_name;
+            if (this.modelSvc.dataCache.layout[id].css_name === 'showCurrent') {
+              layouts[1] = this.modelSvc.dataCache.layout[id].css_name;
+            } else if (this.modelSvc.dataCache.layout[id].css_name === 'splitRequired') {
+              layouts[2] = this.modelSvc.dataCache.layout[id].css_name;
             } else {
-              layouts[0] = context.modelSvc.dataCache.layout[id].css_name;
+              layouts[0] = this.modelSvc.dataCache.layout[id].css_name;
             }
           } else {
-            layouts.push(context.modelSvc.dataCache.layout[id].css_name);
+            layouts.push(this.modelSvc.dataCache.layout[id].css_name);
           }
         } else {
-          context.errorSvc.error({
+          this.errorSvc.error({
             data: 'Couldn\'t get layout for id ' + id
           });
         }
@@ -568,11 +566,11 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
     }
     if (obj.style_id) {
       var styles = [];
-      angular.forEach(obj.style_id, function (id) {
-        if (context.modelSvc.dataCache.style[id]) {
-          styles.push(context.modelSvc.dataCache.style[id].css_name);
+      angular.forEach(obj.style_id,  (id) =>{
+        if (this.modelSvc.dataCache.style[id]) {
+          styles.push(this.modelSvc.dataCache.style[id].css_name);
         } else {
-          context.errorSvc.error({
+          this.errorSvc.error({
             data: 'Couldn\'t get style for id ' + id
           });
         }
@@ -634,100 +632,22 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
   }
 
    fetchAndCacheAssetsByIds(assetIds: string[]): ng.IPromise<IAsset[]> {
-     var context = this;
+
     return this.getAssetsByAssetIds(assetIds)
       .then((assets: IAsset[]) => {
         assets.forEach((asset) => {
-          context.modelSvc.cache('asset', asset);
+          this.modelSvc.cache('asset', asset);
         });
         //return cached assets
         return assetIds.reduce((asx, id) => {
-            asx.push(context.modelSvc.assets[id]);
+            asx.push(this.modelSvc.assets[id]);
             return asx;
         }, []);
 
       });
   }
 
-  /*
-  // auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
- private _getEpisode = function (epId, segmentId) {
-    // The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
-    // console.log("dataSvc.getEpisode");
-    var url = (segmentId) ? '/v3/episode_segments/' + segmentId + '/resolve' : '/v3/episodes/' + epId;
-    
-    var context = this;
-    context.$http.get(config.apiDataBaseUrl + url)
-      .success( function (ret)  {
-        var episodeData = Object.create(null);
-        if (ret) {
-          episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
-        }
-        if (episodeData.status === 'Published' || context.authSvc.userHasRole('admin') || context.authSvc.userHasRole('customer admin')) {
-          const episodeTemplate = context.modelSvc.dataCache.template[episodeData.template_id];
-          episodeData.template = episodeTemplate;
-          context.modelSvc.cache('episode', context.resolveIDs(episodeData));
-          if (episodeTemplate) {
-            this.episodeTheme.setTheme(episodeTemplate);
-          }
-
-          context.getEvents(epId, segmentId)
-            .success(function (events) {
-              events = events || [];
-              context.getEventActivityDataForUser(events, 'Plugin', epId);
-              angular.forEach(events, function (eventData) {
-                eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-                context.modelSvc.cache('event', context.resolveIDs(eventData));
-              });
-              context.modelSvc.resolveEpisodeEvents(epId);
-
-              const assetIds = context.getAssetIdsFromEvents(events);
-              this.assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
-              // we need to also get the master asset and poster, while we are at it
-              assetIds.push(episodeData.master_asset_id);
-              //add template assets - more to come.
-
-              if (episodeData.poster_frame_id) {
-                assetIds.push(episodeData.poster_frame_id);
-              }
-
-              //add template assets
-              // if (episodeTemplate.css_configuration) {
-              //   const templateLogoImgId = episodeTemplate.css_configuration.image_logo_bottom_right_id;
-              //   assetIds.push(templateLogoImgId);
-              // }
-
-              //batch get assets
-              context.getAssetsByAssetIds(assetIds)
-                .then((assets: IAsset[]) => {
-                  assets.forEach((asset) => {
-                    context.modelSvc.cache('asset', asset);
-                  });
-                  context.modelSvc.resolveEpisodeAssets(epId);
-                  context.$rootScope.$emit('dataSvc.getEpisode.done');
-                });
-            })
-            .error(function () {
-              context.errorSvc.error({
-                data: 'API call to get events failed.'
-              });
-            });
-
-        } else {
-          context.errorSvc.error({
-            data: 'This episode has not yet been published.'
-          });
-        }
-      })
-      .error(function () {
-        context.errorSvc.error({
-          data: 'API call to /v3/episodes/' + epId + ' failed (bad episode ID?)'
-        });
-      });
-  };
-  */
-
-
+ 
    // auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
    private _getEpisode = function (epId, segmentId) {
     // The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
@@ -753,7 +673,6 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
             .success (  (events) => {
               events = events || [];
               this.getEventActivityDataForUser(events, 'Plugin', epId);
-              var context = this;
 
               angular.forEach(events, (eventData) => {
                 eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
@@ -832,9 +751,12 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
 
     angular.forEach(events,(eventData) => {
       if (eventData.type === 'Plugin') {
-        (function (evData) {
-          this.questionAnswersSvc.getUserAnswer(evData._id, this.appState.user._id)
-            .then(function (userAnswer) {
+
+        // having trouble making this into a lamda function to maintain context...
+        var context = this;
+        ( function (evData)  {
+          context.questionAnswersSvc.getUserAnswer(evData._id, context.appState.user._id)
+            .then( (userAnswer) =>{
 
               if (userAnswer.data) {
                 evData.data._plugin.hasBeenAnswered = true;
@@ -850,7 +772,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
                     i++;
                   }
                 });
-                this.modelSvc.cache('event', this.resolveIDs(evData));
+                context.modelSvc.cache('event', context.resolveIDs(evData));
               } else {
                 console.error('Got no user data from getUserAnswer:', userAnswer);
               }
@@ -874,7 +796,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
     this.authSvc.authenticate()
       .then(()  => {
         this.$http.get(config.apiDataBaseUrl + path)
-          .then(function (response) {
+          .then( (response) => {
             var ret = response.data;
             if (postprocessCallback) {
               ret = postprocessCallback(ret);
@@ -894,7 +816,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
       .then(() => {
         //then return this promise
         return this.$http.get(config.apiDataBaseUrl + path)
-          .then(function (resp) {
+          .then( (resp) =>{
             //SANE_GET will resolve to this
             return resp.data;
           });
@@ -985,7 +907,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
   getContainerRoot = function () {
     // This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
 
-    return this.GET('/v3/containers', function (containers) {
+    return this.GET('/v3/containers',  (containers) => {
       var customerIDs = [];
 
       angular.forEach(containers, (customer) => {
@@ -1027,7 +949,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
           angular.forEach(container.children,  (child) => {
             if (child.episodes[0]) {
               this.getEpisodeOverview(child.episodes[0])
-                .then(function (overview) {
+                .then( (overview) => {
                   if (overview) {
                     child.status = overview.status;
                     child.title = overview.title; // name == container, title == episode
@@ -1098,7 +1020,7 @@ createContainer = function (container) {
       console.error('Tried to update a container with no id', container);
       defer.reject();
     }
-    this.PUT('/v3/containers/' + container._id, container, function (data) {
+    this.PUT('/v3/containers/' + container._id, container,  (data) => {
       this.modelSvc.cache('container', data);
       defer.resolve(data);
     });
