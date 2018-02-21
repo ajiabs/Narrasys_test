@@ -6,6 +6,7 @@
 /***********************************
  **** Updated by Curve10 (JAB/EDD)
  **** Feb 2018
+ **** YT is not defined, it is a global, possibly defined by YouTube loader...
  ***********************************/
 
 /**
@@ -53,7 +54,9 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
     private PLAYERSTATES,
     private youtubeUrlService,
     private playerManagerCommons) {
-  }
+      // Initialization
+      angular.extend(this._youtubeMetaObj.meta, this._youtubeMetaProps, this.commonMetaProps);
+    }
 
   // private _youTubePlayerManager;
   private _players = {};
@@ -74,7 +77,6 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
     meta: {}
   };
 
-  angular.extend(_youtubeMetaObj.meta, _youtubeMetaProps, commonMetaProps);
   private _validMetaKeys = Object.keys(this._youtubeMetaObj.meta);
 
   private predicate(pid) {
@@ -238,13 +240,13 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
       var isBuffering = this.getMetaProp(pid, 'bufferInterval');
       // console.log('YT PlayerState', PLAYERSTATES[event.data]);
 
-      if (event.data === this.YT.PlayerState.ENDED) {
+      if (event.data === YT.PlayerState.ENDED) {
         event.target.stopVideo();
       }
 
-      if (event.data === this.YT.PlayerState.BUFFERING) {
+      if (event.data === YT.PlayerState.BUFFERING) {
         isBuffering = this.waitForBuffering( () => {
-          if (event.target.getPlayerState() === this.YT.PlayerState.BUFFERING) {
+          if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
             this._reset(pid);
           }
         }, 7 * 1000);
@@ -609,8 +611,8 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
     }
 
     var host = this.$location.host();
-    return this.YTScriptLoader.load().then( () => {
-      return new this.YT.Player(divId, {
+    return YTScriptLoader.load().then( () => {
+      return new YT.Player(divId, {
         videoId: videoID,
         //enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
         playerVars: {
