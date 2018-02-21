@@ -51,10 +51,10 @@ export interface IScriptLoader {
 export interface IUrlService {
   parseMediaSrcArr(mediaSrcArr: string[]): IParsedMediaSrcObj[];
   checkUrl(url: string): { type: string, mimeType: string };
-  getOutgoingUrl(url: string): string | void;
+  getOutgoingUrl(url: string, starAt:any): string | void;
   parseInput(input: string): string;
   isVideoUrl(url: string): boolean;
-  resolveVideo(): any;
+  resolveVideo(videoAsset?): any;
 }
 
 export interface IParsedMediaSrcObj {

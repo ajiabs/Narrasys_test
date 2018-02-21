@@ -3,7 +3,8 @@ import ittVideo from './components/video/ittVideo';
 import { PlaybackServices } from './services/playback-service/playbackService';
 
 import playerManagerCommons from './services/player-manager-commons/playerManagerCommons';
-import urlService from './services/url-service/urlService';
+// import urlService from './services/url-service/urlService';
+import {URLService} from './services/url-service/urlService';
 
 import './html5/html5.module';
 import './youtube/youtube.module';
@@ -23,6 +24,7 @@ npPlaybackModule
   .service( PlaybackServices.Name, PlaybackServices)
   
   .factory('playerManagerCommons', playerManagerCommons)
-  .factory('urlService', urlService);
+  // was .factory('urlService', urlService);
+  .service( URLService.Name, URLService);
 
 export default npPlaybackModule;
