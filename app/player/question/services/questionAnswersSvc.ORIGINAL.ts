@@ -1,56 +1,32 @@
 // @npUpgrade-question-false
-
-/***********************************
- **** Updated by Curve10 (JAB/EDD)
- **** Feb 2018
- ***********************************/
-
 'use strict';
+questionAnswersSvc.$inject = ['$q', 'analyticsSvc', 'appState'];
 
-export interface IQuestionAnswersSvc {
-  saveAnswer(name, eventID, data);
-  getAnswers(eventId);
-  getUserAnswer(eventId, userId);
-  calculateCounts(events);
-  incrementAnswerCount(answerCounts, answerIndex);
-}
-
-export class QuestionAnswersSvc implements IQuestionAnswersSvc {
-  static Name = 'questionAnswersSvc'; // tslint:disable-line
-  static $inject = ['$q', 'analyticsSvc', 'appState'];
-
-  constructor (
-    private $q,
-    private analyticsSvc,
-    private appState) {
-    }
-
-  // private svc = {};
-  saveAnswer(name, eventID, data) {
-    return this.analyticsSvc.forceCaptureEventActivityWithPromise(name, eventID, data);
+export default function questionAnswersSvc($q, analyticsSvc, appState) {
+  var svc = {};
+  svc.saveAnswer = function (name, eventID, data) {
+    return analyticsSvc.forceCaptureEventActivityWithPromise(name, eventID, data);
   };
-
-  getAnswers(eventId) {
-    var defer = this.$q.defer();
-    this.analyticsSvc.readEventActivity(eventId)
-      .then( (activityData) => {
-        var answers = activityData.filter( (activity) => {
+  svc.getAnswers = function (eventId) {
+    var defer = $q.defer();
+    analyticsSvc.readEventActivity(eventId)
+      .then(function (activityData) {
+        var answers = activityData.filter(function (activity) {
           return (
             (activity.name === "question-answered" || activity.name === "question-answered-updated") &&
-            activity.episode_id === this.appState.episodeId
+            activity.episode_id === appState.episodeId
           );
         });
         defer.resolve(answers);
       });
     return defer.promise;
   };
-
-  getUserAnswer(eventId, userId) {
-    var defer = this.$q.defer();
-    this.getAnswers(eventId)
-      .then( (data) => {
+  svc.getUserAnswer = function (eventId, userId) {
+    var defer = $q.defer();
+    svc.getAnswers(eventId)
+      .then(function (data) {
         if (data) {
-          var userAnswer = data.filter( (item) => {
+          var userAnswer = data.filter(function (item) {
             return item.user_id === userId;
           });
           if (userAnswer.length > 0) {
@@ -65,15 +41,14 @@ export class QuestionAnswersSvc implements IQuestionAnswersSvc {
     return defer.promise;
   };
 
-  calculateCounts(events) {
+  svc.calculateCounts = function (events) {
     var grouped;
-    angular.forEach(events, (event) => {
+    angular.forEach(events, function (event) {
       grouped[event.data.index]++;
     });
     return grouped;
   };
-
-  incrementAnswerCount(answerCounts, answerIndex) {
+  svc.incrementAnswerCount = function (answerCounts, answerIndex) {
     answerCounts[answerIndex] = (answerCounts[answerIndex] || 0) + 1;
   };
 
@@ -106,4 +81,5 @@ export class QuestionAnswersSvc implements IQuestionAnswersSvc {
    };
    */
 
+  return svc;
 }

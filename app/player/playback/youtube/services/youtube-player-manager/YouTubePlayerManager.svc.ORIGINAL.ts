@@ -2,12 +2,6 @@
 /**
  * Created by githop on 12/3/15.
  */
-
-/***********************************
- **** Updated by Curve10 (JAB/EDD)
- **** Feb 2018
- ***********************************/
-
 /**
  * @ngdoc service
  * @name iTT.service:youTubePlayerManager
@@ -21,126 +15,97 @@
  * @requires youtubeUrlService
  */
 
- export interface IYouTubePlayerManager {
-  seedPlayerManager(id, mainPlayer, mediaSrcArr);
-  create(playerId);
-  handleSuccess(ytInstance);
-  tryAgain();
-  handleFail(e);
-  setSpeed(pid, playbackRate);
-  getCurrentTime(pid);
-  playerState(pid);
-  play(pid);
-  pause(pid);
-  stop(pid);
-  setPlaybackQuality(pid, size);
-  getVideoLoadedFraction(pid);
-  seekTo(pid, t);
-  toggleMute(pid);
-  setVolume(pid, v);
- }
 
+youTubePlayerManager.$inject = ['$location', 'ittUtils', 'YTScriptLoader', 'errorSvc', 'PLAYERSTATES', 'youtubeUrlService', 'playerManagerCommons'];
 
-export class YouTubePlayerManager implements IYouTubePlayerManager {
-  static Name = 'youTubePlayerManager'; // tslint:disable-line
-  static $inject = ['$location', 'ittUtils', 'YTScriptLoader', 'errorSvc', 'PLAYERSTATES', 'youtubeUrlService', 'playerManagerCommons'];
+export default function youTubePlayerManager($location, ittUtils, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeUrlService, playerManagerCommons) {
 
-  constructor (
-    private $location,
-    private ittUtils,
-    private YTScriptLoader,
-    private errorSvc,
-    private PLAYERSTATES,
-    private youtubeUrlService,
-    private playerManagerCommons) {
-  }
+  var _youTubePlayerManager;
+  var _players = {};
+  var _mainPlayerId;
+  var _type = 'youtube';
 
-  // private _youTubePlayerManager;
-  private _players = {};
-  private _mainPlayerId;
-  private _type = 'youtube';
+  var base = playerManagerCommons({players: _players, type: _type});
+  var commonMetaProps = base.commonMetaProps;
 
-  private base = this.playerManagerCommons({players: this._players, type: this._type});
-  private commonMetaProps = this.base.commonMetaProps;
-
-  private _youtubeMetaProps = {
+  var _youtubeMetaProps = {
     ytId: '',
-    videoType: this._type,
+    videoType: _type,
     bufferInterval: null
   };
 
-  private _youtubeMetaObj = {
+  var _youtubeMetaObj = {
     instance: null,
     meta: {}
   };
 
   angular.extend(_youtubeMetaObj.meta, _youtubeMetaProps, commonMetaProps);
-  private _validMetaKeys = Object.keys(this._youtubeMetaObj.meta);
+  var _validMetaKeys = Object.keys(_youtubeMetaObj.meta);
 
-  private predicate(pid) {
-    return (this._existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true);
+  var predicate = function (pid) {
+    return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
   };
 
-  private destroyFn(pid) {
-    var p = this.getInstance(pid);
-    this._tryCommand(p, 'destroy');
+  var destroyFn = function (pid) {
+    var p = getInstance(pid);
+    _tryCommand(p, 'destroy');
   };
 
-  private youtubeEnding(pid) {
-    this.setMetaProp(pid, 'time', this.getMetaProp(pid, 'duration'));
-    this.ittUtils.ngTimeout( () => {
-      if (this.playerState(pid) !== 'ended') {
-        console.log('on ended state', this.playerState(pid));
-        this.stop(pid);
+  var youtubeEnding = function (pid) {
+    setMetaProp(pid, 'time', getMetaProp(pid, 'duration'));
+    ittUtils.ngTimeout(function () {
+      if (playerState(pid) !== 'ended') {
+        console.log('on ended state', playerState(pid));
+        stop(pid);
       }
     }, 500);
   };
 
-  private getPlayer = this.base.getPlayer;
-  private setPlayer = this.base.setPlayer;
-  private getInstance = this.base.getInstance(this.predicate);
-  private createMetaObj = this.base.createMetaObj;
-  private getMetaObj = this.base.getMetaObj;
-  private getMetaProp = this.base.getMetaProp;
-  private setMetaProp = this.base.setMetaProp(this._validMetaKeys);
-  private registerStateChangeListener = this.base.registerStateChangeListener;
-  private unregisterStateChangeListener = this.base.unregisterStateChangeListener;
-  private pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.playerState);
-  private getPlayerDiv = this.base.getPlayerDiv;
-  private resetPlayerManager = this.base.resetPlayerManager(this.destroyFn);
-  private renamePid = this.base.renamePid;
-  private handleTimelineEnd = this.base.handleTimelineEnd(this.youtubeEnding);
-  private waitForBuffering = this.ittUtils.ngTimeout;
-  private cancelBuffering = this.ittUtils.cancelNgTimeout;
-  private _getStateChangeListeners = this.base.getStateChangeListeners;
+  var getPlayer = base.getPlayer;
+  var setPlayer = base.setPlayer;
+  var getInstance = base.getInstance(predicate);
+  var createMetaObj = base.createMetaObj;
+  var getMetaObj = base.getMetaObj;
+  var getMetaProp = base.getMetaProp;
+  var setMetaProp = base.setMetaProp(_validMetaKeys);
+  var registerStateChangeListener = base.registerStateChangeListener;
+  var unregisterStateChangeListener = base.unregisterStateChangeListener;
+  var pauseOtherPlayers = base.pauseOtherPlayers(pause, playerState);
+  var getPlayerDiv = base.getPlayerDiv;
+  var resetPlayerManager = base.resetPlayerManager(destroyFn);
+  var renamePid = base.renamePid;
+  var handleTimelineEnd = base.handleTimelineEnd(youtubeEnding);
+  var waitForBuffering = ittUtils.ngTimeout;
+  var cancelBuffering = ittUtils.cancelNgTimeout;
+  var _getStateChangeListeners = base.getStateChangeListeners;
 
-  private _youTubePlayerManager = {
-    type: this._type,
-    getMetaProp: this.getMetaProp,
-    setMetaProp: this.setMetaProp,
-    getMetaObj: this.getMetaObj,
-    getPlayerDiv: this.getPlayerDiv,
-    pauseOtherPlayers: this.pauseOtherPlayers,
-    registerStateChangeListener: this.registerStateChangeListener,
-    unregisterStateChangeListener: this.unregisterStateChangeListener,
-    resetPlayerManager: this.resetPlayerManager,
-    renamePid: this.renamePid,
-    seedPlayerManager: this.seedPlayerManager,
-    create: this.create,
-    play: this.play,
-    pause: this.pause,
-    seekTo: this.seekTo,
-    getCurrentTime: this.getCurrentTime,
-    getPlayerState: this.playerState,
-    getBufferedPercent: this.getVideoLoadedFraction,
-    toggleMute: this.toggleMute,
-    setVolume: this.setVolume,
-    setSpeed: this.setSpeed,
-    setPlaybackQuality: this.setPlaybackQuality,
+  _youTubePlayerManager = {
+    type: _type,
+    getMetaProp: getMetaProp,
+    setMetaProp: setMetaProp,
+    getMetaObj: getMetaObj,
+    getPlayerDiv: getPlayerDiv,
+    pauseOtherPlayers: pauseOtherPlayers,
+    registerStateChangeListener: registerStateChangeListener,
+    unregisterStateChangeListener: unregisterStateChangeListener,
+    resetPlayerManager: resetPlayerManager,
+    renamePid: renamePid,
+    seedPlayerManager: seedPlayerManager,
+    create: create,
+    play: play,
+    pause: pause,
+    seekTo: seekTo,
+    getCurrentTime: getCurrentTime,
+    getPlayerState: playerState,
+    getBufferedPercent: getVideoLoadedFraction,
+    toggleMute: toggleMute,
+    setVolume: setVolume,
+    setSpeed: setSpeed,
+    setPlaybackQuality: setPlaybackQuality,
     freezeMetaProps: angular.noop,
     unFreezeMetaProps: angular.noop,
-    stop: this.stop,
-    handleTimelineEnd: this.handleTimelineEnd
+    stop: stop,
+    handleTimelineEnd: handleTimelineEnd
   };
 
   //public methods
@@ -153,28 +118,28 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {String} id Main Video Asset ID or Event ID, for embeds
    * @param {Boolean} mainPlayer Determines type of player, embed or main
    * @param {Array} mediaSrcArr array of youtube URLs
-   * @returns {Void} returns void.
+   * @returns {Vofid} returns void.
    */
-  seedPlayerManager(id, mainPlayer, mediaSrcArr) {
+  function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
     //bail if we already have set the instance in the _players map.
-    if (this._existy(this.getPlayer(id)) && this.getMetaProp(id, 'startAtTime') > 0) {
+    if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
       return;
     }
 
     if (mainPlayer) {
       // setPlayer(id, {});
-      this._players = {};
-      this._mainPlayerId = id;
+      _players = {};
+      _mainPlayerId = id;
     }
 
     var newProps = {
       mainPlayer: mainPlayer,
-      div: this._getPlayerDiv(id),
-      ytId: this.youtubeUrlService.extractYoutubeId(mediaSrcArr[0])
+      div: _getPlayerDiv(id),
+      ytId: youtubeUrlService.extractYoutubeId(mediaSrcArr[0])
     };
 
-    this.setPlayer(id, this.createMetaObj(newProps, this._youtubeMetaObj));
+    setPlayer(id, createMetaObj(newProps, _youtubeMetaObj));
   }
 
 
@@ -188,26 +153,26 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * interface with the youtube Iframe API
    * @returns {void} has no return value
    */
-  create(playerId) {
-    var ytId = this.getMetaProp(playerId, 'ytId');
-    this._createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+  function create(playerId) {
+    var ytId = getMetaProp(playerId, 'ytId');
+    _createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
       .then(handleSuccess)
       .catch(tryAgain);
 
     function handleSuccess(ytInstance) {
-      this.getPlayer(playerId).instance = ytInstance;
-      this.setMetaProp(playerId, 'ytId', ytId);
+      getPlayer(playerId).instance = ytInstance;
+      setMetaProp(playerId, 'ytId', ytId);
     }
 
     function tryAgain() {
-      return this._createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+      return _createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
         .then(handleSuccess)
         .catch(handleFail);
     }
 
     function handleFail(e) {
       var errorMsg = 'Network timeout initializing video player. Please try again.';
-      this.errorSvc.error({data: errorMsg}, e);
+      errorSvc.error({data: errorMsg}, e);
     }
 
     //available 'states'
@@ -232,28 +197,28 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
      * @returns {Void} has no return value
      */
     function onPlayerStateChange(event) {
-      var pid = this._getPidFromInstance(event.target);
-      this.setMetaProp(pid, 'playerState', event.data);
-      var stateChangeEvent = this._formatPlayerStateChangeEvent(event, pid);
-      var isBuffering = this.getMetaProp(pid, 'bufferInterval');
+      var pid = _getPidFromInstance(event.target);
+      setMetaProp(pid, 'playerState', event.data);
+      var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
+      var isBuffering = getMetaProp(pid, 'bufferInterval');
       // console.log('YT PlayerState', PLAYERSTATES[event.data]);
 
-      if (event.data === this.YT.PlayerState.ENDED) {
+      if (event.data === YT.PlayerState.ENDED) {
         event.target.stopVideo();
       }
 
-      if (event.data === this.YT.PlayerState.BUFFERING) {
-        isBuffering = this.waitForBuffering( () => {
-          if (event.target.getPlayerState() === this.YT.PlayerState.BUFFERING) {
-            this._reset(pid);
+      if (event.data === YT.PlayerState.BUFFERING) {
+        isBuffering = waitForBuffering(function () {
+          if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
+            _reset(pid);
           }
         }, 7 * 1000);
-        this.setMetaProp(pid, 'bufferInterval', isBuffering);
+        setMetaProp(pid, 'bufferInterval', isBuffering);
       } else {
-        this.cancelBuffering(isBuffering)
+        cancelBuffering(isBuffering)
       }
 
-      this._emitStateChange(stateChangeEvent);
+      _emitStateChange(stateChangeEvent);
     }
 
     /**
@@ -268,11 +233,11 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
      * @returns {Void} has no return value
      */
     function onReady(event) {
-      var pid = this._getPidFromInstance(event.target);
+      var pid = _getPidFromInstance(event.target);
 
-      var playerReadyEv = this._formatPlayerStateChangeEvent({data: '6'}, pid);
-      this.setMetaProp(pid, 'duration', event.target.getDuration());
-      this._emitStateChange(playerReadyEv);
+      var playerReadyEv = _formatPlayerStateChangeEvent({data: '6'}, pid);
+      setMetaProp(pid, 'duration', event.target.getDuration());
+      _emitStateChange(playerReadyEv);
     }
 
     /**
@@ -287,9 +252,9 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
      * @returns {Void} has no return value
      */
     function onPlayerQualityChange(event) {
-      var pid = this._getPidFromInstance(event.target);
+      var pid = _getPidFromInstance(event.target);
       if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-        this.setPlaybackQuality(pid, 'large');
+        setPlaybackQuality(pid, 'large');
       }
 
       // qualityChangeCB(event);
@@ -308,11 +273,11 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
      * @returns {Void} has no return value
      */
     function onError(event) {
-      var brokePlayerPID = this._getPidFromInstance(event.target);
+      var brokePlayerPID = _getPidFromInstance(event.target);
       if (event.data === 5) {
         //only _reset for HTML5 player errors
         console.warn('resetting for chrome!!!');
-        this._reset(brokePlayerPID);
+        _reset(brokePlayerPID);
       }
     }
   }
@@ -327,10 +292,10 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {Number} playbackRate the rate to set playback to.
    * @returns {Void} returns void.
    */
-  setSpeed(pid, playbackRate) {
-    var p = this.getInstance(pid);
+  function setSpeed(pid, playbackRate) {
+    var p = getInstance(pid);
     // getAvailablePlayBackRates returns an array of numbers, with at least 1 element; i.e. the default playback rate
-    if (this._existy(p) && p.getAvailablePlaybackRates().length > 1) {
+    if (_existy(p) && p.getAvailablePlaybackRates().length > 1) {
       p.setPlaybackRate(playbackRate);
     }
   }
@@ -344,10 +309,10 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {String} pid The ID of the YT instance
    * @returns {Number} The current time of video in seconds.
    */
-  getCurrentTime(pid) {
-    var p = this.getInstance(pid);
-    if (this._existy(p)) {
-      return this._tryCommand(p, 'getCurrentTime');
+  function getCurrentTime(pid) {
+    var p = getInstance(pid);
+    if (_existy(p)) {
+      return _tryCommand(p, 'getCurrentTime');
     }
   }
 
@@ -366,10 +331,10 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {String} pid The ID of the YT instance
    * @returns {Number} Int representing current player state.
    */
-  playerState(pid) {
-    var p = this.getInstance(pid);
-    if (this._existy(p)) {
-      return this.PLAYERSTATES[this._tryCommand(p, 'getPlayerState')];
+  function playerState(pid) {
+    var p = getInstance(pid);
+    if (_existy(p)) {
+      return PLAYERSTATES[_tryCommand(p, 'getPlayerState')];
     }
   }
 
@@ -382,10 +347,10 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {String} pid The ID of the YT instance
    * @returns {Void} no return value
    */
-  play(pid) {
-    var p = this.getInstance(pid);
-    if (this._existy(p)) {
-      this._tryCommand(p, 'playVideo');
+  function play(pid) {
+    var p = getInstance(pid);
+    if (_existy(p)) {
+      _tryCommand(p, 'playVideo');
     }
   }
 
@@ -398,12 +363,12 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {String} pid The ID of the YT instance
    * @returns {Void} no return value
    */
-  pause(pid) {
-    var p = this.getInstance(pid);
+  function pause(pid) {
+    var p = getInstance(pid);
 
     // console.log('pause instance?', p);
-    if (this._existy(p)) {
-      this._tryCommand(p, 'pauseVideo');
+    if (_existy(p)) {
+      _tryCommand(p, 'pauseVideo');
     }
   }
 
@@ -416,10 +381,10 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @params pid The id of the player
    * @returns {Void} no return value
    */
-  stop(pid) {
-    var p = this.getInstance(pid);
-    if (this._existy(p)) {
-      this._tryCommand(p, 'stopVideo');
+  function stop(pid) {
+    var p = getInstance(pid);
+    if (_existy(p)) {
+      _tryCommand(p, 'stopVideo');
     }
   }
 
@@ -432,9 +397,9 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {String} pid The ID of the YT instance
    * @returns {Void} no return value
    */
-  setPlaybackQuality(pid, size) {
-    var p = this.getInstance(pid);
-    if (this._existy(p)) {
+  function setPlaybackQuality(pid, size) {
+    var p = getInstance(pid);
+    if (_existy(p)) {
       p.setPlaybackQuality(size);
     }
   }
@@ -449,9 +414,9 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @returns {Number} Numerical value representing
    * percent of video that is currently buffered
    */
-  getVideoLoadedFraction(pid) {
-    var p = this.getInstance(pid);
-    if (this._existy(p)) {
+  function getVideoLoadedFraction(pid) {
+    var p = getInstance(pid);
+    if (_existy(p)) {
       return p.getVideoLoadedFraction() * 100;
     }
   }
@@ -474,13 +439,13 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * buffered video data
    * @returns {Void} no return value
    */
-  seekTo(pid, t) {
-    var p = this.getInstance(pid);
-    var ytId = this.getMetaProp(pid, 'ytId');
-    var lastState = this.PLAYERSTATES[this.getMetaProp(pid, 'playerState')];
-    var currentState = this.playerState(pid);
+  function seekTo(pid, t) {
+    var p = getInstance(pid);
+    var ytId = getMetaProp(pid, 'ytId');
+    var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
+    var currentState = playerState(pid);
 
-    if (this._existy(p)) {
+    if (_existy(p)) {
       if (currentState === 'video cued') {
         switch (lastState) {
           case 'paused':
@@ -489,22 +454,22 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
             p.cueVideoById(ytId, t);
             break;
           case 'video cued':
-            if (pid === this._mainPlayerId) {
+            if (pid === _mainPlayerId) {
               //if we're in video cued and we are not restarting, e.g. seeking in the paused state
               //then we want to immediately pause after playback resumes.
               // (to get the correct frame of video visible)
-              if (t > 0.1 && this.getMetaProp(pid, 'autoplay') === false) {
+              if (t > 0.1 && getMetaProp(pid, 'autoplay') === false) {
                 //to ignore next play to not generate a false playing analytics
-                this.registerStateChangeListener(this._seekPauseListener);
+                registerStateChangeListener(_seekPauseListener);
               }
-              this._tryCommand(p, 'seekTo', t);
+              _tryCommand(p, 'seekTo', t);
             } else {
               p.cueVideoById(ytId, t);
             }
             break;
         }
       } else {
-        this._tryCommand(p, 'seekTo', t, true);
+        _tryCommand(p, 'seekTo', t, true);
       }
 
     }
@@ -519,14 +484,14 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {String} pid the pid of the player
    * @returns {Void} returns void.
    */
-  toggleMute(pid) {
-    var p = this.getInstance(pid);
+  function toggleMute(pid) {
+    var p = getInstance(pid);
     if (p.isMuted()) {
       p.unMute();
-      this.setMetaProp(pid, 'muted', false);
+      setMetaProp(pid, 'muted', false);
     } else {
       p.mute();
-      this.setMetaProp(pid, 'muted', true);
+      setMetaProp(pid, 'muted', true);
     }
   }
 
@@ -540,21 +505,21 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {Number} v Number between 1 and 100
    * @returns {Void} No return value.
    */
-  setVolume(pid, v) {
-    var p = this.getInstance(pid);
+  function setVolume(pid, v) {
+    var p = getInstance(pid);
 
-    if (this._existy(p)) {
+    if (_existy(p)) {
       p.setVolume(v);
-      this.setMetaProp(pid, 'volume', v);
+      setMetaProp(pid, 'volume', v);
     }
   }
 
   //private methods
 
-  private _seekPauseListener(event) {
+  function _seekPauseListener(event) {
     if (event.state === 'playing') {
-      this.unregisterStateChangeListener(this._seekPauseListener);
-      this.pause(event.emitterId);
+      unregisterStateChangeListener(_seekPauseListener);
+      pause(event.emitterId);
     }
   }
 
@@ -569,11 +534,11 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @returns {Void} no return value
    * @private
    */
-  private _reset(pid) {
-    var instance = this.getInstance(pid);
-    var isMainPlayer = this.getMetaProp(pid, 'mainPlayer');
+  function _reset(pid) {
+    var instance = getInstance(pid);
+    var isMainPlayer = getMetaProp(pid, 'mainPlayer');
 
-    if (this._existy(instance)) {
+    if (_existy(instance)) {
       console.log('debug info', instance.getDebugText());
       var videoId = instance.getVideoData().video_id;
       var lastTime = instance.getCurrentTime();
@@ -601,16 +566,16 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @returns {Object} instance of YT.Player
    * @private
    */
-  private _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
+  function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
 
     var _controls = 1;
-    if (divId === this._mainPlayerId) {
+    if (divId === _mainPlayerId) {
       _controls = 0;
     }
 
-    var host = this.$location.host();
-    return this.YTScriptLoader.load().then( () => {
-      return new this.YT.Player(divId, {
+    var host = $location.host();
+    return YTScriptLoader.load().then(function () {
+      return new YT.Player(divId, {
         videoId: videoID,
         //enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
         playerVars: {
@@ -634,7 +599,7 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
     });
   }
 
-  private _existy(x) {
+  function _existy(x) {
     return x != null;  // jshint ignore:line
   }
 
@@ -648,7 +613,7 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @params {Object} ytInstance
    * @returns {String} PID of YT Instance
    */
-  private _getPidFromInstance(ytInstance) {
+  function _getPidFromInstance(ytInstance) {
     return ytInstance.getIframe().id;
   }
 
@@ -662,10 +627,10 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @returns {Object} Object with emiiterId and state props
    * @private
    */
-  private _formatPlayerStateChangeEvent(event, pid) {
+  function _formatPlayerStateChangeEvent(event, pid) {
     return {
       emitterId: pid,
-      state: this.PLAYERSTATES[event.data]
+      state: PLAYERSTATES[event.data]
     };
   }
 
@@ -677,8 +642,8 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {Function} playerStateChange callback to fire
    *@returns {Void} returns void 0.
    */
-  private _emitStateChange(playerStateChange) {
-    this._getStateChangeListeners().forEach( (cb) => {
+  function _emitStateChange(playerStateChange) {
+    _getStateChangeListeners().forEach(function (cb) {
       cb(playerStateChange);
     });
   }
@@ -691,7 +656,7 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {string } id of the player
    * @returns {string} HTML div with ID of player
    */
-  private _getPlayerDiv(id) {
+  function _getPlayerDiv(id) {
     return '<div id="' + id + '"></div>';
   }
 
@@ -705,12 +670,12 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
    * @param {String | Number} val the val to set
    * @returns {Void |String | Number} returns void, or the getter value.
    */
-  private _tryCommand(instance, command, val?, bool?) {
+  function _tryCommand(instance, command, val, bool) {
     var returnVal;
     try {
-      if (this._existy(val) && this._existy(bool)) {
+      if (_existy(val) && _existy(bool)) {
         instance[command](val, bool);
-      } else if (this._existy(val)) {
+      } else if (_existy(val)) {
         instance[command](val);
       } else {
         //some getters return a value, i.e. getPlayerState
@@ -721,11 +686,11 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
       console.warn('error trying', command, 'with', instance[command], 'full error:', err);
     }
 
-    if (this._existy(returnVal)) {
+    if (_existy(returnVal)) {
       return returnVal;
     }
   }
 
-  // return _youTubePlayerManager;
+  return _youTubePlayerManager;
 
 }

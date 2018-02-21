@@ -1,61 +1,38 @@
 // @npUpgrade-youtube-false
 
-/***********************************
- **** Updated by Curve10 (JAB/EDD)
- **** Feb 2018
- ***********************************/
+youtubeUrlService.$inject = ['ittUtils'];
 
-export interface IYoutubeUrlService {
-  getMimeType();
-  getOutgoingUrl(url, startAt);
-  extractYoutubeId(origUrl);
-  isYoutubeUrl(origUrl);
-  parseMediaSrc(mediaSrcArr);
-  embedParams(outgoing);
-  createEmbedLinkFromYoutubeId(ytid, suppressParams);
-  embeddableYoutubeUrl(origUrl, suppressParams);
-}
+export default function youtubeUrlService(ittUtils) {
+  var _existy = ittUtils.existy;
+  var _type = 'youtube';
+  var _mimeType = 'video/x-' + _type;
+  return {
+    type: _type,
+    getMimeType: getMimeType,
+    extractYoutubeId: extractYoutubeId,
+    isYoutubeUrl: isYoutubeUrl,
+    canPlay: isYoutubeUrl,
+    parseMediaSrc: parseMediaSrc,
+    embedParams: embedParams,
+    createEmbedLinkFromYoutubeId: createEmbedLinkFromYoutubeId,
+    embeddableYoutubeUrl: embeddableYoutubeUrl,
+    parseInput: embeddableYoutubeUrl,
+    getOutgoingUrl: getOutgoingUrl
+  };
 
-
-export class YoutubeUrlService implements IYoutubeUrlService {
-  static Name = 'youtubeUrlService'; // tslint:disable-line
-  static $inject = ['ittUtils'];
-
-  constructor (
-    private ittUtils) {
+  function getMimeType() {
+    return _mimeType;
   }
 
-  private _existy = this.ittUtils.existy;
-  private _type = 'youtube';
-  private _mimeType = 'video/x-' + this._type;
-
-  // return {
-  //   type: _type,
-  //   getMimeType: getMimeType,
-  //   extractYoutubeId: extractYoutubeId,
-  //   isYoutubeUrl: isYoutubeUrl,
-  //   canPlay: isYoutubeUrl,
-  //   parseMediaSrc: parseMediaSrc,
-  //   embedParams: embedParams,
-  //   createEmbedLinkFromYoutubeId: createEmbedLinkFromYoutubeId,
-  //   embeddableYoutubeUrl: embeddableYoutubeUrl,
-  //   parseInput: embeddableYoutubeUrl,
-  //   getOutgoingUrl: getOutgoingUrl
-  // };
-
-  getMimeType() {
-    return this._mimeType;
-  }
-
-  getOutgoingUrl(url, startAt) {
-    url = this.embeddableYoutubeUrl(url, false);
-    if (this._existy(startAt) && startAt > 0) {
+  function getOutgoingUrl(url, startAt) {
+    url = embeddableYoutubeUrl(url, false);
+    if (_existy(startAt) && startAt > 0) {
       url += '&start=' + startAt;
     }
     return url;
   }
 
-  extractYoutubeId(origUrl) {
+  function extractYoutubeId(origUrl) {
     if (!origUrl) {
       return false;
     }
@@ -66,7 +43,7 @@ export class YoutubeUrlService implements IYoutubeUrlService {
     return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
   }
 
-  isYoutubeUrl(origUrl) {
+  function isYoutubeUrl(origUrl) {
     if (!origUrl) {
       return false;
     }
@@ -81,16 +58,16 @@ export class YoutubeUrlService implements IYoutubeUrlService {
    * @param mediaSrcArr
    * @return mediaSrcObj {type: string, mediaSrcArr: Array<String>}
    */
-  parseMediaSrc(mediaSrcArr) {
-    return mediaSrcArr.reduce( (parsedMediaSrcObj, mediaSrc) => {
-      if (this.isYoutubeUrl(mediaSrc)) {
+  function parseMediaSrc(mediaSrcArr) {
+    return mediaSrcArr.reduce(function (parsedMediaSrcObj, mediaSrc) {
+      if (isYoutubeUrl(mediaSrc)) {
         parsedMediaSrcObj.mediaSrcArr.push(mediaSrc);
       }
       return parsedMediaSrcObj;
     }, {type: 'youtube', mediaSrcArr: []});
   }
 
-  embedParams(outgoing) {
+  function embedParams(outgoing) {
     // kept separate from createEmbedLinkFromYoutubeId for convenience in unit tests.
     // TODO move these into videoController, as playerVar params, instead of embedding them in the url.  (Will need to init youtube as a div instead of as an iframe)
     // WARN dont remove the wmode param, it works around an IE z-index bug
@@ -103,19 +80,19 @@ export class YoutubeUrlService implements IYoutubeUrlService {
     return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent";
   };
 
-  createEmbedLinkFromYoutubeId(ytid, suppressParams) {
+  function createEmbedLinkFromYoutubeId(ytid, suppressParams) {
     if (!ytid) {
       return false;
     }
-    return "//www.youtube.com/embed/" + ytid + (suppressParams ? "" : this.embedParams(suppressParams));
+    return "//www.youtube.com/embed/" + ytid + (suppressParams ? "" : embedParams(suppressParams));
   };
 
-  embeddableYoutubeUrl(origUrl, suppressParams) {
+  function embeddableYoutubeUrl(origUrl, suppressParams) {
     if (!origUrl) {
       return false;
     }
-    var ytid = this.extractYoutubeId(origUrl);
-    return this.createEmbedLinkFromYoutubeId(ytid, suppressParams);
+    var ytid = extractYoutubeId(origUrl);
+    return createEmbedLinkFromYoutubeId(ytid, suppressParams);
   };
 
   // var parseRidiculousDurationFormat = function (input) {
