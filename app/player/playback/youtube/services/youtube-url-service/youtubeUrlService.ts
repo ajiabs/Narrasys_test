@@ -7,6 +7,7 @@
 
 export interface IYoutubeUrlService {
   getMimeType();
+  canPlay(origUrl?);
   getOutgoingUrl(url, startAt);
   extractYoutubeId(origUrl);
   isYoutubeUrl(origUrl);
@@ -64,6 +65,10 @@ export class YoutubeUrlService implements IYoutubeUrlService {
     var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
     var ytMatch = origUrl.match(getYoutubeID);
     return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
+  }
+
+  canPlay(origUrl) {
+    return this.isYoutubeUrl(origUrl);
   }
 
   isYoutubeUrl(origUrl) {

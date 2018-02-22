@@ -2,30 +2,62 @@
 /**
  * Created by githop on 1/13/17.
  */
-kalturaUrlService.$inject = [];
 
-export default function kalturaUrlService() {
-  var _type = 'kaltura';
-  var _mimeType = 'video/x-' + _type;
-  return {
-    type: _type,
-    getMimeType: getMimeType,
-    canPlay: isKalturaUrl,
-    parseMediaSrc: parseMediaSrc,
-    getKalturaObject: getKalturaObject,
-    buildAutoEmbedURLFromKalturaObject: buildAutoEmbedURLFromKalturaObject,
-    parseInput: parseInput,
-    getOutgoingUrl: function () {
-    }
-  };
+/***********************************
+ **** Updated by Curve10 (JAB/EDD)
+ **** Feb 2018
+ ***********************************/
 
-  function getMimeType() {
-    return _mimeType;
+export interface IKalturaUrlService {
+  type:string;
+  getMimeType();
+  parseInput(input);
+  parseMediaSrc(mediaSrc);
+  isKalturaUrl(url);
+  getKalturaObject(input);
+  buildAutoEmbedURLFromKalturaObject(kalturaObject, width, height);
+  parseUrlParams(urlParamsString);
+  getKalturaObjectFromDynamicEmbedCode(embedCode);
+}
+
+export class KalturaUrlService implements IKalturaUrlService {
+  static Name = 'kalturaUrlService'; // tslint:disable-line
+  static $inject = [];
+
+  constructor (
+
+  ) {
+
   }
 
-  function parseInput(input) {
-    return buildAutoEmbedURLFromKalturaObject(getKalturaObject(input), 1024, 768)
+  type = 'kaltura';
+  private _mimeType = 'video/x-' + this.type;
+
+  // return {
+  //   type: type,
+  //   getMimeType: getMimeType,
+  //   canPlay: isKalturaUrl,
+  //   parseMediaSrc: parseMediaSrc,
+  //   getKalturaObject: getKalturaObject,
+  //   buildAutoEmbedURLFromKalturaObject: buildAutoEmbedURLFromKalturaObject,
+  //   parseInput: parseInput,
+  //   getOutgoingUrl: function () {
+  //   }
+  // };
+
+  getMimeType() {
+    return this._mimeType;
   }
+
+  parseInput(input) {
+    return this.buildAutoEmbedURLFromKalturaObject(this.getKalturaObject(input), 1024, 768)
+  }
+
+  canPlay(input) {
+    return this.isKalturaUrl(input);
+  }
+
+
 
   /**
    * @name parseMediaSrc
@@ -34,24 +66,24 @@ export default function kalturaUrlService() {
    * @returns {Object} Object with type<String> and mediaSrcArr<Array> properties.
    */
 
-  function parseMediaSrc(mediaSrc) {
-    return mediaSrc.reduce(function (parsedMediaObj, mediaSrc) {
-      if (isKalturaUrl(mediaSrc)) {
+  parseMediaSrc(mediaSrc) {
+    return mediaSrc.reduce( (parsedMediaObj, mediaSrc) => {
+      if (this.isKalturaUrl(mediaSrc)) {
         parsedMediaObj.mediaSrcArr.push(mediaSrc);
       }
       return parsedMediaObj;
-    }, {type: _type, mediaSrcArr: []});
+    }, {type: this.type, mediaSrcArr: []});
   }
 
-  function isKalturaUrl(url) {
+  isKalturaUrl(url) {
     var keys = ['partnerId', 'uiconfId', 'entryId', 'uniqueObjId'];
-    var test = getKalturaObject(url);
-    return keys.every(function (k) {
+    var test = this.getKalturaObject(url);
+    return keys.every( (k) => {
       return (test.hasOwnProperty(k) && test[k] != null); //jshint ignore:line
     });
   }
 
-  function getKalturaObject(input) {
+  getKalturaObject(input) {
     var params = {};
     var myArray = [];
     var urlParams;
@@ -68,20 +100,20 @@ export default function kalturaUrlService() {
       if (myArray != null) {
         params["partnerId"] = myArray[1];
         params["uiconfId"] = myArray[3];
-        urlParams = parseUrlParams(myArray[5]);
+        urlParams = this.parseUrlParams(myArray[5]);
         params["entryId"] = urlParams.entry_id;
         params["uniqueObjId"] = urlParams.playerId;
       } else {
-        params = getKalturaObjectFromDynamicEmbedCode(input);
+        params = this.getKalturaObjectFromDynamicEmbedCode(input);
       }
     } else if (input.substring(0, 4) === "<div") {
-      params = getKalturaObjectFromDynamicEmbedCode(input);
+      params = this.getKalturaObjectFromDynamicEmbedCode(input);
     } else if (input.substring(0, 7) === "<iframe") {
       myArray = /^.*?src\=.https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?(.*?)\".*/g.exec(input);
       if (myArray != null) {
         params["partnerId"] = myArray[1];
         params["uiconfId"] = myArray[3];
-        urlParams = parseUrlParams(myArray[5]);
+        urlParams = this.parseUrlParams(myArray[5]);
         params["uniqueObjId"] = urlParams.playerId;
         params["entryId"] = urlParams.entry_id;
       }
@@ -98,7 +130,7 @@ export default function kalturaUrlService() {
       if (myArray != null) {
         params["partnerId"] = myArray[1];
         params["uiconfId"] = myArray[3];
-        urlParams = parseUrlParams(myArray[5]);
+        urlParams = this.parseUrlParams(myArray[5]);
         params["entryId"] = urlParams.entry_id;
         params["uniqueObjId"] = urlParams.playerId;
       }
@@ -108,11 +140,11 @@ export default function kalturaUrlService() {
     return params;
   }
 
-  function buildAutoEmbedURLFromKalturaObject(kalturaObject, width, height) {
+  buildAutoEmbedURLFromKalturaObject(kalturaObject, width, height) {
     return "https://cdnapisec.kaltura.com/p/" + kalturaObject["partnerId"] + "/sp/" + kalturaObject["partnerId"] + "00/embedIframeJs/uiconf_id/" + kalturaObject["uiconfId"] + "/partner_id/" + kalturaObject["partnerId"] + "?entry_id=" + kalturaObject["entryId"] + "&playerId=" + kalturaObject["uniqueObjId"] + "&autoembed=true&width=" + width + "&height=" + height;
   }
 
-  function parseUrlParams(urlParamsString) {
+  parseUrlParams(urlParamsString) {
     //Remove any trailing ampersand if there is one
     if (urlParamsString.charAt(urlParamsString.length - 1) == '&') {
       urlParamsString = urlParamsString.substr(0, urlParamsString.length - 1);
@@ -120,7 +152,7 @@ export default function kalturaUrlService() {
     return JSON.parse('{"' + urlParamsString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
   }
 
-  function getKalturaObjectFromDynamicEmbedCode(embedCode) {
+  getKalturaObjectFromDynamicEmbedCode(embedCode) {
     var params = {};
     var myArray = /^(?:.|\n|\r)*?kWidget\..*?mbed\(({(?:.|\n|\r)*})\).*?/g.exec(embedCode);
     if (myArray != null) {

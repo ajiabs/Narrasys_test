@@ -30,7 +30,7 @@
   handleFail(e);
   setSpeed(pid, playbackRate);
   getCurrentTime(pid);
-  playerState(pid);
+  getPlayerState(pid);
   play(pid);
   pause(pid);
   stop(pid);
@@ -39,6 +39,8 @@
   seekTo(pid, t);
   toggleMute(pid);
   setVolume(pid, v);
+  type:string;
+  predicate(pid);
  }
 
 
@@ -61,14 +63,14 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
   // private _youTubePlayerManager;
   private _players = {};
   private _mainPlayerId;
-  private _type = 'youtube';
+  type = 'youtube';
 
-  private base = this.playerManagerCommons({players: this._players, type: this._type});
+  private base = this.playerManagerCommons({players: this._players, type: this.type});
   private commonMetaProps = this.base.commonMetaProps;
 
   private _youtubeMetaProps = {
     ytId: '',
-    videoType: this._type,
+    videoType: this.type,
     bufferInterval: null
   };
 
@@ -79,7 +81,7 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
 
   private _validMetaKeys = Object.keys(this._youtubeMetaObj.meta);
 
-  private predicate(pid) {
+  predicate(pid) {
     return (this._existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true);
   };
 
@@ -117,7 +119,7 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
   private _getStateChangeListeners = this.base.getStateChangeListeners;
 
   private _youTubePlayerManager = {
-    type: this._type,
+    type: this.type,
     getMetaProp: this.getMetaProp,
     setMetaProp: this.setMetaProp,
     getMetaObj: this.getMetaObj,
@@ -375,6 +377,17 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
     }
   }
 
+  getPlayerState(pid) {
+    // var p = this.getInstance(pid);
+    var p = null;
+    if (this.predicate(pid) === true) {
+        p = this.getPlayer(pid).instance;
+    }
+    if (this._existy(p)) {
+      return this.PLAYERSTATES[this._tryCommand(p, 'getPlayerState')];
+    }
+  }
+
   /**
    * @ngdoc method
    * @name #play
@@ -611,7 +624,7 @@ export class YouTubePlayerManager implements IYouTubePlayerManager {
     }
 
     var host = this.$location.host();
-    return YTScriptLoader.load().then( () => {
+    return this.YTScriptLoader.load().then( () => {
       return new YT.Player(divId, {
         videoId: videoID,
         //enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent

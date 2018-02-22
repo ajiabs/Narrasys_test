@@ -82,10 +82,11 @@ export class URLService implements IUrlService {
   }
 
   checkUrl(url) {
+    var context = this;
     return Object.keys(this._urlSubServices).reduce( (map, urlSrv) => {
-      if (this._urlSubServices[urlSrv].canPlay(url)) {
+      if (context._urlSubServices[urlSrv].canPlay(url)) {
         map.type = urlSrv;
-        map.mimeType = this._urlSubServices[urlSrv].getMimeType(url);
+        map.mimeType = context._urlSubServices[urlSrv].getMimeType(url);
       }
       return map;
     }, {type: '', mimeType: ''});
