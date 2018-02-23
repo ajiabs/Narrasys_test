@@ -1,13 +1,18 @@
 // @npUpgrade-shared-false
 // TODO: load and resolve categories
 
+// ** Updated by Curve10 (JAB/EDD)
+//    Feb 2018 
+//
+
 
 import {
   createInstance, IAsset, IEpisode, IEpisodeTemplate, IEvent,  ILayout,  IStyle,
   ITemplate
 } from '../../../models';
 import { IEmailFields, IEpisodeTheme, Partial, IDataCache, TDataCacheItem } from '../../../interfaces';
-import { existy, intersection, pick } from '../ittUtils';
+// import { existy, intersection, pick } from '../ittUtils';
+import { ittUtils } from '../ittUtils';
 import { config } from '../../../config';
 
 /**
@@ -94,134 +99,150 @@ export interface IDataSvc {
   getEpisodeTemplatesAdmin(): ITemplateSelect[];
   getEpisodeTemplatesByCustomerIds(custids: string[]): ITemplateSelect[];
 }
-dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
-export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc, episodeTheme: IEpisodeTheme) {
-  var svc: IDataSvc = Object.create(null);
+export class DataSvc implements IDataSvc {
+  static Name = 'dataSvc';
+  static $inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc', 'episodeTheme'];
 
+  constructor (
+    private $q: ng.IQService,
+    private $http, 
+    private $routeParams, 
+    private $rootScope, 
+    private $location, 
+    private ittUtils, 
+    private authSvc, 
+    private appState, 
+    private modelSvc, 
+    private errorSvc, 
+    private mockSvc, 
+    private questionAnswersSvc, 
+    private episodeTheme: IEpisodeTheme,
+ 
+  ){}
+
+    private getCommonDefer;  // initialized if null in getCommon()
   /* ------------------------------------------------------------------------------ */
 
-  svc.sendSocialshareEmail = sendSocialshareEmail;
-  function sendSocialshareEmail(tlId: string, email: IEmailFields): ng.IPromise<void> {
-    return SANE_POST(`/v3/timelines/${tlId}/share_via_email`, email);
+sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise<void> {
+    return this.SANE_POST(`/v3/timelines/${tlId}/share_via_email`, email);
   }
 
-  svc.beginBackgroundTranslations = beginBackgroundTranslations;
-  function beginBackgroundTranslations(episodeId) {
-    return SANE_GET('/v3/episodes/' + episodeId + '/update_translations');
+ beginBackgroundTranslations = function (episodeId) {
+    return this.SANE_GET('/v3/episodes/' + episodeId + '/update_translations');
   }
   //NEED to find impl with params arg
-  svc.batchUploadTranscripts = batchUploadTranscripts;
-  function batchUploadTranscripts(episodeId, formData, params) {
+  batchUploadTranscripts = function(episodeId, formData, params) {
     var config = {
       transformRequest: angular.identity,
       headers: {'Content-type': undefined}
     };
 
-    if (ittUtils.existy(params) && Object.keys(params).length > 0) {
+    if (this.ittUtils.existy(params) && Object.keys(params).length > 0) {
       Object.assign(config, {params:params});
     }
 
     // return $q(function(resolve){return resolve(formData)});
-    return SANE_POST('/v3/episodes/' + episodeId + '/events/import_subtitles', formData, config);
+    return this.SANE_POST('/v3/episodes/' + episodeId + '/events/import_subtitles', formData, config);
   }
 
   //used in ittContainer
-  svc.generateNewNarrative = generateNewNarrative;
-  function generateNewNarrative(containerId, postData) {
-    return SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
-      .then(function (resp) {
+  generateNewNarrative = function (containerId, postData) {
+    return this.SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
+      .then( (resp) => {
         return resp.data;
       })
-      .catch(function (e) {
+      .catch( (e) =>{
         console.error('Error generating new narrative:', e);
       });
   }
 
   // WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
-  svc.getNarrative = function (narrativeId) {
+  getNarrative = function (narrativeId) {
     // Special case here, since it needs to call getNonce differently:
     var defer = $q.defer();
-    var cachedNarrative = modelSvc.narratives[narrativeId];
-    var subdomain = ittUtils.getSubdomain($location.host());
+    var cachedNarrative = this.modelSvc.narratives[narrativeId];
+    var subdomain = this.ittUtils.getSubdomain(this.$location.host());
     var urlParams = '';
 
-    if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.narrative_subdomain) && subdomain !== cachedNarrative.narrative_subdomain) {
+    if (this.ittUtils.existy(cachedNarrative) && this.ittUtils.existy(cachedNarrative.narrative_subdomain) && subdomain !== cachedNarrative.narrative_subdomain) {
       urlParams = '?customer=' + cachedNarrative.narrative_subdomain;
     }
 
-    authSvc.authenticate('narrative=' + narrativeId).then(function () {
-      $http.get(config.apiDataBaseUrl + '/v3/narratives/' + narrativeId + '/resolve' + urlParams)
-        .then(function (response) {
+     this.authSvc.authenticate('narrative=' + narrativeId).then( () => {
+      this.$http.get(config.apiDataBaseUrl + '/v3/narratives/' + narrativeId + '/resolve' + urlParams)
+        .then( (response) =>{
 
-          response.data.timelines.sort(function (a, b) {
+          response.data.timelines.sort( (a, b)  =>{
             return a.sort_order - b.sort_order;
           });
-          modelSvc.cache('narrative', svc.resolveIDs(response.data));
-          defer.resolve(modelSvc.narratives[response.data._id]);
+          this.modelSvc.cache('narrative', this.resolveIDs(response.data));
+          defer.resolve(this.modelSvc.narratives[response.data._id]);
         });
     });
     return defer.promise;
   };
 
-  svc.getNarrativeOverview = function (narrativeId) {
-    return GET('/v3/narratives/' + narrativeId);
+  getNarrativeOverview = function (narrativeId) {
+    return this.GET('/v3/narratives/' + narrativeId);
   };
 
-  svc.getNarrativeExportAsSpreadsheet = function (nId) {
+  getNarrativeExportAsSpreadsheet = function (nId) {
     var url = '/v3/narratives/' + nId + '.xlsx';
     window.open(url);
   };
 
-  svc.getCustomerLinkStatusReportSpreadsheet = getCustomerLinkStatusReportSpreadsheet;
-  function getCustomerLinkStatusReportSpreadsheet(customerId) {
+ getCustomerLinkStatusReportSpreadsheet = function (customerId) {
     var url = '/v3/customers/' + customerId + '/link_status.xlsx';
     window.open(url);
   }
 
-  var cachedPurchases = false;
-  svc.getUserNarratives = function (userId) {
-    if (cachedPurchases) {
-      var defer = $q.defer();
-      defer.resolve(cachedPurchases);
+  private cachedPurchases = false;
+  getUserNarratives = function (userId) {
+    if (this.cachedPurchases) {
+      var defer = this.$q.defer();
+      defer.resolve(this.cachedPurchases);
       return defer.promise;
     } else {
-      return GET('/v3/users/' + userId + '/narrative_purchases', function (data) {
-        cachedPurchases = data;
+      return this.GET('/v3/users/' + userId + '/narrative_purchases',  (data) => {
+        this.cachedPurchases = data;
         return data;
       });
 
     }
   };
 
-  svc.getCustomerList = function () {
-    return GET('/v3/customers/', function (customers) {
-      angular.forEach(customers, function (customer) {
-        modelSvc.cache('customer', customer);
+  getCustomerList = function () {
+  
+    return this.GET('/v3/customers/',  (customers) => {
+      angular.forEach(customers,  (customer) => {
+        this.modelSvc.cache('customer', customer);
       });
       return customers;
     });
 
   };
 
-  svc.getCustomer = function (customerId, retrieve) {
-    if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
-      return $q(function (resolve) {
+  getCustomer = function (customerId, retrieve) {
+    if (!(this.authSvc.userHasRole('admin') || this.authSvc.userHasRole('customer admin'))) {
+      return this.$q( (resolve) =>{
         resolve({});
       });
     }
-    if (modelSvc.customers[customerId]) {
+    if (this.modelSvc.customers[customerId]) {
 
       if (retrieve) {
-        return $q(function (resolve) {
-          resolve(modelSvc.customers[customerId]);
+        return this.$q( (resolve) => {
+          resolve(this.modelSvc.customers[customerId]);
         });
       }
       // have it already, or at least already getting it
     } else {
-      return SANE_GET('/v3/customers/' + customerId)
+
+
+      return this.SANE_GET('/v3/customers/' + customerId)
         .then(customer => {
-          modelSvc.cache('customer', customer); // the real thing
-          return modelSvc.customers[customer._id];
+          this.modelSvc.cache('customer', customer); // the real thing
+          return this.modelSvc.customers[customer._id];
         })
         .catch(e => console.log('wtf mate?', e));
     }
@@ -229,7 +250,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   // getEpisode just needs to retrieve all episode data from the API, and pass it on
   // to modelSvc.  No promises needed, let the $digest do the work
-  svc.getEpisode = function (epId, segmentId) {
+ getEpisode = function (epId, segmentId) {
     if (!epId) {
       throw ('no episode ID supplied to dataSvc.getEpisode');
     }
@@ -241,66 +262,70 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // 	$rootScope.$emit("dataSvc.getEpisode.done");
     // 	return; // already requested
     // }
-    modelSvc.cache('episode', {
+      this.modelSvc.cache('episode', {
       _id: epId
     }); // init with empty object to be filled by asynch process
 
-    if ($routeParams.local) {
-      mockSvc.mockEpisode(epId);
+
+    if (this.$routeParams.local) {
+      this.mockSvc.mockEpisode(epId);
       // console.log("Got all events");
-      $rootScope.$emit('dataSvc.getEpisode.done');
+      this.$rootScope.$emit('dataSvc.getEpisode.done');
     } else {
-      authSvc.authenticate()
-        .then(function () {
-          return getCommon();
+      this.authSvc.authenticate()
+        .then( () => {
+          return this.getCommon();
         })
-        .then(function () {
-          return getEpisode(epId, segmentId);
+        .then( () => {
+          // call the local method for returning the fully realized episode
+          return this._getEpisode(epId, segmentId);
         });
     }
   };
-  svc.getEpisodeOverview = function (epId) {
-    return GET('/v3/episodes/' + epId);
+
+ getEpisodeOverview = function (epId) {
+    return this.GET('/v3/episodes/' + epId);
   };
 
-  svc.getNarrativeList = function (customer) {
-    if (!ittUtils.existy(customer)) {
-      return GET('/v3/narratives/');
+  getNarrativeList= function (customer) {
+    if (!this.ittUtils.existy(customer)) {
+      return this.GET('/v3/narratives/');
     }
 
-    return GET('/v3/narratives?customer_id=' + customer._id)
-      .then(function (narratives) {
-        modelSvc.assocNarrativesWithCustomer(customer, narratives);
+
+    return this.GET('/v3/narratives?customer_id=' + customer._id)
+      .then( (narratives) => {
+        this.modelSvc.assocNarrativesWithCustomer(customer, narratives);
       });
   };
 
-  svc.createUserGroup = function (groupName) {
-    return POST('/v3/groups', {
+  createUserGroup = function (groupName) {
+    return this.POST('/v3/groups', {
       'group': {
         'name': groupName
       }
     });
   };
 
-  svc.createNarrative = function (narrativeData) {
-    return SANE_POST('/v3/narratives', narrativeData);
+  createNarrative = function  (narrativeData) {
+    return this.SANE_POST('/v3/narratives', narrativeData);
   };
-  svc.updateNarrative = function (narrativeData) {
-    return SANE_PUT('/v3/narratives/' + narrativeData._id, narrativeData);
+  updateNarrative= function  (narrativeData) {
+    return this.SANE_PUT('/v3/narratives/' + narrativeData._id, narrativeData);
   };
 
-  svc.createChildEpisode = function (childData) {
+  createChildEpisode  (childData) {
     // console.log("about to create child epsiode", childData);
-    return POST('/v3/episodes', {
+    return this.POST('/v3/episodes', {
       'episode': childData
     });
   };
 
-  svc.createEpisodeSegment = function (narrativeId, segmentData) {
-    return POST('/v3/timelines/' + narrativeId + '/episode_segments', segmentData);
+  createEpisodeSegment = function  (narrativeId, segmentData) {
+    return this.POST('/v3/timelines/' + narrativeId + '/episode_segments', segmentData);
   };
 
-  svc.storeTimeline = function (narrativeId, origTimeline) {
+ storeTimeline= function (narrativeId, origTimeline) {
 
     var permitted = [
       'sort_order',
@@ -312,10 +337,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'narrative_id',
       '_id'
     ];
-    var timeline = ittUtils.pick(origTimeline, permitted);
+    var timeline = this.ittUtils.pick(origTimeline, permitted);
+
+    
 
     if (timeline._id) {
-      return PUT('/v3/timelines/' + timeline._id, timeline, function (ret) {
+      return this.PUT('/v3/timelines/' + timeline._id, timeline,  (ret) => {
         // TEMPORARY until api stops doing this
         if (typeof ret.name === 'string') {
           ret.name = {
@@ -330,7 +357,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         return ret;
       });
     } else {
-      return POST('/v3/narratives/' + narrativeId + '/timelines', timeline, function (ret) {
+      return this.POST('/v3/narratives/' + narrativeId + '/timelines', timeline,  (ret) => {
         // TEMPORARY until api stops doing this
         if (typeof ret.name === 'string') {
           ret.name = {
@@ -348,57 +375,67 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   // /v3/timelines/:id
-  svc.deleteTimeline = function (tlId) {
-    return PDELETE('/v3/timelines/' + tlId).then(function (resp) {
+ deleteTimeline = function  (tlId) {
+    return this.PDELETE('/v3/timelines/' + tlId).then( (resp) => {
       return resp;
     });
   };
 
-  svc.getSingleAsset = function (assetId: string): ng.IPromise<IAsset> {
+  getSingleAsset = function (assetId: string): ng.IPromise<IAsset> {
     if (assetId) {
-      return GET('/v1/assets/' + assetId);
+      return this.GET('/v1/assets/' + assetId);
     } else {
-      return $q(function (resolve) {
+      return this.$q( (resolve) => {
         resolve(undefined);
       });
     }
   };
 
   // Gets all layouts, styles, and templates
-  var gettingCommon = false;
-  var getCommonDefer = $q.defer();
-  var getCommon = function () {
+  private gettingCommon = false;
+
+
+  getCommon = function () {
+
+    if( ! this.getCommonDefer) {
+      // initialize before someone tries to use it!
+      this.getCommonDefer = this.$q.defer();
+    }
+
+
+
     // console.log("dataSvc.getCommon");
-    if (gettingCommon) {
-      return getCommonDefer.promise;
+    if (this.gettingCommon) {
+      return this.getCommonDefer.promise;
 
     } else {
-      gettingCommon = true;
-      $q.all([
-        $http.get(config.apiDataBaseUrl + '/v1/templates'),
-        $http.get(config.apiDataBaseUrl + '/v1/layouts'),
-        $http.get(config.apiDataBaseUrl + '/v1/styles')
+      this.gettingCommon = true;
+      this.$q.all([
+        this.$http.get(config.apiDataBaseUrl + '/v1/templates'),
+        this.$http.get(config.apiDataBaseUrl + '/v1/layouts'),
+        this.$http.get(config.apiDataBaseUrl + '/v1/styles')
       ])
-        .then(function (responses) {
-          svc.cache('templates', responses[0].data);
-          svc.cache('layouts', responses[1].data);
-          svc.cache('styles', responses[2].data);
+        .then( (responses) => {
+          this.cache('templates', responses[0].data);
+          this.cache('layouts', responses[1].data);
+          this.cache('styles', responses[2].data);
 
-          gettingCommon = true;
-          getCommonDefer.resolve();
-        }, function () {
+          this.gettingCommon = true;
+          this.getCommonDefer.resolve();
+        },  () =>{
           // console.error("getCommon failed", failure);
-          gettingCommon = false;
-          getCommonDefer.reject();
+          this.gettingCommon = false;
+          this.getCommonDefer.reject();
         });
     }
-    return getCommonDefer.promise;
+    return this.getCommonDefer.promise;
   };
 
-  svc.getCommon = getCommon; // TEMPORARY for ittContainer, so it can get the scene template ID.  After template refactor none of this id stuff will be necessary
-  svc.cache = function (cacheType, dataList) {
+
+  cache = function (cacheType, dataList) {
     // console.log("dataSvc.cache", cacheType, dataList);
-    angular.forEach(dataList, function (item) {
+  
+    angular.forEach(dataList,  (item) => {
       if (cacheType === 'templates') {
         /* API format:
          _id									"528d17ebba4f65e578000007"
@@ -411,7 +448,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          type: string
          */
         if (item.applies_to_episodes) {
-          modelSvc.dataCache.template[item._id] = createInstance('EpisodeTemplate', {
+          this.modelSvc.dataCache.template[item._id] = createInstance('EpisodeTemplate', {
             id: item._id,
             url: item.url,
             type: 'Episode',
@@ -422,7 +459,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             pro_episode_template: item.pro_episode_template
           });
         } else if (item.event_types && item.event_types && item.event_types[0] === 'Scene') {
-          modelSvc.dataCache.template[item._id] = createInstance('LayoutTemplate', {
+          this.modelSvc.dataCache.template[item._id] = createInstance('LayoutTemplate', {
             id: item._id,
             url: item.url,
             type: 'Scene',
@@ -430,7 +467,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             component_name: item.component_name
           });
         } else {
-          modelSvc.dataCache.template[item._id] = createInstance('ItemTemplate', {
+          this.modelSvc.dataCache.template[item._id] = createInstance('ItemTemplate', {
             id: item._id,
             url: item.url,
             type: item.event_types && item.event_types[0],
@@ -448,7 +485,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          display_name				"Video Left"
          updated_at					"2013-11-20T20:13:31Z"
          */
-        modelSvc.dataCache.layout[item._id] = createInstance('Layout', {
+        this.modelSvc.dataCache.layout[item._id] = createInstance('Layout', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
@@ -463,7 +500,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
          display_name	"Typography Serif"
          updated_at		"2013-11-20T20:13:37Z"
          */
-        modelSvc.dataCache.style[item._id] = createInstance('Style', {
+        this.modelSvc.dataCache.style[item._id] = createInstance('Style', {
           id: item._id,
           css_name: item.css_name,
           displayName: item.display_name
@@ -473,7 +510,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   // TODO more template management: add/delete/edit
-  svc.createTemplate = function (templateData) {
+  createTemplate (templateData) {
     // TEMPORARY.  Doesn't check to see if it's adding a duplicate, or do any other sort of data prophylaxis
     /*  sample:
      {
@@ -484,7 +521,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
      applies_to_narrative: false
      }
      */
-    return POST('/v1/templates', templateData);
+    return this.POST('/v1/templates', templateData);
   };
   // svc.createStyle = function (styleData) {
   // 	// ALSO TEMPORARY, UNSAFE
@@ -492,29 +529,32 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   // };
 
   // transform API common IDs into real values
-  svc.resolveIDs = function (obj) {
+ resolveIDs= function  (obj) {
     // console.log("resolving IDs", obj);
+
     if (obj.layout_id) {
       var layouts = [];
       if (obj.type === 'Scene') {
         layouts = ['', ''];
       }
-      angular.forEach(obj.layout_id, function (id) {
-        if (modelSvc.dataCache.layout[id]) {
+
+
+      angular.forEach(obj.layout_id,  (id) => {
+        if (this.modelSvc.dataCache.layout[id]) {
           if (obj.type === 'Scene') {
             //conditions outside of 'showCurrent' necessary for USC scholar
-            if (modelSvc.dataCache.layout[id].css_name === 'showCurrent') {
-              layouts[1] = modelSvc.dataCache.layout[id].css_name;
-            } else if (modelSvc.dataCache.layout[id].css_name === 'splitRequired') {
-              layouts[2] = modelSvc.dataCache.layout[id].css_name;
+            if (this.modelSvc.dataCache.layout[id].css_name === 'showCurrent') {
+              layouts[1] = this.modelSvc.dataCache.layout[id].css_name;
+            } else if (this.modelSvc.dataCache.layout[id].css_name === 'splitRequired') {
+              layouts[2] = this.modelSvc.dataCache.layout[id].css_name;
             } else {
-              layouts[0] = modelSvc.dataCache.layout[id].css_name;
+              layouts[0] = this.modelSvc.dataCache.layout[id].css_name;
             }
           } else {
-            layouts.push(modelSvc.dataCache.layout[id].css_name);
+            layouts.push(this.modelSvc.dataCache.layout[id].css_name);
           }
         } else {
-          errorSvc.error({
+          this.errorSvc.error({
             data: 'Couldn\'t get layout for id ' + id
           });
         }
@@ -526,11 +566,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
     if (obj.style_id) {
       var styles = [];
-      angular.forEach(obj.style_id, function (id) {
-        if (modelSvc.dataCache.style[id]) {
-          styles.push(modelSvc.dataCache.style[id].css_name);
+      angular.forEach(obj.style_id,  (id) =>{
+        if (this.modelSvc.dataCache.style[id]) {
+          styles.push(this.modelSvc.dataCache.style[id].css_name);
         } else {
-          errorSvc.error({
+          this.errorSvc.error({
             data: 'Couldn\'t get style for id ' + id
           });
         }
@@ -543,7 +583,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return obj;
   };
 
-  var getAssetIdFromEvent = function (event) {
+  getAssetIdFromEvent= function (event) {
     if (event.hasOwnProperty('asset_id')) {
       if (event.asset_id) {
         return event.asset_id;
@@ -566,13 +606,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
   };
 
-  var getAssetIdsFromEvents = function (events) {
+  getAssetIdsFromEvents = function (events) {
     //asset_id,
     //annotation_image_id
     //link_image_id
     var idsobject = {}; //object is way faster to prevent duplicates
     for (var i = 0, length = events.length; i < length; i++) {
-      var id = getAssetIdFromEvent(events[i]);
+      var id = this.getAssetIdFromEvent(events[i]);
       if (id) {
         if (!(id in idsobject)) {
           idsobject[id] = 0;
@@ -584,60 +624,64 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return ids;
   };
 
-  svc.getAssetsByAssetIds = getAssetsByAssetIds;
-  function getAssetsByAssetIds(assetIds: string[]): ng.IPromise<IAsset[]> {
+  getAssetsByAssetIds = function (assetIds: string[]): ng.IPromise<IAsset[]> {
     const assetIdsObj = Object.create(null);
     assetIdsObj.asset_ids = assetIds;
-    return SANE_POST('/v1/assets', assetIdsObj)
+    return this.SANE_POST('/v1/assets', assetIdsObj)
       .then(resp => resp.data.files);
   }
 
-  svc.fetchAndCacheAssetsByIds = fetchAndCacheAssetsByIds;
-  function fetchAndCacheAssetsByIds(assetIds: string[]): ng.IPromise<IAsset[]> {
-    return getAssetsByAssetIds(assetIds)
+   fetchAndCacheAssetsByIds(assetIds: string[]): ng.IPromise<IAsset[]> {
+
+    return this.getAssetsByAssetIds(assetIds)
       .then((assets: IAsset[]) => {
         assets.forEach((asset) => {
-          modelSvc.cache('asset', asset);
+          this.modelSvc.cache('asset', asset);
         });
         //return cached assets
         return assetIds.reduce((asx, id) => {
-            asx.push(modelSvc.assets[id]);
+            asx.push(this.modelSvc.assets[id]);
             return asx;
         }, []);
 
       });
   }
 
-  // auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
-  var getEpisode = function (epId, segmentId) {
+ 
+   // auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
+   private _getEpisode = function (epId, segmentId) {
     // The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
     // console.log("dataSvc.getEpisode");
     var url = (segmentId) ? '/v3/episode_segments/' + segmentId + '/resolve' : '/v3/episodes/' + epId;
-    $http.get(config.apiDataBaseUrl + url)
-      .success(function (ret) {
+    
+
+    this.$http.get(config.apiDataBaseUrl + url)
+      .success( (ret) =>   {
         var episodeData = Object.create(null);
         if (ret) {
           episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
         }
-        if (episodeData.status === 'Published' || authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
-          const episodeTemplate = modelSvc.dataCache.template[episodeData.template_id];
+        if (episodeData.status === 'Published' || this.authSvc.userHasRole('admin') || this.authSvc.userHasRole('customer admin')) {
+          const episodeTemplate = this.modelSvc.dataCache.template[episodeData.template_id];
           episodeData.template = episodeTemplate;
-          modelSvc.cache('episode', svc.resolveIDs(episodeData));
+          this.modelSvc.cache('episode', this.resolveIDs(episodeData));
           if (episodeTemplate) {
-            episodeTheme.setTheme(episodeTemplate);
+            this.episodeTheme.setTheme(episodeTemplate);
           }
 
-          getEvents(epId, segmentId)
-            .success(function (events) {
+          this.getEvents(epId, segmentId)
+            .success (  (events) => {
               events = events || [];
-              getEventActivityDataForUser(events, 'Plugin', epId);
-              angular.forEach(events, function (eventData) {
+              this.getEventActivityDataForUser(events, 'Plugin', epId);
+
+              angular.forEach(events, (eventData) => {
                 eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-                modelSvc.cache('event', svc.resolveIDs(eventData));
+                this.modelSvc.cache('event', this.resolveIDs(eventData));
               });
-              modelSvc.resolveEpisodeEvents(epId);
-              const assetIds = getAssetIdsFromEvents(events);
-              assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
+              this.modelSvc.resolveEpisodeEvents(epId);
+
+              const assetIds = this.getAssetIdsFromEvents(events);
+              this.assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
               // we need to also get the master asset and poster, while we are at it
               assetIds.push(episodeData.master_asset_id);
               //add template assets - more to come.
@@ -653,42 +697,43 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               // }
 
               //batch get assets
-              getAssetsByAssetIds(assetIds)
+              this.getAssetsByAssetIds(assetIds)
                 .then((assets: IAsset[]) => {
                   assets.forEach((asset) => {
-                    modelSvc.cache('asset', asset);
+                    this.modelSvc.cache('asset', asset);
                   });
-                  modelSvc.resolveEpisodeAssets(epId);
-                  $rootScope.$emit('dataSvc.getEpisode.done');
+                  this.modelSvc.resolveEpisodeAssets(epId);
+                  this.$rootScope.$emit('dataSvc.getEpisode.done');
                 });
             })
-            .error(function () {
-              errorSvc.error({
+            .error( () => {
+              this.errorSvc.error({
                 data: 'API call to get events failed.'
               });
             });
 
         } else {
-          errorSvc.error({
+          this.errorSvc.error({
             data: 'This episode has not yet been published.'
           });
         }
       })
-      .error(function () {
-        errorSvc.error({
+      .error( ()=> {
+        this.errorSvc.error({
           data: 'API call to /v3/episodes/' + epId + ' failed (bad episode ID?)'
         });
       });
   };
 
   // calls getContainer, iterates to all parents before finally resolving
-  svc.getContainerAncestry = function (containerId, episodeId, defer) {
-    defer = defer || $q.defer();
-    svc.getContainer(containerId, episodeId)
-      .then(function (id) {
-        var container = modelSvc.containers[id];
+  getContainerAncestry = function (containerId, episodeId, defer) {
+    defer = defer || this.$q.defer();
+
+    this.getContainer(containerId, episodeId)
+      .then( (id) => {
+        var container = this.modelSvc.containers[id];
         if (container.parent_id) {
-          svc.getContainerAncestry(container.parent_id, episodeId, defer);
+          this.getContainerAncestry(container.parent_id, episodeId, defer);
         } else {
           defer.resolve(id);
         }
@@ -697,23 +742,27 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   //getEvents returns the data via a promise, instead of just setting modelSvc
-  var getEvents = function (epId, segmentId) {
+  getEvents = function (epId, segmentId) {
     var endpoint = (segmentId) ? '/v3/episode_segments/' + segmentId + '/events' : '/v3/episodes/' + epId + '/events';
-    return $http.get(config.apiDataBaseUrl + endpoint);
+    return this.$http.get(config.apiDataBaseUrl + endpoint);
   };
 
-  var getEventActivityDataForUser = function (events, activityType, epId) {
-    angular.forEach(events, function (eventData) {
+  getEventActivityDataForUser = function (events, activityType, epId) {
+
+    angular.forEach(events,(eventData) => {
       if (eventData.type === 'Plugin') {
-        (function (evData) {
-          questionAnswersSvc.getUserAnswer(evData._id, appState.user._id)
-            .then(function (userAnswer) {
+
+        // having trouble making this into a lamda function to maintain context...
+        var context = this;
+        ( function (evData)  {
+          context.questionAnswersSvc.getUserAnswer(evData._id, context.appState.user._id)
+            .then( (userAnswer) =>{
 
               if (userAnswer.data) {
                 evData.data._plugin.hasBeenAnswered = true;
                 var i = 0;
                 var angularContinue = true;
-                angular.forEach(evData.data._plugin.distractors, function (distractor) {
+                angular.forEach(evData.data._plugin.distractors,(distractor) =>{
                   if (angularContinue) {
                     if (distractor.index === userAnswer.data.index) {
                       distractor.selected = true;
@@ -723,7 +772,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
                     i++;
                   }
                 });
-                modelSvc.cache('event', svc.resolveIDs(evData));
+                context.modelSvc.cache('event', context.resolveIDs(evData));
               } else {
                 console.error('Got no user data from getUserAnswer:', userAnswer);
               }
@@ -731,7 +780,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         }(eventData));
       }
     });
-    modelSvc.resolveEpisodeEvents(epId);
+    this.modelSvc.resolveEpisodeEvents(epId);
   };
 
   /* ------------------------------------------------------------------------------ */
@@ -740,13 +789,14 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   // a different idiom here, let's see if this is easier to conceptualize.
 
   // to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
-  var GET = function (path, postprocessCallback?) {
+  GET  (path, postprocessCallback?) {
     // console.log("GET", path);
-    var defer = $q.defer();
-    authSvc.authenticate()
-      .then(function () {
-        $http.get(config.apiDataBaseUrl + path)
-          .then(function (response) {
+    var defer = this.$q.defer();
+
+    this.authSvc.authenticate()
+      .then(()  => {
+        this.$http.get(config.apiDataBaseUrl + path)
+          .then( (response) => {
             var ret = response.data;
             if (postprocessCallback) {
               ret = postprocessCallback(ret);
@@ -757,36 +807,37 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return defer.promise;
   };
 
-  var SANE_GET = function (path) {
+  SANE_GET = function  (path) {
     //wrapping a method in a promises that is already using functions that return promises
     //is an anti-pattern.
     //simply return this promise
-    return authSvc.authenticate()
-      .then(function () {
+
+    return this.authSvc.authenticate()
+      .then(() => {
         //then return this promise
-        return $http.get(config.apiDataBaseUrl + path)
-          .then(function (resp) {
+        return this.$http.get(config.apiDataBaseUrl + path)
+          .then( (resp) =>{
             //SANE_GET will resolve to this
             return resp.data;
           });
       });
   };
 
-  var SANE_POST = function (_path, data, _config?) {
+ SANE_POST = function (_path, data, _config?) {
     const path = config.apiDataBaseUrl + _path;
     if (_config) {
-      return $http.post(path, data, _config);
+      return this.$http.post(path, data, _config);
     }
-    return $http.post(path, data);
+    return this.$http.post(path, data);
   };
 
-  var SANE_PUT = function (path, data) {
-    return $http.put(config.apiDataBaseUrl + path, data);
+  SANE_PUT = function (path, data) {
+    return this.$http.put(config.apiDataBaseUrl + path, data);
   };
 
-  var PUT = function (path, putData, postprocessCallback?) {
-    var defer = $q.defer();
-    $http({
+  PUT = function (path, putData, postprocessCallback?) {
+    var defer = this.$q.defer();
+    this.$http({
       method: 'PUT',
       url: config.apiDataBaseUrl + path,
       data: putData
@@ -801,14 +852,14 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return defer.promise;
   };
 
-  var POST = function (path, postData, postprocessCallback?) {
-    var defer = $q.defer();
-    $http({
+  POST = function (path, postData, postprocessCallback?) {
+    var defer = this.$q.defer();
+    this.$http({
       method: 'POST',
       url: config.apiDataBaseUrl + path,
       data: postData
     })
-      .success(function (response) {
+      .success((response)  =>{
         var ret = response;
         if (postprocessCallback) {
           ret = postprocessCallback(ret);
@@ -818,21 +869,22 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return defer.promise;
   };
 
-  var DELETE = function (path) {
-    var defer = $q.defer();
-    $http({
+  DELETE = function (path) {
+    var defer = this.$q.defer();
+
+    this.$http({
       method: 'DELETE',
       url: config.apiDataBaseUrl + path,
     })
-      .success(function (data) {
+      .success((data) => {
         // console.log("Deleted:", data);
         return defer.resolve(data);
       });
     return defer.promise;
   };
 
-  const PDELETE = (path: string): ng.IPromise<any> => {
-    return $http({
+  PDELETE = (path: string): ng.IPromise<any> => {
+    return this.$http({
       method: 'DELETE',
       url: config.apiDataBaseUrl + path
     }).then((resp) => {
@@ -852,31 +904,35 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
    */
 
-  svc.getContainerRoot = function () {
+  getContainerRoot = function () {
     // This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
-    return GET('/v3/containers', function (containers) {
+
+    return this.GET('/v3/containers',  (containers) => {
       var customerIDs = [];
-      angular.forEach(containers, function (customer) {
+
+      angular.forEach(containers, (customer) => {
         // cache the customer data:
-        modelSvc.cache('container', customer);
+        this.modelSvc.cache('container', customer);
         customerIDs.push(customer._id);
       });
       return customerIDs;
     });
   };
 
-  svc.getContainer = function (id, episodeId?) {
-    return GET('/v3/containers/' + id, function (containers) {
-      modelSvc.cache('container', containers[0]);
-      var container = modelSvc.containers[containers[0]._id];
+  getContainer = function (id, episodeId?) {
+
+
+    return this.GET('/v3/containers/' + id, (containers) => {
+      this.modelSvc.cache('container', containers[0]);
+      var container = this.modelSvc.containers[containers[0]._id];
 
       // Get the container' asset list:
-      svc.getContainerAssets(id, episodeId);
+      this.getContainerAssets(id, episodeId);
 
       // Ensure container.children refers to items in modelSvc cache:
       if (container.children) {
         for (var i = 0; i < container.children.length; i++) {
-          container.children[i] = modelSvc.containers[container.children[i]._id];
+          container.children[i] = this.modelSvc.containers[container.children[i]._id];
         }
 
         // QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
@@ -889,14 +945,15 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         // 	getSiblings = true;
         // }
         if (getSiblings) {
-          angular.forEach(container.children, function (child) {
+
+          angular.forEach(container.children,  (child) => {
             if (child.episodes[0]) {
-              svc.getEpisodeOverview(child.episodes[0])
-                .then(function (overview) {
+              this.getEpisodeOverview(child.episodes[0])
+                .then( (overview) => {
                   if (overview) {
                     child.status = overview.status;
                     child.title = overview.title; // name == container, title == episode
-                    modelSvc.cache('container', child); // trigger setLang
+                    this.modelSvc.cache('container', child); // trigger setLang
                   } else {
                     // This shouldn't ever happen, but apparently it does.
                     // (Is this a permissions error? adding warning to help track it down)
@@ -913,19 +970,20 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   };
 
-  svc.getContainerAssets = function (containerId, episodeId?) {
-    return $http.get(config.apiDataBaseUrl + '/v1/containers/' + containerId + '/assets')
-      .success(function (containerAssets) {
-        modelSvc.containers[containerId].assetsHaveLoaded = true;
-        angular.forEach(containerAssets.files, function (asset) {
-          modelSvc.cache('asset', asset);
+  getContainerAssets = function (containerId, episodeId?) {
+
+    return this.$http.get(config.apiDataBaseUrl + '/v1/containers/' + containerId + '/assets')
+      .success( (containerAssets) => {
+        this.modelSvc.containers[containerId].assetsHaveLoaded = true;
+        angular.forEach(containerAssets.files,  (asset) => {
+          this.modelSvc.cache('asset', asset);
         });
-        modelSvc.resolveEpisodeAssets(episodeId);
+        this.modelSvc.resolveEpisodeAssets(episodeId);
       });
   };
 
-  svc.createContainer = function (container) {
-    var defer = $q.defer();
+createContainer = function (container) {
+    var defer = this.$q.defer();
 
     // TODO sanitize
     var newContainer = {
@@ -938,120 +996,123 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     };
     // store in API and resolve with results instead of container
 
-    POST('/v3/containers', newContainer)
-      .then(function (data) {
+
+    this.POST('/v3/containers', newContainer)
+      .then( (data) => {
         // console.log("CREATED CONTAINER", data);
-        modelSvc.cache('container', data);
-        const newContainer = modelSvc.containers[data._id];
+        this.modelSvc.cache('container', data);
+        const newContainer = this.modelSvc.containers[data._id];
         const parentId = newContainer.parent_id;
 
         // add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
         // console.log(modelSvc.containers[parentId]);
-        modelSvc.containers[parentId].children.push(newContainer);
+        this.modelSvc.containers[parentId].children.push(newContainer);
 
         defer.resolve(newContainer);
       });
     return defer.promise;
   };
 
-  svc.updateContainer = function (container) {
+  updateContainer = function (container) {
     //TODO sanitize
-    var defer = $q.defer();
+    var defer = this.$q.defer();
     if (!container._id) {
       console.error('Tried to update a container with no id', container);
       defer.reject();
     }
-    PUT('/v3/containers/' + container._id, container, function (data) {
-      modelSvc.cache('container', data);
+    this.PUT('/v3/containers/' + container._id, container,  (data) => {
+      this.modelSvc.cache('container', data);
       defer.resolve(data);
     });
     return defer.promise;
   };
 
-  svc.deleteContainer = deleteContainer;
-  function deleteContainer(containerId: string): ng.IPromise<any> {
+deleteContainer = function(containerId: string): ng.IPromise<any> {
     // DANGER WILL ROBINSON incomplete and unsafe.
     // only for deleting test data for now, don't expose this to the production team.
-    return PDELETE('/v3/containers/' + containerId);
+    return this.PDELETE('/v3/containers/' + containerId);
   }
 
   // Create new episodes, c.f. storeEpisode.   TODO mild cruft
-  svc.createEpisode = function (episode) {
+  createEpisode = function (episode) {
 
     //Default the status of the episode to 'Unpublished'
     episode.status = 'Unpublished';
 
-    var defer = $q.defer();
+    var defer = this.$q.defer();
+
     // console.log("Attempting to create ", episode);
-    POST('/v3/episodes', episode)
-      .then(function (data) {
+    this.POST('/v3/episodes', episode)
+      .then( (data) => {
         // console.log("Created episode: ", data);
         // muck around in modelSvc.containers again:
-        modelSvc.containers[data.container_id].episodes = [data._id];
-        modelSvc.containers[data.container_id].status = data.status;
+        this.modelSvc.containers[data.container_id].episodes = [data._id];
+        this.modelSvc.containers[data.container_id].status = data.status;
         defer.resolve(data);
       });
     return defer.promise;
   };
 
   // Update existing episodes, c.f. createEpisode TODO mild cruft
-  svc.storeEpisode = function (epData) {
-    const preppedData = prepEpisodeForStorage(epData);
+  storeEpisode = function (epData) {
+    const preppedData = this.prepEpisodeForStorage(epData);
     console.log('prepped for storage:', preppedData);
     if (preppedData != null) {
-      return PUT('/v3/episodes/' + preppedData._id, preppedData);
+      return this.PUT('/v3/episodes/' + preppedData._id, preppedData);
     } else {
-      return $q.reject(false);
+      return this.$q.reject(false);
     }
   };
 
-  svc.deleteItem = function (evtId) {
-    return DELETE('/v3/events/' + evtId);
+  deleteItem = function (evtId) {
+    return this.DELETE('/v3/events/' + evtId);
   };
-  svc.createAsset = function (containerId, asset) {
-    var createAssetDefer = $q.defer();
+  
+  createAsset = function (containerId, asset) {
+    var createAssetDefer = this.$q.defer();
 
     asset.container_id = containerId;
     if (asset._id && asset._id.match(/internal/)) {
       delete asset._id;
     }
 
-    asset = modelSvc.deriveAsset(asset);
+    asset = this.modelSvc.deriveAsset(asset);
     console.log('Attempting to create asset ', asset);
-    POST('/v1/containers/' + containerId + '/assets', asset)
-      .then(function (data) {
-        modelSvc.containers[data.file.container_id].episodes = [data.file._id];
-        modelSvc.cache('asset', data.file);
+
+    this.POST('/v1/containers/' + containerId + '/assets', asset)
+      .then( (data)  => {
+        this.modelSvc.containers[data.file.container_id].episodes = [data.file._id];
+        this.modelSvc.cache('asset', data.file);
         createAssetDefer.resolve(data.file);
         //modelSvc.resolveEpisodeAssets(episodeId);
       });
     return createAssetDefer.promise;
   };
 
-  svc.deleteAsset = function (assetId) {
-    return DELETE('/v1/assets/' + assetId);
+ deleteAsset = function (assetId) {
+    return this.DELETE('/v1/assets/' + assetId);
   };
 
   // TODO need safety checking here
-  svc.storeItem = function (evt: IEvent): ng.IPromise<IEvent> {
-    evt = prepItemForStorage(evt) as IEvent;
+  storeItem = function (evt: IEvent): ng.IPromise<IEvent> {
+    evt = this.prepItemForStorage(evt) as IEvent;
     if (!evt) {
-      return $q.reject({});
+      return this.$q.reject({});
     }
     if (evt && evt._id && !evt._id.match(/internal/)) {
       // update
-      return PUT('/v3/events/' + evt._id, {
+      return this.PUT('/v3/events/' + evt._id, {
         event: evt
       });
     } else {
       // create
-      return POST('/v3/episodes/' + evt.episode_id + '/events', {
+      return this.POST('/v3/episodes/' + evt.episode_id + '/events', {
         event: evt
       });
     }
   };
 
-  var prepItemForStorage = function (evt): IEvent | false {
+  prepItemForStorage = function (evt): IEvent | false {
     // Events, that is
     var prepped = {};
     if (evt._id && evt._id.match(/internal/)) {
@@ -1097,13 +1158,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       var startFloat = parseFloat(prepped.start_time);
       var endFloat = parseFloat(prepped.end_time);
       if (isNaN(startFloat) || isNaN(endFloat)) {
-        errorSvc.error({
+        this.errorSvc.error({
           data: 'Tried to store an invalid start_time or end_time.'
         });
         return false;
       }
       if (startFloat > endFloat) {
-        errorSvc.error({
+        this.errorSvc.error({
           data: 'Tried to store a start_time that is after the end_time.'
         });
         return false;
@@ -1136,34 +1197,34 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     if (evt._type === 'Chapter') {
       return prepped;
     }
-    const template = svc.readCache('template', ('component_name' as keyof TDataCacheItem), evt.component_name);
+    const template = this.readCache('template', ('component_name' as keyof TDataCacheItem), evt.component_name);
     if (template != null) {
       prepped.template_id = template.id;
     }
     if (prepped.template_id) {
       return prepped;
     } else {
-      errorSvc.error({
+      this.errorSvc.error({
         data: 'Tried to store a template with no ID: ' + evt.templateUrl
       });
       return false;
     }
   };
-  svc.prepItemForStorage = prepItemForStorage;
 
   // No, we should not be storing episodes with no master asset halfway through editing
-  svc.detachMasterAsset = (epData: IEpisode): ng.IPromise<void | boolean> => {
-    const preppedData = prepEpisodeForStorage(epData);
+  detachMasterAsset = (epData: IEpisode): ng.IPromise<void | boolean> => {
+    const preppedData = this.prepEpisodeForStorage(epData);
     preppedData.master_asset_id = null;
     console.log('prepped sans master_asset_id for storage:', preppedData);
     if (preppedData) {
-      return PUT('/v3/episodes/' + preppedData._id, preppedData);
+      return this.PUT('/v3/episodes/' + preppedData._id, preppedData);
     } else {
-      return $q.reject(false);
+      return this.$q.reject(false);
     }
   };
-  svc.detachEventAsset = function (evt, assetId) {
-    evt = prepItemForStorage(evt);
+  
+  detachEventAsset = function (evt, assetId) {
+    evt = this.prepItemForStorage(evt);
     if (!evt) {
       return false;
     }
@@ -1178,18 +1239,18 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
     if (evt && evt._id && !evt._id.match(/internal/)) {
       // update
-      return PUT('/v3/events/' + evt._id, {
+      return this.PUT('/v3/events/' + evt._id, {
         event: evt
       });
     } else {
       // create
-      return POST('/v3/episodes/' + evt.episode_id + '/events', {
+      return this.POST('/v3/episodes/' + evt.episode_id + '/events', {
         event: evt
       });
     }
   };
 
-  const prepEpisodeForStorage = function (epData): Partial<IEpisode> {
+  prepEpisodeForStorage = function (epData): Partial<IEpisode> {
 
     if (epData._id && epData._id.match(/internal/)) {
       delete epData._id;
@@ -1210,16 +1271,17 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
     ];
 
-    const prepped: Partial<IEpisode> = pick(epData, fields);
-    prepped.style_id = get_id_values('style', epData.styles);
 
-    const template = svc.readCache('template', 'id', epData.template_id) as ITemplate;
+    const prepped: Partial<IEpisode> = this.ittUtils.pick(epData, fields);
+    prepped.style_id = this.get_id_values('style', epData.styles);
+
+    const template = this.readCache('template', 'id', epData.template_id) as ITemplate;
     console.log('read cache template!', template);
     if (template && template.id) {
       prepped.template_id = template.id;
       return prepped;
     } else {
-      errorSvc.error({
+      this.errorSvc.error({
         data: 'Tried to store a template with no ID: ' + epData.template_id
       });
       return null;
@@ -1227,31 +1289,32 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   // careful to only use this for guaranteed unique fields (style and layout names, basically)
-  svc.readCache = readCache;
-  function readCache<K extends keyof IDataCache, F extends keyof TDataCacheItem>(
+readCache = function<K extends keyof IDataCache, F extends keyof TDataCacheItem> (
     cache: K,
     field: F,
     val: TDataCacheItem[F]): TDataCacheItem {
-    return modelSvc.readDataCache(cache, field, val);
+    return this.modelSvc.readDataCache(cache, field, val);
   }
 
+  /*
   if (config.debugInBrowser) {
     // console.log("DataSvc:", svc);
-    console.log('DataSvc cache:', modelSvc.dataCache);
+    console.log('DataSvc cache:', this.modelSvc.dataCache);
   }
+  */
 
-  svc.getTemplates = function () {
-    return Object.keys(modelSvc.dataCache.template).map(function (t) {
-      return modelSvc.dataCache.template[t];
+  getTemplates = function () {
+
+    return Object.keys(this.modelSvc.dataCache.template).map( (t) => {
+      return this.modelSvc.dataCache.template[t];
     });
   };
 
-  svc.getEpisodeTemplatesAdmin = getEpisodeTemplatesAdmin;
-  function getEpisodeTemplatesAdmin(): ITemplateSelect[] {
-    if (!authSvc.userHasRole('admin')) {
+getEpisodeTemplatesAdmin = function(): ITemplateSelect[] {
+    if (!this.authSvc.userHasRole('admin')) {
       return;
     }
-    return svc.getTemplates()
+    return this.getTemplates()
       .reduce(
         (ts: ITemplateSelect[], t: ITemplate) => {
           if (t instanceof IEpisodeTemplate) {
@@ -1267,13 +1330,14 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       );
   }
 
-  svc.getEpisodeTemplatesByCustomerIds = getEpisodeTemplatesByCustomerIds;
-  function getEpisodeTemplatesByCustomerIds(custIds: string[]): ITemplateSelect[] {
-    return svc.getTemplates()
+
+getEpisodeTemplatesByCustomerIds = function (custIds: string[]): ITemplateSelect[] {
+
+  return this.getTemplates()
       .reduce(
         (ts: ITemplateSelect[], t: ITemplate) => {
           if (t instanceof IEpisodeTemplate) {
-            const hasCustomer = intersection(custIds, t.customer_ids);
+            const hasCustomer = this.ittUtils.intersection(custIds, t.customer_ids);
             if (hasCustomer.length > 0) {
               ts.push({
                 id: t.id,
@@ -1288,17 +1352,16 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       );
   }
 
-  svc.fetchTemplates = fetchTemplates;
-  function fetchTemplates(): ng.IPromise<ITemplate[]> {
-    return SANE_GET('/v1/templates')
-      .then((templates: ITemplate[]) => svc.cache('templates', templates))
-      .then(() => svc.getTemplates());
+ fetchTemplates= function (): ng.IPromise<ITemplate[]> {
+
+    return this.SANE_GET('/v1/templates')
+      .then((templates: ITemplate[]) => this.cache('templates', templates))
+      .then(() => this.getTemplates());
   }
 
 
-  svc.getTemplate = getTemplate;
-  function getTemplate(id: string): ITemplate {
-    return modelSvc.dataCache.template[id];
+getTemplate = function (id: string): ITemplate {
+    return this.modelSvc.dataCache.template[id];
   }
 
   /*
@@ -1306,18 +1369,19 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
    for example:
    get_id_values('style', ['cover', '']) -> ['532708d8ed245331bd000007', '52e15b47c9b715cfbb00003f']
    */
-  const get_id_values = function (cache, realNames): string[] {
+  get_id_values = function (cache, realNames): string[] {
 
     // convert real styles and layouts back into id arrays. Not for templateUrls!
     const ids = [];
 
+
     angular.forEach(realNames, (realName) => {
       if (realName) {
-        const cachedValue = svc.readCache(cache, ('css_name' as keyof TDataCacheItem), realName) as IStyle | ILayout;
+        const cachedValue = this.readCache(cache, ('css_name' as keyof TDataCacheItem), realName) as IStyle | ILayout;
         if (cachedValue != null) {
           ids.push(cachedValue.id);
         } else {
-          errorSvc.error({
+          this.errorSvc.error({
             data: 'Tried to store a ' + cache + ' with no ID: ' + realName
           });
           return false;
@@ -1327,5 +1391,4 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return ids;
   };
 
-  return svc;
 }

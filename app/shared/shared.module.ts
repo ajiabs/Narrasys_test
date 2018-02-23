@@ -9,7 +9,7 @@
 
 // import authSvc, { AuthSvc } from './services/authSvc/authSvc';
 // import { AuthSvc } from './services/authSvc/authSvc';
-import authSvc from './services/authSvc/authSvc';
+import { AuthSvc } from './services/authSvc/authSvc';
 
 import { AppState } from './services/appState';
 import { awsSvc } from './services/awsSvc';
@@ -38,7 +38,7 @@ import { Tooltip } from './components/ittTooltip';
 import ittValidationTip from './components/ittValidationTip';
 import ittFilesHandler from './directives/ittFilesHandler';
 import ittLogin from './directives/ittLogin';
-import dataSvc from './services/dataSvc/dataSvc';
+import { DataSvc } from './services/dataSvc/dataSvc';
 // import dataSvc from './services/dataSvc/dataSvc';
 import modelSvc from './services/modelSvc/modelSvc';
 import { AssetsResolve } from './components/npAssetsResolve.component';
@@ -83,14 +83,14 @@ npSharedModule
 
   .service( ErrorSvc.Name, ErrorSvc)
   // was .factory('authSvc', authSvc)
-  .service( 'authSvc', authSvc)
+  .service( AuthSvc.Name, AuthSvc)
 
   // was .factory('awsSvc', awsSvc)
   // added as service:
   .service( awsSvc.Name, awsSvc)
 
   // was .factory('dataSvc', dataSvc)
-  .service( 'dataSvc', dataSvc)
+  .service( DataSvc.Name, DataSvc)
   
   .factory('mockSvc', mockSvc)
   // was .factory('modelSvc', modelSvc)
