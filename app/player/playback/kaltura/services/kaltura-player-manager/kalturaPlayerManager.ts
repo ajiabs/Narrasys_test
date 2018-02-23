@@ -1,3 +1,5 @@
+import { PlayerManagerCommons } from "../../../services/player-manager-commons/playerManagerCommons";
+
 // @npUpgrade-kaltura-false
 /**
  * Created by githop on 1/13/17.
@@ -65,7 +67,9 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
   type = 'kaltura';
   private _existy = this.ittUtils.existy;
 
-  private base = this.playerManagerCommons({players: this._players, type: this.type});
+ // private base = this.playerManagerCommons({players: this._players, type: this.type});
+ private base = new PlayerManagerCommons( this.ittUtils, {players: this._players, type: this.type});
+  
   private commonMetaProps = this.base.commonMetaProps;
 
   private _kalturaMetaProps = {

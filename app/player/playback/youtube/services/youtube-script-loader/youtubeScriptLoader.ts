@@ -70,10 +70,11 @@ export class YTScriptLoader implements IYTScriptLoader {
         resolve();
       }
 
+      var context = this;
       window.onYouTubeIframeAPIReady = function () {
         //youtube.com/iframe_api script will invoke
         //this function after it downloads www-widgetapi script.
-        this.$timeout.cancel(doReject);
+        context.$timeout.cancel(doReject);
         resolve();
       };
     });

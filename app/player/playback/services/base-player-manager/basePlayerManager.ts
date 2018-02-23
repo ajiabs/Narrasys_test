@@ -40,6 +40,10 @@ export abstract class BasePlayerManager {
     return metaObj;
   }
 
+  protected getStateChangeListeners() {
+    return this.statechangeCallbacks;
+  }
+
   protected getPlayer(pid: string): IPlayer {
     if (existy(this.players[pid])) {
       return this.players[pid];

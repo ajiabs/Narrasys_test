@@ -28,7 +28,14 @@ import { existy } from '../../../../../shared/services/ittUtils';
  */
 
  export interface IYouTubePlayerManager {
+  seedPlayerManager(id, mainPlayer, mediaSrcArr);
+  create(playerId);
+  // handleSuccess(ytInstance);
+  // tryAgain();
+  // handleFail(e);
   setSpeed(pid, playbackRate);
+  getCurrentTime(pid);
+  getPlayerState(pid);
   play(pid);
   pause(pid);
   stop(pid);
@@ -59,8 +66,8 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
       angular.extend(this._youtubeMetaObj.meta, this._youtubeMetaProps, this.commonMetaProps);
 
       // must be done after the line above in the constructor or else the variables aren't set.
-      // var _validMetaKeys = Object.keys(this._youtubeMetaObj.meta);
-      // this.setMetaProp = this.setMetaProp(_validMetaKeys);
+      var _validMetaKeys = Object.keys(this._youtubeMetaObj.meta);
+      this.setMetaProp = this.base.setMetaProp(_validMetaKeys);
  
   }
 
@@ -68,9 +75,30 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
   private _players = {};
   private _mainPlayerId;
   type = 'youtube';
- 
+  bigTest = "0";
 
-  
+  /*
+  private base; // this will hold the class object "playerManagerCommons"
+  private getPlayer;
+  private setPlayer;
+  private commonMetaProps;
+  // private getInstance;
+  private createMetaObj;
+  private getMetaObj;
+  private getMetaProp;
+  private setMetaProp ;
+  private registerStateChangeListener ;
+  private unregisterStateChangeListener ;
+  private pauseOtherPlayers ;
+  private getPlayerDiv;
+  private resetPlayerManager ;
+  private renamePid ;
+  private handleTimelineEnd ;
+
+  private _getStateChangeListeners ;
+   
+*/
+
   private cancelBuffering = this.ittUtils.cancelNgTimeout;
   private waitForBuffering = this.ittUtils.ngTimeout;
 
@@ -90,24 +118,24 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
 
 
   // as we cannot rely on the constructors to use the injection with custom variables when instantiating a class, re-include the ittUtils
- // private base =  new PlayerManagerCommons(this.ittUtils, {players: this._players, type: this.type});
- // private getPlayer = this.getPlayer;
- //private setPlayer = this.setPlayer;
- // private commonMetaProps = this.commonMetaProps;
-       // this.getInstance = this.getInstance(this.predicate);
-  // private createMetaObj = this.createMetaObj;
-   //    private getMetaObj = this.getMetaObj;
-   //    private getMetaProp = this.getMetaProp;
-   //    private registerStateChangeListener = this.registerStateChangeListener;
-   //    private unregisterStateChangeListener = this.unregisterStateChangeListener;
-   //    private pauseOtherPlayers = this.pauseOtherPlayers(this.pause, this.playerState);
-   //    private getPlayerDiv = this.getPlayerDiv;
-   //    private resetPlayerManager = this.resetPlayerManager(this.destroyFn);
-   //    private renamePid = this.renamePid;
-    //   private handleTimelineEnd = this.handleTimelineEnd(this.youtubeEnding);
-  // private _getStateChangeListeners = this.base.getStateChangeListeners; 
-   //
-   // setMetaProp = this.setMetaProp; 
+  private base =  new PlayerManagerCommons(this.ittUtils, {players: this._players, type: this.type});
+  private getPlayer = this.base.getPlayer;
+  private setPlayer = this.base.setPlayer;
+  private commonMetaProps = this.base.commonMetaProps;
+       // this.getInstance = this.base.getInstance(this.predicate);
+       private createMetaObj = this.base.createMetaObj;
+       private getMetaObj = this.base.getMetaObj;
+       private getMetaProp = this.base.getMetaProp;
+       private registerStateChangeListener = this.base.registerStateChangeListener;
+       private unregisterStateChangeListener = this.base.unregisterStateChangeListener;
+       private pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.playerState);
+       private getPlayerDiv = this.base.getPlayerDiv;
+       private resetPlayerManager = this.base.resetPlayerManager(this.destroyFn);
+       private renamePid = this.base.renamePid;
+       private handleTimelineEnd = this.base.handleTimelineEnd(this.youtubeEnding);
+       private _getStateChangeListeners = this.base.getStateChangeListeners; 
+   
+       private setMetaProp; 
 
 
   predicate(pid) {
@@ -115,7 +143,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
   };
 
   private destroyFn(pid) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     this._tryCommand(p, 'destroy');
   };
 
@@ -161,31 +189,51 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
       ytId: this.youtubeUrlService.extractYoutubeId(mediaSrcArr[0])
     };
 
-    this.setPlayer(id, YouTubePlayerManager.createMetaObj(newProps));
+    this.setPlayer(id, this.createMetaObj(newProps, this._youtubeMetaObj));
   }
 
-      /**
-     * @private
-     * @ngdoc method
-     * @name onReady
-     * @methodOf iTT.service:youTubePlayerManager
-     * @description
-     * Event Handler called when YT instance is ready
-     * @param {Object} event an object with target and data properties with metadata regarding the event and
-     * player that emitted it.
-     * @returns {Void} has no return value
-     */
 
-   private onReady(event, context) {
-     var self = this;
-    var pid = context._getPidFromInstance(event.target);
+  /**
+   * @ngdoc method
+   * @name #create
+   * @methodOf iTT.service:youTubePlayerManager
+   * @param {String} playerId unique ID of player.
+   * @description
+   * Used to create an instance of the YT object which is necessary to
+   * interface with the youtube Iframe API
+   * @returns {void} has no return value
+   */
+  create(playerId) {
+    var ytId = this.getMetaProp(playerId, 'ytId');
+    this._createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+      .then(handleSuccess)
+      .catch(tryAgain);
 
-    var playerReadyEv = context._formatPlayerStateChangeEvent({data: '6'}, pid);
-    context.setMetaProp(pid, 'duration', event.target.getDuration());
-    context._emitStateChange(playerReadyEv);
-  }
+    function handleSuccess(ytInstance) {
+      this.getPlayer(playerId).instance = ytInstance;
+      this.setMetaProp(playerId, 'ytId', ytId);
+    }
 
-     /**
+    function tryAgain() {
+      return this._createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+        .then(handleSuccess)
+        .catch(handleFail);
+    }
+
+    function handleFail(e) {
+      var errorMsg = 'Network timeout initializing video player. Please try again.';
+      this.errorSvc.error({data: errorMsg}, e);
+    }
+
+    //available 'states'
+    //YT.PlayerState.ENDED
+    //YT.PlayerState.PLAYING
+    //YT.PlayerState.PAUSED
+    //YT.PlayerState.BUFFERING
+    //YT.PlayerState.CUED
+
+
+    /**
      * @private
      * @ngdoc method
      * @name onPlayerStateChange
@@ -198,7 +246,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
      * player that emitted it.
      * @returns {Void} has no return value
      */
-    private onPlayerStateChange(event) {
+    function onPlayerStateChange(event) {
       var pid = this._getPidFromInstance(event.target);
       this.setMetaProp(pid, 'playerState', event.data);
       var stateChangeEvent = this._formatPlayerStateChangeEvent(event, pid);
@@ -222,16 +270,25 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
 
       this._emitStateChange(stateChangeEvent);
     }
-  /**
-   * @ngdoc method
-   * @name #create
-   * @methodOf iTT.service:youTubePlayerManager
-   * @param {String} playerId unique ID of player.
-   * @description
-   * Used to create an instance of the YT object which is necessary to
-   * interface with the youtube Iframe API
-   * @returns {void} has no return value
-   */
+
+    /**
+     * @private
+     * @ngdoc method
+     * @name onReady
+     * @methodOf iTT.service:youTubePlayerManager
+     * @description
+     * Event Handler called when YT instance is ready
+     * @param {Object} event an object with target and data properties with metadata regarding the event and
+     * player that emitted it.
+     * @returns {Void} has no return value
+     */
+    function onReady(event, context) {
+      var pid = context._getPidFromInstance(event.target);
+
+      var playerReadyEv = context._formatPlayerStateChangeEvent({data: '6'}, pid);
+      context.setMetaProp(pid, 'duration', event.target.getDuration());
+      context._emitStateChange(playerReadyEv);
+    }
 
     /**
      * @private
@@ -244,7 +301,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
      * player that emitted it.
      * @returns {Void} has no return value
      */
-    private onPlayerQualityChange(event) {
+    function onPlayerQualityChange(event) {
       var pid = this._getPidFromInstance(event.target);
       if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
         this.setPlaybackQuality(pid, 'large');
@@ -265,7 +322,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
      * player that emitted it.
      * @returns {Void} has no return value
      */
-    private onError(event) {
+    function onError(event) {
       var brokePlayerPID = this._getPidFromInstance(event.target);
       if (event.data === 5) {
         //only _reset for HTML5 player errors
@@ -273,57 +330,6 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
         this._reset(brokePlayerPID);
       }
     }
-  
-  create(playerId) {
-    var ytId = this.getMetaProp(playerId, 'ytId');
-    this._createInstance(playerId, ytId, this.onPlayerStateChange, this.onPlayerQualityChange, this.onReady, this.onError)
-      .then((ytInstance) => {
-        this.getPlayer(playerId).instance = ytInstance;
-        this.setMetaProp(playerId, 'ytId', ytId);
-      })
-      .catch(_ => {
-          // try again...
-          return this._createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
-          .then((ytInstance) => {
-            this.getPlayer(playerId).instance = ytInstance;
-            this.setMetaProp(playerId, 'ytId', ytId);
-          })
-          .catch(_ => {
-            // 2nd try.. call it a fail...
-            var errorMsg = 'Network timeout initializing video player. Please try again.';
-            this.errorSvc.error({data: errorMsg}, e);
-          });
-      });
-
-      /*
-      function handleSuccess(ytInstance) {
-        this.getPlayer(playerId).instance = ytInstance;
-        this.setMetaProp(playerId, 'ytId', ytId);
-      }
-
-    function tryAgain() {
-      return this._createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
-        .then(_ =>handleSuccess)
-        .catch(_ =>handleFail);
-    }
-
-    function handleFail(e) {
-      var errorMsg = 'Network timeout initializing video player. Please try again.';
-      this.errorSvc.error({data: errorMsg}, e);
-    }
-    */
-
-
-    //available 'states'
-    //YT.PlayerState.ENDED
-    //YT.PlayerState.PLAYING
-    //YT.PlayerState.PAUSED
-    //YT.PlayerState.BUFFERING
-    //YT.PlayerState.CUED
-
-
-
-   
   }
 
   /**
@@ -337,7 +343,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Void} returns void.
    */
   setSpeed(pid, playbackRate) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     // getAvailablePlayBackRates returns an array of numbers, with at least 1 element; i.e. the default playback rate
     if (this._existy(p) && p.getAvailablePlaybackRates().length > 1) {
       p.setPlaybackRate(playbackRate);
@@ -354,7 +360,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Number} The current time of video in seconds.
    */
   getCurrentTime(pid) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     if (this._existy(p)) {
       return this._tryCommand(p, 'getCurrentTime');
     }
@@ -376,9 +382,9 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Number} Int representing current player state.
    */
   playerState(pid) {
-    //  var p = this.getInstance(pid);
+    //  var p = this.base.getInstance(pid);
     var p = null;
-    if (this.predicate(pid) === true) {
+    if (this.base.predicate(pid) === true) {
       p = this.getPlayer(pid).instance;
     }
     if (this._existy(p)) {
@@ -388,9 +394,9 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
 
   /*
   getPlayerState(pid) {
-    // var p = this.getInstance(pid);
+    // var p = this.base.getInstance(pid);
     var p = null;
-    if (this.predicate(pid) === true) {
+    if (this.base.predicate(pid) === true) {
         p = this.getPlayer(pid).instance;
     }
     if (this._existy(p)) {
@@ -421,7 +427,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Void} no return value
    */
   play(pid) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     if (this._existy(p)) {
       this._tryCommand(p, 'playVideo');
     }
@@ -437,7 +443,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Void} no return value
    */
   pause(pid) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
 
     // console.log('pause instance?', p);
     if (this._existy(p)) {
@@ -455,7 +461,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Void} no return value
    */
   stop(pid) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     if (this._existy(p)) {
       this._tryCommand(p, 'stopVideo');
     }
@@ -471,7 +477,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Void} no return value
    */
   setPlaybackQuality(pid, size) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     if (this._existy(p)) {
       p.setPlaybackQuality(size);
     }
@@ -489,7 +495,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    */
   // this is a private method.. no apparent reason for this to be separated from the public method.
   private getVideoLoadedFraction(pid) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     if (this._existy(p)) {
       return p.getVideoLoadedFraction() * 100;
     }
@@ -517,7 +523,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Void} no return value
    */
   seekTo(pid, t) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     var ytId = this.getMetaProp(pid, 'ytId');
     var lastState = this.PLAYERSTATES[this.getMetaProp(pid, 'playerState')];
     var currentState = this.playerState(pid);
@@ -562,7 +568,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Void} returns void.
    */
   toggleMute(pid) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
     if (p.isMuted()) {
       p.unMute();
       this.setMetaProp(pid, 'muted', false);
@@ -583,7 +589,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @returns {Void} No return value.
    */
   setVolume(pid, v) {
-    var p = this.getInstance(pid);
+    var p = this.base.getInstance(pid);
 
     if (this._existy(p)) {
       p.setVolume(v);
@@ -612,7 +618,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    * @private
    */
   private _reset(pid) {
-    var instance = this.getInstance(pid);
+    var instance = this.base.getInstance(pid);
     var isMainPlayer = this.getMetaProp(pid, 'mainPlayer');
 
     if (this._existy(instance)) {
@@ -720,7 +726,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
    *@returns {Void} returns void 0.
    */
   private _emitStateChange(playerStateChange) {
-    this.getStateChangeListeners().forEach( (cb) =>  {
+    this._getStateChangeListeners().forEach( (cb) =>  {
       cb(playerStateChange);
     });
   }

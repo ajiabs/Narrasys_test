@@ -1,5 +1,3 @@
-import { PlayerManagerCommons } from "../../../services/player-manager-commons/playerManagerCommons";
-
 // @npUpgrade-html5-false
 /**
  * Created by githop on 1/18/16.
@@ -32,8 +30,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
   var _ignoreNextEventIfPause = false;
   var _type = 'html5';
   var _existy = ittUtils.existy;
- // var base = playerManagerCommons({players: _players, type: _type});
- var base = new PlayerManagerCommons( ittUtils,{players: _players, type: _type} );
+  var base = playerManagerCommons({players: _players, type: _type});
   var commonMetaProps = base.commonMetaProps;
 
   var _html5MetaProps = {
@@ -62,7 +59,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
   var getPlayer = base.getPlayer;
   var setPlayer = base.setPlayer;
   var getPlayerDiv = base.getPlayerDiv;
-  // var getInstance = base.getInstance(predicate);
+  var getInstance = base.getInstance(predicate);
   var createMetaObj = base.createMetaObj;
   var getMetaObj = base.getMetaObj;
   var getMetaProp = base.getMetaProp;
