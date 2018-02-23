@@ -2,6 +2,8 @@
 /**
  *
  * Created by githop on 3/23/16.
+ * Updated by Curve10:
+ * updated to Angular by EDD on 2/5/18.
  */
 import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../../constants'
 
@@ -15,7 +17,8 @@ import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../../constants'
  * is converted back into a File object so it can be passed to the AWS service.
  * {@link https://github.com/InTheTelling/client/blob/master/app/scripts/services/imageResize.js source}
  */
-imageResize.$inject = ['$q'];
+
+// EDD: imageResize.$inject = ['$q'];
 
 export interface IimageResize {
   createFileFromDataURL(url: string, fileName: string): FileBlob;
@@ -29,12 +32,13 @@ export interface IimageResize {
 
 //When this module was authored, Safari did not support the use of File Objects. A workaround
 //is to coerce a Blob into a File by adding the missing properties
-interface FileBlob extends Blob{
+interface FileBlob extends Blob {
   name?: string;
   lastModifiedDate?: Date;
 }
 
-export default function imageResize($q): IimageResize {
+export class ImageResize implements IimageResize {
+  /*
   return {
     calcAspectRatio,
     createFileFromDataURL,
@@ -43,6 +47,14 @@ export default function imageResize($q): IimageResize {
     resizeImg,
     getImageTagType
   };
+  */
+  static Name = 'imageResize';
+  static $inject = ['$q'];
+  constructor(private $q: ng.IQService) {
+
+  }
+
+
   /**
    * @ngdoc method
    * @name #createFileFromDataURL
@@ -57,8 +69,8 @@ export default function imageResize($q): IimageResize {
    *     var file = imageResize.createFileFromDataURL(dataUrl);
    * </pre>
    */
-  function createFileFromDataURL(url, fileName): FileBlob {
-    let _blob = _dataURLToBlob(url);
+  createFileFromDataURL(url, fileName): FileBlob {
+    let _blob = this._dataURLToBlob(url);
     _blob.name = 'resized' + fileName;
     _blob.lastModifiedDate = new Date();
     return _blob;
@@ -79,11 +91,13 @@ export default function imageResize($q): IimageResize {
 		 *     }));
    * </pre>
    */
-  function readFileToImg(file: File): ng.IPromise<HTMLImageElement> {
+
+   // TODO: put <any> back to <HTMLImageElement> if possible
+  readFileToImg(file: File): ng.IPromise<any> {
     const _img = new Image();
-    return readFileToDataURI(file).then((imgUrl) => {
+    return this.readFileToDataURI(file).then((imgUrl) => {
       _img.src = imgUrl;
-      return $q(function (resolve, reject) {
+      return this.$q((resolve, reject) => {
         _img.onload = function () {
           resolve(_img);
         };
@@ -96,9 +110,10 @@ export default function imageResize($q): IimageResize {
     });
   }
 
-  function readFileToDataURI(file: File): ng.IPromise<string> {
+  // TODO: put <any> back to <string> if possible
+  readFileToDataURI(file: File): ng.IPromise<any> {
     const _reader = new FileReader();
-    return $q((resolve, reject) => {
+    return this.$q((resolve, reject) => {
       _reader.onloadend = () => {
         resolve(_reader.result);
       };
@@ -128,16 +143,19 @@ export default function imageResize($q): IimageResize {
 		 *     });
    * </pre>
    */
-  function resizeImg(img, maxWidth, maxHeight, center) {
-    return $q(function (resolve) {
+
+ 
+
+  resizeImg(img: HTMLImageElement, maxWidth: number, maxHeight: number, center:boolean): ng.IPromise<string> {
+    return this.$q((resolve) => {
       var _canvas = document.createElement('canvas');
-      var _ctx = _getContext(_canvas);
+      var _ctx = this._getContext(_canvas);
       var _dx = 0, _dy = 0;
 
       var _tmpCvsWidth = img.width,
         _tmpCvsHeight = img.height;
 
-      _setCanvasWH(_canvas, _tmpCvsWidth, _tmpCvsHeight);
+        this. _setCanvasWH(_canvas, _tmpCvsWidth, _tmpCvsHeight);
 
       _ctx.drawImage(img, 0, 0, _tmpCvsWidth, _tmpCvsHeight);
 
@@ -150,10 +168,10 @@ export default function imageResize($q): IimageResize {
         img.height = img.height * 0.5;
         _tmpCvsWidth = img.width;
         _tmpCvsHeight = img.height;
-        _canvas = _resizeImgWithCanvas(_canvas, _tmpCvsWidth, _tmpCvsHeight);
+        _canvas = this._resizeImgWithCanvas(_canvas, _tmpCvsWidth, _tmpCvsHeight);
       }
 
-      var _finalWH = _calculateNewDimensions(_canvas.width, _canvas.height, maxWidth, maxHeight);
+      var _finalWH = this._calculateNewDimensions(_canvas.width, _canvas.height, maxWidth, maxHeight);
 
       //handle centering of non-square resized images
       if (center) {
@@ -171,17 +189,22 @@ export default function imageResize($q): IimageResize {
       }
 
       //console.log('final draw params: ', 'cvs', _canvas, 'finalWH', _finalWH, 'dx dy', _dx, _dy);
-      _canvas = _resizeImgWithCanvas(_canvas, _finalWH.width, _finalWH.height, maxWidth, maxHeight, _dx, _dy);
-      resolve(_canvas.toDataURL('image/png', 1.0));
+      _canvas = this._resizeImgWithCanvas(_canvas, _finalWH.width, _finalWH.height, maxWidth, maxHeight, _dx, _dy);
+      return resolve(_canvas.toDataURL('image/png', 1.0));
     });
   }
 
-  function calcAspectRatio(w: number, h: number): number {
+  calcAspectRatio(w: number, h: number): number {
     return w / h;
   }
 
-  function getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide' {
-    const aspectRatio = calcAspectRatio(w, h);
+  // ****************
+  // note:
+  //       at coding-time, IDE throws error on SOCIAL_IMAGE_WIDE / _SQUARE
+  //       but at run-time, these are resolved.
+  //
+  getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide' {
+    const aspectRatio = this.calcAspectRatio(w, h);
     if (aspectRatio > 1.25) {
       return SOCIAL_IMAGE_WIDE;
     } else {
@@ -201,7 +224,7 @@ export default function imageResize($q): IimageResize {
    * @param {Number} height Height to set.
    * @returns {Void} returns undefined.
    */
-  function _setCanvasWH(canvas, width, height) {
+  private _setCanvasWH(canvas, width, height) {
     canvas.width = width;
     canvas.height = height;
   }
@@ -222,10 +245,10 @@ export default function imageResize($q): IimageResize {
    * @param {Number} [dy=0] Optional param, Amount to vertically offset the image inside the canvas element, defaults to 0.
    * @returns {Object} HTML5 canvas element.
    */
-  function _resizeImgWithCanvas(c, w, h, cW = w, cH = h, dx = 0, dy = 0) {
+  private _resizeImgWithCanvas(c, w, h, cW = w, cH = h, dx = 0, dy = 0) {
     //console.log('drawImage inputs: ', 'c', c, 'dx', dx, 'dy', dy, 'w', w, 'h', h);
     let _resizeCvs = document.createElement('canvas');
-    let _resizeCtx = _getContext(_resizeCvs);
+    let _resizeCtx = this._getContext(_resizeCvs);
     _resizeCvs.width = cW;
     _resizeCvs.height = cH;
     _resizeCtx.drawImage(c, dx, dy, w, h);
@@ -243,7 +266,7 @@ export default function imageResize($q): IimageResize {
    * @param {Object} canvas HTML5 Canvas Element
    * @returns {Object} HTML5 Canvas Context object.
    */
-  function _getContext(canvas) {
+  private _getContext(canvas) {
     let context = canvas.getContext('2d');
     context.imageSmoothingEnabled = true;
     context.mozImageSmoothingEnabled = true;
@@ -263,7 +286,7 @@ export default function imageResize($q): IimageResize {
    * @param {String} dataURL base64 encoded string containing image
    * @returns {Object} Blob Object
    */
-  function _dataURLToBlob(dataURL: string): FileBlob {
+  private _dataURLToBlob(dataURL: string): FileBlob {
     let BASE64_MARKER = ';base64,';
     if (dataURL.indexOf(BASE64_MARKER) == -1) {  //jshint ignore:line
       let parts = dataURL.split(',');
@@ -300,7 +323,7 @@ export default function imageResize($q): IimageResize {
    * @param {Number} maxHeight Target height of rectangle.
    * @returns {Object} Object with width and height properties as integers.
    */
-  function _calculateNewDimensions(srcWidth, srcHeight, maxWidth, maxHeight) {
+  private _calculateNewDimensions(srcWidth, srcHeight, maxWidth, maxHeight) {
     let _ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
     return {width: Math.floor(srcWidth * _ratio), height: Math.floor(srcHeight * _ratio)};

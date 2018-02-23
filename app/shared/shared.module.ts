@@ -1,9 +1,28 @@
+// ***********************************
+// set of imports and service,component declarations for the shared section of code
+// in process of updating to angular from angularJS
+// this includes changing factories into services
+//
+// Updates by Curve10
+//
+// ***********************************************************************************
+
+// import authSvc, { AuthSvc } from './services/authSvc/authSvc';
+// import { AuthSvc } from './services/authSvc/authSvc';
 import authSvc from './services/authSvc/authSvc';
+
 import { AppState } from './services/appState';
-import awsSvc from './services/awsSvc';
-import errorSvc from './services/errorSvc';
-import imageResize from './services/imageResizeSvc';
+import { awsSvc } from './services/awsSvc';
+// changed from:
+// import errorSvc from './services/errorSvc';
+import {ErrorSvc} from './services/errorSvc';
+// changed from
+// import imageResize from './/services/imageResizeSvc';
+import {ImageResize} from './services/imageResizeSvc';
+// changed from
 import { ittUtils } from './services/ittUtils';
+// import {NPUtilServices} from './services/ittUtils';
+
 import mockSvc from './services/mockSvc';
 import { UploadsService } from './services/uploadsService';
 import { AssetUploader } from './components/asset-uploader/ittAssetUploader';
@@ -20,6 +39,7 @@ import ittValidationTip from './components/ittValidationTip';
 import ittFilesHandler from './directives/ittFilesHandler';
 import ittLogin from './directives/ittLogin';
 import dataSvc from './services/dataSvc/dataSvc';
+// import dataSvc from './services/dataSvc/dataSvc';
 import modelSvc from './services/modelSvc/modelSvc';
 import { AssetsResolve } from './components/npAssetsResolve.component';
 import { ErrorNotice } from './components/error-notice/npErrorNotice.component';
@@ -31,6 +51,8 @@ import { AuthTemplate } from './templates/auth/auth.template';
 import { Error404Template } from './templates/error-404/error-404.template';
 import { RootTemplate } from './templates/root/root.template';
 import { SxsContainerAssets } from './components/container-assets/sxsContainerAssets';
+
+
 const npSharedModule = angular.module('np.shared', [
   'np.filters'
 ]);
@@ -49,14 +71,31 @@ sharedTemplates.forEach((t: any) => {
 npSharedModule
   .service(AppState.Name, AppState)
   .service(UploadsService.Name, UploadsService)
-  .factory('authSvc', authSvc)
-  .factory('awsSvc', awsSvc)
-  .factory('dataSvc', dataSvc)
-  .factory('errorSvc', errorSvc)
-  .factory('imageResize', imageResize)
-  .factory('ittUtils', ittUtils)
+  // was: .factory('imageResize', imageResize)
+  // added as service...
+  .service(ImageResize.Name, ImageResize)
+
+  // was:  .factory('errorSvc', errorSvc)
+  // added as service.
+
+  // added as service:
+ // .service(NPUtilServices.Name, NPUtilServices)
+
+  .service( ErrorSvc.Name, ErrorSvc)
+  // was .factory('authSvc', authSvc)
+  .service( 'authSvc', authSvc)
+
+  // was .factory('awsSvc', awsSvc)
+  // added as service:
+  .service( awsSvc.Name, awsSvc)
+
+  // was .factory('dataSvc', dataSvc)
+  .service( 'dataSvc', dataSvc)
+  
   .factory('mockSvc', mockSvc)
-  .factory('modelSvc', modelSvc)
+  // was .factory('modelSvc', modelSvc)
+  .service( 'modelSvc', modelSvc )
+    .factory('ittUtils', ittUtils)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .component(AssetUploader.Name, new AssetUploader())
   .component(Container.Name, new Container())
@@ -75,5 +114,6 @@ npSharedModule
   .component(Loading.Name, new Loading())
   .component(AssetsResolve.Name, new AssetsResolve())
   .component(ErrorNotice.Name, new ErrorNotice());
+  
 
 export default npSharedModule;
