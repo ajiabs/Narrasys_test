@@ -187,9 +187,11 @@ export class PlayerManagerCommons implements IBasePlayerManager {
       return this.getMetaProp(id, 'div');
     }
 
-    pauseOtherPlayers(pauseFn, getPlayerState) {
-      return function (pid) {
-        Object.keys(this._players).forEach( (playerId) => {
+  pauseOtherPlayers(pauseFn, getPlayerState) {
+    return function (pid) {
+
+      if (this._players) {
+        Object.keys(this._players).forEach((playerId) => {
           if (playerId !== pid) {
             var otherPlayerState = getPlayerState(playerId);
             if (this._existy(otherPlayerState)) {
@@ -199,8 +201,9 @@ export class PlayerManagerCommons implements IBasePlayerManager {
             }
           }
         });
-      };
-    }
+      }
+    };
+  }
 
 
   predicate(pid) {
