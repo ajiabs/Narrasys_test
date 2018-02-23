@@ -177,7 +177,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
      */
 
    private onReady(event, context) {
-     var self = this;
+
     var pid = context._getPidFromInstance(event.target);
 
     var playerReadyEv = context._formatPlayerStateChangeEvent({data: '6'}, pid);
@@ -198,11 +198,11 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
      * player that emitted it.
      * @returns {Void} has no return value
      */
-    private onPlayerStateChange(event) {
-      var pid = this._getPidFromInstance(event.target);
-      this.setMetaProp(pid, 'playerState', event.data);
-      var stateChangeEvent = this._formatPlayerStateChangeEvent(event, pid);
-      var isBuffering = this.getMetaProp(pid, 'bufferInterval');
+    private onPlayerStateChange(event, context) {
+      var pid = context._getPidFromInstance(event.target);
+      context.setMetaProp(pid, 'playerState', event.data);
+      var stateChangeEvent = context._formatPlayerStateChangeEvent(event, pid);
+      var isBuffering = context.getMetaProp(pid, 'bufferInterval');
       // console.log('YT PlayerState', PLAYERSTATES[event.data]);
 
       if (event.data === YT.PlayerState.ENDED) {
@@ -210,28 +210,18 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
       }
 
       if (event.data === YT.PlayerState.BUFFERING) {
-        isBuffering = this.waitForBuffering( () => {
+        isBuffering = context.waitForBuffering( () => {
           if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
-            this._reset(pid);
+            context._reset(pid);
           }
         }, 7 * 1000);
-        this.setMetaProp(pid, 'bufferInterval', isBuffering);
+        context.setMetaProp(pid, 'bufferInterval', isBuffering);
       } else {
-        this.cancelBuffering(isBuffering)
+        context.cancelBuffering(isBuffering)
       }
 
-      this._emitStateChange(stateChangeEvent);
+      context._emitStateChange(stateChangeEvent);
     }
-  /**
-   * @ngdoc method
-   * @name #create
-   * @methodOf iTT.service:youTubePlayerManager
-   * @param {String} playerId unique ID of player.
-   * @description
-   * Used to create an instance of the YT object which is necessary to
-   * interface with the youtube Iframe API
-   * @returns {void} has no return value
-   */
 
     /**
      * @private
@@ -244,10 +234,10 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
      * player that emitted it.
      * @returns {Void} has no return value
      */
-    private onPlayerQualityChange(event) {
-      var pid = this._getPidFromInstance(event.target);
+    private onPlayerQualityChange(event, context ) {
+      var pid = context._getPidFromInstance(event.target);
       if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-        this.setPlaybackQuality(pid, 'large');
+        context.setPlaybackQuality(pid, 'large');
       }
 
       // qualityChangeCB(event);
@@ -265,15 +255,26 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
      * player that emitted it.
      * @returns {Void} has no return value
      */
-    private onError(event) {
+    private onError(event, context) {
       var brokePlayerPID = this._getPidFromInstance(event.target);
       if (event.data === 5) {
         //only _reset for HTML5 player errors
         console.warn('resetting for chrome!!!');
-        this._reset(brokePlayerPID);
+        context._reset(brokePlayerPID);
       }
     }
   
+    /**
+   * @ngdoc method
+   * @name #create
+   * @methodOf iTT.service:youTubePlayerManager
+   * @param {String} playerId unique ID of player.
+   * @description
+   * Used to create an instance of the YT object which is necessary to
+   * interface with the youtube Iframe API
+   * @returns {void} has no return value
+   */
+
   create(playerId) {
     var ytId = this.getMetaProp(playerId, 'ytId');
     this._createInstance(playerId, ytId, this.onPlayerStateChange, this.onPlayerQualityChange, this.onReady, this.onError)
@@ -668,9 +669,9 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
         },
         events: {
           onReady: (event) => onReadyCB(event, this),
-          onStateChange: stateChangeCB,
-          onPlaybackQualityChange: qualityChangeCB,
-          onError: onError
+          onStateChange: (event) => stateChangeCB(event, this),
+          onPlaybackQualityChange: (event) => qualityChangeCB(event, this),
+          onError: (event) => onError(event,this)
         }
       });
     });
