@@ -40,7 +40,7 @@ import ittFilesHandler from './directives/ittFilesHandler';
 import ittLogin from './directives/ittLogin';
 import { DataSvc } from './services/dataSvc/dataSvc';
 // import dataSvc from './services/dataSvc/dataSvc';
-import modelSvc from './services/modelSvc/modelSvc';
+import { ModelSvc } from './services/modelSvc/modelSvc';
 import { AssetsResolve } from './components/npAssetsResolve.component';
 import { ErrorNotice } from './components/error-notice/npErrorNotice.component';
 
@@ -94,7 +94,7 @@ npSharedModule
   
   .factory('mockSvc', mockSvc)
   // was .factory('modelSvc', modelSvc)
-  .service( 'modelSvc', modelSvc )
+  .service( ModelSvc.Name, ModelSvc )
     .factory('ittUtils', ittUtils)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .component(AssetUploader.Name, new AssetUploader())
