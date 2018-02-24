@@ -1,5 +1,11 @@
 // @npUpgrade-player-false
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
+// TEMPORARY FIX - Changed to $scope for class-based conversions
+
+// ** Updated by Curve10 (JAB/EDD)
+//    Feb 2018 
+//
+
 
 import {IModelSvc, IDataSvc} from '../../../interfaces';
 import { UPDATE_MAGNET } from '../../../constants';
@@ -381,9 +387,16 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
     }
   };
 
-  $scope.userHasRole = authSvc.userHasRole;
-  $scope.logout = authSvc.logout;
-  $scope.isTrueGuest = authSvc.isTrueGuest;
+
+  // $scope.userHasRole = authSvc.userHasRole;
+  // $scope.logout = authSvc.logout;
+  // $scope.isTrueGuest = authSvc.isTrueGuest;
+
+  // TEMPORARY FIX - Changed to $scope for class-based conversions
+  $scope.authSvc = authSvc;
+  $scope.userHasRole = $scope.authSvc.userHasRole;
+  $scope.logout = $scope.authSvc.logout;
+  $scope.isTrueGuest = $scope.authSvc.isTrueGuest;
 
   // - - - - - - - - -  - - - - - - - - - - - - - - -
   // Autoscroll
