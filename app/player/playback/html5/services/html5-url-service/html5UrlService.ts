@@ -3,27 +3,45 @@
  * Created by githop on 11/4/16.
  */
 
+/***********************************
+ **** Updated by Curve10 (JAB/EDD)
+ **** Feb 2018
+ ***********************************/
 
-html5UrlService.$inject = ['ittUtils'];
+export interface IHtml5UrlService {
+  getMimeType(url);
+  getOutgoingUrl(url, startAt);
+  parseMediaSrc(mediaSrc);
+  isHTML5VideoUrl(url);
+  parseInput(url);
+}
 
-export default function html5UrlService(ittUtils) {
-  var _type = 'html5';
-  var _existy = ittUtils.existy;
-  return {
-    type: _type,
-    getMimeType: getMimeType,
-    parseMediaSrc: parseMediaSrc,
-    canPlay: isHTML5VideoUrl,
-    parseInput: parseInput,
-    getOutgoingUrl: getOutgoingUrl
-  };
 
-  function getMimeType(url) {
+export class Html5UrlService implements IHtml5UrlService {
+  static Name = 'html5UrlService'; // tslint:disable-line
+  static $inject = ['ittUtils'];
+
+  constructor (
+    private ittUtils) {
+  }
+
+  private _type = 'html5';
+  private _existy = this.ittUtils.existy;
+  // return {
+  //   type: _type,
+  //   getMimeType: getMimeType,
+  //   parseMediaSrc: parseMediaSrc,
+  //   canPlay: isHTML5VideoUrl,
+  //   parseInput: parseInput,
+  //   getOutgoingUrl: getOutgoingUrl
+  // };
+
+  getMimeType(url) {
     return 'video/' + url.match(/(mp4|m3u8|webm)/)[0];
   }
 
-  function getOutgoingUrl(url, startAt) {
-    if (_existy(startAt) && startAt > 0) {
+  getOutgoingUrl(url, startAt) {
+    if (this._existy(startAt) && startAt > 0) {
       url += '#t=' + startAt;
     }
     return url;
@@ -34,21 +52,21 @@ export default function html5UrlService(ittUtils) {
    * @param mediaSrc
    * @return mediaObj{type: String, mediaSrcArr: Array<String>}
    */
-  function parseMediaSrc(mediaSrc) {
-    return mediaSrc.reduce(function (parsedMediaObj, mediaSrc) {
-      if (isHTML5VideoUrl(mediaSrc)) {
+  parseMediaSrc(mediaSrc) {
+    return mediaSrc.reduce( (parsedMediaObj, mediaSrc) => {
+      if (this.isHTML5VideoUrl(mediaSrc)) {
         parsedMediaObj.mediaSrcArr.push(mediaSrc);
       }
       return parsedMediaObj;
-    }, {type: _type, mediaSrcArr: []});
+    }, {type: this._type, mediaSrcArr: []});
   }
 
-  function isHTML5VideoUrl(url) {
+  isHTML5VideoUrl(url) {
     return /(.mp4|.m3u8|.webm)/.test(url);
   }
 
-  function parseInput(url) {
-    if (isHTML5VideoUrl(url)) {
+  parseInput(url) {
+    if (this.isHTML5VideoUrl(url)) {
       return url;
     }
   }
