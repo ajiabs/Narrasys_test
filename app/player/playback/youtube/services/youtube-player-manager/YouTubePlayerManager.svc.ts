@@ -164,17 +164,17 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
     this.setPlayer(id, YouTubePlayerManager.createMetaObj(newProps));
   }
 
-      /**
-     * @private
-     * @ngdoc method
-     * @name onReady
-     * @methodOf iTT.service:youTubePlayerManager
-     * @description
-     * Event Handler called when YT instance is ready
-     * @param {Object} event an object with target and data properties with metadata regarding the event and
-     * player that emitted it.
-     * @returns {Void} has no return value
-     */
+    /**
+   * @private
+   * @ngdoc method
+   * @name onReady
+   * @methodOf iTT.service:youTubePlayerManager
+   * @description
+   * Event Handler called when YT instance is ready
+   * @param {Object} event an object with target and data properties with metadata regarding the event and
+   * player that emitted it.
+   * @returns {Void} has no return value
+   */
 
    private onReady(event, context) {
 
@@ -185,84 +185,84 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
     context._emitStateChange(playerReadyEv);
   }
 
-     /**
-     * @private
-     * @ngdoc method
-     * @name onPlayerStateChange
-     * @methodOf iTT.service:youTubePlayerManager
-     * @description
-     * Event handler responsible responsible for handling events emitted from a youtube player instance
-     * Responsible for interaction between our app and youtube iframes. Toggles playback
-     * between main and embedded videos
-     * @param {Object} event an object with target and data properties with metadata regarding the event and
-     * player that emitted it.
-     * @returns {Void} has no return value
-     */
-    private onPlayerStateChange(event, context) {
-      var pid = context._getPidFromInstance(event.target);
-      context.setMetaProp(pid, 'playerState', event.data);
-      var stateChangeEvent = context._formatPlayerStateChangeEvent(event, pid);
-      var isBuffering = context.getMetaProp(pid, 'bufferInterval');
-      // console.log('YT PlayerState', PLAYERSTATES[event.data]);
-
-      if (event.data === YT.PlayerState.ENDED) {
-        event.target.stopVideo();
-      }
-
-      if (event.data === YT.PlayerState.BUFFERING) {
-        isBuffering = context.waitForBuffering( () => {
-          if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
-            context._reset(pid);
-          }
-        }, 7 * 1000);
-        context.setMetaProp(pid, 'bufferInterval', isBuffering);
-      } else {
-        context.cancelBuffering(isBuffering)
-      }
-
-      context._emitStateChange(stateChangeEvent);
-    }
-
     /**
-     * @private
-     * @ngdoc method
-     * @name onPlayerQualityChange
-     * @methodOf iTT.service:youTubePlayerManager
-     * @description
-     * Event Handler called when changing playback quality
-     * @param {Object} event an object with target and data properties with metadata regarding the event and
-     * player that emitted it.
-     * @returns {Void} has no return value
-     */
-    private onPlayerQualityChange(event, context ) {
-      var pid = context._getPidFromInstance(event.target);
-      if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-        context.setPlaybackQuality(pid, 'large');
-      }
+   * @private
+   * @ngdoc method
+   * @name onPlayerStateChange
+   * @methodOf iTT.service:youTubePlayerManager
+   * @description
+   * Event handler responsible responsible for handling events emitted from a youtube player instance
+   * Responsible for interaction between our app and youtube iframes. Toggles playback
+   * between main and embedded videos
+   * @param {Object} event an object with target and data properties with metadata regarding the event and
+   * player that emitted it.
+   * @returns {Void} has no return value
+   */
+  private onPlayerStateChange(event, context) {
+    var pid = context._getPidFromInstance(event.target);
+    context.setMetaProp(pid, 'playerState', event.data);
+    var stateChangeEvent = context._formatPlayerStateChangeEvent(event, pid);
+    var isBuffering = context.getMetaProp(pid, 'bufferInterval');
+    // console.log('YT PlayerState', PLAYERSTATES[event.data]);
 
-      // qualityChangeCB(event);
-
+    if (event.data === YT.PlayerState.ENDED) {
+      event.target.stopVideo();
     }
 
-    /**
-     * @private
-     * @ngdoc method
-     * @name onError
-     * @methodOf iTT.service:youTubePlayerManager
-     * @description
-     * Error Handler for youtube iframe API errors
-     * @param {Object} event an object with target and data properties with metadata regarding the event and
-     * player that emitted it.
-     * @returns {Void} has no return value
-     */
-    private onError(event, context) {
-      var brokePlayerPID = this._getPidFromInstance(event.target);
-      if (event.data === 5) {
-        //only _reset for HTML5 player errors
-        console.warn('resetting for chrome!!!');
-        context._reset(brokePlayerPID);
-      }
+    if (event.data === YT.PlayerState.BUFFERING) {
+      isBuffering = context.waitForBuffering( () => {
+        if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
+          context._reset(pid);
+        }
+      }, 7 * 1000);
+      context.setMetaProp(pid, 'bufferInterval', isBuffering);
+    } else {
+      context.cancelBuffering(isBuffering)
     }
+
+    context._emitStateChange(stateChangeEvent);
+  }
+
+  /**
+   * @private
+   * @ngdoc method
+   * @name onPlayerQualityChange
+   * @methodOf iTT.service:youTubePlayerManager
+   * @description
+   * Event Handler called when changing playback quality
+   * @param {Object} event an object with target and data properties with metadata regarding the event and
+   * player that emitted it.
+   * @returns {Void} has no return value
+   */
+  private onPlayerQualityChange(event, context ) {
+    var pid = context._getPidFromInstance(event.target);
+    if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+      context.setPlaybackQuality(pid, 'large');
+    }
+
+    // qualityChangeCB(event);
+
+  }
+
+  /**
+   * @private
+   * @ngdoc method
+   * @name onError
+   * @methodOf iTT.service:youTubePlayerManager
+   * @description
+   * Error Handler for youtube iframe API errors
+   * @param {Object} event an object with target and data properties with metadata regarding the event and
+   * player that emitted it.
+   * @returns {Void} has no return value
+   */
+  private onError(event, context) {
+    var brokePlayerPID = this._getPidFromInstance(event.target);
+    if (event.data === 5) {
+      //only _reset for HTML5 player errors
+      console.warn('resetting for chrome!!!');
+      context._reset(brokePlayerPID);
+    }
+  }
   
     /**
    * @ngdoc method
@@ -284,7 +284,7 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
       })
       .catch(_ => {
           // try again...
-          return this._createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+          return this._createInstance(playerId, ytId, this.onPlayerStateChange, this.onPlayerQualityChange, this.onReady, this.onError)
           .then((ytInstance) => {
             this.getPlayer(playerId).instance = ytInstance;
             this.setMetaProp(playerId, 'ytId', ytId);
