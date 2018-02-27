@@ -292,10 +292,11 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * used to handle appropriate side effects and pipe events up stream
    * @private
    * @returns {Void} Returns void but will emit a 'ended' event as side-effect
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  private onEnded() {
-    var instance = this.getInstance(this.id);
-    this.setMetaProp(this.id, 'playerState', 0);
+  private onEnded(pid:string) {
+    var instance = this.getInstance(pid);
+    this.setMetaProp(pid, 'playerState', 0);
     this._emitStateChange(instance);
   }
 
@@ -307,12 +308,13 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * Used to determine when the video can be played for the first time
    * @private
    * @returns {Void} Returns void but will emit a 'player ready' evetn as side-effect.
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  private onCanPlay() {
-    var instance = this.getInstance(this.id);
-    if (this.getMetaProp(this.id, 'ready') === false) {
+  private onCanPlay(pid:string) {
+    var instance = this.getInstance(pid);
+    if (this.getMetaProp(pid, 'ready') === false) {
       this._emitStateChange(instance, 6);
-      this.setMetaProp(this.id, 'duration', instance.duration);
+      this.setMetaProp(pid, 'duration', instance.duration);
     }
   }
 
@@ -324,10 +326,11 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @description
    * Event handler that responds to a 'playing' HTML5 media event.
    * @returns {Void} returns void but will emit a 'playing' event.
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  private onPlaying() {
-    var instance = this.getInstance(this.id);
-    this.setMetaProp(this.id, 'playerState', 1);
+  private onPlaying(pid:string) {
+    var instance = this.getInstance(pid);
+    this.setMetaProp(pid, 'playerState', 1);
     this._emitStateChange(instance);
   }
 
@@ -339,15 +342,16 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @description
    * Event handler for 'pause' event.
    * @returns {Void} returns void but will emit a 'paused' event
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  private onPause() {
-    var instance = this.getInstance(this.id);
+  private onPause(pid:string) {
+    var instance = this.getInstance(pid);
     //Bail out if we are ignoring the next pause event
     if (this._ignoreNextEventIfPause === true) {
       this._ignoreNextEventIfPause = false;
       return;
     }
-    this.setMetaProp(this.id, 'playerState', 2);
+    this.setMetaProp(pid, 'playerState', 2);
     this._emitStateChange(instance);
   }
 
@@ -359,10 +363,11 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * Event handler for 'buffering' event, note that HTML5 media api does not have a 'buffering' event, this is
    * bound to the 'onWaiting' event.
    * @returns {Void} returns void but will emit a 'buffering' event.
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  onBuffering() {
-    var instance = this.getInstance(this.id);
-    this.setMetaProp(this.id, 'playerState', 3);
+  onBuffering(pid:string) {
+    var instance = this.getInstance(pid);
+    this.setMetaProp(pid, 'playerState', 3);
     this._emitStateChange(instance);
   }
 
@@ -383,7 +388,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
     var instance = this.getInstance(pid);
     var timestamp = this.getMetaProp(pid, 'time');
     var playerRendered = this.getMetaProp(pid, 'ready');
-    var waitUntilReady = this.$interval(function () {
+    var waitUntilReady = this.$interval( () => {
       var delay;
       //make sure the player is in a state to accept commands
       if (this._existy(instance) && instance.readyState === 4 && playerRendered === true) {
@@ -586,7 +591,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
     var videoElement = document.createElement('video');
     videoElement.id = id;
 
-    Object.keys(videoObj).forEach(function (fileType) {
+    Object.keys(videoObj).forEach( (fileType) => {
       var classAttr, srcAttr, typeAttr, srcElement;
 
       classAttr = fileType;
@@ -691,7 +696,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private _getHtml5VideoObject(mediaSrcArr) {
     var extensionMatch = /(mp4|m3u8|webm)/;
 
-    return mediaSrcArr.reduce(function (videoObject, mediaSrc) {
+    return mediaSrcArr.reduce( (videoObject, mediaSrc) => {
       var fileTypeKey = mediaSrc.match(extensionMatch)[1];
       videoObject[fileTypeKey].push(mediaSrc);
       return videoObject;
@@ -718,8 +723,8 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
       'ended': this.onEnded
     };
 
-    Object.keys(evMap).forEach(function (evtName) {
-      (function (evtName) {
+    Object.keys(evMap).forEach( (evtName) => {
+      ( (evtName) => {
         videoElement.addEventListener(evtName, evMap[evtName]);
       })(evtName);
     });

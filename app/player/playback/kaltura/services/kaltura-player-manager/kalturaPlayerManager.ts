@@ -1,4 +1,7 @@
+import { BasePlayerManager } from '../../../services/base-player-manager/basePlayerManager';
+import { IMetaProps, IPlayerManager, IScriptLoader } from '../../../../../interfaces';
 import { PlayerManagerCommons } from "../../../services/player-manager-commons/playerManagerCommons";
+import { existy } from '../../../../../shared/services/ittUtils';
 
 // @npUpgrade-kaltura-false
 /**
@@ -26,15 +29,15 @@ import { PlayerManagerCommons } from "../../../services/player-manager-commons/p
  export interface IKalturaPlayerManager {
   create(playerId);
   seedPlayerManager(id, mainPlayer, mediaSrcArr);
-  onMediaReady(pid);
-  onPlaying(pid);
-  onPaused(pid);
-  onBufferEnd(ev);
-  onBufferStart();
-  onPlayerPlayEnd(pid);
-  onMediaError(e);
-  onUpdatedPlaybackRate(e);
-  onPlayerUpdatePlayhead(ev);
+  // onMediaReady(pid);
+  // onPlaying(pid);
+  // onPaused(pid);
+  // onBufferEnd(ev);
+  // onBufferStart();
+  // onPlayerPlayEnd(pid);
+  // onMediaError(e);
+  // onUpdatedPlaybackRate(e);
+  // onPlayerUpdatePlayhead(ev);
   play(pid);
   pause(pid);
   seekTo(pid, t);
@@ -48,7 +51,7 @@ import { PlayerManagerCommons } from "../../../services/player-manager-commons/p
   type:string;
  }
 
-export class KalturaPlayerManager implements IKalturaPlayerManager {
+export class KalturaPlayerManager extends BasePlayerManager implements IKalturaPlayerManager {
   static Name = 'kalturaPlayerManager'; // tslint:disable-line
   static $inject = ['ittUtils', 'PLAYERSTATES', 'playerManagerCommons', 'kalturaScriptLoader', 'kalturaUrlService'];
 
@@ -58,6 +61,8 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
     private playerManagerCommons,
     private kalturaScriptLoader,
     private kalturaUrlService) {
+      super();
+
       /* Initialization */
       angular.extend(this._kalturaMetaObj.meta, this._kalturaMetaProps, this.commonMetaProps);
     }
@@ -95,20 +100,20 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
     //add logic if necessary
   };
 
-  private getPlayer = this.base.getPlayer;
-  private setPlayer = this.base.setPlayer;
-  private getPlayerDiv = this.base.getPlayerDiv;
-  private getInstance = this.base.getInstance(this.predicate);
+  // private getPlayer = this.base.getPlayer;
+  // private setPlayer = this.base.setPlayer;
+  // private getPlayerDiv = this.base.getPlayerDiv;
+  // private getInstance = this.base.getInstance(this.predicate);
   private createMetaObj = this.base.createMetaObj;
-  private getMetaObj = this.base.getMetaObj;
-  private getMetaProp = this.base.getMetaProp;
-  private setMetaProp = this.base.setMetaProp(this._validMetaKeys);
-  private registerStateChangeListener = this.base.registerStateChangeListener;
-  private unregisterStateChangeListener = this.base.unregisterStateChangeListener;
-  private pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.getPlayerState);
-  private resetPlayerManager = this.base.resetPlayerManager(this._removeEventListeners);
-  private renamePid = this.base.renamePid;
-  private handleTimelineEnd = this.base.handleTimelineEnd(this.kalturaEndingFn);
+  // private getMetaObj = this.base.getMetaObj;
+  // private getMetaProp = this.base.getMetaProp;
+  // private setMetaProp = this.base.setMetaProp(this._validMetaKeys);
+  // private registerStateChangeListener = this.base.registerStateChangeListener;
+  // private unregisterStateChangeListener = this.base.unregisterStateChangeListener;
+  // private pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.getPlayerState);
+  // private resetPlayerManager = this.base.resetPlayerManager(this._removeEventListeners);
+  // private renamePid = this.base.renamePid;
+  // private handleTimelineEnd = this.base.handleTimelineEnd(this.kalturaEndingFn);
   private ittTimeout = this.ittUtils.ngTimeout;
   private cancelIttTimeout = this.ittUtils.cancelNgTimeout;
   private _getStateChangeListeners = this.base.getStateChangeListeners;
@@ -186,24 +191,24 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
    Event Bound functions
    */
 
-  onMediaReady(pid) {
+  private onMediaReady(pid) {
     this._emitStateChange(pid, 6);
     this.setMetaProp(pid, 'duration', this._kdpEval(pid, 'duration'));
   }
 
-  onPlaying(pid) {
+  private onPlaying(pid) {
     this.setMetaProp(pid, 'playerState', 1);
     if (this.getMetaProp(pid, 'ready') === true) {
       this._emitStateChange(pid);
     }
   }
 
-  onPaused(pid) {
+  private onPaused(pid) {
     this.setMetaProp(pid, 'playerState', 2);
     this._emitStateChange(pid);
   }
 
-  onBufferEnd(ev) {
+  private onBufferEnd(ev) {
     var currentState = this.PLAYERSTATES[this.getMetaProp(this.id, 'playerState')];
     var isBuffering = this.getMetaProp(this.id, 'bufferTimeout');
 
@@ -216,10 +221,10 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
     }
   }
 
-  onBufferStart() {
+  private onBufferStart() {
     var pid = this.id;
 
-    var isBuffering = this.ittTimeout(function () {
+    var isBuffering = this.ittTimeout( () => {
       console.log('stuck in buffer land', this.getMetaProp(pid, 'time'));
       this._reset(pid);
     }, 15 * 1000);
@@ -229,21 +234,21 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
     this._emitStateChange(this.id);
   }
 
-  onPlayerPlayEnd(pid) {
+  private onPlayerPlayEnd(pid) {
     console.log('playerState ended', this.getMetaProp(pid, 'playerState'));
     this.setMetaProp(pid, 'playerState', 0);
     this._emitStateChange(pid);
   }
 
-  onMediaError(e) {
+  private onMediaError(e) {
     console.warn('PLAYER ERROR', e);
   }
 
-  onUpdatedPlaybackRate(e) {
+  private onUpdatedPlaybackRate(e) {
     console.log('new rate', e);
   }
 
-  onPlayerUpdatePlayhead(ev) {
+  private onPlayerUpdatePlayhead(ev) {
     this.setMetaProp(this.id, 'time', ev);
   }
 
@@ -309,6 +314,12 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
   /*
    Private methods
    */
+  private getInstance(pid: string): any {
+    if (existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true) {
+      return this.getPlayer(pid).instance;
+    }
+  }
+
   private _reset(pid, t?) {
     var currentTime = t || this.getMetaProp(pid, 'time');
     //changeMedia will emit a 'onMediaReady' event after the media has been successfully changed
@@ -362,7 +373,7 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
       angular.extend(embedObj.flashvars, embedControls);
     }
 
-    return this.kalturaScriptLoader.load(partnerID, uiConfId).then(function () {
+    return this.kalturaScriptLoader.load(partnerID, uiConfId).then( () => {
       this.KWidget.embed(embedObj);
     });
   }
@@ -383,8 +394,8 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
       'updatedPlaybackRate': this.onUpdatedPlaybackRate,
       'playerUpdatePlayhead': this.onPlayerUpdatePlayhead
     };
-    Object.keys(kMap).forEach(function (evtName) {
-      (function (evtName) {
+    Object.keys(kMap).forEach( (evtName) => {
+      ( (evtName) => {
         kdp.kBind(evtName + '.' + pid, kMap[evtName]);
       })(evtName);
     });
@@ -404,7 +415,7 @@ export class KalturaPlayerManager implements IKalturaPlayerManager {
       state = this.getMetaProp(pid, 'playerState');
     }
 
-    this._getStateChangeListeners().forEach(function (cb) {
+    this._getStateChangeListeners().forEach( (cb) => {
       cb(this._formatPlayerStateChangeEvent(state, pid));
     });
   }

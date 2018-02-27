@@ -14,6 +14,7 @@ export interface IHtml5UrlService {
   parseMediaSrc(mediaSrc);
   isHTML5VideoUrl(url);
   parseInput(url);
+  canPlay(origUrl);
 }
 
 
@@ -59,6 +60,10 @@ export class Html5UrlService implements IHtml5UrlService {
       }
       return parsedMediaObj;
     }, {type: this._type, mediaSrcArr: []});
+  }
+
+  canPlay(origUrl) {
+    return this.isHTML5VideoUrl(origUrl);
   }
 
   isHTML5VideoUrl(url) {
