@@ -41,7 +41,7 @@ export interface IHtml5PlayerManager {
   // onCanPlay();
   // onPlaying();
   // onPause();
-  onBuffering();
+  // onBuffering(pid);
   play(pid);
   pause(pid);
   stop(pid);
@@ -269,17 +269,20 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    HTML5 media event handlers
    */
   private onSeeked(ev) {
-    var state = this.getPlayerState(this.id);
-    if (state === 'playing' || state === 'buffering' && this.appState.isIEOrEdge === true) {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var state = context.getPlayerState(pid);
+    if (state === 'playing' || state === 'buffering' && context.appState.isIEOrEdge === true) {
       //manually fire onPlaying for IE/Edge only as to avoid duplicate onplaying events.
-      this.onPlaying.call(this);
+      context.onPlaying.call(context);
     }
 
     const {currentTime, duration} = ev.target;
     const padding = 0.5;
 
     if (Math.floor(duration - currentTime) <= padding) {
-      this.onEnded.call(this);
+      context.onEnded.call(context);
     }
   }
 
@@ -294,10 +297,13 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @returns {Void} Returns void but will emit a 'ended' event as side-effect
    * Curve10 - added pid to parameters, changed this.id to pid
    */
-  private onEnded(pid:string) {
-    var instance = this.getInstance(pid);
-    this.setMetaProp(pid, 'playerState', 0);
-    this._emitStateChange(instance);
+  private onEnded() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
+    context.setMetaProp(pid, 'playerState', 0);
+    context._emitStateChange(instance);
   }
 
   /**
@@ -310,11 +316,14 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @returns {Void} Returns void but will emit a 'player ready' evetn as side-effect.
    * Curve10 - added pid to parameters, changed this.id to pid
    */
-  private onCanPlay(pid:string) {
-    var instance = this.getInstance(pid);
-    if (this.getMetaProp(pid, 'ready') === false) {
-      this._emitStateChange(instance, 6);
-      this.setMetaProp(pid, 'duration', instance.duration);
+  private onCanPlay() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
+    if (context.getMetaProp(pid, 'ready') === false) {
+      context._emitStateChange(instance, 6);
+      context.setMetaProp(pid, 'duration', instance.duration);
     }
   }
 
@@ -328,10 +337,13 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @returns {Void} returns void but will emit a 'playing' event.
    * Curve10 - added pid to parameters, changed this.id to pid
    */
-  private onPlaying(pid:string) {
-    var instance = this.getInstance(pid);
-    this.setMetaProp(pid, 'playerState', 1);
-    this._emitStateChange(instance);
+  private onPlaying() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
+    context.setMetaProp(pid, 'playerState', 1);
+    context._emitStateChange(instance);
   }
 
   /**
@@ -344,15 +356,18 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @returns {Void} returns void but will emit a 'paused' event
    * Curve10 - added pid to parameters, changed this.id to pid
    */
-  private onPause(pid:string) {
-    var instance = this.getInstance(pid);
+  private onPause() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
     //Bail out if we are ignoring the next pause event
-    if (this._ignoreNextEventIfPause === true) {
-      this._ignoreNextEventIfPause = false;
+    if (context._ignoreNextEventIfPause === true) {
+      context._ignoreNextEventIfPause = false;
       return;
     }
-    this.setMetaProp(pid, 'playerState', 2);
-    this._emitStateChange(instance);
+    context.setMetaProp(pid, 'playerState', 2);
+    context._emitStateChange(instance);
   }
 
   /**
@@ -363,12 +378,16 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * Event handler for 'buffering' event, note that HTML5 media api does not have a 'buffering' event, this is
    * bound to the 'onWaiting' event.
    * @returns {Void} returns void but will emit a 'buffering' event.
+   * @private
    * Curve10 - added pid to parameters, changed this.id to pid
    */
-  onBuffering(pid:string) {
-    var instance = this.getInstance(pid);
-    this.setMetaProp(pid, 'playerState', 3);
-    this._emitStateChange(instance);
+  private onBuffering() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
+    context.setMetaProp(pid, 'playerState', 3);
+    context._emitStateChange(instance);
   }
 
   /*
@@ -587,9 +606,11 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @returns {string} returns HTML5 video element
    * @private
    */
-  private _drawPlayerDiv(id, videoObj, quality) {
+  private _drawPlayerDiv(pid, videoObj, quality) {
     var videoElement = document.createElement('video');
-    videoElement.id = id;
+    // Saving pid in DOM element
+    videoElement.pid = pid;
+    videoElement.id = pid;
 
     Object.keys(videoObj).forEach( (fileType) => {
       var classAttr, srcAttr, typeAttr, srcElement;
@@ -723,9 +744,12 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
       'ended': this.onEnded
     };
 
+    // Adding context to the DOM element for the callbacks
+    videoElement.npContext = this;
+
     Object.keys(evMap).forEach( (evtName) => {
       ( (evtName) => {
-        videoElement.addEventListener(evtName, evMap[evtName]);
+        videoElement.addEventListener(evtName, evMap[evtName], this);
       })(evtName);
     });
   }
