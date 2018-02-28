@@ -1,7 +1,17 @@
+import { BasePlayerManager } from '../../../services/base-player-manager/basePlayerManager';
+import { IMetaProps, IPlayerManager, IScriptLoader } from '../../../../../interfaces';
+import { PlayerManagerCommons } from "../../../services/player-manager-commons/playerManagerCommons";
+import { existy } from '../../../../../shared/services/ittUtils';
+
 // @npUpgrade-html5-false
 /**
  * Created by githop on 1/18/16.
  */
+
+ /***********************************
+ **** Updated by Curve10 (JAB/EDD)
+ **** Feb 2018
+ ***********************************/
 
 /**
  * @ngdoc service
@@ -21,84 +31,120 @@
 // 	4: 'HAVE_ENOUGH_DATA'
 // }
 
-html5PlayerManager.$inject = ['$interval', 'PLAYERSTATES', 'ittUtils', 'appState', 'playerManagerCommons'];
+export interface IHtml5PlayerManager {
+  create(divID);
+  freezeMetaProps(pid);
+  unFreezeMetaProps(pid);
+  seedPlayerManager(id, mainPlayer, mediaSrcArr);
+  // onSeeked(ev);
+  // onEnded();
+  // onCanPlay();
+  // onPlaying();
+  // onPause();
+  // onBuffering(pid);
+  play(pid);
+  pause(pid);
+  stop(pid);
+  getCurrentTime(pid);
+  getPlayerState(pid);
+  seek(pid, t);
+  setSpeed(pid, playbackRate);
+  toggleMute(pid);
+  setVolume(pid, vol);
+  getBufferedPercent(pid);
+  type:string;
+}
 
-export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, appState, playerManagerCommons) {
-  var _players = {};
-  var _mainPlayerId;
-  // var _checkInterval = 50.0;
-  var _ignoreNextEventIfPause = false;
-  var _type = 'html5';
-  var _existy = ittUtils.existy;
-  var base = playerManagerCommons({players: _players, type: _type});
-  var commonMetaProps = base.commonMetaProps;
+export class Html5PlayerManager extends BasePlayerManager implements IHtml5PlayerManager {
+  static Name = 'html5PlayerManager'; // tslint:disable-line
+  static $inject = ['$interval', 'PLAYERSTATES', 'ittUtils', 'appState', 'playerManagerCommons'];
 
-  var _html5MetaProps = {
+  constructor (
+    private $interval,
+    private PLAYERSTATES,
+    private ittUtils,
+    private appState,
+    private playerManagerCommons) {
+      super();
+
+      // Initialization
+      angular.extend(this._html5MetaObj.meta, this._html5MetaProps, this.commonMetaProps);
+    }
+
+  private _players = {};
+  private _mainPlayerId;
+  // private _checkInterval = 50.0;
+  private _ignoreNextEventIfPause = false;
+  public type = 'html5';
+  private _existy = this.ittUtils.existy;
+  // private base = playerManagerCommons({players: _players, type: _type});
+  private base = new PlayerManagerCommons( this.ittUtils,{players: this._players, type: this.type} );
+  private commonMetaProps = this.base.commonMetaProps;
+
+  private _html5MetaProps = {
     videoObj: {},
-    videoType: _type
+    videoType: this.type
   };
 
-  var _html5MetaObj = {
+  private _html5MetaObj = {
     instance: null,
     meta: {}
   };
 
-  angular.extend(_html5MetaObj.meta, _html5MetaProps, commonMetaProps);
-
-  var _validMetaKeys = Object.keys(_html5MetaObj.meta);
-  var predicate = function (pid) {
-    return (_existy(getPlayer(pid)) && _existy(getPlayer(pid).instance))
+  private _validMetaKeys = Object.keys(this._html5MetaObj.meta);
+  predicate(pid) {
+    return (this._existy(this.getPlayer(pid)) && this._existy(this.getPlayer(pid).instance))
   };
 
-  function html5Ending(pid) {
-    stop(pid);
-    const instance = getInstance(pid);
-    onEnded.call(instance);
+  private html5Ending(pid) {
+    this.stop(pid);
+    const instance = this.getInstance(pid);
+    this.onEnded.call(instance);
   }
 
-  var getPlayer = base.getPlayer;
-  var setPlayer = base.setPlayer;
-  var getPlayerDiv = base.getPlayerDiv;
-  var getInstance = base.getInstance(predicate);
-  var createMetaObj = base.createMetaObj;
-  var getMetaObj = base.getMetaObj;
-  var getMetaProp = base.getMetaProp;
-  var setMetaProp = base.setMetaProp(_validMetaKeys);
-  var registerStateChangeListener = base.registerStateChangeListener;
-  var unregisterStateChangeListener = base.unregisterStateChangeListener;
-  var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
-  var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
-  var renamePid = base.renamePid;
-  var handleTimelineEnd = base.handleTimelineEnd(html5Ending);
-  var _getStateChangeListeners = base.getStateChangeListeners;
+  // private getPlayer = this.base.getPlayer;
+  // private setPlayer = this.base.setPlayer;
+  // private getPlayerDiv = this.base.getPlayerDiv;
+  // var getInstance = base.getInstance(predicate);
+  private createMetaObj = this.base.createMetaObj;
+  private getMetaObj = this.base.getMetaObj;
+  // private getMetaProp = this.base.getMetaProp;
+  // private setMetaProp = this.base.setMetaProp(this._validMetaKeys);
+  // private registerStateChangeListener = this.base.registerStateChangeListener;
+  // private unregisterStateChangeListener = this.base.unregisterStateChangeListener;
+  // private pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.getPlayerState);
+  // private resetPlayerManager = this.base.resetPlayerManager(this._removeEventListeners);
+  // private renamePid = this.base.renamePid;
+  // private handleTimelineEnd = this.base.handleTimelineEnd(this.html5Ending);
+  private _getStateChangeListeners = this.base.getStateChangeListeners;
 
-  return {
-    type: _type,
-    getMetaProp: getMetaProp,
-    setMetaProp: setMetaProp,
-    getMetaObj: getMetaObj,
-    getPlayerDiv: getPlayerDiv,
-    pauseOtherPlayers: pauseOtherPlayers,
-    registerStateChangeListener: registerStateChangeListener,
-    unregisterStateChangeListener: unregisterStateChangeListener,
-    resetPlayerManager: resetPlayerManager,
-    renamePid: renamePid,
-    seedPlayerManager: seedPlayerManager,
-    create: create,
-    getPlayerState: getPlayerState,
-    play: play,
-    pause: pause,
-    seekTo: seek,
-    getCurrentTime: getCurrentTime,
-    getBufferedPercent: getBufferedPercent,
-    toggleMute: toggleMute,
-    setVolume: setVolume,
-    setSpeed: setSpeed,
-    freezeMetaProps: freezeMetaProps,
-    unFreezeMetaProps: unFreezeMetaProps,
-    stop: stop,
-    handleTimelineEnd: handleTimelineEnd
-  };
+  // return {
+  //   type: _type,
+  //   getMetaProp: getMetaProp,
+  //   setMetaProp: setMetaProp,
+  //   getMetaObj: getMetaObj,
+  //   getPlayerDiv: getPlayerDiv,
+  //   pauseOtherPlayers: pauseOtherPlayers,
+  //   registerStateChangeListener: registerStateChangeListener,
+  //   unregisterStateChangeListener: unregisterStateChangeListener,
+  //   resetPlayerManager: resetPlayerManager,
+  //   renamePid: renamePid,
+  //   seedPlayerManager: seedPlayerManager,
+  //   create: create,
+  //   getPlayerState: getPlayerState,
+  //   play: play,
+  //   pause: pause,
+  //   seekTo: seek,
+  //   getCurrentTime: getCurrentTime,
+  //   getBufferedPercent: getBufferedPercent,
+  //   toggleMute: toggleMute,
+  //   setVolume: setVolume,
+  //   setSpeed: setSpeed,
+  //   freezeMetaProps: freezeMetaProps,
+  //   unFreezeMetaProps: unFreezeMetaProps,
+  //   stop: stop,
+  //   handleTimelineEnd: handleTimelineEnd
+  // };
 
   //public methods
   /**
@@ -108,26 +154,26 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {string} divID unique ID of video tag
    * @returns {Void} no return value
    */
-  function create(divID) {
+  create(divID) {
 
-    if (Object.isFrozen(getPlayer(divID).meta)) {
-      unFreezeMetaProps(divID);
+    if (Object.isFrozen(this.getPlayer(divID).meta)) {
+      this.unFreezeMetaProps(divID);
     }
 
     var plr = document.getElementById(divID);
-    _attachEventListeners(plr);
+    this._attachEventListeners(plr);
 
-    plr.onStateChange = _onStateChange;
+    plr.onStateChange = this._onStateChange;
     plr.controls = true;
 
-    if (_mainPlayerId === divID) {
-      _mainPlayerId = divID;
+    if (this._mainPlayerId === divID) {
+      this._mainPlayerId = divID;
       plr.controls = false;
     }
 
     plr.load();
     // _players[divID].instance = plr;
-    getPlayer(divID).instance = plr;
+    this.getPlayer(divID).instance = plr;
 
     // console.log('check', getPlayer(divID));
     // temp to test out video source change.
@@ -151,8 +197,8 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {String} pid the pid of the player to freeze.
    * @returns {Void} returns void
    */
-  function freezeMetaProps(pid) {
-    Object.freeze(getMetaObj(pid));
+  freezeMetaProps(pid) {
+    Object.freeze(this.getMetaObj(pid));
   }
 
   /**
@@ -164,9 +210,9 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {String} pid the pid of the player to unfreeze
    * @returns {Void} returns void.
    */
-  function unFreezeMetaProps(pid) {
+  unFreezeMetaProps(pid) {
     var newMeta, prop, frozenMeta;
-    frozenMeta = getMetaObj(pid);
+    frozenMeta = this.getMetaObj(pid);
     newMeta = {};
 
     for (prop in frozenMeta) {
@@ -179,10 +225,10 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
     //This would cause the state to be recorded as paused and would therefore break the automatic resumption of the html5 video.
     //Therefore, we will suppress that pause event.
     if (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-      _ignoreNextEventIfPause = true;
+      this._ignoreNextEventIfPause = true;
     }
 
-    getPlayer(pid).meta = newMeta;
+    this.getPlayer(pid).meta = newMeta;
   }
 
   /**
@@ -196,19 +242,19 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {Array} mediaSrcArr array of youtube URLs
    * @returns {Void} returns void.
    */
-  function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
+  seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
     //bail if we were frozen prior to attempting to re-init player.
-    if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
+    if (this._existy(this.getPlayer(id)) && this.getMetaProp(id, 'startAtTime') > 0) {
       return;
     }
 
     if (mainPlayer) {
-      _players = {};
-      _mainPlayerId = id;
+      this._players = {};
+      this._mainPlayerId = id;
     }
 
-    var plrInfo = _initPlayerDiv(id, mediaSrcArr);
+    var plrInfo = this._initPlayerDiv(id, mediaSrcArr);
     //store relevant info the particular player in the 'meta' obj.
     var newProps = {
       mainPlayer: mainPlayer,
@@ -216,24 +262,27 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
       div: plrInfo.videoElm
     };
 
-    setPlayer(id, createMetaObj(newProps, _html5MetaObj));
+    this.setPlayer(id, this.createMetaObj(newProps, this._html5MetaObj));
   }
 
   /*
    HTML5 media event handlers
    */
-  function onSeeked(ev) {
-    var state = getPlayerState(this.id);
-    if (state === 'playing' || state === 'buffering' && appState.isIEOrEdge === true) {
+  private onSeeked(ev) {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var state = context.getPlayerState(pid);
+    if (state === 'playing' || state === 'buffering' && context.appState.isIEOrEdge === true) {
       //manually fire onPlaying for IE/Edge only as to avoid duplicate onplaying events.
-      onPlaying.call(this);
+      context.onPlaying.call(context);
     }
 
     const {currentTime, duration} = ev.target;
     const padding = 0.5;
 
     if (Math.floor(duration - currentTime) <= padding) {
-      onEnded.call(this);
+      context.onEnded.call(context);
     }
   }
 
@@ -246,11 +295,15 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * used to handle appropriate side effects and pipe events up stream
    * @private
    * @returns {Void} Returns void but will emit a 'ended' event as side-effect
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  function onEnded() {
-    var instance = getInstance(this.id);
-    setMetaProp(this.id, 'playerState', 0);
-    _emitStateChange(instance);
+  private onEnded() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
+    context.setMetaProp(pid, 'playerState', 0);
+    context._emitStateChange(instance);
   }
 
   /**
@@ -261,12 +314,16 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * Used to determine when the video can be played for the first time
    * @private
    * @returns {Void} Returns void but will emit a 'player ready' evetn as side-effect.
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  function onCanPlay() {
-    var instance = getInstance(this.id);
-    if (getMetaProp(this.id, 'ready') === false) {
-      _emitStateChange(instance, 6);
-      setMetaProp(this.id, 'duration', instance.duration);
+  private onCanPlay() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
+    if (context.getMetaProp(pid, 'ready') === false) {
+      context._emitStateChange(instance, 6);
+      context.setMetaProp(pid, 'duration', instance.duration);
     }
   }
 
@@ -278,11 +335,15 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @description
    * Event handler that responds to a 'playing' HTML5 media event.
    * @returns {Void} returns void but will emit a 'playing' event.
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  function onPlaying() {
-    var instance = getInstance(this.id);
-    setMetaProp(this.id, 'playerState', 1);
-    _emitStateChange(instance);
+  private onPlaying() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
+    context.setMetaProp(pid, 'playerState', 1);
+    context._emitStateChange(instance);
   }
 
   /**
@@ -293,16 +354,20 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @description
    * Event handler for 'pause' event.
    * @returns {Void} returns void but will emit a 'paused' event
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  function onPause() {
-    var instance = getInstance(this.id);
+  private onPause() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
     //Bail out if we are ignoring the next pause event
-    if (_ignoreNextEventIfPause === true) {
-      _ignoreNextEventIfPause = false;
+    if (context._ignoreNextEventIfPause === true) {
+      context._ignoreNextEventIfPause = false;
       return;
     }
-    setMetaProp(this.id, 'playerState', 2);
-    _emitStateChange(instance);
+    context.setMetaProp(pid, 'playerState', 2);
+    context._emitStateChange(instance);
   }
 
   /**
@@ -313,11 +378,16 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * Event handler for 'buffering' event, note that HTML5 media api does not have a 'buffering' event, this is
    * bound to the 'onWaiting' event.
    * @returns {Void} returns void but will emit a 'buffering' event.
+   * @private
+   * Curve10 - added pid to parameters, changed this.id to pid
    */
-  function onBuffering() {
-    var instance = getInstance(this.id);
-    setMetaProp(this.id, 'playerState', 3);
-    _emitStateChange(instance);
+  private onBuffering() {
+    // DOM element has class context and player id set inside
+    var context = this.npContext;
+    var pid = this.pid;
+    var instance = context.getInstance(pid);
+    context.setMetaProp(pid, 'playerState', 3);
+    context._emitStateChange(instance);
   }
 
   /*
@@ -333,23 +403,23 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {String} pid the PID of the video to play
    * @returns {Void} returns void.
    */
-  function play(pid) {
-    var instance = getInstance(pid);
-    var timestamp = getMetaProp(pid, 'time');
-    var playerRendered = getMetaProp(pid, 'ready');
-    var waitUntilReady = $interval(function () {
+  play(pid) {
+    var instance = this.getInstance(pid);
+    var timestamp = this.getMetaProp(pid, 'time');
+    var playerRendered = this.getMetaProp(pid, 'ready');
+    var waitUntilReady = this.$interval( () => {
       var delay;
       //make sure the player is in a state to accept commands
-      if (_existy(instance) && instance.readyState === 4 && playerRendered === true) {
-        delay = getMetaProp(pid, 'time');
+      if (this._existy(instance) && instance.readyState === 4 && playerRendered === true) {
+        delay = this.getMetaProp(pid, 'time');
         //check for a drift then seek to original time to fix.
         //only for main player, otherwise embed players will attempt
         //to resume playback according to the timeline time.
-        if (pid === _mainPlayerId && timestamp <= delay) {
+        if (pid === this._mainPlayerId && timestamp <= delay) {
           instance.currentTime = timestamp;
         }
         instance.play();
-        $interval.cancel(waitUntilReady);
+        this.$interval.cancel(waitUntilReady);
       }
     }, 10);
   }
@@ -363,15 +433,15 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {String} pid the pid of the player
    * @returns {Void} returns void.
    */
-  function pause(pid) {
-    var instance = getInstance(pid);
+  pause(pid) {
+    var instance = this.getInstance(pid);
     instance.pause();
   }
 
-  function stop(pid) {
-    setMetaProp(pid, 'time', getMetaProp(pid, 'duration'));
+  stop(pid) {
+    this.setMetaProp(pid, 'time', this.getMetaProp(pid, 'duration'));
     console.log('stopped!');
-    pause(pid);
+    this.pause(pid);
   }
 
   /**
@@ -383,8 +453,8 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {String} pid the pid of the player
    * @returns {Number} the time of playback.
    */
-  function getCurrentTime(pid) {
-    var instance = getInstance(pid);
+  getCurrentTime(pid) {
+    var instance = this.getInstance(pid);
     if (instance !== undefined) {
       return instance.currentTime;
     }
@@ -398,12 +468,12 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {String} pid the player to query for state
    * @returns {String} the player state
    */
-  function getPlayerState(pid) {
+  getPlayerState(pid) {
     // var instance = _getInstance(pid);
-    var player = getPlayer(pid);
+    var player = this.getPlayer(pid);
 
-    if (_existy(player)) {
-      return PLAYERSTATES[player.meta.playerState];
+    if (this._existy(player)) {
+      return this.PLAYERSTATES[player.meta.playerState];
     }
   }
 
@@ -417,8 +487,8 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {Number} t the time to seek to.
    * @returns {Void} returns void.
    */
-  function seek(pid, t) {
-    var instance = getInstance(pid);
+  seek(pid, t) {
+    var instance = this.getInstance(pid);
     instance.currentTime = t;
   }
 
@@ -432,8 +502,8 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {Number} playbackRate the rate of playback to set
    * @returns {Void} returns void.
    */
-  function setSpeed(pid, playbackRate) {
-    var instance = getInstance(pid);
+  setSpeed(pid, playbackRate) {
+    var instance = this.getInstance(pid);
     instance.playbackRate = playbackRate;
   }
 
@@ -446,10 +516,10 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {String} pid the pid of the player
    * @returns {Void} returns void.
    */
-  function toggleMute(pid) {
-    var instance = getInstance(pid);
+  toggleMute(pid) {
+    var instance = this.getInstance(pid);
     instance.muted = !instance.muted;
-    setMetaProp(pid, 'muted', instance.muted);
+    this.setMetaProp(pid, 'muted', instance.muted);
   }
 
   /**
@@ -462,10 +532,10 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {Number} vol the value to set the volume to
    * @returns {Void} returns void.
    */
-  function setVolume(pid, vol) {
-    var instance = getInstance(pid);
+  setVolume(pid, vol) {
+    var instance = this.getInstance(pid);
     instance.volume = (vol / 100);
-    setMetaProp(pid, 'volume', vol);
+    this.setMetaProp(pid, 'volume', vol);
   }
 
   /**
@@ -478,9 +548,9 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @returns {Number} Numerical value representing
    * percent of video that is currently buffered
    */
-  function getBufferedPercent(pid) {
-    var instance = getInstance(pid);
-    if (instance && getMetaProp(pid, 'playerState') !== -1) {
+  getBufferedPercent(pid) {
+    var instance = this.getInstance(pid);
+    if (instance && this.getMetaProp(pid, 'playerState') !== -1) {
       if (instance.buffered.length > 0) {
         var bufLen = instance.buffered.length;
         var bufStart = instance.buffered.start(bufLen - 1);
@@ -490,7 +560,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
           bufEnd = bufEnd - bufStart;
           bufStart = 0;
         }
-        return bufEnd / getMetaProp(pid, 'duration') * 100;
+        return bufEnd / this.getMetaProp(pid, 'duration') * 100;
       }
     }
 
@@ -499,6 +569,13 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
   /*
    private methods
    */
+
+  private getInstance(pid: string): any {
+    if (existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true) {
+      return this.getPlayer(pid).instance;
+    }
+  }
+
 
   /**
    * @private
@@ -511,9 +588,9 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {Array} mediaSrcArr array of URLs that could contain .mp4, .webm or .m3u8 files
    * @returns {Object} Object with videoObj and videoElm properties
    */
-  function _initPlayerDiv(id, mediaSrcArr) {
-    var videoObj = _getHtml5VideoObject(mediaSrcArr);
-    var videoElm = _drawPlayerDiv(id, videoObj, 0);
+  private _initPlayerDiv(id, mediaSrcArr) {
+    var videoObj = this._getHtml5VideoObject(mediaSrcArr);
+    var videoElm = this._drawPlayerDiv(id, videoObj, 0);
     return {videoObj: videoObj, videoElm: videoElm};
   }
 
@@ -529,11 +606,13 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @returns {string} returns HTML5 video element
    * @private
    */
-  function _drawPlayerDiv(id, videoObj, quality) {
+  private _drawPlayerDiv(pid, videoObj, quality) {
     var videoElement = document.createElement('video');
-    videoElement.id = id;
+    // Saving pid in DOM element
+    videoElement.pid = pid;
+    videoElement.id = pid;
 
-    Object.keys(videoObj).forEach(function (fileType) {
+    Object.keys(videoObj).forEach( (fileType) => {
       var classAttr, srcAttr, typeAttr, srcElement;
 
       classAttr = fileType;
@@ -544,7 +623,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
 
       srcAttr = videoObj[fileType][quality];
 
-      if (!_existy(srcAttr)) {
+      if (!this._existy(srcAttr)) {
         return;
       }
 
@@ -579,10 +658,10 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @returns {Object} Object with emitterID String and state String props
    * @private
    */
-  function _formatPlayerStateChangeEvent(event, pid) {
+  private _formatPlayerStateChangeEvent(event, pid) {
     return {
       emitterId: pid,
-      state: PLAYERSTATES[event]
+      state: this.PLAYERSTATES[event]
     };
   }
 
@@ -595,8 +674,8 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * on the meta object.
    * @private
    */
-  function _emitStateChange(instance, forceState?) {
-    var player = getPlayer(instance.id);
+  private _emitStateChange(instance, forceState?) {
+    var player = this.getPlayer(instance.id);
     var state;
 
     //for emitting a state but not setting it on the player.
@@ -606,7 +685,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
       state = player.meta.playerState;
     }
 
-    instance.onStateChange(_formatPlayerStateChangeEvent(state, instance.id));
+    instance.onStateChange(this._formatPlayerStateChangeEvent(state, instance.id));
   }
 
   /**
@@ -618,8 +697,8 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {Object} event the message to send
    * @private
    */
-  function _onStateChange(event) {
-    angular.forEach(_getStateChangeListeners(), function (cb) {
+  private _onStateChange(event) {
+    angular.forEach(this._getStateChangeListeners(), function (cb) {
       cb(event);
     });
   }
@@ -635,10 +714,10 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @returns {Object} Object with mp4, webm, and m3u8 props, array of strings
    * @private
    */
-  function _getHtml5VideoObject(mediaSrcArr) {
+  private _getHtml5VideoObject(mediaSrcArr) {
     var extensionMatch = /(mp4|m3u8|webm)/;
 
-    return mediaSrcArr.reduce(function (videoObject, mediaSrc) {
+    return mediaSrcArr.reduce( (videoObject, mediaSrc) => {
       var fileTypeKey = mediaSrc.match(extensionMatch)[1];
       videoObject[fileTypeKey].push(mediaSrc);
       return videoObject;
@@ -655,19 +734,22 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {Object} videoElement HTML5 video element
    * @private
    */
-  function _attachEventListeners(videoElement) {
+  private _attachEventListeners(videoElement) {
     var evMap = {
-      'pause': onPause,
-      'playing': onPlaying,
-      'waiting': onBuffering,
-      'seeked': onSeeked,
-      'canplay': onCanPlay,
-      'ended': onEnded
+      'pause': this.onPause,
+      'playing': this.onPlaying,
+      'waiting': this.onBuffering,
+      'seeked': this.onSeeked,
+      'canplay': this.onCanPlay,
+      'ended': this.onEnded
     };
 
-    Object.keys(evMap).forEach(function (evtName) {
-      (function (evtName) {
-        videoElement.addEventListener(evtName, evMap[evtName]);
+    // Adding context to the DOM element for the callbacks
+    videoElement.npContext = this;
+
+    Object.keys(evMap).forEach( (evtName) => {
+      ( (evtName) => {
+        videoElement.addEventListener(evtName, evMap[evtName], this);
       })(evtName);
     });
   }
@@ -682,17 +764,17 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
    * @param {String} pid id of element to remove listeners from.
    * @private
    */
-  function _removeEventListeners(pid) {
+  private _removeEventListeners(pid) {
     var videoElement;
-    var instance = getInstance(pid);
-    if (_existy(instance)) {
+    var instance = this.getInstance(pid);
+    if (this._existy(instance)) {
       videoElement = instance;
-      videoElement.removeEventListener('pause', onPause);
-      videoElement.removeEventListener('playing', onPlaying);
-      videoElement.removeEventListener('waiting', onBuffering);
-      videoElement.removeEventListener('seeked', onSeeked);
-      videoElement.removeEventListener('canplay', onCanPlay);
-      videoElement.removeEventListener('ended', onEnded);
+      videoElement.removeEventListener('pause', this.onPause);
+      videoElement.removeEventListener('playing', this.onPlaying);
+      videoElement.removeEventListener('waiting', this.onBuffering);
+      videoElement.removeEventListener('seeked', this.onSeeked);
+      videoElement.removeEventListener('canplay', this.onCanPlay);
+      videoElement.removeEventListener('ended', this.onEnded);
     }
   }
 
