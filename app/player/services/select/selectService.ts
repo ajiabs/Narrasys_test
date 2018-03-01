@@ -283,8 +283,12 @@ export class SelectService implements ISelectService {
 
   //not the display name, but the key of the scene map as string.
   getSceneName(scene) {
-    return Object.keys(this._scenes).filter(function (key) {
-      return this._scenes[key] === scene.component_name;
+
+    // for some reason, .filter loses the "this" context, so creating a local instance inside this function
+    let sceneList = this._scenes;
+    return Object.keys(sceneList).filter( (key, index) => {
+      var value = sceneList[key];
+      return value === scene.component_name;
     })[0];
   }
 
