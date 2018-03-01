@@ -47,7 +47,7 @@ export interface IHtml5PlayerManager {
   stop(pid);
   getCurrentTime(pid);
   getPlayerState(pid);
-  seek(pid, t);
+  seekTo(pid, t);
   setSpeed(pid, playbackRate);
   toggleMute(pid);
   setVolume(pid, vol);
@@ -499,7 +499,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @param {Number} t the time to seek to.
    * @returns {Void} returns void.
    */
-  seek(pid, t) {
+  seekTo(pid, t) {
     var instance = this.getInstance(pid);
     instance.currentTime = t;
   }
