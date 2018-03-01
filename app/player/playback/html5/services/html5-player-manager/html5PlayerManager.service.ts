@@ -282,7 +282,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onSeeked(ev) {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var state = context.getPlayerState(pid);
     if (state === 'playing' || state === 'buffering' && context.appState.isIEOrEdge === true) {
       //manually fire onPlaying for IE/Edge only as to avoid duplicate onplaying events.
@@ -311,7 +311,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onEnded() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     context.setMetaProp(pid, 'playerState', 0);
     context._emitStateChange(instance);
@@ -325,12 +325,12 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * Used to determine when the video can be played for the first time
    * @private
    * @returns {Void} Returns void but will emit a 'player ready' evetn as side-effect.
-   * Curve10 - added pid to parameters, changed this.id to pid
+  
    */
   private onCanPlay() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     if (context.getMetaProp(pid, 'ready') === false) {
       context._emitStateChange(instance, 6);
@@ -351,7 +351,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onPlaying() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     context.setMetaProp(pid, 'playerState', 1);
     context._emitStateChange(instance);
@@ -370,7 +370,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onPause() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     //Bail out if we are ignoring the next pause event
     if (context._ignoreNextEventIfPause === true) {
@@ -395,7 +395,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onBuffering() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     context.setMetaProp(pid, 'playerState', 3);
     context._emitStateChange(instance);
