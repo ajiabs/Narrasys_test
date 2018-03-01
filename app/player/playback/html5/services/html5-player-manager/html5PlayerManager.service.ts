@@ -36,12 +36,6 @@ export interface IHtml5PlayerManager {
   freezeMetaProps(pid);
   unFreezeMetaProps(pid);
   seedPlayerManager(id, mainPlayer, mediaSrcArr);
-  // onSeeked(ev);
-  // onEnded();
-  // onCanPlay();
-  // onPlaying();
-  // onPause();
-  // onBuffering(pid);
   play(pid);
   pause(pid);
   stop(pid);
@@ -102,51 +96,12 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
     this.onEnded.call(instance);
   }
 
-  // private getPlayer = this.base.getPlayer;
-  // private setPlayer = this.base.setPlayer;
-  // private getPlayerDiv = this.base.getPlayerDiv;
-  // var getInstance = base.getInstance(predicate);
   private createMetaObj = this.base.createMetaObj;
   private getMetaObj = this.base.getMetaObj;
-  // private getMetaProp = this.base.getMetaProp;
-  // private setMetaProp = this.base.setMetaProp(this._validMetaKeys);
-  // private registerStateChangeListener = this.base.registerStateChangeListener;
-  // private unregisterStateChangeListener = this.base.unregisterStateChangeListener;
-  // private pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.getPlayerState);
-  // private resetPlayerManager = this.base.resetPlayerManager(this._removeEventListeners);
-  // private renamePid = this.base.renamePid;
-  // private handleTimelineEnd = this.base.handleTimelineEnd(this.html5Ending);
   private _getStateChangeListeners = this.base.getStateChangeListeners;
 
-  // return {
-  //   type: _type,
-  //   getMetaProp: getMetaProp,
-  //   setMetaProp: setMetaProp,
-  //   getMetaObj: getMetaObj,
-  //   getPlayerDiv: getPlayerDiv,
-  //   pauseOtherPlayers: pauseOtherPlayers,
-  //   registerStateChangeListener: registerStateChangeListener,
-  //   unregisterStateChangeListener: unregisterStateChangeListener,
-  //   resetPlayerManager: resetPlayerManager,
-  //   renamePid: renamePid,
-  //   seedPlayerManager: seedPlayerManager,
-  //   create: create,
-  //   getPlayerState: getPlayerState,
-  //   play: play,
-  //   pause: pause,
-  //   seekTo: seek,
-  //   getCurrentTime: getCurrentTime,
-  //   getBufferedPercent: getBufferedPercent,
-  //   toggleMute: toggleMute,
-  //   setVolume: setVolume,
-  //   setSpeed: setSpeed,
-  //   freezeMetaProps: freezeMetaProps,
-  //   unFreezeMetaProps: unFreezeMetaProps,
-  //   stop: stop,
-  //   handleTimelineEnd: handleTimelineEnd
-  // };
 
-  //public methods
+  // ******************************** public methods *****************************
   /**
    * @ngdoc method
    * @name #create
@@ -174,7 +129,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
     plr.load();
     // _players[divID].instance = plr;
     this.getPlayer(divID).instance = plr;
-
+   
     // console.log('check', getPlayer(divID));
     // temp to test out video source change.
     // $timeout(function() {
@@ -271,7 +226,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onSeeked(ev) {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var state = context.getPlayerState(pid);
     if (state === 'playing' || state === 'buffering' && context.appState.isIEOrEdge === true) {
       //manually fire onPlaying for IE/Edge only as to avoid duplicate onplaying events.
@@ -300,7 +255,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onEnded() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     context.setMetaProp(pid, 'playerState', 0);
     context._emitStateChange(instance);
@@ -319,7 +274,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onCanPlay() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     if (context.getMetaProp(pid, 'ready') === false) {
       context._emitStateChange(instance, 6);
@@ -340,7 +295,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onPlaying() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     context.setMetaProp(pid, 'playerState', 1);
     context._emitStateChange(instance);
@@ -359,7 +314,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onPause() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     //Bail out if we are ignoring the next pause event
     if (context._ignoreNextEventIfPause === true) {
@@ -384,7 +339,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private onBuffering() {
     // DOM element has class context and player id set inside
     var context = this.npContext;
-    var pid = this.pid;
+    var pid = this.id;
     var instance = context.getInstance(pid);
     context.setMetaProp(pid, 'playerState', 3);
     context._emitStateChange(instance);
@@ -609,7 +564,6 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   private _drawPlayerDiv(pid, videoObj, quality) {
     var videoElement = document.createElement('video');
     // Saving pid in DOM element
-    videoElement.pid = pid;
     videoElement.id = pid;
 
     Object.keys(videoObj).forEach( (fileType) => {
@@ -698,7 +652,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @private
    */
   private _onStateChange(event) {
-    angular.forEach(this._getStateChangeListeners(), function (cb) {
+    angular.forEach(this._getStateChangeListeners(), (cb) => {
       cb(event);
     });
   }
