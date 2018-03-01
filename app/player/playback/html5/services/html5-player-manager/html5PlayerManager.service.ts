@@ -333,8 +333,9 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
     var pid = this.id;
     var instance = context.getInstance(pid);
     if (context.getMetaProp(pid, 'ready') === false) {
-      context._emitStateChange(instance, 6);
+     // context._emitStateChange(instance, 6);
       context.setMetaProp(pid, 'duration', instance.duration);
+      context.setMetaProp(pid, 'ready', true);
     }
   }
 
@@ -582,9 +583,14 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    */
 
   private getInstance(pid: string): any {
+    /*
     if (existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true) {
       return this.getPlayer(pid).instance;
     }
+    */
+   if (existy(this.getPlayer(pid)) ) {
+    return this.getPlayer(pid).instance;
+  }
   }
 
 
@@ -709,7 +715,8 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @private
    */
   private _onStateChange(event) {
-    angular.forEach(this.getStateChangeListeners(), function (cb) {
+    var context = this.npContext;
+    angular.forEach(context.getStateChangeListeners(),  (cb) => {
       cb(event);
     });
   }
