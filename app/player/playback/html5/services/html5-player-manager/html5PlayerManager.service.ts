@@ -68,7 +68,9 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
       super();
 
       // Initialization
-      angular.extend(this._html5MetaObj.meta, this._html5MetaProps, this.commonMetaProps);
+      var cmp = this.getCommonMetaProps();
+      angular.extend(this._html5MetaObj.meta, this._html5MetaProps, cmp);
+       this._validMetaKeys = Object.keys(this._html5MetaObj.meta);
     }
 
   private _players = {};
@@ -78,8 +80,8 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   public type = 'html5';
   private _existy = this.ittUtils.existy;
   // private base = playerManagerCommons({players: _players, type: _type});
-  private base = new PlayerManagerCommons( this.ittUtils,{players: this._players, type: this.type} );
-  private commonMetaProps = this.base.commonMetaProps;
+ //  private base = new PlayerManagerCommons( this.ittUtils,{players: this._players, type: this.type} );
+  // private commonMetaProps = this.base.commonMetaProps;
 
   private _html5MetaProps = {
     videoObj: {},
@@ -91,7 +93,9 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
     meta: {}
   };
 
-  private _validMetaKeys = Object.keys(this._html5MetaObj.meta);
+ // private _validMetaKeys = Object.keys(this._html5MetaObj.meta);
+ private _validMetaKeys;
+
   predicate(pid) {
     return (this._existy(this.getPlayer(pid)) && this._existy(this.getPlayer(pid).instance))
   };
@@ -106,8 +110,8 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   // private setPlayer = this.base.setPlayer;
   // private getPlayerDiv = this.base.getPlayerDiv;
   // var getInstance = base.getInstance(predicate);
-  private createMetaObj = this.base.createMetaObj;
-  private getMetaObj = this.base.getMetaObj;
+ // private createMetaObj = this.base.createMetaObj;
+  // private getMetaObj = this.base.getMetaObj;
   // private getMetaProp = this.base.getMetaProp;
   // private setMetaProp = this.base.setMetaProp(this._validMetaKeys);
   // private registerStateChangeListener = this.base.registerStateChangeListener;
@@ -116,7 +120,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
   // private resetPlayerManager = this.base.resetPlayerManager(this._removeEventListeners);
   // private renamePid = this.base.renamePid;
   // private handleTimelineEnd = this.base.handleTimelineEnd(this.html5Ending);
-  private _getStateChangeListeners = this.base.getStateChangeListeners;
+  // private _getStateChangeListeners = this.base.getStateChangeListeners;
 
   // return {
   //   type: _type,
@@ -198,7 +202,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @returns {Void} returns void
    */
   freezeMetaProps(pid) {
-    Object.freeze(this.getMetaObj(pid));
+    Object.freeze(this._getMetaObj(pid));
   }
 
   /**
@@ -212,7 +216,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    */
   unFreezeMetaProps(pid) {
     var newMeta, prop, frozenMeta;
-    frozenMeta = this.getMetaObj(pid);
+    frozenMeta = this._getMetaObj(pid);
     newMeta = {};
 
     for (prop in frozenMeta) {
@@ -262,7 +266,14 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
       div: plrInfo.videoElm
     };
 
-    this.setPlayer(id, this.createMetaObj(newProps, this._html5MetaObj));
+    this.setPlayer(id, Html5PlayerManager.createMetaObj(newProps));
+  }
+
+  // ******************************* private methods ***************
+  private _getMetaObj(pid:string) {
+    if (existy(this.players[pid]) && existy(this.players[pid].meta)) {
+      return this.players[pid].meta;
+    }
   }
 
   /*
@@ -698,7 +709,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    * @private
    */
   private _onStateChange(event) {
-    angular.forEach(this._getStateChangeListeners(), function (cb) {
+    angular.forEach(this.getStateChangeListeners(), function (cb) {
       cb(event);
     });
   }

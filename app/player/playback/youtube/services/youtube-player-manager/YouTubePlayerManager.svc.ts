@@ -56,7 +56,8 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
       super();
 
       // Initialization
-      angular.extend(this._youtubeMetaObj.meta, this._youtubeMetaProps, this.commonMetaProps);
+      var cmp = this.getCommonMetaProps();
+      angular.extend(this._youtubeMetaObj.meta, this._youtubeMetaProps, cmp);
 
       // must be done after the line above in the constructor or else the variables aren't set.
       // var _validMetaKeys = Object.keys(this._youtubeMetaObj.meta);
