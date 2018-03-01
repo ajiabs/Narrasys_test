@@ -29,15 +29,6 @@ import { existy } from '../../../../../shared/services/ittUtils';
  export interface IKalturaPlayerManager {
   create(playerId);
   seedPlayerManager(id, mainPlayer, mediaSrcArr);
-  // onMediaReady(pid);
-  // onPlaying(pid);
-  // onPaused(pid);
-  // onBufferEnd(ev);
-  // onBufferStart();
-  // onPlayerPlayEnd(pid);
-  // onMediaError(e);
-  // onUpdatedPlaybackRate(e);
-  // onPlayerUpdatePlayhead(ev);
   play(pid);
   pause(pid);
   seekTo(pid, t);
@@ -64,7 +55,8 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       super();
 
       /* Initialization */
-      angular.extend(this._kalturaMetaObj.meta, this._kalturaMetaProps, this.commonMetaProps);
+      let cmp = this.getCommonMetaProps();
+      angular.extend(this._kalturaMetaObj.meta, this._kalturaMetaProps, cmp);
     }
 
   private _players = {};
@@ -72,12 +64,7 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   type = 'kaltura';
   private _existy = this.ittUtils.existy;
 
- // private base = this.playerManagerCommons({players: this._players, type: this.type});
- private base = new PlayerManagerCommons( this.ittUtils, {players: this._players, type: this.type});
-  
-  private commonMetaProps = this.base.commonMetaProps;
-
-  private _kalturaMetaProps = {
+   private _kalturaMetaProps = {
     ktObj: {},
     videoType: this.type,
     bufferTimeout: null,
@@ -100,51 +87,14 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
     //add logic if necessary
   };
 
-  // private getPlayer = this.base.getPlayer;
-  // private setPlayer = this.base.setPlayer;
-  // private getPlayerDiv = this.base.getPlayerDiv;
-  // private getInstance = this.base.getInstance(this.predicate);
-  private createMetaObj = this.base.createMetaObj;
-  // private getMetaObj = this.base.getMetaObj;
-  // private getMetaProp = this.base.getMetaProp;
-  // private setMetaProp = this.base.setMetaProp(this._validMetaKeys);
-  // private registerStateChangeListener = this.base.registerStateChangeListener;
-  // private unregisterStateChangeListener = this.base.unregisterStateChangeListener;
-  // private pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.getPlayerState);
-  // private resetPlayerManager = this.base.resetPlayerManager(this._removeEventListeners);
-  // private renamePid = this.base.renamePid;
-  // private handleTimelineEnd = this.base.handleTimelineEnd(this.kalturaEndingFn);
   private ittTimeout = this.ittUtils.ngTimeout;
   private cancelIttTimeout = this.ittUtils.cancelNgTimeout;
-  private _getStateChangeListeners = this.base.getStateChangeListeners;
 
-  // return {
-  //   type: type,
-  //   getMetaProp: getMetaProp,
-  //   setMetaProp: setMetaProp,
-  //   getMetaObj: getMetaObj,
-  //   getPlayerDiv: getPlayerDiv,
-  //   pauseOtherPlayers: pauseOtherPlayers,
-  //   registerStateChangeListener: registerStateChangeListener,
-  //   unregisterStateChangeListener: unregisterStateChangeListener,
-  //   resetPlayerManager: resetPlayerManager,
-  //   renamePid: renamePid,
-  //   seedPlayerManager: seedPlayerManager,
-  //   create: create,
-  //   getPlayerState: getPlayerState,
-  //   play: play,
-  //   pause: pause,
-  //   seekTo: seekTo,
-  //   getCurrentTime: getCurrentTime,
-  //   getBufferedPercent: getBufferedPercent,
-  //   toggleMute: toggleMute,
-  //   setVolume: setVolume,
-  //   setSpeed: setSpeed,
-  //   freezeMetaProps: angular.noop,
-  //   unFreezeMetaProps: angular.noop,
-  //   stop: stop,
-  //   handleTimelineEnd: handleTimelineEnd
-  // };
+  private readyCallback(playerId) {
+    var kdp = document.getElementById(playerId);
+    this.getPlayer(playerId).instance = kdp;
+    this._attachEventListeners(kdp, playerId);
+  }
 
   create(playerId) {
 
@@ -153,20 +103,10 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       entryId = ktObj.entryId,
       uiConfId = ktObj.uiconfId;
 
-      this._createKWidget(playerId, partnerId, entryId, uiConfId, readyCallback)
-      .then(handleSuccess);
-
-
-    function handleSuccess() {
-      // noop
-    }
-
-    function readyCallback(playerId) {
-      var kdp = document.getElementById(playerId);
-      this.getPlayer(playerId).instance = kdp;
-      this._attachEventListeners(kdp, playerId);
-    }
-
+      this._createKWidget(playerId, partnerId, entryId, uiConfId, this.readyCallback)
+      .then(_ => {
+        // don't need to do anything in this case
+      });
   }
 
   seedPlayerManager(id, mainPlayer, mediaSrcArr) {
@@ -184,7 +124,7 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       div: this._getPlayerDiv(id),
       ktObj: ktObj
     };
-    this.setPlayer(id, this.createMetaObj(newProps, this._kalturaMetaObj));
+    this.setPlayer(id, KalturaPlayerManager.createMetaObj(newProps));
   }
 
   /*
@@ -194,6 +134,7 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   private onMediaReady(pid) {
     this._emitStateChange(pid, 6);
     this.setMetaProp(pid, 'duration', this._kdpEval(pid, 'duration'));
+    this.setMetaProp(pid, 'ready', true);
   }
 
   private onPlaying(pid) {
@@ -373,8 +314,9 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       angular.extend(embedObj.flashvars, embedControls);
     }
 
-    return this.kalturaScriptLoader.load(partnerID, uiConfId).then( () => {
-      this.KWidget.embed(embedObj);
+    let context = this;
+    return this.kalturaScriptLoader.load(partnerID, uiConfId).then(_ => {
+      context.KWidget.embed(embedObj);
     });
   }
 
@@ -415,7 +357,7 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       state = this.getMetaProp(pid, 'playerState');
     }
 
-    this._getStateChangeListeners().forEach( (cb) => {
+    this.getStateChangeListeners().forEach( (cb) => {
       cb(this._formatPlayerStateChangeEvent(state, pid));
     });
   }
