@@ -90,11 +90,6 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   private ittTimeout = this.ittUtils.ngTimeout;
   private cancelIttTimeout = this.ittUtils.cancelNgTimeout;
 
-  private readyCallback(playerId) {
-    var kdp = document.getElementById(playerId);
-    this.getPlayer(playerId).instance = kdp;
-    this._attachEventListeners(kdp, playerId);
-  }
 
   create(playerId) {
 
@@ -103,10 +98,18 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       entryId = ktObj.entryId,
       uiConfId = ktObj.uiconfId;
 
-      this._createKWidget(playerId, partnerId, entryId, uiConfId, this.readyCallback)
+      this._createKWidget(playerId, partnerId, entryId, uiConfId, readyCallback)
       .then(_ => {
         // don't need to do anything in this case
       });
+
+      const context = this;
+      function readyCallback(playerId) {
+        var kdp = document.getElementById(playerId);
+        context.getPlayer(playerId).instance = kdp;
+        context._attachEventListeners(kdp, playerId);
+      }
+    
   }
 
   seedPlayerManager(id, mainPlayer, mediaSrcArr) {
@@ -310,13 +313,19 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       'EmbedPlayer.DisableHTML5FlashFallback': true
     };
 
+
     if (divId !== this._mainPlayerId) {
       angular.extend(embedObj.flashvars, embedControls);
     }
 
-    let context = this;
+
+    /// need to drag the context of this object around for readyCallback
+    var kdp = document.getElementById(divId);
+    kdp.npContext = this;
+ 
     return this.kalturaScriptLoader.load(partnerID, uiConfId).then(_ => {
-      context.KWidget.embed(embedObj);
+      // load function creates the GLOBAL VARIABLE KWidget...
+      KWidget.embed(embedObj);
     });
   }
 
@@ -341,6 +350,7 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
         kdp.kBind(evtName + '.' + pid, kMap[evtName]);
       })(evtName);
     });
+
   }
 
   private _removeEventListeners(pid) {
