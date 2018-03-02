@@ -143,47 +143,56 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   }
 
   private onPlaying(pid) {
-    this.setMetaProp(pid, 'playerState', 1);
-    if (this.getMetaProp(pid, 'ready') === true) {
-      this._emitStateChange(pid);
+    let context = this.npContext;
+    context.setMetaProp(pid, 'playerState', 1);
+    if (context.getMetaProp(pid, 'ready') === true) {
+      context._emitStateChange(pid);
     }
   }
 
   private onPaused(pid) {
-    this.setMetaProp(pid, 'playerState', 2);
-    this._emitStateChange(pid);
+    let context = this.npContext;
+    context.setMetaProp(pid, 'playerState', 2);
+    context._emitStateChange(pid);
   }
 
   private onBufferEnd(ev) {
-    var currentState = this.PLAYERSTATES[this.getMetaProp(this.id, 'playerState')];
-    var isBuffering = this.getMetaProp(this.id, 'bufferTimeout');
+    // note: this is the div's id (which is the same as the pid), 
+    // while this.npContext is the class we're living in
+    let context = this.npContext;
+    let pid = this.id;
+    var currentState = context.PLAYERSTATES[context.getMetaProp(pid, 'playerState')];
+    var isBuffering = context.getMetaProp(pid, 'bufferTimeout');
 
-    if (this._existy(isBuffering)) {
-      this.cancelIttTimeout(isBuffering);
+    if (context._existy(isBuffering)) {
+      context.cancelIttTimeout(isBuffering);
     }
 
     if (currentState === 'buffering') {
-      this.play(this.id);
+      context.play(pid);
     }
   }
 
   private onBufferStart() {
-    var pid = this.id;
+    let context = this.npContext;
+    let pid = this.id;
 
     var isBuffering = this.ittTimeout( () => {
-      console.log('stuck in buffer land', this.getMetaProp(pid, 'time'));
-      this._reset(pid);
+      console.log('stuck in buffer land', context.getMetaProp(pid, 'time'));
+      context._reset(pid);
     }, 15 * 1000);
 
-    this.setMetaProp(this.id, 'bufferTimeout', isBuffering);
-    this.setMetaProp(this.id, 'playerState', 3);
-    this._emitStateChange(this.id);
+    context.setMetaProp( pid, 'bufferTimeout', isBuffering);
+    context.setMetaProp( pid, 'playerState', 3);
+    context._emitStateChange( pid );
   }
 
-  private onPlayerPlayEnd(pid) {
-    console.log('playerState ended', this.getMetaProp(pid, 'playerState'));
-    this.setMetaProp(pid, 'playerState', 0);
-    this._emitStateChange(pid);
+  private onPlayerPlayEnd() {
+    let context = this.npContext;
+    let pid = this.id;
+    console.log('playerState ended', context.getMetaProp(pid, 'playerState'));
+    context.setMetaProp(pid, 'playerState', 0);
+    context._emitStateChange(pid);
   }
 
   private onMediaError(e) {
@@ -195,7 +204,9 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   }
 
   private onPlayerUpdatePlayhead(ev) {
-    this.setMetaProp(this.id, 'time', ev);
+    let context = this.npContext;
+    let pid = this.id;
+    context.setMetaProp( pid , 'time', ev);
   }
 
   /*
