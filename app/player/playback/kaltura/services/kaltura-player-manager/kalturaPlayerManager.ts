@@ -98,17 +98,11 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       entryId = ktObj.entryId,
       uiConfId = ktObj.uiconfId;
 
-      this._createKWidget(playerId, partnerId, entryId, uiConfId, readyCallback)
+      this._createKWidget(playerId, partnerId, entryId, uiConfId, this.readyCallback)
       .then(_ => {
         // don't need to do anything in this case
       });
 
-      const context = this;
-      function readyCallback(playerId) {
-        var kdp = document.getElementById(playerId);
-        context.getPlayer(playerId).instance = kdp;
-        context._attachEventListeners(kdp, playerId);
-      }
     
   }
 
@@ -133,6 +127,12 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   /*
    Event Bound functions
    */
+
+  private readyCallback( context, pid ) {
+    var kdp = document.getElementById(pid);
+    context.getPlayer(pid).instance = kdp;
+    context._attachEventListeners(kdp, pid);
+  }
 
   private onMediaReady(pid) {
     let context = this;
@@ -265,7 +265,7 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   }
 
   /*
-   Private methods
+             ***************  Private methods ***************
    */
   private getInstance(pid: string): any {
     if (existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true) {
@@ -306,7 +306,7 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       'targetId': divId,
       'wid': '_' + partnerID,
       'uiconf_id': uiConfId,
-      'readyCallback': onReadyCB,
+      'readyCallback': () => onReadyCB(this, divId),
       'entry_id': entryID,
       'flashvars': {
         'playbackRateSelector.plugin': true,
@@ -379,10 +379,15 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       state = this.getMetaProp(pid, 'playerState');
     }
 
+    /*
     let context = this;
-    this.getStateChangeListeners().forEach( (cb) => {
+    this.getStateChangeListeners().forEach( cb => {
       cb(context._formatPlayerStateChangeEvent(state, pid));
     });
+    */
+   for( const cb of this.getStateChangeListeners()) {
+      cb(this._formatPlayerStateChangeEvent(state, pid));
+   }
   }
 
   private _kdpEval(pid, prop) {
