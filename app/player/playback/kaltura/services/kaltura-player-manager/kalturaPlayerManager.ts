@@ -108,7 +108,6 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
         var kdp = document.getElementById(playerId);
         context.getPlayer(playerId).instance = kdp;
         context._attachEventListeners(kdp, playerId);
-        kdp.npContext = context;
       }
     
   }
@@ -136,14 +135,13 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
    */
 
   private onMediaReady(pid) {
-    let context = this.npContext;
+    let context = this;
     context._emitStateChange(pid, 6);
     context.setMetaProp(pid, 'duration', this._kdpEval(pid, 'duration'));
-   // context.setMetaProp(pid, 'ready', true);
   }
 
   private onPlaying(pid) {
-    let context = this.npContext;
+    let context = this;
     context.setMetaProp(pid, 'playerState', 1);
     if (context.getMetaProp(pid, 'ready') === true) {
       context._emitStateChange(pid);
@@ -151,16 +149,14 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   }
 
   private onPaused(pid) {
-    let context = this.npContext;
+    let context = this;
     context.setMetaProp(pid, 'playerState', 2);
     context._emitStateChange(pid);
   }
 
-  private onBufferEnd(ev) {
-    // note: this is the div's id (which is the same as the pid), 
-    // while this.npContext is the class we're living in
-    let context = this.npContext;
-    let pid = this.id;
+  private onBufferEnd(pid) {
+    let context = this;
+
     var currentState = context.PLAYERSTATES[context.getMetaProp(pid, 'playerState')];
     var isBuffering = context.getMetaProp(pid, 'bufferTimeout');
 
@@ -173,9 +169,8 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
     }
   }
 
-  private onBufferStart() {
-    let context = this.npContext;
-    let pid = this.id;
+  private onBufferStart(pid) {
+    let context = this;
 
     var isBuffering = this.ittTimeout( () => {
       console.log('stuck in buffer land', context.getMetaProp(pid, 'time'));
@@ -187,9 +182,9 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
     context._emitStateChange( pid );
   }
 
-  private onPlayerPlayEnd() {
-    let context = this.npContext;
-    let pid = this.id;
+  private onPlayerPlayEnd(pid) {
+    let context = this;
+
     console.log('playerState ended', context.getMetaProp(pid, 'playerState'));
     context.setMetaProp(pid, 'playerState', 0);
     context._emitStateChange(pid);
@@ -204,7 +199,8 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
   }
 
   private onPlayerUpdatePlayhead(ev) {
-    let context = this.npContext;
+    // DOM's context
+    let context = this;
     let pid = this.id;
     context.setMetaProp( pid , 'time', ev);
   }
@@ -334,7 +330,6 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
 
     /// need to drag the context of this object around for readyCallback
     var kdp = document.getElementById(divId);
-    kdp.npContext = this;
  
     return this.kalturaScriptLoader.load(partnerID, uiConfId).then(_ => {
       // load function creates the GLOBAL VARIABLE KWidget...
@@ -348,13 +343,17 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
 
   private _attachEventListeners(kdp, pid) {
     var kMap = {
-      'playerPlayed': this.onPlaying,
-      'playerPaused': this.onPaused,
-      'bufferStartEvent': this.onBufferStart,
-      'bufferEndEvent': this.onBufferEnd,
-      'playerPlayEnd': this.onPlayerPlayEnd,
+
+      // this set of callbacks require our context and the current pid
+      'playerPlayed':  () => this.onPlaying(pid),
+      'playerPaused': () => this.onPaused(pid),
+      'bufferStartEvent': () => this.onBufferStart(pid),
+      'bufferEndEvent': () => this.onBufferEnd(pid),
+      'playerPlayEnd': () =>this.onPlayerPlayEnd(pid),
+      'mediaReady': () => this.onMediaReady(pid),
+
+      // this set of callbacks only need the DOM's context and the system's parameters
       'mediaError': this.onMediaError,
-      'mediaReady': this.onMediaReady,
       'updatedPlaybackRate': this.onUpdatedPlaybackRate,
       'playerUpdatePlayhead': this.onPlayerUpdatePlayhead
     };
