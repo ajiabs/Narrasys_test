@@ -108,6 +108,7 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
         var kdp = document.getElementById(playerId);
         context.getPlayer(playerId).instance = kdp;
         context._attachEventListeners(kdp, playerId);
+        kdp.npContext = context;
       }
     
   }
@@ -135,9 +136,10 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
    */
 
   private onMediaReady(pid) {
-    this._emitStateChange(pid, 6);
-    this.setMetaProp(pid, 'duration', this._kdpEval(pid, 'duration'));
-    this.setMetaProp(pid, 'ready', true);
+    let context = this.npContext;
+    context._emitStateChange(pid, 6);
+    context.setMetaProp(pid, 'duration', this._kdpEval(pid, 'duration'));
+   // context.setMetaProp(pid, 'ready', true);
   }
 
   private onPlaying(pid) {
@@ -367,8 +369,9 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
       state = this.getMetaProp(pid, 'playerState');
     }
 
+    let context = this;
     this.getStateChangeListeners().forEach( (cb) => {
-      cb(this._formatPlayerStateChangeEvent(state, pid));
+      cb(context._formatPlayerStateChangeEvent(state, pid));
     });
   }
 

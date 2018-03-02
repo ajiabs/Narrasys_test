@@ -166,7 +166,10 @@ export class PlaybackServices implements IPlaybackServices {
     if (mainPlayer) {
       this._mainPlayerId = id;
 
-      if (pm.type !== 'wistia') { // wistia doesn't provide any buffering info currently.
+      if( !pm) {
+        return; // error, no pm loaded
+      }
+      if ( pm.type !== 'wistia') { // wistia doesn't provide any buffering info currently.
         this._pollBufferedPercent();
       }
 
