@@ -50,13 +50,13 @@ export default function TimelineController(
 
   $scope.changeSpeed = function (n) {
     // console.log("timelineController.changeSpeed");
-    // Limit speed to between 0.5 and 2 inclusive
+    // Limit speed to between 0.5 and 1.5 inclusive
     var newSpeed = playbackService.getMetaProp('timeMultiplier') + n;
     if (newSpeed < 0.5) {
       newSpeed = 0.5;
     }
-    if (newSpeed > 2) {
-      newSpeed = 2;
+    if (newSpeed > 1.5) {
+      newSpeed = 1.5;
     }
     timelineSvc.setSpeed(newSpeed);
   };

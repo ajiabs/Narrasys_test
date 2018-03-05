@@ -93,13 +93,13 @@
 			<span class="timedisplay">
 				{{playbackService.getMetaProp('time')| asTime}} / {{playbackService.getMetaProp('duration') | asTime}}
 				<!-- playback rate not currently supported in youtube or on iOS -->
-				<span class="speedcontrol">
+				<span class="speedcontrol" ng-if="!(appState.isIEOrEdge)">
 					<button ng-focus="showControls()" class="button-speedcontrol" ng-click="changeSpeed(-0.25)" aria-label="Slow down video">
 						<div ng-class="{arrowLeft: playbackService.getMetaProp('timeMultiplier') > 0.5}"></div>
 					</button>
 					<span class="speeddisplay" ng-click="resetSpeed()">{{playbackService.getMetaProp('timeMultiplier')}}x</span>
 					<button ng-focus="showControls()" class="button-speedcontrol" ng-click="changeSpeed(0.25)" aria-label="Speed up video">
-						<div ng-class="{arrowRight: playbackService.getMetaProp('timeMultiplier') < 2}"></div>
+						<div ng-class="{arrowRight: playbackService.getMetaProp('timeMultiplier') < 1.5}"></div>
 					</button>
 				</span>
 			</span>
