@@ -7,22 +7,52 @@
  throw() or other js errors also get sent here by $exceptionHandler (though we're ignoring them for now)
  */
 
+ // ********************************
+ // 
+ // updated 2/7/18 
+ // by Joseph B. and Eddie D. 
+ // from Curve10
+ // converted to interface->class structure
+ // NOTE: had to adjust ../shared.module.ts
+ //       to attach as a service and not a factory
+ //
+ // ***********************************************
 
 
-errorSvc.$inject = ['$location'];
 
-export default function errorSvc($location) {
-  var svc = {};
+export interface IErrorServices {
+  error(exception:{}, cause:string):{};
+  notify(note:string):{};
+  init(): void;
+}
 
-  // TODO This is a mess.  make the field names less ridiculously inconsistent.
+export class ErrorSvc implements IErrorServices {
 
-  svc.init = function () {
-    svc.errors = [];
-    svc.notifications = [];
-  };
-  svc.init();
+  static Name = 'errorSvc'; // tslint:disable-line
+  errors = [];
+  notifications = [];
 
-  svc.error = function (exception, cause) {
+ 
+
+  static $inject = ['$location'];
+  
+  constructor( private $location: ng.ILocationService) {
+  }
+
+   // svc() {
+  //   svc.errors = [];
+  //   svc.notifications = [];
+  // };
+  // svc.init();
+
+  init(): void {
+    // added 2/18... resets errors and notifications to empty
+    this.errors = [];
+    this. notifications = [];
+
+  }
+
+  error(exception, cause):{} {
     if (exception && (exception.status === 401 || exception.status === 403)) {
       // "unauthorized" errors will clear login state for now.
       // TODO in future there may be cases where this isn't desirable (i.e. when we support more roles,
@@ -30,7 +60,7 @@ export default function errorSvc($location) {
       console.warn(exception.status, " detected");
 
       // hacky special case for login page
-      if ($location.path() === '/') {
+      if (this.$location.path() === '/') {
         exception = undefined;
       }
     }
@@ -40,25 +70,25 @@ export default function errorSvc($location) {
       if (typeof exception.data === "string") {
         // hide ruby stack trace:
         exception.data = exception.data.replace(/\n/g, '').replace(/==/g, '').replace(/-----.*/g, '');
-        svc.errors.push({
+        this.errors.push({
           "exception": exception
         });
       } else {
-        svc.errors.push({
+        this.errors.push({
           "exception": exception
         });
       }
     } else {
       // generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
-      console.warn("ErrorSvc caught error: ", exception, cause);
+      console.log("ErrorSvc caught error: ", exception, cause);
     }
-  };
+    return this.errors;
+  }
 
-  svc.notify = function (note) {
-    svc.notifications.push({
+  notify(note):{} {
+    this.notifications.push({
       'text': note
     });
-  };
-
-  return svc;
+    return this.notifications;
+  }
 }
