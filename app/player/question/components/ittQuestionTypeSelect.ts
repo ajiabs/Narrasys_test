@@ -20,6 +20,7 @@ export default function ittQuestionTypeSelect() {
       var ctrl = this;
       ctrl.setNgOpts = ittUtils.setNgOpts;
       ctrl.getSelectOpts = selectService.getSelectOpts;
+      ctrl.selectService = selectService;
       onInit();
 
       function onInit() {
