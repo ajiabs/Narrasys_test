@@ -293,7 +293,11 @@ export class SelectService implements ISelectService {
   }
 
   getSelectOpts(type) {
-    return this._select[type];
+    let context = this;
+    if( this.selectService ) {
+      context = this.selectService;
+    }
+    return context._select[type];
   }
 
   getVisibility(prop) {
