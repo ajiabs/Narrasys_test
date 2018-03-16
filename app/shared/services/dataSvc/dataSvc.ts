@@ -159,7 +159,7 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
   // WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
   getNarrative = function (narrativeId) {
     // Special case here, since it needs to call getNonce differently:
-    var defer = $q.defer();
+    var defer = this.$q.defer();
     var cachedNarrative = this.modelSvc.narratives[narrativeId];
     var subdomain = this.ittUtils.getSubdomain(this.$location.host());
     var urlParams = '';
@@ -1191,8 +1191,8 @@ deleteContainer = function(containerId: string): ng.IPromise<any> {
 
     // convert style/layout selections back into their IDs.
     // trust evt.styles[] and evt.layouts[], DO NOT use styleCss (it contains the scene and episode data too!)
-    prepped.style_id = get_id_values('style', evt.styles);
-    prepped.layout_id = get_id_values('layout', evt.layouts);
+    prepped.style_id = this.get_id_values('style', evt.styles);
+    prepped.layout_id = this.get_id_values('layout', evt.layouts);
 
     if (evt._type === 'Chapter') {
       return prepped;

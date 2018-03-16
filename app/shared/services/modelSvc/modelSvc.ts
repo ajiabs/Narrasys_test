@@ -289,11 +289,11 @@ export class ModelSvc implements IModelSvc {
     angular.forEach(episode.languages,  (lang) => {
       if (lang.default) {
         // console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
-         episode.defaultLanguage = lang.code;
+        episode.defaultLanguage = lang.code;
       }
     });
     if (!('defaultLanguage' in this.episode) || this.episode.defaultLanguage === false) {
-       episode.defaultLanguage = 'en'; // last resort
+        episode.defaultLanguage = 'en'; // last resort
     }
     this.setLanguageStrings();
 
