@@ -14,7 +14,7 @@ const url = env.prod
 
 export const config: INpAppConfig = {
   localStorageKey: 'storyToken',
-  apiDataBaseUrl: '//' + window.location.host,
+  apiDataBaseUrl: url,
   youtube: {
     domain: '//gdata.youtube.com/',
     timeout: 5000
