@@ -2,13 +2,18 @@
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
+// ** Updated by Curve10 (JAB/EDD)
+//    Feb 2018 
+//
+
 import { IAnnotators, Partial } from '../../../interfaces';
+import { config } from '../../../config';
 import {
   createInstance, IAsset, IContainer, ICustomer, IEpisode, ILayout, INarrative, IScene, IStyle, TTemplate,
   NEvent, IEvent, IPlugin,
 } from '../../../models';
 import { EventTemplates } from '../../../constants';
-import { config } from '../../../config';
+import { IQService } from 'angular';
 
 export interface IDataCache {
   template: { [templateId: string]: TTemplate };
@@ -64,18 +69,32 @@ export interface IModelSvc {
     playerType?: 'episode' | 'editor' | 'producer'
   ): string;
 }
-modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'appState', 'playbackService', 'urlService'];
-export default function modelSvc($filter, $location, ittUtils, appState, playbackService, urlService) {
-  // const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
-  var svc: IModelSvc = Object.create(null);
 
-  svc.episodes = {};
-  svc.assets = {};
-  svc.events = {}; // NOTE svc.events contains scenes and items -- anything that happens during the episode timeline
-  svc.containers = {};
-  svc.narratives = {};
-  svc.customers = {};
-  svc.dataCache = {
+export class ModelSvc implements IModelSvc {
+  static Name = 'modelSvc';   // tslint: disable-line
+
+ static $inject = ['$filter', '$location', 'appState', 'playbackService', 'urlService', 'ittUtils'];
+ constructor(
+   private $filter,
+   private $location,
+   private appState,
+   private playbackService, 
+  private urlService,
+  private ittUtils) {
+
+ }
+
+  // const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
+  // TODO ((((((((((((((( FIGURE THIS ONE OUT )))))))))))))))
+  // var svc = IModelSvc = Object.create(null);
+
+  episodes = {};
+  assets = {};
+  events = {}; // NOTE privat events contains scenes and items -- anything that happens during the episode timeline
+  containers = {};
+  narratives = {};
+  customers = {};
+  dataCache = {
     template: {},
     layout: {},
     style: {}
@@ -91,12 +110,12 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
   // use angular.extend if an object already exists, so we don't lose existing bindings
 
 
-  svc.readDataCache = readCache;
-  function readCache<K extends keyof IDataCache, F extends keyof TDataCacheItem>(
+  
+ readDataCache<K extends keyof IDataCache, F extends keyof TDataCacheItem>(
     cache: K,
     field: F,
     val: TDataCacheItem[F]): TDataCacheItem {
-    const cacheType = svc.dataCache[cache];
+    const cacheType = this.dataCache[cache];
     for (const id in cacheType) {
       if (cacheType.hasOwnProperty(id) && cacheType[id][field] === val) {
         return cacheType[id];
@@ -105,8 +124,9 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     return null;
   }
 
-  svc.mainVideoNewWindowUrl = mainVideoNewWindowUrl;
-  function mainVideoNewWindowUrl(
+
+
+ mainVideoNewWindowUrl(
     accessToken: string,
     entityId: string,
     timelineId?: string,
@@ -123,46 +143,48 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     }
   }
 
-  svc.getNarrativeByPathOrId = function (pathOrId) {
+ getNarrativeByPathOrId (pathOrId) {
     var isMongoId = /^[0-9a-fA-F]{24}$/.test(pathOrId);
     if (isMongoId) {
-      return svc.narratives[pathOrId];
+      return this.narratives[pathOrId];
     }
     //else loop and find the matching path slug passed in.
     var n;
-    for (n in svc.narratives) {
-      if (svc.narratives.hasOwnProperty(n)) {
-        if (pathOrId === svc.narratives[n].path_slug.en) {
-          return svc.narratives[n];
+    for (n in this.narratives) {
+      if (this.narratives.hasOwnProperty(n)) {
+        if (pathOrId === this.narratives[n].path_slug.en) {
+          return this.narratives[n];
         }
       }
 
     }
   };
+
   //add subdomain to each narrative then cache
   //add narratives to customer object then cache customer.
-  svc.assocNarrativesWithCustomer = assocNarrativesWithCustomer;
-  function assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer {
-    narratives.forEach(function (narrative) {
-      svc.cache('narrative', narrative);
+  assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer {
+  
+    narratives.forEach( (narrative) => {
+      this.cache('narrative', narrative);
     });
-    customer.narratives = cachedNarrativesByCustomer(customer);
-    svc.cache('customer', customer);
+
+    customer.narratives = this.cachedNarrativesByCustomer(customer);
+      this.cache('customer', customer);
     // //remove any old customer references if narrative was changed to a different customer
-    // Object.keys(svc.customers)
+    // Object.keys(this.customers)
     //   .filter(function(key) {
     //   return customer._id !== key;
     // })
     //   .forEach(function(customerId) {
-    //     var cust = svc.customers[customerId];
+    //     var cust = this.customers[customerId];
     //     var custNarratives = cust.narratives;
     //     var found;
-    //     if (ittUtils.existy(custNarratives) && custNarratives.length > 0 && narratives.length === 1) {
-    //       var narrative = svc.narratives[narratives[0]._id];
+    //     if (this.ittUtils.existy(custNarratives) && custNarratives.length > 0 && narratives.length === 1) {
+    //       var narrative = this.narratives[narratives[0]._id];
     //       found = custNarratives.indexOf(narrative);
     //       if (found !== -1) {
     //         cust.narratives.splice(found, 1);
-    //         svc.cache('customer', cust);
+    //         this.cache('customer', cust);
     //       }
     //     }
     //   });
@@ -170,31 +192,29 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     return customer;
   }
 
-  svc.cachedNarrativesByCustomer = cachedNarrativesByCustomer;
-  function cachedNarrativesByCustomer(customer: ICustomer): INarrative[] {
-    return Object.keys(svc.narratives).reduce(function (narratives, key) {
-      if (svc.narratives[key].customer_id === customer._id) {
-        narratives.push(svc.narratives[key]);
+   cachedNarrativesByCustomer(customer: ICustomer): INarrative[] {
+    return Object.keys(this.narratives).reduce( (narratives, key) => {
+      if (this.narratives[key].customer_id === customer._id) {
+        narratives.push(this.narratives[key]);
       }
       return narratives;
     }, []);
   }
 
-  svc.getCustomersAsArray = getCustomersAsArray;
-  function getCustomersAsArray() {
-    return Object.keys(svc.customers).map(function (c) {
-      return svc.customers[c];
+  getCustomersAsArray() {
+
+    return Object.keys(this.customers).map( (c) =>{
+      return this.customers[c];
     });
   }
 
-  svc.getNarrativesAsArray = getNarrativesAsArray;
-  function getNarrativesAsArray() {
-    return Object.keys(svc.narratives).map(function (n) {
-      return svc.narratives[n];
+   getNarrativesAsArray() {
+    return Object.keys(this.narratives).map( (n) => {
+      return this.narratives[n];
     });
   }
 
-  svc.cache = function <T>(cacheType: string, item: T): T {
+ cache = function <T>(cacheType: string, item: T): T {
     if (cacheType === 'narrative') {
       // NOTE no deriveNarrative used here, not needed so far
       const instance = createInstance('Narrative', item) as INarrative;
@@ -203,27 +223,27 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
         instance.timelines = instance.timelines.map(tl => createInstance('Timeline', tl));
       }
 
-      if (svc.narratives[item._id]) {
-        angular.extend(svc.narratives[item._id], instance);
+      if (this.narratives[item._id]) {
+        angular.extend(this.narratives[item._id], instance);
       } else {
-        svc.narratives[item._id] = angular.copy(instance) as INarrative;
+        this.narratives[item._id] = angular.copy(instance) as INarrative;
       }
     }
     if (cacheType === 'customer') {
       const instance = createInstance('Customer', item);
       // NOTE no deriveCustomer used here, not needed so far
-      if (svc.customers[item._id]) {
-        angular.extend(svc.customers[item._id], instance);
+      if (this.customers[item._id]) {
+        angular.extend(this.customers[item._id], instance);
       } else {
-        svc.customers[item._id] = angular.copy(instance) as ICustomer;
+        this.customers[item._id] = angular.copy(instance) as ICustomer;
       }
     }
     if (cacheType === 'episode') {
       const instance = createInstance('Episode', item);
-      if (svc.episodes[item._id]) {
-        angular.extend(svc.episodes[item._id], svc.deriveEpisode(angular.copy(instance)));
+      if (this.episodes[item._id]) {
+        angular.extend(this.episodes[item._id], this.deriveEpisode(angular.copy(instance)));
       } else {
-        svc.episodes[item._id] = svc.deriveEpisode(angular.copy(instance));
+        this.episodes[item._id] = this.deriveEpisode(angular.copy(instance));
       }
     } else if (cacheType === 'event') {
       const instance = createInstance(item._type, item) as IEvent;
@@ -231,48 +251,50 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       if (!instance.title) {
         instance.title = {};
       }
-      if (svc.events[item._id]) {
-        angular.extend(svc.events[item._id], svc.deriveEvent(angular.copy(instance)));
+      if (this.events[item._id]) {
+        angular.extend(this.events[item._id], this.deriveEvent(angular.copy(instance)));
       } else {
-        svc.events[item._id] = svc.deriveEvent(angular.copy(instance));
+        this.events[item._id] = this.deriveEvent(angular.copy(instance));
       }
     } else if (cacheType === 'asset') {
       const instance = createInstance('Asset', item);
-      if (svc.assets[item._id]) {
-        angular.extend(svc.assets[item._id], svc.deriveAsset(angular.copy(instance)));
+      if (this.assets[item._id]) {
+        angular.extend(this.assets[item._id], this.deriveAsset(angular.copy(instance)));
       } else {
-        svc.assets[item._id] = svc.deriveAsset(angular.copy(instance));
+        this.assets[item._id] = this.deriveAsset(angular.copy(instance));
       }
     } else if (cacheType === 'container') {
       const instance = createInstance('Container', item);
-      if (svc.containers[item._id]) {
-        angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(instance)));
+      if (this.containers[item._id]) {
+        angular.extend(this.containers[item._id], this.deriveContainer(angular.copy(instance)));
       } else {
-        svc.containers[item._id] = svc.deriveContainer(angular.copy(instance));
+        this.containers[item._id] = this.deriveContainer(angular.copy(instance));
       }
 
     }
 
-    return svc[cacheType + 's'][item._id] as T;
+
+      return this[cacheType + 's'][item._id] as T;
   };
 
-  // svc.deriveFoo() are for efficiency precalculations.
+  // this.deriveFoo() are for efficiency precalculations.
   // Input API data, output API data plus clientside-only convenience variables.
   // Should call this after making any changes to the underlying data.
 
-  svc.deriveEpisode = function (episode) {
+  deriveEpisode = function (episode) {
     // console.log("deriveEpisode:", episode);
 
-    angular.forEach(episode.languages, function (lang) {
+
+    angular.forEach(episode.languages,  (lang) => {
       if (lang.default) {
         // console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
-        episode.defaultLanguage = lang.code;
+        this.episode.defaultLanguage = lang.code;
       }
     });
-    if (episode.defaultLanguage === false) {
-      episode.defaultLanguage = 'en'; // last resort
+    if (this.episode.defaultLanguage === false) {
+      this.episode.defaultLanguage = 'en'; // last resort
     }
-    svc.setLanguageStrings();
+    this.setLanguageStrings();
 
     // For now, automatically add customer-specific styles to episode if there aren't other selections.
     // (TODO Producer should do this automatically; this is for legacy episodes):
@@ -280,9 +302,9 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       episode.styles = [];
     }
 
-    if (episode.title && svc.events['internal:landingscreen:' + episode._id]) {
-      svc.events['internal:landingscreen:' + episode._id].title = episode.title;
-      svc.events['internal:landingscreen:' + episode._id] = setLang(svc.events['internal:landingscreen:' + episode._id]);
+    if (episode.title && this.events['internal:landingscreen:' + episode._id]) {
+      this.events['internal:landingscreen:' + episode._id].title = episode.title;
+      this.events['internal:landingscreen:' + episode._id] = this.setLang(this.events['internal:landingscreen:' + episode._id]);
     }
     if (episode.template) {
       const doResizeIframe =
@@ -290,24 +312,24 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
         || episode.template.displayName === 'Narrasys Professional';
 
       if (episode.template && doResizeIframe) {
-        appState.resizeIframeReviewMode = true;
+        this.appState.resizeIframeReviewMode = true;
       }
     }
 
-    episode = setLang(episode);
+    episode = this.setLang(episode);
     return episode;
   };
 
-  svc.deriveAsset = function (asset) {
+  deriveAsset = function (asset) {
     let _asset = Object.assign({}, asset);
     if (_asset._type === 'Asset::Video') {
-      _asset = urlService.resolveVideo(_asset);
+      _asset = this.urlService.resolveVideo(_asset);
     }
     if (_asset.url) {
       // escape URLs for css background-image https://stackoverflow.com/q/25613552
       _asset.cssBgUrl = _asset.url.replace(/\"/g, '\\"');
     }
-    _asset = setLang(_asset);
+    _asset = this.setLang(_asset);
     return _asset;
   };
 
@@ -337,7 +359,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
    secondary image URL (speaker icon)
    */
 
-  svc.deriveContainer = function (container) {
+  deriveContainer (container) {
 
     // console.log("deriving container", container);
 
@@ -345,22 +367,23 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     // first sort the children:
     if (container.children && container.children.length > 0) {
       // When we populate sort_order, we can remove this:
-      container.children = container.children.sort(function (a, b) {
+      container.children = container.children.sort( (a, b)  => {
         return (a.name.en > b.name.en) ? 1 : -1; // WARN always sorted by english
       });
       // This is the real one (for now sort_order always is zero, so this sort will have no effect):
-      container.children = container.children.sort(function (a, b) {
+      container.children = container.children.sort( (a, b) => {
         return a.sort_order - b.sort_order;
       });
 
       var childRefs = [];
-      angular.forEach(container.children, function (child) {
+   
+      angular.forEach(container.children,  (child) => {
         const instance = createInstance('Container', child);
-        if (svc.containers[child._id]) {
-          childRefs.push(svc.containers[child._id]);
+        if (this.containers[child._id]) {
+          childRefs.push(this.containers[child._id]);
         } else {
           instance.haveNotLoadedChildData = true; // not sure yet if this is necessary
-          svc.containers[child._id] = angular.copy(setLang(instance));
+          this.containers[child._id] = angular.copy(this.setLang(instance));
         }
 
       });
@@ -369,10 +392,10 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     } else {
       container.children = [];
     }
-    return setLang(container);
+    return this.setLang(container);
   };
 
-  var isTranscript = function (item) {
+  isTranscript (item) {
     if (typeof (item) !== 'undefined') {
       if (item._type === 'Annotation' && item.component_name === EventTemplates.TRANSCRIPT_TEMPLATE) {
         return true;
@@ -382,14 +405,14 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     }
   };
 
-  svc.deriveEvent = function deriveEvent<T extends IEvent>(_event: Partial<T>): T {
+  deriveEvent = function deriveEvent<T extends IEvent>(_event: Partial<T>): T {
     let event = _event;
-    const cmpTemplate = readCache('template', 'id', event.template_id);
+    const cmpTemplate = this.readDataCache('template', 'id', event.template_id);
     if (cmpTemplate != null) {
       event.component_name = cmpTemplate.component_name;
     }
 
-    event = setLang(event);
+    event = this.setLang(event);
     if (event._type !== 'Scene') {
 
       event.searchableText = (event.display_annotation || event.display_description) + ' ' + (event.display_title || event.display_annotator);
@@ -401,14 +424,14 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       }
 
       if (event.avatar_id) {
-        if (!svc.assets[event.avatar_id]) { // not sure if necessary here.  Should move this into a getter function for assets anyway
-          svc.assets[event.avatar_id] = {};
+        if (!this.assets[event.avatar_id]) { // not sure if necessary here.  Should move this into a getter function for assets anyway
+          this.assets[event.avatar_id] = {};
         }
-        event.avatar = svc.assets[event.avatar_id];
+        event.avatar = this.assets[event.avatar_id];
       }
 
 
-      if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].template.displayName === 'University of Southern California') {
+      if (this.episodes[event.cur_episode_id] && this.episodes[event.cur_episode_id].template.displayName === 'University of Southern California') {
         // HACKS AHOY
         // USC made a bunch of change requests post-release; this was the most expedient way
         // to deal with them. Sorry!
@@ -459,7 +482,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       }
 
       // Old templates which (TODO) should have been database fields instead:
-      if (isTranscript(event)) {
+      if (this.isTranscript(event)) {
         event.isTranscript = true;
       }
 
@@ -521,11 +544,11 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     return event as T;
   };
 
-  var setLang = function (obj) {
+  private setLang (obj) {
     // TODO: keywords, customers/oauth2_message
     // TODO use episode default language instead of 'en'
-    var langToSet = (appState.lang) ? appState.lang : 'en';
-    angular.forEach(['title', 'annotator', 'annotation', 'description', 'name'], function (field) {
+    var langToSet = (this.appState.lang) ? this.appState.lang : 'en';
+    angular.forEach(['title', 'annotator', 'annotation', 'description', 'name'],  (field) => {
       if (obj[field]) {
         if (typeof (obj[field]) === 'string') {
           // TODO can delete this after all data has been migrated to object form
@@ -542,15 +565,16 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     return obj;
   };
 
-  svc.setLanguageStrings = function () {
-    angular.forEach(svc.events, function (evt) {
-      evt = setLang(evt);
+  setLanguageStrings = function () {
+ 
+    angular.forEach(this.events,  (evt) => {
+      evt = this.setLang(evt);
     });
-    angular.forEach(svc.episodes, function (ep) {
-      ep = setLang(ep);
+    angular.forEach(this.episodes,  (ep) => {
+      ep = this.setLang(ep);
     });
-    angular.forEach(svc.containers, function (container) {
-      container = setLang(container);
+    angular.forEach(this.containers,  (container) => {
+      container = this.setLang(container);
     });
     // todo:  containers
   };
@@ -563,8 +587,8 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
   // 4. Uploads
   //		- Document > Image
   //5. all other annotations
-  function _sortItems(items) {
-    return items.sort(function (a, b) {
+  _sortItems(items) {
+    return items.sort( (a, b) => {
       if (a.start_time === b.start_time) {
         if (a.producerItemType === 'chapter') {
           return -1;
@@ -608,7 +632,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     });
   }
 
-  /*  Any changes to any scene or item data must call svc.resolveEpisodeEvents afterwards. It sets:
+  /*  Any changes to any scene or item data must call this.resolveEpisodeEvents afterwards. It sets:
    - episode.scenes
    - episode.items
    - scene.items
@@ -624,14 +648,14 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
    startingscreen extends from below zero to 0.01s
 
    */
-  svc.resolveEpisodeEvents = function (epId: string): IEpisode {
+ resolveEpisodeEvents = function (epId: string): IEpisode {
     // console.log("resolveEpisodeEvents");
     //Build up child arrays: episode->scene->item
     var scenes = [];
     var items = [];
     var chapters = [];
-    var episode = svc.episodes[epId];
-    angular.forEach(svc.events, function (event) {
+    var episode = this.episodes[epId];
+    angular.forEach(this.events,  (event) => {
       if (event.cur_episode_id !== epId) {
         return;
       }
@@ -652,7 +676,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     // This is imperfect -- a few will slip through if there is a missing translation in the default language -- but good enough for now
     // TODO replace all of this, have the API keep track of each annotator as a real, separate entity
     var annotators: IAnnotators = {};
-    angular.forEach(items, function (event) {
+    angular.forEach(items,  (event) => {
       if (event._type === 'Annotation' && event.chapter_marker === true) {
         chapters.push(event);
       }
@@ -699,18 +723,18 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
     // WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
     // attach array of scenes to the episode.
-    // Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
+    // Note these are references to objects in this.events[]; to change item data, do it in this.events[] instead of here.
     var duration = 0;
     if (episode.masterAsset) {
       duration = episode.masterAsset.duration;
-      angular.forEach(episode.scenes, function (scene) {
+      angular.forEach(episode.scenes,  (scene) => {
         if (scene.start_time > duration) {
           scene.start_time = duration - 0.2; // last resort HACK to catch bad scene data
         }
       });
     }
 
-    episode.scenes = scenes.sort(function (a, b) {
+    episode.scenes = scenes.sort( (a, b) =>{
       if (a._id.indexOf('internal:start') > -1 || b._id.indexOf('internal:end') > -1) {
         return -1;
       }
@@ -722,12 +746,12 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
     // and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
 
-    episode.chapters = chapters.sort(function (a, b) {
+    episode.chapters = chapters.sort( (a, b) => {
       return a.start_time - b.start_time;
     });
 
-    // Fix bad event timing data.  (see also svc.deriveEvent())
-    angular.forEach(items, function (event) {
+    // Fix bad event timing data.  (see also this.deriveEvent())
+    angular.forEach(items,  (event)  => {
 
       // We have some events whose start time is beyond the episode duration; they were winding up attached to the endingscene (and therefore invisible)
       // HACK just shove those into the end of the last (real) scene with a short duration
@@ -752,7 +776,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       }
     });
 
-    episode.items = _sortItems(items);
+    episode.items = this._sortItems(items);
     // console.log('after sort \n', items);
     // ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
     // Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
@@ -786,7 +810,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
          start is after this scene: let the next loop take care of it
          */
         if (event.start_time >= scene.start_time && event.start_time < scene.end_time) {
-          if (isTranscript(event)) {
+          if (this.isTranscript(event)) {
             // console.log('transcript event', event);
             //the current event is a transcript and we have a transcript (in this scene) before it that has incorrectly set its end_time to the scene end_time.
             if (previousTranscript.end_time === scene.end_time) {
@@ -799,7 +823,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
           if (event.end_time <= scene.end_time) {
             // entirely within scene
-            svc.events[event._id].scene_id = scene._id;
+            this.events[event._id].scene_id = scene._id;
             sceneItems.push(event);
           } else {
 
@@ -830,11 +854,11 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
       }
       // attach array of items to the scene event:
-      // Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
-      svc.events[scene._id].items = _sortItems(sceneItems);
+      // Note these items are references to objects in this.events[]; to change item data, do it in this.events[] instead of here.
+      this.events[scene._id].items = this._sortItems(sceneItems);
     }
     // Now that we have the structure, calculate event styles (for scenes and items:)
-    episode.styleCss = cascadeStyles(episode);
+    episode.styleCss = this.cascadeStyles(episode);
     // the professional css class only should be applied on the ittEpisode template div
     // episode.styleCss is used elsewhere and with the professional class it causes issues in some cases
     episode.templateCss = episode.styleCss;
@@ -845,11 +869,12 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     if (episode.template && episode.template.displayName === 'Wiley') {
       episode.templateCss += ' wiley-endscreentext ';
     }
-    angular.forEach(svc.events, function (event) {
+
+    angular.forEach(this.events,  (event) => {
       if (event.cur_episode_id !== epId) {
         return;
       }
-      event.styleCss = cascadeStyles(event);
+      event.styleCss = this.cascadeStyles(event);
       var isImgPlain = event.component_name === EventTemplates.IMAGE_PLAIN_TEMPLATE ;
       var isInlineImgWText = event.component_name === EventTemplates.IMAGE_INLINE_WITHTEXT_TEMPLATE;
       var isImgCap = event.component_name === EventTemplates.SLIDING_CAPTION;
@@ -866,11 +891,11 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       var currentScene;
 
       if (event._type !== 'Scene') {
-        currentScene = svc.scene(event.scene_id);
+        currentScene = this.scene(event.scene_id);
         if (episode.styles.indexOf('timestampNone') === -1 && episode.styles.indexOf('timestampInline') === -1 &&
-          (!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) || (currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
+          (!this.ittUtils.existy(currentScene) || !this.ittUtils.existy(currentScene.styles) || (currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
           if (isImgPlain || isLongText || isDef) {
-            if (!ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
+            if (!this.ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
               event.styleCss += ' timestampNone';
             }
           }
@@ -879,18 +904,18 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
           event.styleCss += ' timestampNone';
         }
 
-        if ((!ittUtils.existy(event.layouts) || event.layouts.indexOf('showCurrent') === -1) &&
-          ittUtils.intersection(episode.styles, potentialHighlight).length === 0 &&
-          (!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) || ittUtils.intersection(currentScene.styles, potentialHighlight).length === 0) &&
-          (!ittUtils.existy(event.styles) || ittUtils.intersection(event.styles, potentialHighlight).length === 0)) {
+        if ((!this.ittUtils.existy(event.layouts) || event.layouts.indexOf('showCurrent') === -1) &&
+        this.ittUtils.intersection(episode.styles, potentialHighlight).length === 0 &&
+          (!this.ittUtils.existy(currentScene) || !this.ittUtils.existy(currentScene.styles) || this.ittUtils.intersection(currentScene.styles, potentialHighlight).length === 0) &&
+          (!this.ittUtils.existy(event.styles) || this.ittUtils.intersection(event.styles, potentialHighlight).length === 0)) {
           event.styleCss += ' highlightSolid';
         }
 
-        if (ittUtils.intersection(episode.styles, potentialTransitions).length === 0 &&
-          (!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) || ittUtils.intersection(currentScene.styles, potentialTransitions).length === 0) &&
-          (!ittUtils.existy(event.styles) || ittUtils.intersection(event.styles, potentialTransitions).length === 0)) {
+        if (this.ittUtils.intersection(episode.styles, potentialTransitions).length === 0 &&
+          (!this.ittUtils.existy(currentScene) || !this.ittUtils.existy(currentScene.styles) || this.ittUtils.intersection(currentScene.styles, potentialTransitions).length === 0) &&
+          (!this.ittUtils.existy(event.styles) || this.ittUtils.intersection(event.styles, potentialTransitions).length === 0)) {
           if (isImgPlain || isInlineImgWText || isImgCap || isImgThumb || isPq || isBgImage) {
-            if (!ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
+            if (!this.ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
               event.styleCss += ' transitionFade';
             } else {
               event.styleCss += ' transitionPop';
@@ -912,13 +937,13 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     return episode;
   };
 
-  svc.resolveEpisodeContainers = function (epId) {
+  resolveEpisodeContainers = function (epId) {
     // Constructs the episode's parents[] array, up to its navigation depth plus (skipping the episode container itself)
     // Also sets the episode's nextEpisodeContainer and prevEpisodeContainer
 
     // all parent containers should have been loaded by the time this is called, so we don't need to worry about asynch at each step
     // console.log("resolveEpisodeContainers", epId);
-    var episode = svc.episodes[epId];
+    var episode = this.episodes[epId];
     episode.parents = [];
     delete episode.previousEpisodeContainer;
     delete episode.nextEpisodeContainer;
@@ -934,32 +959,32 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
 
    // console.log("setParents", depth, epId, containerId);
-   var episode = svc.episodes[epId];
+   var episode = this.episodes[epId];
 
    // THis will build up the parents array backwards, starting at the end
    if (depth <= episode.navigation_depth) { // skip the episode container
-   episode.parents[depth - 1] = svc.containers[containerId];
+   episode.parents[depth - 1] = this.containers[containerId];
    }
 
    if (depth === episode.navigation_depth) {
    // as long as we're at the sibling level, get the next and previous episodes
    // (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
-   for (var i = 0; i < svc.containers[containerId].children.length; i++) {
-   var c = svc.containers[containerId].children[i];
+   for (var i = 0; i < this.containers[containerId].children.length; i++) {
+   var c = this.containers[containerId].children[i];
    if (c.episodes[0] === epId) {
    if (i > 0) {
    // find the previous 'Published' episode
    for (var j = i - 1; j > -1; j--) {
-   if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
-   episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
+   if (this.containers[this.containers[containerId].children[j]._id].status === 'Published') {
+   episode.previousEpisodeContainer = this.containers[this.containers[containerId].children[j]._id];
    break;
    }
    }
    }
-   if (i < svc.containers[containerId].children.length - 1) {
-   for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
-   if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
-   episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
+   if (i < this.containers[containerId].children.length - 1) {
+   for (var k = i + 1; k < this.containers[containerId].children.length; k++) {
+   if (this.containers[this.containers[containerId].children[k]._id].status === 'Published') {
+   episode.nextEpisodeContainer = this.containers[this.containers[containerId].children[k]._id];
    break;
    }
    }
@@ -970,24 +995,24 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
    // iterate
    if (depth > 1) {
-   setParents(depth - 1, epId, svc.containers[containerId].parent_id);
+   setParents(depth - 1, epId, this.containers[containerId].parent_id);
    }
 
    };
    */
 
-  svc.episode = function (epId) {
-    if (!svc.episodes[epId]) {
+  episode = function (epId) {
+    if (!this.episodes[epId]) {
       // console.warn('called modelSvc.episode for a nonexistent ID', epId);
     }
-    return svc.episodes[epId];
+    return this.episodes[epId];
   };
 
   // returns all scenes and items for a given episode
-  svc.episodeEvents = function (epId) {
+  episodeEvents = function (epId) {
     // console.log("modelSvc.episodeEvents");
     var ret = [];
-    angular.forEach(svc.events, function (event) {
+    angular.forEach(this.events,  (event) => {
       if (event.cur_episode_id !== epId) {
         return;
       }
@@ -996,27 +1021,25 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     return ret;
   };
 
-  svc.isOnExistingSceneStart = isOnExistingSceneStart;
-  function isOnExistingSceneStart(t) {
-    return getEpisodeScenes().some(function (scene) {
-      return scene.start_time === ittUtils.parseTime(t);
+  isOnExistingSceneStart(t) {
+    return this.getEpisodeScenes().some( (scene) =>{
+      return scene.start_time === this.ittUtils.parseTime(t);
     });
   }
 
-  svc.getEpisodeScenes = getEpisodeScenes;
-  function getEpisodeScenes() {
-    return Object.keys(svc.events).reduce(function (scenes, key) {
-      if (svc.events[key]._type === 'Scene' && svc.events[key].episode_id === appState.episodeId) {
-        scenes.push(svc.events[key]);
+  getEpisodeScenes() {
+    return Object.keys(this.events).reduce( (scenes, key) => {
+      if (this.events[key]._type === 'Scene' && this.events[key].episode_id === this.appState.episodeId) {
+        scenes.push(this.events[key]);
       }
       return scenes;
     }, []);
-  }
+  };
 
   // returns whichever scene is current for the given time.
-  svc.sceneAtEpisodeTime = function (epId, t) {
-    t = t || playbackService.getMetaProp('time');
-    var scenes = svc.episodes[epId].scenes;
+  sceneAtEpisodeTime = function (epId, t) {
+    t = t || this.playbackService.getMetaProp('time');
+    var scenes = this.episodes[epId].scenes;
     for (var i = 0; i < scenes.length; i++) {
       if (scenes[i].start_time <= t && scenes[i].end_time > t) {
         return scenes[i];
@@ -1024,19 +1047,19 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     }
   };
 
-  svc.scene = function (sceneId) {
-    // console.log("modelsvc.scene: ", sceneId);
-    if (!svc.events[sceneId]) {
+  scene = function (sceneId) {
+    // console.log("modelthis.scene: ", sceneId);
+    if (!this.events[sceneId]) {
       // console.warn('called modelSvc.scene for a nonexistent ID', sceneId);
     }
-    return svc.events[sceneId];
+    return this.events[sceneId];
   };
 
   // Squish an episode, scene or item's episode styles, scene styles, and styles into a single styleCss string.
   // Styles with these prefixes are the only ones that get passed down to children, and only if there isn't
   // one with the same prefix on the child.
   // typography, color, highlight, timestamp, transition
-  var cascadeStyles = function (thing) {
+  cascadeStyles (thing) {
     var styleCategories = { // used to keep track of what categories the thing is already using:
       'typography': false,
       'color': false,
@@ -1048,9 +1071,9 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
     // start with the thing's own styles
 
-    angular.forEach(thing.styles, function (style) {
+    angular.forEach(thing.styles,  (style) => {
       cssArr.push(style); // keep all styles; not just the ones in a styleCategory
-      angular.forEach(styleCategories, function (categoryValue, categoryName) {
+      angular.forEach(styleCategories,  (categoryValue, categoryName) => {
         if (style.indexOf(categoryName) === 0) {
           styleCategories[categoryName] = style;
         }
@@ -1059,9 +1082,9 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
     // add each sceneStyle, only if it is in a styleCategory the thing isn't already using
     if (thing.scene_id) {
-      var sceneStyles = svc.events[thing.scene_id].styles;
-      angular.forEach(sceneStyles, function (style) {
-        angular.forEach(styleCategories, function (categoryValue, categoryName) {
+      var sceneStyles = this.events[thing.scene_id].styles;
+      angular.forEach(sceneStyles,  (style) => {
+        angular.forEach(styleCategories,  (categoryValue, categoryName) => {
           if (!styleCategories[categoryName] && style.indexOf(categoryName) === 0) {
             cssArr.push(style);
             styleCategories[categoryName] = style;
@@ -1078,9 +1101,9 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
     // add each episodeStyle, only if it is in a styleCategory the thing isn't already using
     if (thing.cur_episode_id) {
-      var episodeStyles = svc.episodes[thing.cur_episode_id].styles;
-      angular.forEach(episodeStyles, function (style) {
-        angular.forEach(styleCategories, function (categoryValue, categoryName) {
+      var episodeStyles = this.episodes[thing.cur_episode_id].styles;
+      angular.forEach(episodeStyles,  (style) => {
+        angular.forEach(styleCategories,  (categoryValue, categoryName) => {
           if (!styleCategories[categoryName] && style.indexOf(categoryName) === 0) {
             cssArr.push(style);
           }
@@ -1100,17 +1123,18 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     return cssArr.join(' ');
   };
 
-  svc.assocEventWithAsset = assocEventWithAsset;
-  function assocEventWithAsset(eventId, assetId) {
-    if (svc.events[eventId] && svc.assets[assetId]) {
-      svc.events[eventId].asset = svc.assets[assetId];
+  assocEventWithAsset(eventId, assetId) {
+    if (this.events[eventId] && this.assets[assetId]) {
+      this.events[eventId].asset = this.assets[assetId];
     }
   }
 
-  svc.resolveEpisodeAssets = function (episodeId) {
+  resolveEpisodeAssets = function (episodeId) {
     // console.log("resolveEpisodeAssets");
-    // attaches assets to svc.events
-    angular.forEach(svc.events, function (item) {
+    // attaches assets to this.events
+ 
+    
+    angular.forEach(this.events,  (item) => {
       if (item.cur_episode_id !== episodeId) {
         return;
       }
@@ -1118,32 +1142,32 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       if (!assetId) {
         return;
       }
-      if (svc.assets[assetId]) {
-        svc.events[item._id].asset = svc.assets[assetId];
+      if (this.assets[assetId]) {
+        this.events[item._id].asset = this.assets[assetId];
       }
     });
     // Do episode's master asset and poster, too.  If they're not here, do nothing; this will get called again after assets load
-    if (svc.episodes[episodeId]) {
-      var master_asset_id = svc.episodes[episodeId].master_asset_id;
+    if (this.episodes[episodeId]) {
+      var master_asset_id = this.episodes[episodeId].master_asset_id;
       if (master_asset_id) {
-        if (svc.assets[master_asset_id]) {
-          svc.episodes[episodeId].masterAsset = createInstance('MasterAsset',svc.assets[master_asset_id]);
+        if (this.assets[master_asset_id]) {
+          this.episodes[episodeId].masterAsset = createInstance('MasterAsset',this.assets[master_asset_id]);
         }
       }
-      var poster_frame_id = svc.episodes[episodeId].poster_frame_id;
+      var poster_frame_id = this.episodes[episodeId].poster_frame_id;
       if (poster_frame_id) {
-        if (svc.assets[poster_frame_id]) {
-          svc.episodes[episodeId].poster = svc.assets[poster_frame_id];
+        if (this.assets[poster_frame_id]) {
+          this.episodes[episodeId].poster = this.assets[poster_frame_id];
         }
       }
     }
   };
 
   // TODO: Future episodes should have this as an available scene template instead
-  svc.addLandingScreen = function (episodeId) {
+  addLandingScreen = function (episodeId) {
     // console.log("add landing screen", episodeId);
     // create a new scene event for this episod
-    svc.events['internal:landingscreen:' + episodeId] = createInstance('Scene', {
+    this.events['internal:landingscreen:' + episodeId] = createInstance('Scene', {
       '_id': 'internal:landingscreen:' + episodeId,
       '_type': 'Scene',
       '_internal': true,
@@ -1157,9 +1181,9 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
   };
 
   // Don't call this until the master asset exists and episode events have loaded!
-  svc.addEndingScreen = function (episodeId) {
-    // console.log("addEndingScreen", svc.episodes[episodeId].scenes);
-    var episode = svc.episodes[episodeId];
+  addEndingScreen = function (episodeId) {
+    // console.log("addEndingScreen", this.episodes[episodeId].scenes);
+    var episode = this.episodes[episodeId];
 
     if (!episode || !episode.scenes) {
       // console.warn('addEndingScreen called on an episode without scenes');
@@ -1172,7 +1196,7 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
     }
 
     //may not be sorted... so sort them
-    episode.scenes = episode.scenes.sort(function (a, b) {
+    episode.scenes = episode.scenes.sort( (a, b) => {
       return a.start_time - b.start_time;
     });
     var lastScene = episode.scenes[episode.scenes.length - 1];
@@ -1185,13 +1209,14 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
 
     //coerce end of last scene (and its items) to match video duration:
     lastScene.end_time = duration - 0.1;
-    angular.forEach(lastScene.items, function (item) {
+    angular.forEach(lastScene.items,  (item) => {
       if (item.end_time > duration - 0.1) {
         item.end_time = duration - 0.1;
       }
     });
+    
     // create a new scene event for this episode
-    svc.events['internal:endingscreen:' + episodeId] = createInstance('Scene',{
+    this.events['internal:endingscreen:' + episodeId] = createInstance('Scene',{
       '_id': 'internal:endingscreen:' + episodeId,
       '_type': 'Scene',
       '_internal': true,
@@ -1200,27 +1225,27 @@ export default function modelSvc($filter, $location, ittUtils, appState, playbac
       'end_time': duration,
       'component_name': EventTemplates.ENDINGSCREEN_TEMPLATE
     });
-    svc.events['internal:endingscreen:' + episodeId] = setLang(svc.events['internal:endingscreen:' + episodeId]);
-    svc.resolveEpisodeEvents(episodeId);
+    this.events['internal:endingscreen:' + episodeId] = this.setLang(this.events['internal:endingscreen:' + episodeId]);
+    this.resolveEpisodeEvents(episodeId);
   };
 
   // TODO get rid of this; really wasteful to be checking this constantly, it's only useful
   //  right after a master asset upload  (put it in ittVideo pollInterval() instead)
-  svc.isTranscoded = function (video) {
+  isTranscoded = function (video) {
     if (video.mediaSrcArr.length > 0) {
       return true;
     }
     return false;
   };
 
-  if (config.debugInBrowser) {
-    console.log('Event cache:', svc.events);
-    console.log('Asset cache:', svc.assets);
-    console.log('Container cache:', svc.containers);
-    console.log('Episode cache:', svc.episodes);
-    console.log('Narrative cache:', svc.narratives);
-    console.log('Customer cache:', svc.customers);
+ /*
+ if ( config.debugInBrowser) {
+    console.log('Event cache:', this.events);
+    console.log('Asset cache:', this.assets);
+    console.log('Container cache:', this.containers);
+    console.log('Episode cache:', this.episodes);
+    console.log('Narrative cache:', this.narratives);
+    console.log('Customer cache:', this.customers);
   }
-  return svc;
-
-}
+  */
+ }
