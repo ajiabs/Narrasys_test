@@ -159,17 +159,17 @@ export default function ittItem($http, $timeout, $interval, authSvc, appState, a
 
       // HACK: need to capture embedded links on item enter, since they're automatically 'clicked'
       // TODO timelineSvc should be able to inform the item directive directly that enter or exit has happened, $watch is silly
-      if (scope.item.component_name === EventTemplates.LINK_EMBED_TEMPLATE) {
-        var captureEmbed = scope.$watch(function () {
-          return playbackService.getMetaProp('time') > scope.item.start_time;
-        }, function (x) {
-          if (x) {
-            scope.captureInteraction();
-            captureEmbed();
-          }
-        });
-
-      }
+      //if (scope.item.component_name === EventTemplates.LINK_EMBED_TEMPLATE) {
+      //  var captureEmbed = scope.$watch(function () {
+      //    return playbackService.getMetaProp('time') > scope.item.start_time;
+      //  }, function (x) {
+      //    if (x) {
+      //      scope.captureInteraction();
+      //      captureEmbed();
+      //    }
+      //  });
+      //
+      //}
 
       // HACK not sure why but modelSvc.resolveEpisodeAssets isn't always doing the job.
       // (Possibly a race condition?)  Quick fix here to resolve it:
