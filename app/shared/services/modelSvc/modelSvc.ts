@@ -297,7 +297,7 @@ export class ModelSvc implements IModelSvc {
     }
     this.setLanguageStrings();
 
-    // For now, automatically add customer-specific styles to episode if there aren't other selections.
+      // For now, automatically add customer-specific styles to episode if there aren't other selections.
     // (TODO Producer should do this automatically; this is for legacy episodes):
     if (!episode.styles) {
       episode.styles = [];
