@@ -273,9 +273,8 @@ export class ModelSvc implements IModelSvc {
 
     }
 
-    // no return value required!
-    return this.dataCache
-//    return [cacheType + 's'][item._id] as T;
+
+      return this[cacheType + 's'][item._id] as T;
   };
 
   // this.deriveFoo() are for efficiency precalculations.
@@ -289,11 +288,11 @@ export class ModelSvc implements IModelSvc {
     angular.forEach(episode.languages,  (lang) => {
       if (lang.default) {
         // console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
-        episode.defaultLanguage = lang.code;
+        this.episode.defaultLanguage = lang.code;
       }
     });
-    if (!('defaultLanguage' in this.episode) || this.episode.defaultLanguage === false) {
-        episode.defaultLanguage = 'en'; // last resort
+    if (this.episode.defaultLanguage === false) {
+      this.episode.defaultLanguage = 'en'; // last resort
     }
     this.setLanguageStrings();
 
