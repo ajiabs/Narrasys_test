@@ -288,15 +288,16 @@ export class ModelSvc implements IModelSvc {
     angular.forEach(episode.languages,  (lang) => {
       if (lang.default) {
         // console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
-        this.episode.defaultLanguage = lang.code;
+        episode.defaultLanguage = lang.code;
       }
     });
-    if (this.episode.defaultLanguage === false) {
-      this.episode.defaultLanguage = 'en'; // last resort
+
+    if (!('defaultLanguage' in this.episode) || this.episode.defaultLanguage === false) {
+       episode.defaultLanguage = 'en'; // last resort
     }
     this.setLanguageStrings();
 
-    // For now, automatically add customer-specific styles to episode if there aren't other selections.
+      // For now, automatically add customer-specific styles to episode if there aren't other selections.
     // (TODO Producer should do this automatically; this is for legacy episodes):
     if (!episode.styles) {
       episode.styles = [];
