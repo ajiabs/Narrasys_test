@@ -1,13 +1,49 @@
 // @npUpgrade-shared-false
 
+// ** Updated by Curve10 (JAB/EDD)
+//    Feb 2018 
+//
+
 import { config } from '../../../config';
 
-authSvc.$inject = ['$routeParams', '$http', '$q', '$location', 'ittUtils', 'appState', 'modelSvc', 'errorSvc'];
+export interface IAuthServices {
+  isTrueGuest();
+  userHasRole(role);
+  getCustomerIdsFromRoles();
+  getRoleForNarrative(narrativeId, roles);
+  getDefaultProductForRole(role);
+  logout();
+  adminLogin(authKey, password);
+  authenticate(nonceParam);
+  authenticateViaNonce(nonceParam);
+  getStoredToken();
+  getCurrentUser();
+  updateUser(user);
+  resolveUserData(data);
+  getRoleDescription(roleKey);
+  getNonce(nonceParam);
+  getAccessToken(nonce);
+}
 
-export default function authSvc($routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
+
+export class AuthSvc implements IAuthServices {
+
+  static Name = 'authSvc'; // tslint:disable-line
+  static $inject = ['$routeParams', '$http', '$q', '$location', 'ittUtils', 'appState', 'modelSvc', 'errorSvc'];
+
+  constructor (
+    private $routeParams,
+    private $http,
+    private $q:ng.IQService,
+    private $location,
+    private ittUtils,
+    private appState,
+    private modelSvc,
+    private errorSvc) {
+  }
+
   // console.log('authSvc factory');
-  var svc = {};
-  var Roles = {
+  private Roles = {
     ADMINISTRATOR: "admin",
     INSTRUCTOR: "instructor",
     STUDENT: "student",
@@ -15,15 +51,21 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     CUSTOMER_ADMINISTRATOR: 'customer admin'
   };
 
-  var Resources = {
+  private Resources = {
     CUSTOMER: 'Customer'
   };
 
-  svc.isTrueGuest = isTrueGuest;
-  function isTrueGuest() {
+ // private _isTrueGuest = this.isTrueGuest;
+  //isTrueGuest() {
+
+  isTrueGuest() {
     var _isGuest = true;
-    angular.forEach(appState.user.roles, function(r) {
-      if (r.role !== Roles.GUEST) {
+    var context = this;
+    if( this.authSvc) {
+      context = this.authSvc;
+    } 
+    angular.forEach(context.appState.user.roles, function(r) {
+      if (r.role !== context.Roles.GUEST) {
         _isGuest = false;
       }
     });
@@ -31,16 +73,20 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return _isGuest;
   }
 
-  svc.userHasRole = function (role) {
-    if (appState.user && appState.user.roles) {
-      for (var i = 0; i < appState.user.roles.length; i++) {
-        if (appState.user.roles[i].role === role) {
-          if (!(role === Roles.ADMINISTRATOR && ittUtils.existy(appState.user.roles[i].resource_id))) {
+  userHasRole(role) {
+    var context = this;
+    if( this.authSvc) {
+      context = this.authSvc;
+    } 
+    if (context.appState.user && context.appState.user.roles) {
+      for (var i = 0; i < context.appState.user.roles.length; i++) {
+        if (context.appState.user.roles[i].role === role) {
+          if (!(role === context.Roles.ADMINISTRATOR && context.ittUtils.existy(context.appState.user.roles[i].resource_id))) {
             return true;
           }
-        } else if (role === Roles.CUSTOMER_ADMINISTRATOR && appState.user.roles[i].role === Roles.ADMINISTRATOR &&
-          ittUtils.existy(appState.user.roles[i].resource_id) &&
-          appState.user.roles[i].resource_type === Resources.CUSTOMER) {
+        } else if (role === context.Roles.CUSTOMER_ADMINISTRATOR && context.appState.user.roles[i].role === context.Roles.ADMINISTRATOR &&
+          context.ittUtils.existy(context.appState.user.roles[i].resource_id) &&
+          context.appState.user.roles[i].resource_type === context.Resources.CUSTOMER) {
           return true;
         }
       }
@@ -48,12 +94,12 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return false;
   };
 
-  svc.getCustomerIdsFromRoles = function () {
-    if (appState.user && appState.user.roles) {
-      return appState.user.roles.reduce(function(accm, i) {
-        if (i.role === Roles.ADMINISTRATOR &&
-          ittUtils.existy(i.resource_id) &&
-          i.resource_type === Resources.CUSTOMER) {
+  getCustomerIdsFromRoles() {
+    if (this.appState.user && this.appState.user.roles) {
+      return this.appState.user.roles.reduce(function(accm, i) {
+        if (i.role === this.Roles.ADMINISTRATOR &&
+          this.ittUtils.existy(i.resource_id) &&
+          i.resource_type === this.Resources.CUSTOMER) {
           accm.push(i.resource_id);
         }
         return accm;
@@ -61,14 +107,14 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     }
   };
 
-  svc.getRoleForNarrative = function (narrativeId, roles) {
-    roles = typeof roles !== 'undefined' ? roles : appState.user.roles;
+  getRoleForNarrative(narrativeId, roles) {
+    roles = typeof roles !== 'undefined' ? roles : this.appState.user.roles;
     var role = "";
     var exitLoop = false;
     if (roles) {
       for (var i = 0; i < roles.length; i++) {
         switch (roles[i].role) {
-          case Roles.ADMINISTRATOR:
+          case this.Roles.ADMINISTRATOR:
             if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
               continue; // they are an admin, but not in this narrative, so let's keep going
             } else {
@@ -76,21 +122,21 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
               exitLoop = true; //if they are an admin, then we can just get out as it trumps
             }
             break;
-          case Roles.INSTRUCTOR:
+          case this.Roles.INSTRUCTOR:
             if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
               continue;
             } else {
               role = roles[i].role;
             }
             break;
-          case Roles.STUDENT:
+          case this.Roles.STUDENT:
             if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
               continue;
             } else {
               role = role === "instructor" ? role : roles[i].role;
             }
             break;
-          case Roles.GUEST:
+          case this.Roles.GUEST:
             if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
               continue;
             } else {
@@ -106,7 +152,7 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return role;
   };
 
-  svc.getDefaultProductForRole = function (role) {
+  getDefaultProductForRole(role) {
     /*
      This was making it impossible for users with admin role to see editor or player interface.
      For now, producer should be used only at the /#/episode urls, editor at the narrative urls
@@ -115,21 +161,25 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
      eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
      */
     var product = "player";
-    if (appState.productLoadedAs === 'narrative') {
-      if (role === Roles.ADMINISTRATOR || role === Roles.INSTRUCTOR) {
+    if (this.appState.productLoadedAs === 'narrative') {
+      if (role === this.Roles.ADMINISTRATOR || role === this.Roles.INSTRUCTOR) {
         product = "sxs";
       }
     } else {
-      errorSvc.error({
+      this.errorSvc.error({
         data: "authSvc.getDefaultProductForRole should only be used within narratives for now"
       });
     }
     return product;
   };
 
-  svc.logout = function () {
+  logout() {
     // Clear these even if the logout call fails (which it will if the token in localStorage has expired).
     // DO NOT clear the Authorization header yet (it's needed for the logout server call)
+    var context = this;
+    if( this.authSvc) {
+      context = this.authSvc;
+    } 
     try {
       localStorage.removeItem(config.localStorageKey);
       document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -137,31 +187,32 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     } catch (e) {
       // user disabled cookies, so no need to try to remove them...
     }
-    appState.user = {};
+    context.appState.user = {};
 
-    $http({
+    context.$http({
       method: 'GET',
       url: config.apiDataBaseUrl + "/logout"
     })
       .success(function () {
-        delete $http.defaults.headers.common.Authorization; // now it's safe
-        $location.path('/')
+        delete context.$http.defaults.headers.common.Authorization; // now it's safe
+        context.$location.path('/')
           .search({
             logout: 1
           });
       })
       .error(function () {
-        delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
-        $location.path('/')
+        delete context.$http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
+        context.$location.path('/')
           .search({
             logout: 1
           });
       });
   };
 
-  svc.adminLogin = function (authKey, password) {
-    var defer = $q.defer();
-    $http({
+  adminLogin(authKey, password) {
+    var context = this;
+    var defer = this.$q.defer();
+    this.$http({
       method: 'POST',
       url: config.apiDataBaseUrl + "/auth/identity/callback",
       data: $.param({
@@ -173,9 +224,9 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
       }
     })
       .success(function (data) {
-        $http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
-        resolveUserData(data);
-        svc.getCurrentUser()
+        context.$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
+        context.resolveUserData(data);
+        context.getCurrentUser()
           .then(function () {
             defer.resolve(data);
           });
@@ -198,39 +249,41 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
 
    */
 
-  var authenticateDefer = $q.defer();
-  svc.authenticate = function (nonceParam) {
-    if ($http.defaults.headers.common.Authorization) {
+  private authenticateDefer = this.$q.defer();
+  authenticate(nonceParam) {
+    var context = this;
+
+    if (this.$http.defaults.headers.common.Authorization) {
       //appState#init will initialize an empty object as the user property, which will always make
       //appState.user truthy, thus need to check to see if we actually have a loaded user by looking for the id.
-      if (appState.user._id) {
+      if (this.appState.user._id) {
         // Have header and user; all done.
-        authenticateDefer.resolve();
+        this.authenticateDefer.resolve();
       } else {
         // begin dubious code block
         console.warn("Have auth header but no appState.user data. Not sure this should ever happen, TODO delete this from authSvc if it continues to not happen");
-        svc.getCurrentUser()
+        this.getCurrentUser()
           .then(function () {
-            authenticateDefer.resolve();
+            context.authenticateDefer.resolve();
           }, function () {
-            return svc.authenticateViaNonce(nonceParam);
+            return context.authenticateViaNonce(nonceParam);
           });
         // end of dubious code block
       }
-    } else if ($routeParams.key) {
+    } else if (this.$routeParams.key) {
       // Have key in route
-      var nonce = $routeParams.key;
-      $location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
-      return svc.getAccessToken(nonce);
+      var nonce = this.$routeParams.key;
+      this.$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
+      return this.getAccessToken(nonce);
     } else {
-      var token = svc.getStoredToken();
+      var token = this.getStoredToken();
       if (token) {
         // have localStorage token; try it
-        $http.defaults.headers.common.Authorization = 'Token token="' + token + '"';
-        svc.getCurrentUser()
+        this.$http.defaults.headers.common.Authorization = 'Token token="' + token + '"';
+        this.getCurrentUser()
           .then(function () {
             // token worked
-            authenticateDefer.resolve();
+            context.authenticateDefer.resolve();
           }, function () {
             // token expired; clear everything and start over
 
@@ -241,23 +294,24 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
             } catch (e) {
               // user disabled cookies
             }
-            appState.user = {};
-            return svc.authenticateViaNonce(nonceParam);
+            context.appState.user = {};
+            return context.authenticateViaNonce(nonceParam);
           });
       } else {
         console.log('auth Via Nonce', nonceParam);
         // no login info at all, start from scratch
-        return svc.authenticateViaNonce(nonceParam);
+        return this.authenticateViaNonce(nonceParam);
       }
     }
-    return authenticateDefer.promise;
+    return context.authenticateDefer.promise;
   };
 
-  svc.authenticateViaNonce = function (nonceParam) {
-    var defer = $q.defer();
-    svc.getNonce(nonceParam)
+  authenticateViaNonce(nonceParam) {
+    var context = this;
+    var defer = this.$q.defer();
+    this.getNonce(nonceParam)
       .then(function (nonce) {
-        svc.getAccessToken(nonce)
+        context.getAccessToken(nonce)
           .then(function () {
             defer.resolve();
           });
@@ -265,7 +319,7 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return defer.promise;
   };
 
-  svc.getStoredToken = function () {
+  getStoredToken() {
     var storedData = {};
     try {
       if (!localStorage) {
@@ -286,14 +340,15 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
 
   };
 
-  svc.getCurrentUser = function () {
-    var defer = $q.defer();
-    $http({
+  getCurrentUser() {
+    var context = this;
+    var defer = this.$q.defer();
+    this.$http({
       method: 'GET',
       url: config.apiDataBaseUrl + '/show_user'
     })
       .success(function (respData) {
-        resolveUserData(respData);
+        context.resolveUserData(respData);
         defer.resolve();
       })
       .error(function () {
@@ -302,15 +357,16 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return defer.promise;
   };
 
-  svc.updateUser = function (user) {
-    var defer = $q.defer();
-    $http({
+  updateUser(user) {
+    var context = this;
+    var defer = this.$q.defer();
+    this.$http({
       method: 'PUT',
       url: config.apiDataBaseUrl + '/users/' + user._id,
       data: user
     })
       .success(function (respData) {
-        resolveUserData(respData);
+        context.resolveUserData(respData);
         defer.resolve();
       })
       .error(function () {
@@ -319,7 +375,8 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return defer.promise;
   };
 
-  var resolveUserData = function (data) {
+  resolveUserData(data) {
+    var context = this;
     // Modify the structure of the roles data if necessary.  This is a temporary fix and can be removed after the new roles system is in place.
     if (data.roles !== null && data.roles !== undefined && data.roles.length > 0 && data.roles[0].constructor === String) {
       var roles = [];
@@ -346,16 +403,17 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
       }
     });
 
-    var tok = svc.getStoredToken();
+    var tok = this.getStoredToken();
     if (user.avatar_id && tok) {
       // console.log('culprit identified', tok);
-      $http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
+      this.$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
       // Load and cache avatar asset for current user
-      $http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
-        // console.log("GOT AVATAR", response);
-        modelSvc.cache("asset", response.data);
-        appState.user.avatar = response.data.url; // convenience for now, may be better to use modelSvc here
-      });
+      this.$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id)
+        .then(function (response) {
+          // console.log("GOT AVATAR", response);
+          context.modelSvc.cache("asset", response.data);
+          context.appState.user.avatar = response.data.url; // convenience for now, may be better to use modelSvc here
+        });
     }
 
     // API BUG workaround
@@ -363,12 +421,12 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
       user.track_episode_metrics = true;
     }
     if (user.roles) {
-      user.role_description = getRoleDescription(user.roles[0]);
+      user.role_description = this.getRoleDescription(user.roles[0]);
     }
     if (data.emails) {
       user.email = data.emails[0];
     }
-    appState.user = user;
+    this.appState.user = user;
     try {
       localStorage.setItem(config.localStorageKey, JSON.stringify({
         token: user.access_token,
@@ -377,7 +435,7 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     } catch (e) {}
   };
 
-  var getRoleDescription = function (roleKey) {
+  getRoleDescription(roleKey) {
     if (roleKey === undefined) {
       return "User";
     }
@@ -399,13 +457,13 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return roleKey;
   };
 
-  svc.getNonce = function (nonceParam) {
-    var defer = $q.defer();
+  getNonce(nonceParam) {
+    var defer = this.$q.defer();
     var url = config.apiDataBaseUrl + "/v1/get_nonce";
     if (nonceParam) {
       url = url + "?" + nonceParam;
     }
-    $http.get(url)
+    this.$http.get(url)
       .success(function (data) {
         if (data.nonce) {
           defer.resolve(data.nonce);
@@ -433,13 +491,14 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return defer.promise;
   };
 
-  svc.getAccessToken = function (nonce) {
-    var defer = $q.defer();
-    $http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
+  getAccessToken(nonce) {
+    var context = this;
+    var defer = this.$q.defer();
+    this.$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
       .success(function (data) {
-        resolveUserData(data);
-        $http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
-        svc.getCurrentUser()
+        context.resolveUserData(data);
+        context.$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
+        context.getCurrentUser()
           .then(function () {
             defer.resolve(data);
           });
@@ -451,5 +510,4 @@ export default function authSvc($routeParams, $http, $q, $location, ittUtils, ap
     return defer.promise;
   };
 
-  return svc;
 }
