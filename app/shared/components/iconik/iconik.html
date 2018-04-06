@@ -1,0 +1,26 @@
+<div class="iconik">
+  <div class="input">
+    <div ng-if="!$ctrl.showIconikBrowser">
+      <span><button ng-click="$ctrl.showIconikBrowser = true">Import from Iconik</button></span>
+    </div>
+    <div ng-if="$ctrl.showIconikBrowser">
+      <np-modal
+        wrapper-class="responsive-modal__wrapper"
+        modal-class="responsive-modal__content">
+	<div class="search">
+          <input type="text" placeholder="Search" id="search"
+        class="search__input" ng-change="$ctrl.updateSearchResults()"
+        ng-model="$ctrl.searchCriteria" ng-model-options="{ debounce: 500 }">
+	</div>
+	<div class="asset-list" id="asset-list">
+	  <asset ng-repeat="asset in $ctrl.searchResults" class="asset-list__item" id="{{asset.id}}">
+	    <h2 class="asset-list__item__title">{{asset.title}}</h2>
+	    <img class="asset-list__item__image"
+		 src="{{asset.preview_url}}">
+	  </asset>
+	</div>
+        <span><button ng-click="$ctrl.showIconikBrowser = false">Close</button></span>
+      </np-modal>
+    </div>
+  </div>
+</div>

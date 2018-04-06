@@ -20,6 +20,7 @@ export { IBasePlayerManager } from './player/playback/services/player-manager-co
 export { IWistiaMetaProps, IWistiaPlayerManager } from './player/playback/wistia/services/wistia-player-manager/wistiaPlayerManager';
 export { IWistiaUrlservice } from './player/playback/wistia/services/wistia-url-service/wistiaUrlService';
 export { IUploadData } from './shared/services/uploadsService';
+export { IIconikSvc } from './shared/services/iconikSvc';
 export { IEmailFields } from './stories/components/socialshare/ittSocialShare';
 export { IimageResize } from './shared/services/imageResizeSvc';
 /*

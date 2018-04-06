@@ -77,4 +77,9 @@
     multiple="true"
     ng-if="$ctrl.canAccess && $ctrl.context !== 'narrative'">
   </itt-asset-uploader>
+ 
+  <np-iconik
+     container-id="{{$ctrl.container._id}}"
+     ng-if="$ctrl.canAccess && $ctrl.context !== 'narrative'">
+  </np-iconik>
 </div>

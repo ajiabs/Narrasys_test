@@ -16,6 +16,7 @@ import { awsSvc } from './services/awsSvc';
 // changed from:
 // import errorSvc from './services/errorSvc';
 import {ErrorSvc} from './services/errorSvc';
+import {IconikSvc} from './services/iconikSvc';
 // changed from
 // import imageResize from './/services/imageResizeSvc';
 import {ImageResize} from './services/imageResizeSvc';
@@ -26,6 +27,8 @@ import { ittUtils } from './services/ittUtils';
 import mockSvc from './services/mockSvc';
 import { UploadsService } from './services/uploadsService';
 import { AssetUploader } from './components/asset-uploader/ittAssetUploader';
+import { Iconik } from './components/iconik/npIconik';
+import { IconikSvc } from './services/iconikSvc';
 import { Container } from './components/container/ittContainer';
 import { EpisodeList } from './components/episode-list/ittEpisodeList';
 import ittUser from './components/user/ittUser';
@@ -73,7 +76,8 @@ npSharedModule
   .service(UploadsService.Name, UploadsService)
   // was: .factory('imageResize', imageResize)
   // added as service...
-  .service(ImageResize.Name, ImageResize)
+  .service(IconikSvc.Name, IconikSvc)	
+  .service(ImageResize.Name, ImageResize)	
 
   // was:  .factory('errorSvc', errorSvc)
   // added as service.
@@ -98,6 +102,7 @@ npSharedModule
     .factory('ittUtils', ittUtils)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .component(AssetUploader.Name, new AssetUploader())
+  .component(Iconik.Name, new Iconik())	
   .component(Container.Name, new Container())
   .component(EpisodeList.Name, new EpisodeList())
   .directive('ittUser', ittUser)
