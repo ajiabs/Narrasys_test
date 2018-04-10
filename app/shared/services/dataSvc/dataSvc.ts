@@ -84,6 +84,7 @@ export interface IDataSvc {
   storeEpisode(epData): ng.IPromise<{} | boolean>;
   deleteItem(evtId): ng.IPromise<{}>;
   createAsset(containerId, asset): ng.IPromise<{}>;
+  importFederatedAssetIntoNarrasys(containerId, federationConfigurationId, federationData): ng.IPromise<{}>;	
   deleteAsset(assetId): ng.IPromise<{}>;
   storeItem(evt: IEvent): ng.IPromise<IEvent | boolean>;
   prepItemForStorage(evt): any;
@@ -1088,6 +1089,16 @@ deleteContainer = function(containerId: string): ng.IPromise<any> {
       });
     return createAssetDefer.promise;
   };
+
+  importFederatedAssetIntoNarrasys(containerId, federationConfigurationId, federationData) {
+      var importAssetDefer = this.$q.defer();
+  	this.POST('/v1/containers/'+containerId+'/assets/'+federationConfigurationId, federationData)					
+	.then( (data)  => {
+          this.modelSvc.cache('asset', data.file);
+	  importAssetDefer.resolve(data.file);
+	});
+	return importAssetDefer.promise;
+    }
 
  deleteAsset = function (assetId) {
     return this.DELETE('/v1/assets/' + assetId);
