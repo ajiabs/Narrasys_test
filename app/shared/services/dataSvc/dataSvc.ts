@@ -56,6 +56,9 @@ export interface IDataSvc {
   getUserNarratives(userId): ng.IPromise<{}>;
   getCustomerList(): any;
   getCustomer(customerId: string, retrieve: boolean): ng.IPromise<any>;
+  getCustomerFederationConfigurations(customerId: string): any;
+  getFederationConfiguration(federationConfigurationId: string, retrieve: boolean): ng.IPromise<any>;
+  getCustomerFederationConfigurationByServiceName(customerId: string, serviceName: string): ng.IPromise<IFederationConfiguration>;
   getEpisode(epId, segmentId): void;
   getEpisodeOverview(epId): ng.IPromise<{}>;
   getNarrativeList(customer): ng.IPromise<{}>;
@@ -247,6 +250,64 @@ sendSocialshareEmail = function (tlId: string, email: IEmailFields): ng.IPromise
         })
         .catch(e => console.log('wtf mate?', e));
     }
+  };
+
+  getCustomerFederationConfigurations = function (customerId) {
+  
+    return this.GET('/v3/customers/' + customerId + '/federation_configurations',  (federationConfigurations) => {
+      angular.forEach(federationConfigurations,  (federationConfiguration) => {
+        this.modelSvc.cache('federationConfiguration', federationConfiguration);
+      });
+      return federationConfigurations;
+    });
+
+  };
+
+  getFederationConfiguration = function (federationConfiguraionId, retrieve) {
+    if (!(this.authSvc.userHasRole('admin') || this.authSvc.userHasRole('customer admin'))) {
+      return this.$q( (resolve) =>{
+        resolve({});
+      });
+    }
+    if (this.modelSvc.federationConfigurations[federationConfigurationId]) {
+
+      if (retrieve) {
+        return this.$q( (resolve) => {
+          resolve(this.modelSvc.federationConfigurations[federationConfigurationId]);
+        });
+      }
+      // have it already, or at least already getting it
+    } else {
+
+
+      return this.SANE_GET('/v3/federation_configurations/' + federationConfigurationId)
+        .then(federationConfiguration => {
+          this.modelSvc.cache('federationConfiguration', federationConfiguration); // the real thing
+          return this.modelSvc.federationConfigurations[federationConfigurationId];
+        })
+        .catch(e => console.log('wtf mate?', e));
+    }
+  };
+
+  getCustomerFederationConfigurationByServiceName(customerId, serviceName) {
+    angular.forEach(this.modelSvc.federationConfigurations,  (federationConfiguration) => {
+      if(federationConfiguration.customer_id === customerId && federationConfiguration.service_name === serviceName) {
+        return this.$q( (resolve) => {
+          resolve(federationConfiguration);
+        });
+      }
+    });
+    //We didn't find it in the cache so hit the server for it
+    return this.getCustomerFederationConfigurations(customerId).then((federationConfigurations) => {
+      //Now search the cache again
+      var found_configuration = null;
+      angular.forEach(this.modelSvc.federationConfigurations,  (federationConfiguration) => {
+        if(federationConfiguration.customer_id === customerId && federationConfiguration.service_name === serviceName) {
+          found_configuration = federationConfiguration;
+        }
+      });
+      return found_configuration;
+    });
   };
 
   // getEpisode just needs to retrieve all episode data from the API, and pass it on

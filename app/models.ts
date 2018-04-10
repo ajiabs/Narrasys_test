@@ -247,6 +247,17 @@ export class ICustomer {
   evenOdd?: boolean;
 }
 
+export class IFederationConfiguration {
+  _id: string;
+  name: string;
+  service_name: string;
+  uri: string;
+  username: string;
+  password: string;
+  customer_id: string;
+  request_headers: any;
+}
+  
 export class INarrative {
   _id: string;
   name: ILangForm;
@@ -570,6 +581,9 @@ export function createInstance<T extends NRecord>(type: string, data: any) {
     case 'Customer':
       model = new ICustomer();
       break;
+    case 'FederationConfiguration':
+      model = new IFederationConfiguration();
+      break;
     case 'Timeline':
       model = new ITimeline();
       break;
@@ -631,6 +645,7 @@ export type NRecord = NEvent
   | INarrative
   | IAsset
   | ICustomer
+  | IFederationConfiguration
   | ITimeline
   | IEpisode
   | IContainer;

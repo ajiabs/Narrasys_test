@@ -1,6 +1,6 @@
 <div class="iconik">
   <div class="input">
-    <div ng-if="!$ctrl.showIconikBrowser">
+    <div ng-if="!$ctrl.showIconikBrowser && $ctrl.federationConfiguration">
       <span><button ng-click="$ctrl.showIconikBrowser = true; $ctrl.updateSearchResults()">Import from Iconik</button></span>
     </div>
     <div ng-if="$ctrl.showIconikBrowser">
@@ -16,8 +16,7 @@
 	  <asset ng-repeat="asset in $ctrl.searchResults"
         ng-click="$ctrl.importAsset(asset.id)" class="asset-list__item" id="{{asset.id}}">
 	    <h2 class="asset-list__item__title">{{asset.title}}</h2>
-	    <img class="asset-list__item__image"
-		 src="{{asset.preview_url}}">
+	    <img class="asset-list__item__image" ng-src="{{asset.preview_url}}">
 	  </asset>
 	</div>
         <span><button ng-click="$ctrl.showIconikBrowser = false">Close</button></span>

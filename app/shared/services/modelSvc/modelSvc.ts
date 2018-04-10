@@ -32,6 +32,7 @@ export interface IModelSvc {
   containers: { [containerId: string]: IContainer };
   narratives: { [narrativeId: string]: INarrative };
   customers: { [customerId: string]: ICustomer };
+  federation_configurations: { [federationConfigurationId: string]: IFederationConfiguration };	
   dataCache: IDataCache;
   readDataCache<K extends keyof IDataCache, F extends keyof TDataCacheItem>(
     cache: K,
@@ -94,6 +95,7 @@ export class ModelSvc implements IModelSvc {
   containers = {};
   narratives = {};
   customers = {};
+  federationConfigurations = {};
   dataCache = {
     template: {},
     layout: {},
@@ -236,6 +238,15 @@ export class ModelSvc implements IModelSvc {
         angular.extend(this.customers[item._id], instance);
       } else {
         this.customers[item._id] = angular.copy(instance) as ICustomer;
+      }
+    }
+    if (cacheType === 'federationConfiguration') {
+      const instance = createInstance('FederationConfiguration', item);
+      // NOTE no deriveFederationConfiguration used here, not needed so far
+      if (this.federationConfigurations[item._id]) {
+        angular.extend(this.federationConfigurations[item._id], instance);
+      } else {
+        this.federationConfigurations[item._id] = angular.copy(instance) as IFederationConfiguration;
       }
     }
     if (cacheType === 'episode') {

@@ -12,8 +12,10 @@ class IconikController implements IIconikBindings {
     searchCriteria: string;
     searchResults: array = []; 
     showIconikBrowser: boolean = false;
-    container: any;
-    customer: any;
+    federationConfiguration: IFederationConfiguration;
+    container: IContainer;
+    customer: ICustomer;
+    federationConfiguration: IFederationConfiguration;
     static $inject = ['iconikSvc', 'dataSvc', 'modelSvc'];
     
     constructor(
@@ -25,20 +27,24 @@ class IconikController implements IIconikBindings {
     
     $onInit() {
 	if (this.modelSvc.containers[this.containerId]) {
-            this.container = this.modelSvc.containers[this.containerId];
+	    this.container = this.modelSvc.containers[this.containerId];
 	} else {
-            this.dataSvc.getContainer(this.containerId).then(() => {
+	    this.dataSvc.getContainer(this.containerId).then(() => {
 		this.container = this.modelSvc.containers[this.containerId];
-            });
+	    });
 	}
-
-        this.dataSvc.getCustomer(this.container.customer_id, true).then( (customer) => {
-	    this.customer = customer
+	this.dataSvc.getCustomerFederationConfigurationByServiceName(this.container.customer_id, "CantemoIconikService").then((federationConfiguration) => {
+	    this.federationConfiguration = federationConfiguration
+	    if(this.federationConfiguration) {
+		this.dataSvc.getCustomer(this.container.customer_id, true).then( (customer) => {
+		    this.customer = customer
+		});
+	    }
 	});
     }
 
     updateSearchResults() {
-	this.iconikSvc.search('7e7e4b52-1e27-11e8-b25c-0a580a000439', 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTUyMjQzMjA2NCwiZXhwIjozMDk5MjMyMDY0fQ.eyJpZCI6IjczYmJkZjllLTM0NDItMTFlOC1hN2VjLTBhNTgwYTAwMDM3MyJ9.1v6nNisE3_S9Kr6DJPmIk-bcXKrqsniJFnXstTq0iPY', this.searchCriteria).then( (response) => {
+	this.iconikSvc.search(this.federationConfiguration.request_headers['app-id'], this.federationConfiguration.request_headers['auth-token'], this.searchCriteria).then( (response) => {
             this.searchResults = IconikController.parseSearchResults(response.data.objects);
         });
     }
@@ -49,7 +55,7 @@ class IconikController implements IIconikBindings {
               'iconik_asset_id': assetId
             }
 	}
-	this.dataSvc.importFederatedAssetIntoNarrasys(this.containerId, '5abec458d72cc3b71f000006', federationData).then( (response) => {
+	this.dataSvc.importFederatedAssetIntoNarrasys(this.containerId, this.federationConfiguration._id, federationData).then( (response) => {
 	    alert(response.file.name.en+" successfully imported!");
 	});
     }
