@@ -19,7 +19,11 @@
 	    <img class="asset-list__item__image" ng-src="{{asset.preview_url}}">
 	  </asset>
 	</div>
-        <span><button ng-click="$ctrl.showIconikBrowser = false">Close</button></span>
+        <div class="iconik_footer"><span ng-repeat="i in $ctrl.getPages() track by $index">
+	    <button ng-click="$ctrl.updateSearchResults($index+1)" ng-if="$index + 1 != $ctrl.currentPage">{{$index+1}}</button>
+	    <b ng-if="$index + 1 == $ctrl.currentPage">{{$index+1}}</b>
+	</span></div>
+	<span><button ng-click="$ctrl.showIconikBrowser = false">Close</button></span>
       </np-modal>
     </div>
   </div>

@@ -16,10 +16,10 @@ export class IconikSvc implements IIconikSvc {
     init(): void {
     }
     
-    search(appId, token, criteria):{} {
+    search(appId, token, criteria, page=1, results_per_page=20):{} {
 	var req = {
 	    method: 'POST',
-	    url: '/API/search/v1/search/?per_page=25',
+	    url: '/API/search/v1/search/?page='+page+'&per_page='+results_per_page,
 	    headers: {
 		'Content-Type': 'application/json',
 		'app-id': appId,

@@ -16,6 +16,8 @@ class IconikController implements IIconikBindings {
     container: IContainer;
     customer: ICustomer;
     federationConfiguration: IFederationConfiguration;
+    currentPage;
+    pages;
     static $inject = ['iconikSvc', 'dataSvc', 'modelSvc'];
     
     constructor(
@@ -43,8 +45,11 @@ class IconikController implements IIconikBindings {
 	});
     }
 
-    updateSearchResults() {
-	this.iconikSvc.search(this.federationConfiguration.request_headers['app-id'], this.federationConfiguration.request_headers['auth-token'], this.searchCriteria).then( (response) => {
+    updateSearchResults(page=1) {
+	this.currentPage = page;
+	this.iconikSvc.search(this.federationConfiguration.request_headers['app-id'], this.federationConfiguration.request_headers['auth-token'], this.searchCriteria, this.currentPage).then( (response) => {
+	    console.log(response.data);
+	    this.pages = response.data.pages;
             this.searchResults = IconikController.parseSearchResults(response.data.objects);
         });
     }
@@ -58,6 +63,10 @@ class IconikController implements IIconikBindings {
 	this.dataSvc.importFederatedAssetIntoNarrasys(this.containerId, this.federationConfiguration._id, federationData).then( (response) => {
 	    alert(response.file.name.en+" successfully imported!");
 	});
+    }
+
+    getPages() {
+	return new Array(this.pages); 
     }
 
     private static parseSearchResults(objects){
