@@ -1,0 +1,8 @@
+<div class="federations">
+  <div class="input">
+    <federation ng-repeat="federation in $ctrl.federationConfigurations">
+      <np-iconik container-id="{{$ctrl.containerId}}" federation-configuration-id="{{federation._id}}">
+      </np-iconik>
+    </federation>
+  </div>
+</div>

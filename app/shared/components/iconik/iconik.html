@@ -1,7 +1,7 @@
 <div class="iconik">
   <div class="input">
     <div ng-if="!$ctrl.showIconikBrowser && $ctrl.federationConfiguration">
-      <span><button ng-click="$ctrl.showIconikBrowser = true; $ctrl.updateSearchResults()">Import from Iconik</button></span>
+      <span><button ng-click="$ctrl.showIconikBrowser = true; $ctrl.updateSearchResults()">Import from {{$ctrl.federationName}}</button></span>
     </div>
     <div ng-if="$ctrl.showIconikBrowser">
       <np-modal

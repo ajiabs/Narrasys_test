@@ -16,14 +16,16 @@ export class IconikSvc implements IIconikSvc {
     init(): void {
     }
     
-    search(appId, token, criteria, page=1, results_per_page=20):{} {
+    search(uri, appId, token, criteria, page=1, results_per_page=20):{} {
 	var req = {
 	    method: 'POST',
-	    url: '/API/search/v1/search/?page='+page+'&per_page='+results_per_page,
+	    url: '/federated_proxy/API/search/v1/search/?page='+page+'&per_page='+results_per_page,
 	    headers: {
 		'Content-Type': 'application/json',
+		'federated-proxy-base-url': uri,
 		'app-id': appId,
 		'auth-token': token
+				
 	    },
 	    data: {	      
 		'query': criteria,

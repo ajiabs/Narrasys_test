@@ -27,6 +27,7 @@ import { ittUtils } from './services/ittUtils';
 import mockSvc from './services/mockSvc';
 import { UploadsService } from './services/uploadsService';
 import { AssetUploader } from './components/asset-uploader/ittAssetUploader';
+import { Federations } from './components/federations/npFederations';
 import { Iconik } from './components/iconik/npIconik';
 import { IconikSvc } from './services/iconikSvc';
 import { Container } from './components/container/ittContainer';
@@ -102,6 +103,7 @@ npSharedModule
     .factory('ittUtils', ittUtils)
   .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .component(AssetUploader.Name, new AssetUploader())
+  .component(Federations.Name, new Federations())	
   .component(Iconik.Name, new Iconik())	
   .component(Container.Name, new Container())
   .component(EpisodeList.Name, new EpisodeList())

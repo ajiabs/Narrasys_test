@@ -2,20 +2,23 @@ import { IIconikSvc, IDataSvc, IModelSvc } from '../../../interfaces';
 import iconikHtml from './iconik.html';
 
 interface IIconikBindings extends ng.IComponentController {
+    federationConfigurationId: string;
     containerId: string;
+    federationName: string;
     searchCriteria: string;
     searchResults: string;  
 }
 
 class IconikController implements IIconikBindings {
+    federationConfigurationId: string;
     containerId: string;
+    federationName: string;
     searchCriteria: string;
     searchResults: array = []; 
     showIconikBrowser: boolean = false;
     federationConfiguration: IFederationConfiguration;
     container: IContainer;
     customer: ICustomer;
-    federationConfiguration: IFederationConfiguration;
     currentPage;
     pages;
     static $inject = ['iconikSvc', 'dataSvc', 'modelSvc'];
@@ -28,26 +31,31 @@ class IconikController implements IIconikBindings {
     }
     
     $onInit() {
-	if (this.modelSvc.containers[this.containerId]) {
-	    this.container = this.modelSvc.containers[this.containerId];
+        if (this.modelSvc.federationConfigurations[this.federationConfigurationId]) {
+	    this.federationConfiguration = this.modelSvc.federationConfigurations[this.federationConfigurationId];
 	} else {
-	    this.dataSvc.getContainer(this.containerId).then(() => {
-		this.container = this.modelSvc.containers[this.containerId];
+	    this.dataSvc.getFederationConfiguration(this.federationConfigurationId).then(() => {
+		this.federationConfiguration = this.modelSvc.federationConfigurations[this.federationConfigurationId];
 	    });
 	}
-	this.dataSvc.getCustomerFederationConfigurationByServiceName(this.container.customer_id, "CantemoIconikService").then((federationConfiguration) => {
-	    this.federationConfiguration = federationConfiguration
-	    if(this.federationConfiguration) {
-		this.dataSvc.getCustomer(this.container.customer_id, true).then( (customer) => {
-		    this.customer = customer
-		});
+	if(this.federationConfiguration) {
+	    this.federationName = this.federationConfiguration.name;
+	    if (this.modelSvc.containers[this.containerId]) {
+	        this.container = this.modelSvc.containers[this.containerId];
+	    } else {
+	        this.dataSvc.getContainer(this.containerId).then(() => {
+		    this.container = this.modelSvc.containers[this.containerId];
+	        });
 	    }
-	});
+	    this.dataSvc.getCustomer(this.container.customer_id, true).then( (customer) => {
+                this.customer = customer
+	    });
+	}
     }
 
     updateSearchResults(page=1) {
 	this.currentPage = page;
-	this.iconikSvc.search(this.federationConfiguration.request_headers['app-id'], this.federationConfiguration.request_headers['auth-token'], this.searchCriteria, this.currentPage).then( (response) => {
+	this.iconikSvc.search(this.federationConfiguration.uri, this.federationConfiguration.request_headers['app-id'], this.federationConfiguration.request_headers['auth-token'], this.searchCriteria, this.currentPage).then( (response) => {
 	    console.log(response.data);
 	    this.pages = response.data.pages;
             this.searchResults = IconikController.parseSearchResults(response.data.objects);
@@ -93,7 +101,8 @@ class IconikController implements IIconikBindings {
 
 export class Iconik implements ng.IComponentOptions {
   bindings: any = {
-    containerId: '@'
+    federationConfigurationId: '@',
+    containerId: '@'	
   };
   template = iconikHtml;
   controller = IconikController;
