@@ -4,9 +4,6 @@ import iconikHtml from './iconik.html';
 interface IIconikBindings extends ng.IComponentController {
     federationConfigurationId: string;
     containerId: string;
-    federationName: string;
-    searchCriteria: string;
-    searchResults: string;  
 }
 
 class IconikController implements IIconikBindings {
@@ -14,6 +11,7 @@ class IconikController implements IIconikBindings {
     containerId: string;
     federationName: string;
     searchCriteria: string;
+    mediaType: string = "video";	
     searchResults: array = []; 
     showIconikBrowser: boolean = false;
     federationConfiguration: IFederationConfiguration;
@@ -55,7 +53,7 @@ class IconikController implements IIconikBindings {
 
     updateSearchResults(page=1) {
 	this.currentPage = page;
-	this.iconikSvc.search(this.federationConfiguration.uri, this.federationConfiguration.request_headers['app-id'], this.federationConfiguration.request_headers['auth-token'], this.searchCriteria, this.currentPage).then( (response) => {
+	this.iconikSvc.search(this.federationConfiguration.uri, this.federationConfiguration.request_headers['app-id'], this.federationConfiguration.request_headers['auth-token'], this.searchCriteria, this.currentPage, 25, this.mediaType).then( (response) => {
 	    console.log(response.data);
 	    this.pages = response.data.pages;
             this.searchResults = IconikController.parseSearchResults(response.data.objects);

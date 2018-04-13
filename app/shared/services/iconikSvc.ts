@@ -16,7 +16,13 @@ export class IconikSvc implements IIconikSvc {
     init(): void {
     }
     
-    search(uri, appId, token, criteria, page=1, results_per_page=20):{} {
+    search(uri, appId, token, criteria, page=1, results_per_page=20, media_type=null):{} {
+        var facetsFilters = [];
+        if(media_type === "video") {
+            facetsFilters = [{'name':'media_type','value_in':['video']}];
+	} else if (media_type === "image") {
+	    facetsFilters = [{'name':'media_type','value_in':['image']}];	
+	}
 	var req = {
 	    method: 'POST',
 	    url: '/federated_proxy/API/search/v1/search/?page='+page+'&per_page='+results_per_page,
@@ -30,7 +36,7 @@ export class IconikSvc implements IIconikSvc {
 	    data: {	      
 		'query': criteria,
 		'doc_types':['assets'],
-		'facets_filters':[],
+		'facets_filters': facetsFilters,
 		'filter': {
 		    'operator':'AND','terms':[
 			{'name':'status','value':'ACTIVE'},

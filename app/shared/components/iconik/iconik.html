@@ -12,6 +12,17 @@
         class="search__input" ng-change="$ctrl.updateSearchResults()"
         ng-model="$ctrl.searchCriteria" ng-model-options="{ debounce: 500 }">
 	</div>
+	<div class="media-type">
+	  Media Type:
+	  <label>
+            <input type="radio" ng-model="$ctrl.mediaType" value="video" ng-change="$ctrl.updateSearchResults()">
+            Videos
+          </label>
+	  <label>
+            <input type="radio" ng-model="$ctrl.mediaType" value="image" ng-change="$ctrl.updateSearchResults()">
+            Images
+          </label>
+	</div>  
 	<div class="asset-list" id="asset-list">
 	  <asset ng-repeat="asset in $ctrl.searchResults"
         ng-click="$ctrl.importAsset(asset.id)" class="asset-list__item" id="{{asset.id}}">
