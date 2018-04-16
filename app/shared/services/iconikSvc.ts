@@ -49,20 +49,4 @@ export class IconikSvc implements IIconikSvc {
 	return this.$http(req)
     }
 
-    importAssetIntoNarrasys(np_token, container_id, federation_configuration_id, iconik_asset_id) {
-	var req = {
-	    method: 'POST',
-	    url: '/v1/containers/'+container_id+'/assets/'+federation_configuration_id,
-	    headers: {
-		'Content-Type': 'application/json',
-		'Authorization': 'Token token="'+np_token+'"'
-	    },
-	    data: {	      
-		'federation_data': {
-		    'iconik_asset_id': iconik_asset_id
-		}
-            }
-	}
-	return this.$http(req)
-    }
 }
