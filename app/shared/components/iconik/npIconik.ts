@@ -53,8 +53,10 @@ class IconikController implements IIconikBindings {
 
     updateSearchResults(page=1) {
 	this.currentPage = page;
-	this.iconikSvc.search(this.federationConfiguration.uri, this.federationConfiguration.request_headers['app-id'], this.federationConfiguration.request_headers['auth-token'], this.searchCriteria, this.currentPage, 25, this.mediaType).then( (response) => {
-	    console.log(response.data);
+	var url = this.federationConfiguration.federation_configuration_options.find(function (obj) { return obj.name === "url"; }).value;
+	var appId = this.federationConfiguration.federation_configuration_options.find(function (obj) { return obj.name === "app-id"; }).value;
+	var authToken = this.federationConfiguration.federation_configuration_options.find(function (obj) { return obj.name === "auth-token"; }).value;
+	this.iconikSvc.search(url, appId, authToken, this.searchCriteria, this.currentPage, 25, this.mediaType).then( (response) => {
 	    this.pages = response.data.pages;
             this.searchResults = IconikController.parseSearchResults(response.data.objects);
         });
@@ -67,7 +69,7 @@ class IconikController implements IIconikBindings {
             }
 	}
 	this.dataSvc.importFederatedAssetIntoNarrasys(this.containerId, this.federationConfiguration._id, federationData).then( (response) => {
-	    alert(response.file.name.en+" successfully imported!");
+	    alert(response.name.en+" successfully imported!");
 	});
     }
 

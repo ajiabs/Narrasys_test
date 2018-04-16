@@ -247,15 +247,20 @@ export class ICustomer {
   evenOdd?: boolean;
 }
 
+export class IFederationConfigurationOption {
+  _id: string;
+  display_name: string;
+  name: string;
+  value: string;
+  required: boolean;
+}
+
 export class IFederationConfiguration {
   _id: string;
   name: string;
   service_name: string;
-  uri: string;
-  username: string;
-  password: string;
   customer_id: string;
-  request_headers: any;
+  federation_configuration_options: IFederationConfigurationOption[];
 }
   
 export class INarrative {
