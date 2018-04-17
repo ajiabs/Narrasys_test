@@ -176,6 +176,15 @@ class ItemEditorController implements IItemEditorBindings {
     this.updateEventTemplate(this.deriveEvent(this.item));
   }
 
+  onName(name: string) {
+    this.textAreaName = name;
+  }
+
+  dispatchUpdate($field) {
+    // $field is the value emitted from InputI18n
+    this.item.annotation = $field;
+  }
+
   private updateEventTemplate(newEv: any) {
     if (this.item instanceof IScene) {
       this.updateLayoutTemplate(newEv);
