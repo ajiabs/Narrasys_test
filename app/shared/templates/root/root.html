@@ -1,11 +1,14 @@
 <div class="rootLogin standaloneAncillaryPage" itt-login>
 	<np-nav on-logout="logout()"></np-nav>
 	<div class="inner">
-		<div ng-if="appState.user._id">
+		<!---
+		<div ng-if="appState.user._id ">
 			<div itt-user></div>
 		</div>
+	-->
 
-		<div ng-if="!appState.user._id">
+		
+		<div ng-if="!appState.user._id || appState.user._id">
 
 			<form ng-submit="adminLogin()">
 				<h1>Sign in to Narrative Producer</h1>
@@ -25,8 +28,9 @@
 
 		</div>
 
+
 		<br style="clear:both">
 	</div>
 	<small ng-if="!appState.user._id"><a href="{{apiDataBaseUrl}}/oauth2">OAuth</a></small>
-
+	
 </div>

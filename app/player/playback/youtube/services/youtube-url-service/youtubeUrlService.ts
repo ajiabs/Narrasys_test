@@ -12,6 +12,7 @@ export interface IYoutubeUrlService {
   extractYoutubeId(origUrl);
   isYoutubeUrl(origUrl);
   parseMediaSrc(mediaSrcArr);
+  parseInput( input );
   embedParams(outgoing);
   createEmbedLinkFromYoutubeId(ytid, suppressParams);
   embeddableYoutubeUrl(origUrl, suppressParams);
@@ -122,6 +123,10 @@ export class YoutubeUrlService implements IYoutubeUrlService {
     var ytid = this.extractYoutubeId(origUrl);
     return this.createEmbedLinkFromYoutubeId(ytid, suppressParams);
   };
+
+  parseInput(input) {
+    return( this.embeddableYoutubeUrl( input, true ) );
+  }
 
   // var parseRidiculousDurationFormat = function (input) {
   // 	var duration = 0;

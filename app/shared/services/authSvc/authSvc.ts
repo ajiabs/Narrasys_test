@@ -191,7 +191,7 @@ export class AuthSvc implements IAuthServices {
 
     context.$http({
       method: 'GET',
-      url: config.apiDataBaseUrl + "/logout"
+     url: config.apiDataBaseUrl + "/logout"
     })
       .success(function () {
         delete context.$http.defaults.headers.common.Authorization; // now it's safe

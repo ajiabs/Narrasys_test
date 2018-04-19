@@ -25,7 +25,9 @@ export default function ittLogin($location, $routeParams, authSvc, appState, err
 
       scope.apiDataBaseUrl = config.apiDataBaseUrl;
 
-      authSvc.authenticate().then(function () {
+      let logout = $location.$$url.includes("/?logout=1") ? true : false;
+      if( !logout ) {
+        authSvc.authenticate().then(function () {
           errorSvc.init();
           if ($routeParams.key) {
             // (Probably unnecessary here, but testing to see if this fixes the unintended redirect from /#/auth)
@@ -49,13 +51,14 @@ export default function ittLogin($location, $routeParams, authSvc, appState, err
             }
 
           } else if (Object.keys($routeParams).length === 0) {
-            $location.path('/account');
-
+           $location.path('/account');
           }
         },
         function () {
           console.log("Login failed...");
         });
+
+      }
 
       // for admin logins only, for now. In future maybe oauth-based login will route through here too
       scope.adminLogin = function () {
