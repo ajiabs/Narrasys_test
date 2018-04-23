@@ -297,10 +297,12 @@ export class AuthSvc implements IAuthServices {
             context.appState.user = {};
             return context.authenticateViaNonce(nonceParam);
           });
-      } else {
+      } else if (this.$location.$$path !== "/") {
         console.log('auth Via Nonce', nonceParam);
         // no login info at all, start from scratch
         return this.authenticateViaNonce(nonceParam);
+      } else {
+        this.authenticateDefer.resolve();  
       }
     }
     return context.authenticateDefer.promise;

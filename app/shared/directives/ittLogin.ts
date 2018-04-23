@@ -25,8 +25,7 @@ export default function ittLogin($location, $routeParams, authSvc, appState, err
 
       scope.apiDataBaseUrl = config.apiDataBaseUrl;
 
-      let logout = $location.$$url.includes("/?logout=1") ? true : false;
-      if( !logout ) {
+        var user = authSvc.appState.user;
         authSvc.authenticate().then(function () {
           errorSvc.init();
           if ($routeParams.key) {
@@ -50,15 +49,13 @@ export default function ittLogin($location, $routeParams, authSvc, appState, err
               $location.path('/story/' + narrId);
             }
 
-          } else if (Object.keys($routeParams).length === 0) {
+          } else if (Object.keys($routeParams).length === 0 && authSvc.appState.user.roles) {
            $location.path('/account');
           }
         },
         function () {
           console.log("Login failed...");
         });
-
-      }
 
       // for admin logins only, for now. In future maybe oauth-based login will route through here too
       scope.adminLogin = function () {
