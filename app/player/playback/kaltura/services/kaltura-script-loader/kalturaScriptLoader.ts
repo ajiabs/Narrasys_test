@@ -3,6 +3,11 @@
  * Created by githop on 1/13/17.
  */
 
+/***********************************
+ **** Updated by Curve10 (JAB/EDD)
+ **** Feb 2018
+ ***********************************/
+
 /*
  Kaltura script loading strategy:
  - check for KWidget in global scope
@@ -11,15 +16,27 @@
  if we haven't, load script and store result in _scriptsMap
  */
 
-kalturaScriptLoader.$inject = ['$q', 'ittUtils'];
+export interface IKalturaScriptLoader {
+  load(partnerId, uiConfId);
+}
 
-export default function kalturaScriptLoader($q, ittUtils) {
-  var _scriptsMap = {};
-  var _existy = ittUtils.existy;
 
-  return {
-    load: load
-  };
+export class KalturaScriptLoader implements IKalturaScriptLoader {
+  static Name = 'kalturaScriptLoader'; // tslint:disable-line
+  static $inject = ['$q', 'ittUtils'];
+
+  constructor (
+    private $q,
+    private ittUtils) {
+
+  }
+
+  private _scriptsMap = {};
+  private _existy = this.ittUtils.existy;
+
+  // return {
+  //   load: load
+  // };
 
   /**
    *
@@ -27,37 +44,37 @@ export default function kalturaScriptLoader($q, ittUtils) {
    * @param uiConfId
    * @returns {*}
    */
-  function load(partnerId, uiConfId) {
-    return $q(function (resolve) {
+  load(partnerId, uiConfId) {
+    return this.$q( (resolve) => {
 
       var scriptKey = uiConfId + partnerId;
 
-      if (!_existy(_scriptsMap[scriptKey])) {
-        _scriptsMap[scriptKey] = 'ready';
+      if (!this._existy(this._scriptsMap[scriptKey])) {
+        this._scriptsMap[scriptKey] = 'ready';
       }
 
       if (typeof(KWidget) == 'undefined') {
-        _loadScript(partnerId, uiConfId, _scriptsMap, resolve);
-      } else if (_scriptsMap[scriptKey] === 'ready') {
-        _loadScript(partnerId, uiConfId, _scriptsMap, resolve);
+        this._loadScript(partnerId, uiConfId, this._scriptsMap, resolve);
+      } else if (this._scriptsMap[scriptKey] === 'ready') {
+        this._loadScript(partnerId, uiConfId, this._scriptsMap, resolve);
       } else {
         resolve();
       }
     });
   }
 
-  function _loadScript(partnerId, uiConfId, history, onDone) {
-    var tagSrc = _getScriptTagSrc(partnerId, uiConfId);
-    var tag = _appendScript(tagSrc, partnerId);
+  private _loadScript(partnerId, uiConfId, history, onDone) {
+    var tagSrc = this._getScriptTagSrc(partnerId, uiConfId);
+    var tag = this._appendScript(tagSrc, partnerId);
     tag.onload = onDone;
     history[uiConfId + partnerId] = tag;
   }
 
-  function _getScriptTagSrc(partnerId, uiConfId) {
+  private _getScriptTagSrc(partnerId, uiConfId) {
     return 'https://cdnapisec.kaltura.com/p/' + partnerId + '/sp/' + partnerId + '00/embedIframeJs/uiconf_id/' + uiConfId + '/partner_id/' + partnerId;
   }
 
-  function _appendScript(src, partnerId) {
+  private _appendScript(src, partnerId) {
     var tag = document.createElement('script');
     tag.src = src;
     tag.id = partnerId;

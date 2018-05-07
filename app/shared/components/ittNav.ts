@@ -66,11 +66,11 @@ class NavController implements INavBindings {
   }
 
   $onInit() {
-    this.authSvc.authenticate().then(() => {
-      this.canAccess = this.authSvc.userHasRole('admin')
-        || this.authSvc.userHasRole('customer admin')
-        || this.authSvc.userHasRole('instructor');
-    });
+      this.authSvc.authenticate().then(() => {
+        this.canAccess = this.authSvc.userHasRole('admin')
+          || this.authSvc.userHasRole('customer admin')
+          || this.authSvc.userHasRole('instructor');
+      });
   }
 
   goToAccounts() {

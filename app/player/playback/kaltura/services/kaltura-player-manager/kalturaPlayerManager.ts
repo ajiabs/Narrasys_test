@@ -1,7 +1,18 @@
+import { BasePlayerManager } from '../../../services/base-player-manager/basePlayerManager';
+import { IMetaProps, IPlayerManager, IScriptLoader } from '../../../../../interfaces';
+import { PlayerManagerCommons } from "../../../services/player-manager-commons/playerManagerCommons";
+import { existy } from '../../../../../shared/services/ittUtils';
+
 // @npUpgrade-kaltura-false
 /**
  * Created by githop on 1/13/17.
  */
+
+/***********************************
+ **** Updated by Curve10 (JAB/EDD)
+ **** Feb 2018
+ ***********************************/
+
 /**
  * @ngdoc service
  * @name iTT.service:kalturaPlayerManager
@@ -15,274 +26,271 @@
  * @requires ittUtils
  */
 
+ export interface IKalturaPlayerManager {
+  create(playerId);
+  seedPlayerManager(id, mainPlayer, mediaSrcArr);
+  play(pid);
+  pause(pid);
+  seekTo(pid, t);
+  stop(pid);
+  getPlayerState(pid);
+  getCurrentTime(pid);
+  getBufferedPercent(pid);
+  toggleMute(pid);
+  setSpeed(pid, playbackRate);
+  setVolume(pid, v);
+  type:string;
+ }
 
-kalturaPlayerManager.$inject = ['ittUtils', 'PLAYERSTATES', 'playerManagerCommons', 'kalturaScriptLoader', 'kalturaUrlService'];
+export class KalturaPlayerManager extends BasePlayerManager implements IKalturaPlayerManager {
+  static Name = 'kalturaPlayerManager'; // tslint:disable-line
+  static $inject = ['ittUtils', 'PLAYERSTATES', 'playerManagerCommons', 'kalturaScriptLoader', 'kalturaUrlService'];
 
-export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
-  var _players = {};
-  var _mainPlayerId;
-  var _type = 'kaltura';
-  var _existy = ittUtils.existy;
+  constructor (
+    private ittUtils,
+    private PLAYERSTATES,
+    private playerManagerCommons,
+    private kalturaScriptLoader,
+    private kalturaUrlService) {
+      super();
 
-  var base = playerManagerCommons({players: _players, type: _type});
-  var commonMetaProps = base.commonMetaProps;
+      /* Initialization */
+      let cmp = this.getCommonMetaProps();
+      angular.extend(this._kalturaMetaObj.meta, this._kalturaMetaProps, cmp);
+    }
 
-  var _kalturaMetaProps = {
+  private _players = {};
+  private _mainPlayerId;
+  type = 'kaltura';
+  private _existy = this.ittUtils.existy;
+
+   private _kalturaMetaProps = {
     ktObj: {},
-    videoType: _type,
+    videoType: this.type,
     bufferTimeout: null,
     seekTimeout: null,
     lastVol: 100
   };
 
-  var _kalturaMetaObj = {
+  private _kalturaMetaObj = {
     instance: null,
     meta: {}
   };
 
-  angular.extend(_kalturaMetaObj.meta, _kalturaMetaProps, commonMetaProps);
-  var _validMetaKeys = Object.keys(_kalturaMetaObj.meta);
+  private _validMetaKeys = Object.keys(this._kalturaMetaObj.meta);
 
-  var predicate = function (pid) {
-    return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
+  private predicate = function (pid) {
+    return (this._existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true);
   };
 
-  var kalturaEndingFn = function (pid) {
+  private kalturaEndingFn = function (pid) {
     //add logic if necessary
   };
 
-  var getPlayer = base.getPlayer;
-  var setPlayer = base.setPlayer;
-  var getPlayerDiv = base.getPlayerDiv;
-  var getInstance = base.getInstance(predicate);
-  var createMetaObj = base.createMetaObj;
-  var getMetaObj = base.getMetaObj;
-  var getMetaProp = base.getMetaProp;
-  var setMetaProp = base.setMetaProp(_validMetaKeys);
-  var registerStateChangeListener = base.registerStateChangeListener;
-  var unregisterStateChangeListener = base.unregisterStateChangeListener;
-  var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
-  var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
-  var renamePid = base.renamePid;
-  var handleTimelineEnd = base.handleTimelineEnd(kalturaEndingFn);
-  var ittTimeout = ittUtils.ngTimeout;
-  var cancelIttTimeout = ittUtils.cancelNgTimeout;
-  var _getStateChangeListeners = base.getStateChangeListeners;
+  private ittTimeout = this.ittUtils.ngTimeout;
+  private cancelIttTimeout = this.ittUtils.cancelNgTimeout;
 
-  return {
-    type: _type,
-    getMetaProp: getMetaProp,
-    setMetaProp: setMetaProp,
-    getMetaObj: getMetaObj,
-    getPlayerDiv: getPlayerDiv,
-    pauseOtherPlayers: pauseOtherPlayers,
-    registerStateChangeListener: registerStateChangeListener,
-    unregisterStateChangeListener: unregisterStateChangeListener,
-    resetPlayerManager: resetPlayerManager,
-    renamePid: renamePid,
-    seedPlayerManager: seedPlayerManager,
-    create: create,
-    getPlayerState: getPlayerState,
-    play: play,
-    pause: pause,
-    seekTo: seekTo,
-    getCurrentTime: getCurrentTime,
-    getBufferedPercent: getBufferedPercent,
-    toggleMute: toggleMute,
-    setVolume: setVolume,
-    setSpeed: setSpeed,
-    freezeMetaProps: angular.noop,
-    unFreezeMetaProps: angular.noop,
-    stop: stop,
-    handleTimelineEnd: handleTimelineEnd
-  };
 
-  function create(playerId) {
+  create(playerId) {
 
-    var ktObj = getMetaProp(playerId, 'ktObj');
+    var ktObj = this.getMetaProp(playerId, 'ktObj');
     var partnerId = ktObj.partnerId,
       entryId = ktObj.entryId,
       uiConfId = ktObj.uiconfId;
 
-    _createKWidget(playerId, partnerId, entryId, uiConfId, readyCallback)
-      .then(handleSuccess);
+      this._createKWidget(playerId, partnerId, entryId, uiConfId, this.readyCallback)
+      .then(_ => {
+        // don't need to do anything in this case
+      });
 
-
-    function handleSuccess() {
-      // noop
-    }
-
-    function readyCallback(playerId) {
-      var kdp = document.getElementById(playerId);
-      getPlayer(playerId).instance = kdp;
-      _attachEventListeners(kdp, playerId);
-    }
-
+    
   }
 
-  function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
-    if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
+  seedPlayerManager(id, mainPlayer, mediaSrcArr) {
+    if (this._existy(this.getPlayer(id)) && this.getMetaProp(id, 'startAtTime') > 0) {
       return;
     }
 
     if (mainPlayer) {
-      _players = {};
-      _mainPlayerId = id;
+      this._players = {};
+      this._mainPlayerId = id;
     }
-    var ktObj = kalturaUrlService.getKalturaObject(mediaSrcArr[0]);
+    var ktObj = this.kalturaUrlService.getKalturaObject(mediaSrcArr[0]);
     var newProps = {
       mainPlayer: mainPlayer,
-      div: _getPlayerDiv(id),
+      div: this._getPlayerDiv(id),
       ktObj: ktObj
     };
-    setPlayer(id, createMetaObj(newProps, _kalturaMetaObj));
+    this.setPlayer(id, KalturaPlayerManager.createMetaObj(newProps));
   }
 
   /*
    Event Bound functions
    */
 
-  function onMediaReady(pid) {
-    _emitStateChange(pid, 6);
-    setMetaProp(pid, 'duration', _kdpEval(pid, 'duration'));
+  private readyCallback( context, pid ) {
+    var kdp = document.getElementById(pid);
+    context.getPlayer(pid).instance = kdp;
+    context._attachEventListeners(kdp, pid);
   }
 
-  function onPlaying(pid) {
-    setMetaProp(pid, 'playerState', 1);
-    if (getMetaProp(pid, 'ready') === true) {
-      _emitStateChange(pid);
+  private onMediaReady(pid) {
+    let context = this;
+    context._emitStateChange(pid, 6);
+    context.setMetaProp(pid, 'duration', this._kdpEval(pid, 'duration'));
+  }
+
+  private onPlaying(pid) {
+    let context = this;
+    context.setMetaProp(pid, 'playerState', 1);
+    if (context.getMetaProp(pid, 'ready') === true) {
+      context._emitStateChange(pid);
     }
   }
 
-  function onPaused(pid) {
-    setMetaProp(pid, 'playerState', 2);
-    _emitStateChange(pid);
+  private onPaused(pid) {
+    let context = this;
+    context.setMetaProp(pid, 'playerState', 2);
+    context._emitStateChange(pid);
   }
 
-  function onBufferEnd(ev) {
-    var currentState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
-    var isBuffering = getMetaProp(this.id, 'bufferTimeout');
+  private onBufferEnd(pid) {
+    let context = this;
 
-    if (_existy(isBuffering)) {
-      cancelIttTimeout(isBuffering);
+    var currentState = context.PLAYERSTATES[context.getMetaProp(pid, 'playerState')];
+    var isBuffering = context.getMetaProp(pid, 'bufferTimeout');
+
+    if (context._existy(isBuffering)) {
+      context.cancelIttTimeout(isBuffering);
     }
 
     if (currentState === 'buffering') {
-      play(this.id);
+      context.play(pid);
     }
   }
 
-  function onBufferStart() {
-    var pid = this.id;
+  private onBufferStart(pid) {
+    let context = this;
 
-    var isBuffering = ittTimeout(function () {
-      console.log('stuck in buffer land', getMetaProp(pid, 'time'));
-      _reset(pid);
+    var isBuffering = this.ittTimeout( () => {
+      console.log('stuck in buffer land', context.getMetaProp(pid, 'time'));
+      context._reset(pid);
     }, 15 * 1000);
 
-    setMetaProp(this.id, 'bufferTimeout', isBuffering);
-    setMetaProp(this.id, 'playerState', 3);
-    _emitStateChange(this.id);
+    context.setMetaProp( pid, 'bufferTimeout', isBuffering);
+    context.setMetaProp( pid, 'playerState', 3);
+    context._emitStateChange( pid );
   }
 
-  function onPlayerPlayEnd(pid) {
-    console.log('playerState ended', getMetaProp(pid, 'playerState'));
-    setMetaProp(pid, 'playerState', 0);
-    _emitStateChange(pid);
+  private onPlayerPlayEnd(pid) {
+    let context = this;
+
+    console.log('playerState ended', context.getMetaProp(pid, 'playerState'));
+    context.setMetaProp(pid, 'playerState', 0);
+    context._emitStateChange(pid);
   }
 
-  function onMediaError(e) {
+  private onMediaError(e) {
     console.warn('PLAYER ERROR', e);
   }
 
-  function onUpdatedPlaybackRate(e) {
+  private onUpdatedPlaybackRate(e) {
     console.log('new rate', e);
   }
 
-  function onPlayerUpdatePlayhead(ev) {
-    setMetaProp(this.id, 'time', ev);
+  private onPlayerUpdatePlayhead(ev) {
+    // DOM's context
+    let context = this;
+    let pid = this.id;
+    context.setMetaProp( pid , 'time', ev);
   }
 
   /*
    Public Methods
    */
-  function play(pid) {
-    _sendKdpNotice(pid, 'doPlay');
+  play(pid) {
+    this._sendKdpNotice(pid, 'doPlay');
   }
 
-  function pause(pid) {
-    _sendKdpNotice(pid, 'doPause');
+  pause(pid) {
+    this._sendKdpNotice(pid, 'doPause');
   }
 
-  function seekTo(pid, t) {
+  seekTo(pid, t) {
     if (t > 60 && t % 10 === 0) { //certain startAtTime values seem to lock the player up in chrome
       t -= 0.5;
     }
-    _sendKdpNotice(pid, 'doSeek', t);
+    this._sendKdpNotice(pid, 'doSeek', t);
   }
 
-  function stop(pid) {
-    _sendKdpNotice(pid, 'doStop');
+  stop(pid) {
+    this._sendKdpNotice(pid, 'doStop');
   }
 
-  function getPlayerState(pid) {
-    return PLAYERSTATES[getMetaProp(pid, 'playerState')];
+  getPlayerState(pid) {
+    return this.PLAYERSTATES[this.getMetaProp(pid, 'playerState')];
   }
 
-  function getCurrentTime(pid) {
-    return _kdpEval(pid, 'video.player.currentTime') || 0;
+  getCurrentTime(pid) {
+    return this._kdpEval(pid, 'video.player.currentTime') || 0;
   }
 
-  function getBufferedPercent(pid) {
-    if (getMetaProp(pid, 'ready') === true) {
-      return _kdpEval(pid, 'video.buffer.percent') * 100;
+  getBufferedPercent(pid) {
+    if (this.getMetaProp(pid, 'ready') === true) {
+      return this._kdpEval(pid, 'video.buffer.percent') * 100;
     }
   }
 
-  function toggleMute(pid) {
-    var isMuted = getMetaProp(pid, 'muted');
+  toggleMute(pid) {
+    var isMuted = this.getMetaProp(pid, 'muted');
 
     if (isMuted === false) {
-      setMetaProp(pid, 'lastVol', getMetaProp(pid, 'volume'));
-      setVolume(pid, 0);
+      this.setMetaProp(pid, 'lastVol', this.getMetaProp(pid, 'volume'));
+      this.setVolume(pid, 0);
     } else {
-      setVolume(pid, getMetaProp(pid, 'lastVol'));
+      this.setVolume(pid, this.getMetaProp(pid, 'lastVol'));
     }
 
-    setMetaProp(pid, 'muted', !isMuted);
+    this.setMetaProp(pid, 'muted', !isMuted);
   }
 
-  function setSpeed(pid, playbackRate) {
+  setSpeed(pid, playbackRate) {
     console.log('setting speed to', playbackRate);
-    _sendKdpNotice(pid, 'playbackRateChangeSpeed', playbackRate);
+    this._sendKdpNotice(pid, 'playbackRateChangeSpeed', playbackRate);
   }
 
-  function setVolume(pid, v) {
-    _sendKdpNotice(pid, 'changeVolume', v / 100);
-    setMetaProp(pid, 'volume', v);
+  setVolume(pid, v) {
+    this._sendKdpNotice(pid, 'changeVolume', v / 100);
+    this.setMetaProp(pid, 'volume', v);
   }
 
   /*
-   Private methods
+             ***************  Private methods ***************
    */
-  function _reset(pid, t?) {
-    var currentTime = t || getMetaProp(pid, 'time');
+  private getInstance(pid: string): any {
+    if (existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true) {
+      return this.getPlayer(pid).instance;
+    }
+  }
+
+  private _reset(pid, t?) {
+    var currentTime = t || this.getMetaProp(pid, 'time');
     //changeMedia will emit a 'onMediaReady' event after the media has been successfully changed
     //when handling the 'onMediaReady' event, the playbackService will seek to the startAtTime
     console.log('about to reset to t=', currentTime);
-    setMetaProp(pid, 'startAtTime', currentTime);
-    setMetaProp(pid, 'hasResumedFromStartAt', false);
-    setMetaProp(pid, 'resetInProgress', true);
-    var entryId = getMetaProp(pid, 'ktObj').entryId;
-    _sendKdpNotice(pid, 'changeMedia', {'entryId': entryId});
-    setMetaProp(pid, 'ready', false);
+    this.setMetaProp(pid, 'startAtTime', currentTime);
+    this.setMetaProp(pid, 'hasResumedFromStartAt', false);
+    this.setMetaProp(pid, 'resetInProgress', true);
+    var entryId = this.getMetaProp(pid, 'ktObj').entryId;
+    this._sendKdpNotice(pid, 'changeMedia', {'entryId': entryId});
+    this.setMetaProp(pid, 'ready', false);
   }
 
-  function _sendKdpNotice(pid, notice, val?) {
-    var kdp = getInstance(pid);
+  private _sendKdpNotice(pid, notice, val?) {
+    var kdp = this.getInstance(pid);
 
     try {
-      if (_existy(val)) {
+      if (this._existy(val)) {
         kdp.sendNotification(notice, val);
       } else {
         kdp.sendNotification(notice);
@@ -292,13 +300,13 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
     }
   }
 
-  function _createKWidget(divId, partnerID, entryID, uiConfId, onReadyCB) {
+  private _createKWidget(divId, partnerID, entryID, uiConfId, onReadyCB) {
 
     var embedObj = {
       'targetId': divId,
       'wid': '_' + partnerID,
       'uiconf_id': uiConfId,
-      'readyCallback': onReadyCB,
+      'readyCallback': () => onReadyCB(this, divId),
       'entry_id': entryID,
       'flashvars': {
         'playbackRateSelector.plugin': true,
@@ -314,68 +322,85 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
       'EmbedPlayer.DisableHTML5FlashFallback': true
     };
 
-    if (divId !== _mainPlayerId) {
+
+    if (divId !== this._mainPlayerId) {
       angular.extend(embedObj.flashvars, embedControls);
     }
 
-    return kalturaScriptLoader.load(partnerID, uiConfId).then(function () {
+
+    /// need to drag the context of this object around for readyCallback
+    var kdp = document.getElementById(divId);
+ 
+    return this.kalturaScriptLoader.load(partnerID, uiConfId).then(_ => {
+      // load function creates the GLOBAL VARIABLE KWidget...
       KWidget.embed(embedObj);
     });
   }
 
-  function _getPlayerDiv(id) {
+  private _getPlayerDiv(id) {
     return '<div id="' + id + '"></div>';
   }
 
-  function _attachEventListeners(kdp, pid) {
+  private _attachEventListeners(kdp, pid) {
     var kMap = {
-      'playerPlayed': onPlaying,
-      'playerPaused': onPaused,
-      'bufferStartEvent': onBufferStart,
-      'bufferEndEvent': onBufferEnd,
-      'playerPlayEnd': onPlayerPlayEnd,
-      'mediaError': onMediaError,
-      'mediaReady': onMediaReady,
-      'updatedPlaybackRate': onUpdatedPlaybackRate,
-      'playerUpdatePlayhead': onPlayerUpdatePlayhead
+
+      // this set of callbacks require our context and the current pid
+      'playerPlayed':  () => this.onPlaying(pid),
+      'playerPaused': () => this.onPaused(pid),
+      'bufferStartEvent': () => this.onBufferStart(pid),
+      'bufferEndEvent': () => this.onBufferEnd(pid),
+      'playerPlayEnd': () =>this.onPlayerPlayEnd(pid),
+      'mediaReady': () => this.onMediaReady(pid),
+
+      // this set of callbacks only need the DOM's context and the system's parameters
+      'mediaError': this.onMediaError,
+      'updatedPlaybackRate': this.onUpdatedPlaybackRate,
+      'playerUpdatePlayhead': this.onPlayerUpdatePlayhead
     };
-    Object.keys(kMap).forEach(function (evtName) {
-      (function (evtName) {
+    Object.keys(kMap).forEach( (evtName) => {
+      ( (evtName) => {
         kdp.kBind(evtName + '.' + pid, kMap[evtName]);
       })(evtName);
     });
+
   }
 
-  function _removeEventListeners(pid) {
-    var kdp = getInstance(pid);
+  private _removeEventListeners(pid) {
+    var kdp = this.getInstance(pid);
     kdp.kUnbind('.' + pid);
   }
 
-  function _emitStateChange(pid, forceState?) {
+  private _emitStateChange(pid, forceState?) {
     var state;
 
     if (forceState) {
       state = forceState;
     } else {
-      state = getMetaProp(pid, 'playerState');
+      state = this.getMetaProp(pid, 'playerState');
     }
 
-    _getStateChangeListeners().forEach(function (cb) {
-      cb(_formatPlayerStateChangeEvent(state, pid));
+    /*
+    let context = this;
+    this.getStateChangeListeners().forEach( cb => {
+      cb(context._formatPlayerStateChangeEvent(state, pid));
     });
+    */
+   for( const cb of this.getStateChangeListeners()) {
+      cb(this._formatPlayerStateChangeEvent(state, pid));
+   }
   }
 
-  function _kdpEval(pid, prop) {
-    var instance = getInstance(pid);
-    if (_existy(instance)) {
+  private _kdpEval(pid, prop) {
+    var instance = this.getInstance(pid);
+    if (this._existy(instance)) {
       return instance.evaluate('{' + prop + '}');
     }
   }
 
-  function _formatPlayerStateChangeEvent(state, pid) {
+  private _formatPlayerStateChangeEvent(state, pid) {
     return {
       emitterId: pid,
-      state: PLAYERSTATES[state]
+      state: this.PLAYERSTATES[state]
     };
   }
 

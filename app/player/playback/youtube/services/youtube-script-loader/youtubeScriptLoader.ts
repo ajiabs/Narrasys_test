@@ -3,6 +3,11 @@
  * Created by githop on 12/1/15.
  */
 
+/***********************************
+ **** Updated by Curve10 (JAB/EDD)
+ **** Feb 2018
+ ***********************************/
+
 /**
  * @ngdoc service
  * @name iTT.service:YTScriptLoader
@@ -11,16 +16,29 @@
  * @requires $q
  * @requires $timeout
  */
-YTScriptLoader.$inject = ['$q', '$timeout'];
 
-export default function YTScriptLoader($q, $timeout) {
+export interface IYTScriptLoader {
+  load();
+}
+
+export class YTScriptLoader implements IYTScriptLoader {
+  static Name = 'YTScriptLoader'; // tslint:disable-line
+  static $inject = ['$q', '$timeout'];
+
+  constructor (
+    private $q,
+    private $timeout) {
+    }
+
   //allow 2 seconds download time per each try
   //4 seconds total, as on first error, we retry
   //see YoutubePlayerManager#create
-  var TIMEOUT = 2 * 1000;
-  return {
-    load: load
-  };
+
+  private TIMEOUT = 2 * 1000;
+
+  // return {
+  //   load: load
+  // };
 
   /**
    * @ngdoc method
@@ -31,11 +49,12 @@ export default function YTScriptLoader($q, $timeout) {
    * www-widgetapi script
    * @returns {Promise} returns Promise<Void>
    */
-  function load() {
-    var doReject;
-    return $q(function (resolve, reject) {
 
-      doReject = $timeout(reject, TIMEOUT);
+  load() {
+    var doReject;
+    return this.$q( (resolve, reject) => {
+
+      doReject = this.$timeout(reject, this.TIMEOUT);
 
       //check for YT global
       if (typeof(YT) == 'undefined' || typeof(YT.Player) == 'undefined') { //jshint ignore:line
@@ -47,14 +66,15 @@ export default function YTScriptLoader($q, $timeout) {
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
       } else {
         //we have already fired onYoutubeIframeAPIReady
-        $timeout.cancel(doReject);
+        this.$timeout.cancel(doReject);
         resolve();
       }
 
+      var context = this;
       window.onYouTubeIframeAPIReady = function () {
         //youtube.com/iframe_api script will invoke
         //this function after it downloads www-widgetapi script.
-        $timeout.cancel(doReject);
+        context.$timeout.cancel(doReject);
         resolve();
       };
     });

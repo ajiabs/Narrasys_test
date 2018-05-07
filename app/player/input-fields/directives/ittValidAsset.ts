@@ -34,7 +34,11 @@ export class ValidAsset implements ng.IDirective {
           cmpName = componentName.currentValue;
         }
 
-        this.handleNameChanges(cmpName, asset.currentValue);
+        // stop relic from throwing undefined error even though handleNameChanges can deal with a null parameter
+        let currentValue = null;
+        if( asset && asset.currentValue )
+          currentValue = asset.currentValue
+        this.handleNameChanges(cmpName, currentValue);
       }
     }
 

@@ -29,6 +29,11 @@ export abstract class BasePlayerManager {
 
   protected statechangeCallbacks = [];
 
+ // protected commonMetaProps;
+ protected getCommonMetaProps() {
+   return commonMetaProps;
+ }
+
   static createMetaObj(newProps: any): { instance: any, meta: any } {
     const metaObj = {
       instance: null,
@@ -38,6 +43,10 @@ export abstract class BasePlayerManager {
     Object.assign(commonMetaProps, newProps);
     Object.assign(metaObj.meta, commonMetaProps);
     return metaObj;
+  }
+
+  protected getStateChangeListeners() {
+    return this.statechangeCallbacks;
   }
 
   protected getPlayer(pid: string): IPlayer {
@@ -66,6 +75,8 @@ export abstract class BasePlayerManager {
       return player.meta[prop];
     }
   }
+
+
 
   setMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K, val: IWistiaMetaProps[K]): void;
   setMetaProp(pid: string, prop: string, val: any): void {

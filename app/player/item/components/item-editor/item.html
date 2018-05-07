@@ -17,7 +17,8 @@
             <np-input-i18n
               class="input"
               field="$ctrl.item.annotation"
-              on-field-change="$ctrl.deriveEvent()"
+              on-field-change="$ctrl.dispatchUpdate($field)"
+              on-emit-name="$ctrl.onName($taName)"
               np-autofocus
               inputtype="textarea">
             </np-input-i18n>

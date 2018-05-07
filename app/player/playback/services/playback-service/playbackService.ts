@@ -3,7 +3,12 @@
  * Created by githop on 10/24/16.
  */
 
-import {IPlayerManager, IUrlService, IWistiaPlayerManager} from '../../../../interfaces';
+//
+// ** Updated by Curve10 (JAB/EDD)
+//    Feb 2018
+//
+
+import { IPlayerManager, IUrlService, IWistiaPlayerManager } from '../../../../interfaces';
 
 /**
  * @ngdoc service
@@ -12,7 +17,7 @@ import {IPlayerManager, IUrlService, IWistiaPlayerManager} from '../../../../int
  * playbackService exports an interface for the timelineSvc and consumes the interfaces exported from
  * the playerManagers. The exported methods of the playbackService are called by timelineSvc or ittVideo directive.
  *
- * Videos in the app (either the main video or embeds) are kept track of using the db record _id. See the _players
+ * Videos in the app (either the main video or embeds) are kept track of using the db record _id. See the this._players
  * object in the playerManagers for an example.
  *
  * Most of the exported playback methods (seek, play, pause...etc) accept an optional playerId param. If
@@ -35,77 +40,88 @@ import {IPlayerManager, IUrlService, IWistiaPlayerManager} from '../../../../int
  * @requires PLAYERSTATES
  */
 
-playbackService.$inject = [
-  '$interval',
-  'youTubePlayerManager',
-  'html5PlayerManager',
-  'kalturaPlayerManager',
-  'wistiaPlayerManager',
-  'ittUtils',
-  'urlService',
-  'PLAYERSTATES_WORD',
-  'PLAYERSTATES'
-];
+export interface IPlaybackServices {
+  handleTimelineEnd(pid: string),
+  seedPlayer(mediaSrcArr, id:string, mainPlayera:boolean),
+  createInstance(playerId: string),
+  play( playerId: string),
+  pause( playerId: string),
+  seek ( time:number, playerId:string),
+  allowPlayback(state:string),
+  togglePlayback(pid:string, restartFn, analyticsFn?),
+  pauseOtherPlayers( playerId: string),
+  registerStateChangeListener(cb),
+  unregisterStateChangeListener(cb),
+  getCurrentTime(playerId: string),
+  getPlayerDiv(playerId: string),
+  getPlayerState(playerId: string),
+  setSpeed(rate:number, playerId: string),
+  setVolume(volume:number, playderId: string),
+  getMetaProp( prop:string, id: string),
+  setMetaProp( prop: string, val: string, id: string),
+  getTimelineState():string,
+  freezeMetaProps(playerId: string),
+  unFreezeMetaProps(playerId: string),
+  resetPlaybackService(),
+  handle$Destroy(playerId: string),
+  stop(playerId: string),
+  renamePid(oldName: string, newName: string),
 
-export default function playbackService(
-  $interval,
-  youTubePlayerManager,
-  html5PlayerManager,
-  kalturaPlayerManager,
-  wistiaPlayerManager: IWistiaPlayerManager,
-  ittUtils,
-  urlService: IUrlService,
-  PLAYERSTATES_WORD,
-  PLAYERSTATES) {
-  /* tslint:disable:prefer-const object-literal-shorthand */
-  var _playerInterfaces: { [id: string]: IPlayerManager } = {};
-  var _mainPlayerId;
-  var _stateChangeCallbacks = [];
-  var _playerManagers: IPlayerManager[] = [
-    html5PlayerManager, youTubePlayerManager, kalturaPlayerManager, wistiaPlayerManager
+}
+
+export class PlaybackServices implements IPlaybackServices {
+  static Name = 'playbackService';
+  static $inject = [
+    '$interval',
+    'youTubePlayerManager',
+    'html5PlayerManager',
+    'kalturaPlayerManager',
+    'wistiaPlayerManager',
+    'ittUtils',
+    'urlService',
+    'PLAYERSTATES_WORD',
+    'PLAYERSTATES'
   ];
-  var _timelineState = '';
-  var _mainPlayerBufferingPoll;
-  var _playbackServiceHasBeenReset;
-  var _existy = ittUtils.existy;
 
-  angular.forEach(_playerManagers, function (playerManager: IPlayerManager) {
-    playerManager.registerStateChangeListener(_stateChangeCB);
-  });
 
-  return {
-    seedPlayer: seedPlayer,
-    createInstance: createInstance,
-    play: play,
-    pause: pause,
-    seek: seek,
-    getCurrentTime: getCurrentTime,
-    getPlayerState: getPlayerState,
-    toggleMute: toggleMute,
-    setVolume: setVolume,
-    getPlayerDiv: getPlayerDiv,
-    setSpeed: setSpeed,
-    registerStateChangeListener: registerStateChangeListener,
-    unregisterStateChangeListener: unregisterStateChangeListener,
-    getMetaProp: getMetaProp,
-    setMetaProp: setMetaProp,
-    getTimelineState: getTimelineState,
-    setTimelineState: setTimelineState,
-    freezeMetaProps: freezeMetaProps,
-    unFreezeMetaProps: unFreezeMetaProps,
-    // getMetaObj: getMetaObj,
-    pauseOtherPlayers: pauseOtherPlayers,
-    handle$Destroy: handle$Destroy,
-    resetPlaybackService: resetPlaybackService,
-    stop: stop,
-    allowPlayback: allowPlayback,
-    togglePlayback: togglePlayback,
-    renamePid: renamePid,
-    handleTimelineEnd: handleTimelineEnd
-  };
-  /*
-   PUBLIC METHODS
-   */
+  constructor(
+    private $interval,
+    private youTubePlayerManager,
+    private html5PlayerManager,
+    private kalturaPlayerManager,
+    private wistiaPlayerManager: IWistiaPlayerManager,
+    private ittUtils,
+    private urlService: IUrlService,
+    private PLAYERSTATES_WORD,
+    private PLAYERSTATES) {
+    this._init();
+  }
+
+  // ******************************** initialization for the constructor ******************************* //
+  private _init() {
+  
+    angular.forEach(this._playerManagers,  (playerManager: IPlayerManager) => {
+      playerManager.registerStateChangeListener( (stateChangeEvent) => {
+        this._stateChangeCB(stateChangeEvent)
+      })
+    });
+  }
+
+
+  // ********************************** private variables ********************************************** //
+  private _playerInterfaces: { [id: string]: IPlayerManager } = {};
+  private _mainPlayerId;
+  private _stateChangeCallbacks = [];
+  private _playerManagers: IPlayerManager[] = [
+    this.html5PlayerManager, this.youTubePlayerManager, this.kalturaPlayerManager, this.wistiaPlayerManager
+  ];
+  private _timelineState = '';
+  private _mainPlayerBufferingPoll;
+  private _playbackServiceHasBeenReset;
+  private _existy = this.ittUtils.existy;
+
+
+  // **************************************  PUBLIC METHODS *************************** //
 
   /**
    * @ngdoc method
@@ -116,10 +132,10 @@ export default function playbackService(
    * @param {String} pid the pid of the player
    * @returns {Void} returns void.
    */
-  function handleTimelineEnd(pid) {
-    pid = _setPid(pid);
-    if (_existy(_playerInterfaces[pid])) {
-      _playerInterfaces[pid].handleTimelineEnd(pid);
+  handleTimelineEnd(pid) {
+    pid = this._setPid(pid);
+    if (this._existy(this._playerInterfaces[pid])) {
+      this._playerInterfaces[pid].handleTimelineEnd(pid);
     }
   }
 
@@ -135,23 +151,26 @@ export default function playbackService(
    * @param {Array} mediaSrcArr array of youtube URLs
    * @returns {Void} returns void.
    */
-  function seedPlayer(mediaSrcArr, id, mainPlayer) {
+  seedPlayer(mediaSrcArr, id, mainPlayer) {
     if (mainPlayer === true) {
-      if (_existy(_playerInterfaces[id])) {
+      if (this._existy(this._playerInterfaces[id])) {
         //bail if we have already set the main player.
         return;
       }
     }
-    var parsedMedia = urlService.parseMediaSrcArr(mediaSrcArr);
+    var parsedMedia = this.urlService.parseMediaSrcArr(mediaSrcArr);
 
-    var pm = _getPlayerManagerFromMediaSrc(parsedMedia);
-    _playerInterfaces[id] = pm;
-    _playbackServiceHasBeenReset = false;
+    var pm = this._getPlayerManagerFromMediaSrc(parsedMedia);
+    this._playerInterfaces[id] = pm;
+    this._playbackServiceHasBeenReset = false;
     if (mainPlayer) {
-      _mainPlayerId = id;
+      this._mainPlayerId = id;
 
-      if (pm.type !== 'wistia') { // wistia doesn't provide any buffering info currently.
-        _pollBufferedPercent();
+      if( !pm) {
+        return; // error, no pm loaded
+      }
+      if ( pm.type !== 'wistia') { // wistia doesn't provide any buffering info currently.
+        this._pollBufferedPercent();
       }
 
     }
@@ -165,11 +184,11 @@ export default function playbackService(
    * @methodOf iTT.service:playbackService
    * @description
    * Invokes the 'create' method on the playerManager with the input id, stores the entry in the
-   * _playerInterfaces map.
+   * this._playerInterfaces map.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function createInstance(playerId) {
-    _playerInterfaces[playerId].create(playerId);
+  createInstance(playerId) {
+    this._playerInterfaces[playerId].create(playerId);
   }
 
   //called from timlineSvc -> playbackService -> playerManager
@@ -181,12 +200,14 @@ export default function playbackService(
    * Invokes the 'play' method on the playerManager with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function play(playerId) {
-    angular.forEach(_playerManagers, function (pm) {
-      pm.pauseOtherPlayers(_setPid(playerId));
+  play(playerId) {
+  
+    angular.forEach(this._playerManagers,  (pm) => {
+      pm.pauseOtherPlayers(this._setPid(playerId));
     });
-    if (getMetaProp('ready', _setPid(playerId)) === true) {
-      _playerInterfaces[_setPid(playerId)].play(_setPid(playerId));
+
+    if (this.getMetaProp('ready', this._setPid(playerId)) === true) {
+      this._playerInterfaces[this._setPid(playerId)].play(this._setPid(playerId));
     }
   }
 
@@ -198,9 +219,9 @@ export default function playbackService(
    * Invokes the 'pause' method on the playerManager with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function pause(playerId) {
-    if (getMetaProp('ready', _setPid(playerId)) === true) {
-      _playerInterfaces[_setPid(playerId)].pause(_setPid(playerId));
+  pause(playerId) {
+    if (this.getMetaProp('ready', this._setPid(playerId)) === true) {
+      this._playerInterfaces[this._setPid(playerId)].pause(this._setPid(playerId));
     }
   }
 
@@ -213,9 +234,9 @@ export default function playbackService(
    * @param {Number} t time to seek playback to.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function seek(t, playerId) {
-    if (getMetaProp('ready', _setPid(playerId)) === true) {
-      _playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), parseFloat(t));
+  seek(t, playerId) {
+    if (this.getMetaProp('ready', this._setPid(playerId)) === true) {
+      this._playerInterfaces[this._setPid(playerId)].seekTo(this._setPid(playerId), parseFloat(t));
     }
   }
 
@@ -227,12 +248,12 @@ export default function playbackService(
    * static method used check playback state prior to toggling between play or pause
    * @param {String} state state to check against.
    */
-  function allowPlayback(state) {
+  allowPlayback(state) {
     return (state === 'paused' ||
-    state === 'unstarted' ||
-    state === 'video cued' ||
-    state === 'ended' ||
-    state === 'player ready');
+      state === 'unstarted' ||
+      state === 'video cued' ||
+      state === 'ended' ||
+      state === 'player ready');
   }
 
   /**
@@ -244,20 +265,20 @@ export default function playbackService(
    * @param {String} pid id of the player to drive
    * @param {Function} restartFn function to call when restarting.
    */
-  function togglePlayback(pid, restartFn, analyticsFn?) {
-    pid = _setPid(pid);
-    var state = getPlayerState(pid);
-    var time = getMetaProp('time', pid);
-    var duration = getMetaProp('duration', pid);
+  togglePlayback(pid, restartFn, analyticsFn?) {
+    pid = this._setPid(pid);
+    var state = this.getPlayerState(pid);
+    var time = this.getMetaProp('time', pid);
+    var duration = this.getMetaProp('duration', pid);
 
-    if (time >= duration && pid === _mainPlayerId) {
+    if (time >= duration && pid === this._mainPlayerId) {
       return restartFn();
     }
 
-    if (allowPlayback(state) === true) {
-      play(pid);
+    if (this.allowPlayback(state) === true) {
+      this.play(pid);
     } else {
-      pause(pid);
+      this.pause(pid);
       analyticsFn('pause');
     }
   }
@@ -270,14 +291,17 @@ export default function playbackService(
    * Invokes the 'pauseOtherPlayers' method on all playerManagers with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function pauseOtherPlayers(playerId) {
-    angular.forEach(_playerManagers, function (pm) {
-      pm.pauseOtherPlayers(_setPid(playerId));
+  pauseOtherPlayers(playerId) {
+
+
+    angular.forEach(this._playerManagers,  (pm) => {
+      pm.pauseOtherPlayers(this._setPid(playerId));
     });
+
     //on emebds, be sure to set the playerState to paused if the $destroy event pre-empts pause from being
     //set naturally
-    angular.forEach(_playerInterfaces, function (pi: IWistiaPlayerManager, pid) {
-      if (pid !== playerId && pid !== _mainPlayerId) {
+    angular.forEach(this._playerInterfaces,  (pi: IWistiaPlayerManager, pid) =>{
+      if (pid !== playerId && pid !== this._mainPlayerId) {
         pi.setMetaProp(pid, 'playerState', '2');
       }
     });
@@ -291,17 +315,17 @@ export default function playbackService(
    * Wires up a stateChangeListener to which events can be emitted from and responded to.
    * @param {Function} cb the function to invoke when on a state change.
    */
-  function registerStateChangeListener(cb) {
-    var len = _stateChangeCallbacks.length;
+  registerStateChangeListener(cb) {
+    var len = this._stateChangeCallbacks.length;
 
     //do not register the same listener twice
     while (len--) {
-      if (cb.toString() === _stateChangeCallbacks[len].toString()) {
+      if (cb.toString() === this._stateChangeCallbacks[len].toString()) {
         return;
       }
     }
 
-    _stateChangeCallbacks.push(cb);
+    this._stateChangeCallbacks.push(cb);
   }
 
   /**
@@ -312,8 +336,8 @@ export default function playbackService(
    * removes a stateChangeListener function from the array of listeners.
    * @param {Function} cb the function to remove.
    */
-  function unregisterStateChangeListener(cb) {
-    _stateChangeCallbacks = _stateChangeCallbacks.filter(function (fn) {
+  unregisterStateChangeListener(cb) {
+    this._stateChangeCallbacks = this._stateChangeCallbacks.filter(function (fn) {
       return fn.toString() !== cb.toString();
     });
   }
@@ -326,9 +350,9 @@ export default function playbackService(
    * Invokes the 'getCurrentTime' method on all playerManagers with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function getCurrentTime(playerId) {
-    if (_existy(_playerInterfaces[_setPid(playerId)])) {
-      return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
+  getCurrentTime(playerId) {
+    if (this._existy(this._playerInterfaces[this._setPid(playerId)])) {
+      return this._playerInterfaces[this._setPid(playerId)].getCurrentTime(this._setPid(playerId));
     }
   }
 
@@ -340,8 +364,8 @@ export default function playbackService(
    * Invokes the 'getPlayerDiv' method on all playerManagers with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function getPlayerDiv(playerId) {
-    return _playerInterfaces[_setPid(playerId)].getPlayerDiv(_setPid(playerId));
+  getPlayerDiv(playerId) {
+    return this._playerInterfaces[this._setPid(playerId)].getPlayerDiv(this._setPid(playerId));
   }
 
   /**
@@ -352,8 +376,8 @@ export default function playbackService(
    * Invokes the 'getPlayerState' method on all playerManagers with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function getPlayerState(playerId) {
-    return _playerInterfaces[_setPid(playerId)].getPlayerState(_setPid(playerId));
+  getPlayerState(playerId) {
+    return this._playerInterfaces[this._setPid(playerId)].getPlayerState(this._setPid(playerId));
   }
 
   /**
@@ -365,8 +389,8 @@ export default function playbackService(
    * @param {Number} playbackRate rate to set playback speed to.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function setSpeed(playbackRate, playerId) {
-    return _playerInterfaces[_setPid(playerId)].setSpeed(_setPid(playerId), playbackRate);
+  setSpeed(playbackRate, playerId) {
+    return this._playerInterfaces[this._setPid(playerId)].setSpeed(this._setPid(playerId), playbackRate);
   }
 
   /**
@@ -377,8 +401,8 @@ export default function playbackService(
    * Invokes the 'toggleMute' method on all playerManagers with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function toggleMute(playerId) {
-    return _playerInterfaces[_setPid(playerId)].toggleMute(_setPid(playerId));
+  toggleMute(playerId) {
+    return this._playerInterfaces[this._setPid(playerId)].toggleMute(this._setPid(playerId));
   }
 
   /**
@@ -390,8 +414,8 @@ export default function playbackService(
    * @param {Number} vol the volume level to set.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function setVolume(vol, playerId) {
-    _playerInterfaces[_setPid(playerId)].setVolume(_setPid(playerId), vol);
+  setVolume(vol, playerId) {
+    this._playerInterfaces[this._setPid(playerId)].setVolume(this._setPid(playerId), vol);
   }
 
   /**
@@ -404,10 +428,10 @@ export default function playbackService(
    * @param {String} [id=mainPlayerId] Optional id.
    * @returns {String|Number|Boolean|Void} returns the value of the prop specified
    */
-  function getMetaProp(prop, id) {
-    var pid = _setPid(id);
-    if (_existy(_playerInterfaces[pid])) {
-      return _playerInterfaces[pid].getMetaProp(pid, prop);
+  getMetaProp(prop, id) {
+    var pid = this._setPid(id);
+    if (this._existy(this._playerInterfaces[pid])) {
+      return this._playerInterfaces[pid].getMetaProp(pid, prop);
     }
   }
 
@@ -422,10 +446,10 @@ export default function playbackService(
    * @param {String} [id=mainPlayerId] Optional id.
    * @returns {Void} no return value but does have side-effects.
    */
-  function setMetaProp(prop, val, id) {
-    var pid = _setPid(id);
-    if (_existy(_playerInterfaces[pid])) {
-      _playerInterfaces[pid].setMetaProp(pid, prop, val);
+  setMetaProp(prop, val, id) {
+    var pid = this._setPid(id);
+    if (this._existy(this._playerInterfaces[pid])) {
+      this._playerInterfaces[pid].setMetaProp(pid, prop, val);
     }
   }
 
@@ -437,8 +461,8 @@ export default function playbackService(
    * Used to query the state of the timeline.
    * @returns {String} the state of the timeline.
    */
-  function getTimelineState() {
-    return _timelineState;
+  getTimelineState() {
+    return this._timelineState;
   }
 
   /**
@@ -450,8 +474,8 @@ export default function playbackService(
    * @param {String} state the timelineState to set
    * @returns {Void} no return val but has side-effects.
    */
-  function setTimelineState(state) {
-    _timelineState = state;
+  setTimelineState(state) {
+    this._timelineState = state;
   }
 
   /**
@@ -462,8 +486,8 @@ export default function playbackService(
    * Invokes the 'freezeMetaProps' method on all playerManagers with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function freezeMetaProps(playerId) {
-    _playerInterfaces[_setPid(playerId)].freezeMetaProps(_setPid(playerId));
+  freezeMetaProps(playerId) {
+    this._playerInterfaces[this._setPid(playerId)].freezeMetaProps(this._setPid(playerId));
   }
 
   /**
@@ -474,13 +498,13 @@ export default function playbackService(
    * Invokes the 'unFreezeMetaProps' method on all playerManagers with the passed input id.
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
-  function unFreezeMetaProps(playerId) {
-    _playerInterfaces[_setPid(playerId)].unFreezeMetaProps(_setPid(playerId));
+  unFreezeMetaProps(playerId) {
+    this._playerInterfaces[this._setPid(playerId)].unFreezeMetaProps(this._setPid(playerId));
   }
 
   // function getMetaObj(playerId) {
-  //   if (_existy(_playerInterfaces[_setPid(playerId)])) {
-  //     return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
+  //   if (this._existy(this._playerInterfaces[this._setPid(playerId)])) {
+  //     return this._playerInterfaces[this._setPid(playerId)].getMetaObj(this._setPid(playerId));
   //   }
   // }
 
@@ -492,15 +516,15 @@ export default function playbackService(
    * used when the playbackService needs to be reset back to mostly default state. This is eventually called when
    * the main video fires its $destory event
    */
-  function resetPlaybackService() {
-    _playbackServiceHasBeenReset = true;
-    _playerInterfaces = {};
-    angular.forEach(_playerManagers, function (pm) {
+  resetPlaybackService() {
+    this._playbackServiceHasBeenReset = true;
+    this._playerInterfaces = {};
+    angular.forEach(this._playerManagers, function (pm) {
       pm.resetPlayerManager();
     });
-    _mainPlayerId = '';
-    _timelineState = '';
-    $interval.cancel(_mainPlayerBufferingPoll);
+    this._mainPlayerId = '';
+    this._timelineState = '';
+    this.$interval.cancel(this._mainPlayerBufferingPoll);
   }
 
   /**
@@ -511,14 +535,14 @@ export default function playbackService(
    * Handles clean up for either main player of embeds. called from ittVideo's $destroy event.
    * @param {String} playerId unique id of the player to command
    */
-  function handle$Destroy(playerId) {
-    if (playerId !== _mainPlayerId) {
-      if (_playbackServiceHasBeenReset === false) {
-        _handleEmbedDestroy(playerId);
+  handle$Destroy(playerId) {
+    if (playerId !== this._mainPlayerId) {
+      if (this._playbackServiceHasBeenReset === false) {
+        this._handleEmbedDestroy(playerId);
       }
     } else {
       //will call resetPlaybackService from timelineSvc
-      _emitStateChange('reset');
+      this._emitStateChange('reset');
     }
   }
 
@@ -530,8 +554,8 @@ export default function playbackService(
    * for calling stop for youtube videos
    * @param {String} playerId unique id of the player to command
    */
-  function stop(playerId) {
-    _playerInterfaces[_setPid(playerId)].stop(_setPid(playerId));
+  stop(playerId) {
+    this._playerInterfaces[this._setPid(playerId)].stop(this._setPid(playerId));
   }
 
   /**
@@ -542,22 +566,20 @@ export default function playbackService(
    * @param {String} newName the target name
    * @returns {Void} no return value
    */
-  function renamePid(oldName, newName) {
+  renamePid(oldName, newName) {
     //rename player manager
-    if (_existy(_playerInterfaces[oldName])) {
-      _playerInterfaces[oldName].renamePid(oldName, newName);
+    if (this._existy(this._playerInterfaces[oldName])) {
+      this._playerInterfaces[oldName].renamePid(oldName, newName);
     }
     //check if main player is being renamed.
-    if (oldName === _mainPlayerId) {
-      _mainPlayerId = newName;
+    if (oldName === this._mainPlayerId) {
+      this._mainPlayerId = newName;
     }
-    //rename _playerInterface that calls player managers
-    ittUtils.renameKey(oldName, newName, _playerInterfaces);
+    //rename this._playerInterface that calls player managers
+    this.ittUtils.renameKey(oldName, newName, this._playerInterfaces);
   }
 
-  /*
-   PRIVATE METHODS
-   */
+  // ***********************************  PRIVATE METHODS ************************************* //
 
   /**
    * @ngdoc method
@@ -568,9 +590,9 @@ export default function playbackService(
    * @param {String} playerId unique id of the player to command
    * @private
    */
-  function _getBufferedPercent(pid) {
-    pid = _setPid(pid);
-    return _playerInterfaces[pid].getBufferedPercent(pid);
+  private  _getBufferedPercent(pid) {
+    pid = this._setPid(pid);
+    return this._playerInterfaces[pid].getBufferedPercent(pid);
   }
 
   /**
@@ -582,11 +604,11 @@ export default function playbackService(
    * @param {String} [playerId=mainPlayerId] Optional input param.
    * @private
    */
-  function _handleEmbedDestroy(playerId) {
-    setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
-    setMetaProp('hasResumedFromStartAt', false, playerId);
-    setMetaProp('ready', false, playerId);
-    freezeMetaProps(playerId);
+  private _handleEmbedDestroy(playerId) {
+    this.setMetaProp('startAtTime', this.getCurrentTime(playerId), playerId);
+    this.setMetaProp('hasResumedFromStartAt', false, playerId);
+    this.setMetaProp('ready', false, playerId);
+    this.freezeMetaProps(playerId);
   }
 
   /**
@@ -596,14 +618,14 @@ export default function playbackService(
    * @description
    * Helper method used to set the playerId to either the input ID or the mainPlayerId if left blank.
    * @param {String} pid the ID of the player to use.
-   * @returns {String} Either the input ID or the _mainPlayerId
+   * @returns {String} Either the input ID or the this._mainPlayerId
    * @private
    */
-  function _setPid(pid) {
-    if (_existy(pid)) {
+  private _setPid(pid) {
+    if (this._existy(pid)) {
       return pid;
     }
-    return _mainPlayerId;
+    return this._mainPlayerId;
   }
 
   /**
@@ -616,8 +638,8 @@ export default function playbackService(
    * @param {String} state State to emit.
    * @private
    */
-  function _emitStateChange(state) {
-    angular.forEach(_stateChangeCallbacks, function (cb) {
+  private _emitStateChange(state) {
+    angular.forEach(this._stateChangeCallbacks, function (cb) {
       cb(state);
     });
   }
@@ -634,42 +656,42 @@ export default function playbackService(
    * @param {String} pid playerId of player emitting 'onReady' event.
    * @private
    */
-  function _onPlayerReady(pid) {
-    var lastState = PLAYERSTATES[getMetaProp('playerState', pid)];
-    var startAt = getMetaProp('startAtTime', pid);
-    var hasResumed = getMetaProp('hasResumedFromStartAt', pid);
-    var isBeingReset = getMetaProp('resetInProgress', pid);
-    setMetaProp('ready', true, pid);
+  private _onPlayerReady(pid) {
+    var lastState = this.PLAYERSTATES[this.getMetaProp('playerState', pid)];
+    var startAt = this.getMetaProp('startAtTime', pid);
+    var hasResumed = this.getMetaProp('hasResumedFromStartAt', pid);
+    var isBeingReset = this.getMetaProp('resetInProgress', pid);
+    this.setMetaProp('ready', true, pid);
 
-    if (pid === _mainPlayerId && isBeingReset === false) {
-      setMetaProp('playerState', '5', pid);
-      _emitStateChange('video cued');
+    if (pid === this._mainPlayerId && isBeingReset === false) {
+      this.setMetaProp('playerState', '5', pid);
+      this._emitStateChange('video cued');
     }
 
-    if (startAt === 0 && getMetaProp('autoplay', pid) === true) {
-      play(pid);
-      setMetaProp('autoplay', false, pid);
+    if (startAt === 0 && this.getMetaProp('autoplay', pid) === true) {
+      this.play(pid);
+      this.setMetaProp('autoplay', false, pid);
     }
 
     if (startAt > 0) {
       if (hasResumed === false) {
-        seek(startAt, pid);
+        this.seek(startAt, pid);
 
         if (isBeingReset === true) {
-          play(pid);
-          setMetaProp('resetInProgress', false, pid);
+          this.play(pid);
+          this.setMetaProp('resetInProgress', false, pid);
           return;
         }
 
-        if (getMetaProp('autoplay', pid) === true) {
-          play(pid);
-          setMetaProp('autoplay', false, pid);
+        if (this.getMetaProp('autoplay', pid) === true) {
+          this.play(pid);
+          this.setMetaProp('autoplay', false, pid);
         }
 
-        if (pid !== _mainPlayerId) {
-          setMetaProp('hasResumedFromStartAt', true, pid);
+        if (pid !== this._mainPlayerId) {
+          this.setMetaProp('hasResumedFromStartAt', true, pid);
           if (lastState === 'playing') {
-            play(pid);
+            this.play(pid);
           }
         }
       }
@@ -679,7 +701,7 @@ export default function playbackService(
   //playerManager -> playbackSvc -> timelineSvc (if main)
   /**
    * @ngdoc method
-   * @name _stateChangeCB
+   * @name this._stateChangeCB
    * @methodOf iTT.service:playbackService
    * @description
    * Switch statement that handles events emitted from playerManagers and will emit the event up to the
@@ -688,7 +710,7 @@ export default function playbackService(
    * @returns {Void} returns void but has side-effects.
    * @private
    */
-  function _stateChangeCB(stateChangeEvent) {
+  private _stateChangeCB(stateChangeEvent) {
     var state = stateChangeEvent.state;
     var emitterId = stateChangeEvent.emitterId;
     // console.log('pbs#stateChangeCB', state);
@@ -698,8 +720,8 @@ export default function playbackService(
       case 'ended':
         break;
       case 'playing':
-        if (getMetaProp('hasBeenPlayed', emitterId) === false) {
-          setMetaProp('hasBeenPlayed', true, emitterId);
+        if (this.getMetaProp('hasBeenPlayed', emitterId) === false) {
+          this.setMetaProp('hasBeenPlayed', true, emitterId);
         }
         break;
       case 'paused':
@@ -709,32 +731,33 @@ export default function playbackService(
       case 'video cued':
         break;
       case 'player ready':
-        _onPlayerReady(emitterId);
+        this._onPlayerReady(emitterId);
         break;
 
     }
 
     if (state !== 'player ready') {
-      setMetaProp('playerState', PLAYERSTATES_WORD[state], emitterId);
+      this.setMetaProp('playerState', this.PLAYERSTATES_WORD[state], emitterId);
     }
 
-    if (emitterId === _mainPlayerId) {
-      _emitStateChange(state);
+    if (emitterId === this._mainPlayerId) {
+      this._emitStateChange(state);
     }
   }
 
   /**
    * @ngdoc method
-   * @name _stateChangeCB
+   * @name this._stateChangeCB
    * @methodOf iTT.service:playbackService
    * @description
    * queries the bufferedPercent meta object prop on a 200ms interval
    * @returns {Number} returns the percent of buffering for the main video
    * @private
    */
-  function _pollBufferedPercent() {
-    _mainPlayerBufferingPoll = $interval(function () {
-      setMetaProp('bufferedPercent', _getBufferedPercent(_mainPlayerId), _mainPlayerId);
+  private _pollBufferedPercent() {
+  
+    this._mainPlayerBufferingPoll = this.$interval( () => {
+      this.setMetaProp('bufferedPercent', this._getBufferedPercent(this._mainPlayerId), this._mainPlayerId);
     }, 200);
   }
 
@@ -747,11 +770,11 @@ export default function playbackService(
    * @returns {Object} returns the playerManager that can handle the input media
    * @private
    */
-  function _getPlayerManagerFromMediaSrc(parsedMediaSrc): IPlayerManager {
-    var len = _playerManagers.length, pm = null;
+  private _getPlayerManagerFromMediaSrc(parsedMediaSrc): IPlayerManager {
+    var len = this._playerManagers.length, pm = null;
     while (len--) {
-      if (parsedMediaSrc.length > 0 && _playerManagers[len].type === parsedMediaSrc[0].type) {
-        pm = _playerManagers[len];
+      if (parsedMediaSrc.length > 0 && this._playerManagers[len].type === parsedMediaSrc[0].type) {
+        pm = this._playerManagers[len];
         break;
       }
     }
