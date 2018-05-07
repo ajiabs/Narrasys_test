@@ -25,7 +25,8 @@ export default function ittLogin($location, $routeParams, authSvc, appState, err
 
       scope.apiDataBaseUrl = config.apiDataBaseUrl;
 
-      authSvc.authenticate().then(function () {
+        var user = authSvc.appState.user;
+        authSvc.authenticate().then(function () {
           errorSvc.init();
           if ($routeParams.key) {
             // (Probably unnecessary here, but testing to see if this fixes the unintended redirect from /#/auth)
@@ -48,9 +49,8 @@ export default function ittLogin($location, $routeParams, authSvc, appState, err
               $location.path('/story/' + narrId);
             }
 
-          } else if (Object.keys($routeParams).length === 0) {
-            $location.path('/account');
-
+          } else if (Object.keys($routeParams).length === 0 && authSvc.appState.user.roles) {
+           $location.path('/account');
           }
         },
         function () {
