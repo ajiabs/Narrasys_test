@@ -1,12 +1,12 @@
 export class Versioner {
   private major: number;
   private minor: number;
-  private patch: string | number;
+  private patch!: string | number;
   private devReleaseCount: any;
   private vNum: string[];
   private _patchBlob: any;
-  private _releaseType: string;
-  private _finalVersion: string;
+  private _releaseType!: string;
+  private _finalVersion!: string;
 
   constructor(public versionTxt: string) {
     this.vNum = versionTxt.split('.');
