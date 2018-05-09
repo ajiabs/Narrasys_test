@@ -46,6 +46,7 @@ export interface IWistiaPlayerManager extends IPlayerManager {
 export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPlayerManager {
   public type = 'wistia';
   private _bufferCheckIntervalLength = 100;
+  private _seeking_from_zero = false;
   static Name = 'wistiaPlayerManager'; // tslint:disable-line
   static $inject = ['$interval', 'wistiaScriptLoader', 'wistiaUrlService'];
 
@@ -149,6 +150,9 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   }
 
   seekTo(pid: string, t: number): void {
+    if (this.getCurrentTime(pid) === 0) {
+      this._seeking_from_zero = true;
+    }
     this.invokeMethod(pid, 'time', t);
   }
 
@@ -262,6 +266,13 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
     const curTime = this.getMetaProp(pid, 'time');
     this.setMetaProp(pid, 'lastVideoTime', timechange);
 
+    // make sure that we set the time properly and emit an "ended" state change when we hit the end
+    const duration = this.getMetaProp(pid, 'duration');
+    if (timechange >= duration) {
+       this.setMetaProp(pid, 'time', duration);
+       this.setMetaProp(pid, 'playerState', 0);
+       this.emitStateChange(pid);
+    }
     if (curTime > timechange) {
       this.setMetaProp(pid, 'time', timechange);
     }
@@ -283,10 +294,14 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   }
 
   private onPlay(pid: string): void {
-    this.setMetaProp(pid, 'playerState', 1);
-    this.emitStateChange(pid);
-    if (pid !== this.mainPlayerId && this.getPlayerState(pid) !== 'unstarted') {
-      this.pauseOtherPlayers(pid);
+    if (!this._seeking_from_zero) {
+      this.setMetaProp(pid, 'playerState', 1);
+      this.emitStateChange(pid);
+      if (pid !== this.mainPlayerId && this.getPlayerState(pid) !== 'unstarted') {
+        this.pauseOtherPlayers(pid);
+      }
+    } else {
+      this._seeking_from_zero = false;
     }
   }
 
