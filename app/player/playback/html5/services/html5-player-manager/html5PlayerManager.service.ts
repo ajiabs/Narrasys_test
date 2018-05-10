@@ -625,6 +625,7 @@ export class Html5PlayerManager extends BasePlayerManager implements IHtml5Playe
    */
   private _drawPlayerDiv(pid, videoObj, quality) {
     var videoElement = document.createElement('video');
+    videoElement.setAttribute('playsinline', '');
     // Saving pid in DOM element
     videoElement.pid = pid;
     videoElement.id = pid;

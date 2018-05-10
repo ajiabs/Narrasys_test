@@ -313,7 +313,8 @@ export class KalturaPlayerManager extends BasePlayerManager implements IKalturaP
         'controlBarContainer.plugin': false,
         'largePlayBtn.plugin': false,
         'loadingSpinner.plugin': true,
-        'closedCaptions.displayCaptions': false
+        'closedCaptions.displayCaptions': false,
+	'EmbedPlayer.WebKitPlaysInline': true
       }
     };
 

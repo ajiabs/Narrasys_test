@@ -666,7 +666,8 @@ export class YouTubePlayerManager extends BasePlayerManager implements IYouTubeP
           'rel': 0,
           'iv_load_policy': 3,
           'origin': host,
-          'wmode': 'transparent'
+          'wmode': 'transparent',
+	  'playsinline': 1
         },
         events: {
           onReady: (event) => onReadyCB(event, this),
