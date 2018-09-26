@@ -138,7 +138,7 @@ export class URLService implements IUrlService {
           // WxH portion, but fill in zero just in case so we can at least continue rather than erroring out
           var aTest = a.match(videoPixelSize) || [0, 0];
           var bTest = b.match(videoPixelSize) || [0, 0];
-          return aTest[1] - bTest[1]; // compare on width
+          return bTest[1] - aTest[1]; // compare on width
         });
       });
     }
