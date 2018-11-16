@@ -20,8 +20,8 @@ import ittWidthWatch from './directives/ittWidthWatch';
 //text angular
 import 'rangy';
 import 'rangy/lib/rangy-selectionsaverestore';
-import 'textAngular/dist/textAngular-sanitize.min';
-import 'textAngular/dist/textAngular.min';
+import 'textangular/dist/textAngular-sanitize.min';
+import 'textangular/dist/textAngular.min';
 //
 import './episode/episode.module';
 import './view-modes/viewModes.module';

@@ -71,6 +71,10 @@ function routerConfig($routeProvider) {
       title: 'Narrative Producer',
       template: '<np-root-template></np-root-template>'
     })
+    .when('/test', {
+       title: 'Iscripts testing capistrano deployment ...',
+       template: '<np-projects-container></np-projects-container>'
+     })
     .when('/auth', {
       template: '<np-auth-template></np-auth-template>',
       reloadOnSearch: false

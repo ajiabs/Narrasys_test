@@ -10,8 +10,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const deps = [
   'angular-ui-tree/dist/angular-ui-tree.min.js',
-  'textangular/dist/textAngular-sanitize.min.js',
-  'textangular/dist/textAngular.min.js'
+ /// 'textangular/dist/textAngular-sanitize.min.js',
+  //'textangular/dist/textAngular.min.js'
 ];
 
 

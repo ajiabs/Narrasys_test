@@ -8,39 +8,43 @@ Completed: 4,
     percent complete: 25%
 
 Completed:
-* ittMagnet.ts
-* ittMagnetized.ts
 * analytics.service.ts
 * validation.service.ts
+* ittMagnet.ts
+* ittMagnetized.ts
 
 Needs Upgrade:
-* ittTab.ts
+* selectService.ts
+* ittWidthWatch.ts
+* ittShowHideVisualOnly.ts
 * ittTabs.ts
+* PlayerController.ts
+* ittPlayerContainer.ts
+* ittToolbarStory.ts
+* SearchPanelController.ts
+* ittSearchPanel.ts
 * ittVolumeSlider.ts
 * ittNarrativeTimeline.ts
-* ittPlayerContainer.ts
-* PlayerController.ts
-* ittSearchPanel.ts
-* SearchPanelController.ts
-* ittToolbarStory.ts
-* ittShowHideVisualOnly.ts
-* ittWidthWatch.ts
-* selectService.ts
-### episode - :x:
-Completed: 4,
+* ittTab.ts
+### scenes - :x:
+Completed: 0,
     Needs Upgrade: 2,
-    total: 6,
-    percent complete: 66%
-
-Completed:
-* npCopyright.ts
-* npEpisodeFooter.ts
-* episodeEdit.service.ts
-* episodeTheme.service.ts
+    total: 2,
+    percent complete: 0%
 
 Needs Upgrade:
-* ittEpisode.ts
-* ittEpisodeEditor.ts
+* SceneController.ts
+* ittScene.ts
+### timeline - :x:
+Completed: 0,
+    Needs Upgrade: 3,
+    total: 3,
+    percent complete: 0%
+
+Needs Upgrade:
+* timelineSvc.ts
+* ittTimeline.ts
+* TimelineController.ts
 ### inputFields - :white_check_mark:
 Completed: 28,
     Needs Upgrade: 0,
@@ -48,48 +52,34 @@ Completed: 28,
     percent complete: 100%
 
 Completed:
-* sxsAddContent.ts
-* sxsAnnotatorAutocomplete.ts
-* sxsInputI18n.ts
-* sxsInputTime.ts
-* ittAnnotationField.ts
-* ittColorSelect.ts
-* ittDescriptionField.ts
-* ittDisplaySelect.ts
-* ittFlags.ts
-* ittHighlightSelect.ts
-* ittLanguageFlags.ts
-* ittLanguageSelect.ts
-* ittSpeakerField.ts
-* ittTemplateSelect.ts
-* ittTimeField.ts
-* ittTimestampSelect.ts
-* ittTitleField.ts
-* ittTransitionSelect.ts
-* ittTypographySelect.ts
-* ittUploadTranscriptsField.ts
-* ittVideoPositionSelect.ts
-* npUrlField.ts
+* ittValidUrl.ts
 * autofocus.ts
 * ittDynamicModel.ts
+* ittValidPathslug.ts
 * ittValidAsset.ts
 * ittValidEpisodeUrl.ts
-* ittValidPathslug.ts
-* ittValidUrl.ts
-### item - :x:
-Completed: 1,
-    Needs Upgrade: 4,
-    total: 5,
-    percent complete: 20%
-
-Completed:
-* ittItemEditor.ts
-
-Needs Upgrade:
-* ittIframe.ts
-* ittItemDetailModal.ts
-* ItemController.ts
-* ittItem.ts
+* ittAnnotationField.ts
+* ittFlags.ts
+* ittLanguageSelect.ts
+* sxsAddContent.ts
+* ittTimestampSelect.ts
+* ittTransitionSelect.ts
+* ittTitleField.ts
+* npUrlField.ts
+* ittUploadTranscriptsField.ts
+* ittSpeakerField.ts
+* ittTypographySelect.ts
+* ittColorSelect.ts
+* sxsInputTime.ts
+* ittTimeField.ts
+* sxsAnnotatorAutocomplete.ts
+* ittVideoPositionSelect.ts
+* ittDescriptionField.ts
+* sxsInputI18n.ts
+* ittDisplaySelect.ts
+* ittHighlightSelect.ts
+* ittLanguageFlags.ts
+* ittTemplateSelect.ts
 ### playback - :x:
 Completed: 1,
     Needs Upgrade: 4,
@@ -100,10 +90,30 @@ Completed:
 * basePlayerManager.ts
 
 Needs Upgrade:
-* ittVideo.ts
-* playbackService.ts
 * playerManagerCommons.ts
+* playbackService.ts
 * urlService.ts
+* ittVideo.ts
+### kaltura - :x:
+Completed: 0,
+    Needs Upgrade: 3,
+    total: 3,
+    percent complete: 0%
+
+Needs Upgrade:
+* kalturaUrlService.ts
+* kalturaScriptLoader.ts
+* kalturaPlayerManager.ts
+### wistia - :white_check_mark:
+Completed: 3,
+    Needs Upgrade: 0,
+    total: 3,
+    percent complete: 100%
+
+Completed:
+* wistiaUrlService.ts
+* wistiaPlayerManager.ts
+* wistiaScriptLoader.ts
 ### html5 - :x:
 Completed: 0,
     Needs Upgrade: 2,
@@ -113,26 +123,6 @@ Completed: 0,
 Needs Upgrade:
 * html5PlayerManager.service.ts
 * html5UrlService.ts
-### kaltura - :x:
-Completed: 0,
-    Needs Upgrade: 3,
-    total: 3,
-    percent complete: 0%
-
-Needs Upgrade:
-* kalturaPlayerManager.ts
-* kalturaScriptLoader.ts
-* kalturaUrlService.ts
-### wistia - :white_check_mark:
-Completed: 3,
-    Needs Upgrade: 0,
-    total: 3,
-    percent complete: 100%
-
-Completed:
-* wistiaPlayerManager.ts
-* wistiaScriptLoader.ts
-* wistiaUrlService.ts
 ### youtube - :x:
 Completed: 0,
     Needs Upgrade: 3,
@@ -141,8 +131,8 @@ Completed: 0,
 
 Needs Upgrade:
 * YouTubePlayerManager.svc.ts
-* youtubeScriptLoader.ts
 * youtubeUrlService.ts
+* youtubeScriptLoader.ts
 ### question - :x:
 Completed: 3,
     Needs Upgrade: 3,
@@ -150,33 +140,62 @@ Completed: 3,
     percent complete: 50%
 
 Completed:
+* ittQuestionTextField.ts
 * ittMcQuestion.ts
 * ittQuestionOptions.ts
-* ittQuestionTextField.ts
 
 Needs Upgrade:
+* questionAnswersSvc.ts
 * ittFlotChart.ts
 * ittQuestionTypeSelect.ts
-* questionAnswersSvc.ts
-### scenes - :x:
-Completed: 0,
+### episode - :x:
+Completed: 4,
     Needs Upgrade: 2,
-    total: 2,
-    percent complete: 0%
+    total: 6,
+    percent complete: 66%
+
+Completed:
+* episodeTheme.service.ts
+* episodeEdit.service.ts
+* npEpisodeFooter.ts
+* npCopyright.ts
 
 Needs Upgrade:
-* ittScene.ts
-* SceneController.ts
-### timeline - :x:
-Completed: 0,
-    Needs Upgrade: 3,
-    total: 3,
-    percent complete: 0%
+* ittEpisodeEditor.ts
+* ittEpisode.ts
+### item - :x:
+Completed: 1,
+    Needs Upgrade: 4,
+    total: 5,
+    percent complete: 20%
+
+Completed:
+* ittItemEditor.ts
 
 Needs Upgrade:
-* ittTimeline.ts
-* TimelineController.ts
-* timelineSvc.ts
+* ItemController.ts
+* ittItemDetailModal.ts
+* ittIframe.ts
+* ittItem.ts
+### stories - :white_check_mark:
+Completed: 12,
+    Needs Upgrade: 0,
+    total: 12,
+    percent complete: 100%
+
+Completed:
+* ittClipboard.ts
+* ittEnableSocialshare.ts
+* npNarrativeList.ts
+* npTimelineEditor.ts
+* npNarrativeContainer.ts
+* ittSocialShare.ts
+* npNarrativesContainer.ts
+* ittFiledrop.ts
+* ittUploadProgress.ts
+* npNarrativeEditor.ts
+* npGuestAccessibleUrl.ts
+* npNarrativeDetail.ts
 ### projects - :white_check_mark:
 Completed: 1,
     Needs Upgrade: 0,
@@ -192,48 +211,29 @@ Completed: 9,
     percent complete: 40%
 
 Completed:
+* uploadsService.ts
+* appState.ts
+* ittModal.ts
+* ittLoading.ts
+* ittEditPencil.ts
 * ittAssetUploader.ts
 * ittContainerEpisodes.ts
-* ittEditPencil.ts
-* ittLoading.ts
-* ittModal.ts
 * ittNav.ts
 * ittTooltip.ts
-* appState.ts
-* uploadsService.ts
 
 Needs Upgrade:
+* errorSvc.ts
+* awsSvc.ts
+* ittUtils.ts
+* imageResizeSvc.ts
+* mockSvc.ts
+* modelSvc.ts
+* authSvc.ts
+* dataSvc.ts
+* ittFilesHandler.ts
+* ittLogin.ts
 * ittRouteLoading.ts
 * ittValidationTip.ts
 * ittUser.ts
-* ittFilesHandler.ts
-* ittLogin.ts
-* authSvc.ts
-* awsSvc.ts
-* dataSvc.ts
-* errorSvc.ts
-* imageResizeSvc.ts
-* ittUtils.ts
-* mockSvc.ts
-* modelSvc.ts
-### stories - :white_check_mark:
-Completed: 12,
-    Needs Upgrade: 0,
-    total: 12,
-    percent complete: 100%
-
-Completed:
-* ittEnableSocialshare.ts
-* npGuestAccessibleUrl.ts
-* ittClipboard.ts
-* ittFiledrop.ts
-* ittUploadProgress.ts
-* npNarrativeDetail.ts
-* npNarrativeList.ts
-* npNarrativeContainer.ts
-* npNarrativeEditor.ts
-* npNarrativesContainer.ts
-* npTimelineEditor.ts
-* ittSocialShare.ts
  
   
